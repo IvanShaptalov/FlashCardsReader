@@ -1,0 +1,18 @@
+enum ReadingFormats {
+  epub,
+  mobi,
+  azw3,
+  pdf,
+  djvu,
+  cbr,
+  cbz,
+  word,
+  doc,
+  docx,
+  rtf,
+  odt,
+  txt,
+  fb2,
+  zip,
+  rar,
+}
