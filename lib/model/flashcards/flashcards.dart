@@ -1,20 +1,18 @@
 import 'package:isar/isar.dart';
+part 'flashcards.g.dart';
 
 @embedded
 class FlashCard {
-  Id id = Isar.autoIncrement;
-
-  @Index(type: IndexType.value)
   String? fromLanguage;
-
-  @Index(type: IndexType.value)
   String? toLanguage;
-
-  @Index(type: IndexType.value)
   String? questionWords;
-
-  @Index(type: IndexType.value)
   String? answerWords;
+
+  FlashCard(
+      {this.fromLanguage,
+      this.toLanguage,
+      this.questionWords,
+      this.answerWords});
 
   @override
   String toString() {
@@ -22,17 +20,23 @@ class FlashCard {
   }
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode =>
+      fromLanguage.hashCode ^
+      toLanguage.hashCode ^
+      questionWords.hashCode ^
+      answerWords.hashCode;
 
   @override
   bool operator ==(Object other) {
-    return other is FlashCard && other.id == id;
+    return other is FlashCard && other.hashCode == hashCode;
   }
 }
 
 @collection
 class FlashCardCollection {
   Id id = Isar.autoIncrement;
+
+  FlashCardCollection({this.title, this.flashCards});
 
   @Index(type: IndexType.value)
   String? title;

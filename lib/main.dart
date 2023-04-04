@@ -2,9 +2,8 @@ import 'package:flashcards_reader/model/flashcards/flashcards.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 
-void main() async{
-  final flashDatabase = FlashCardCollection()..title = 'test';
-  
+
+void main() async{  
   runApp(const MyApp());
 }
 
