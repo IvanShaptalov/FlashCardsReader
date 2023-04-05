@@ -1,5 +1,8 @@
+import 'package:flashcards_reader/database/core/core.dart';
 import 'package:flashcards_reader/model/flashcards/flashcards.dart';
+import 'package:flashcards_reader/util/enums.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive/hive.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:flashcards_reader/main.dart' as app;
 
@@ -9,48 +12,48 @@ void main() {
 
   group('DATABASE', () {
     testWidgets('CRUD operation', (tester) async {
-      // final FlashCard flashCard1 = FlashCard(
-      //   fromLanguage: 'English',
-      //   toLanguage: 'German',
-      //   questionWords: 'Hello',
-      //   answerWords: 'Hallo',
-      //   nextTest: DateTime.now().add(const Duration(days: 1)),
-      //   lastTested: DateTime.now(),
-      //   correctAnswers: 0,
-      //   wrongAnswers: 0,
-      // );
-      // final FlashCard flashCard2 = FlashCard(
-      //   fromLanguage: 'English',
-      //   toLanguage: 'German',
-      //   questionWords: 'Goodbye',
-      //   answerWords: 'Auf Wiedersehen',
-      //   nextTest: DateTime.now().add(const Duration(days: 1)),
-      //   lastTested: DateTime.now(),
-      //   correctAnswers: 0,
-      //   wrongAnswers: 0,
-      // );
-      // final FlashCardCollection testFlashCardCollection = FlashCardCollection(
-      //   title: 'English-German',
-      //   flashCards: [flashCard1, flashCard2],
-      // );
+      bool registered = await DataBase.registerAdapters();
+      expect(registered, true);
+      await Hive.openBox<FlashCardCollection>('testFlashCardCollection');
+      var testBox = Hive.box<FlashCardCollection>('testFlashCardCollection');
 
-      // await isar!.writeTxn(() async {
-      //   await isar.flashCardCollections.put(testFlashCardCollection);
-      // });
+      final FlashCard flashCard1 = FlashCard(
+        fromLanguage: 'English',
+        toLanguage: 'German',
+        questionWords: 'Hello',
+        answerWords: 'Hallo',
+        nextTest: DateTime.now().add(const Duration(days: 1)),
+        lastTested: DateTime.now(),
+        correctAnswers: 0,
+        wrongAnswers: 0,
+      );
+      final FlashCard flashCard2 = FlashCard(
+        fromLanguage: 'English',
+        toLanguage: 'German',
+        questionWords: 'Goodbye',
+        answerWords: 'Auf Wiedersehen',
+        nextTest: DateTime.now().add(const Duration(days: 1)),
+        lastTested: DateTime.now(),
+        correctAnswers: 0,
+        wrongAnswers: 0,
+      );
+      final FlashCardCollection testFlashCardCollection = FlashCardCollection(
+        uuid.v4().toString(),
+        title: 'English-German',
+        flashCards: [flashCard1, flashCard2],
+      );
 
-      // final collectionFromDb = await isar.flashCardCollections
-      //     .get(testFlashCardCollection.id); // get
+      await testBox.put(testFlashCardCollection.id, testFlashCardCollection);
 
-      // expect(collectionFromDb, testFlashCardCollection);
+      var collectionFromDb = testBox.get(testFlashCardCollection.id);
 
-      // await isar.writeTxn(() async {
-      //   await isar.flashCardCollections.delete(collectionFromDb!.id); // delete
-      // });
+      expect(collectionFromDb, testFlashCardCollection);
 
-      // final collectionFromDbDeleted =
-      //     await isar.flashCardCollections.get(testFlashCardCollection.id);
+      await testBox.delete(collectionFromDb!.id);
 
-      // expect(collectionFromDbDeleted, null);
+      final collectionFromDbDeleted = testBox.get(collectionFromDb.id);
+
+      expect(collectionFromDbDeleted, null);
     });
   });
 }

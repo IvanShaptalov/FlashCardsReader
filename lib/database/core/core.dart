@@ -1,16 +1,35 @@
-// from sqlalchemy import 'core.py'create_engine
-// from sqlalchemy.orm import 'core.py'declarative_base, sessionmaker
+import 'package:flashcards_reader/model/flashcards/flashcards.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-// from config.config import 'core.py'DB_URL, ECHO, TEST_DB_URL
+class DataBase {
+  static Box<FlashCardCollection>? flashcardsSession;
+  static Box<String>? themeSession;
+  static Box<Map<String, dynamic>>? settingsSession;
 
-// engine = create_engine(DB_URL,
-//                        echo=ECHO)
-// test_engine = create_engine(TEST_DB_URL,
-//                             echo=ECHO)
+  static Future<bool> initAsync() async {
+    try {
+      await Hive.initFlutter();
+      flashcardsSession = await Hive.openBox<FlashCardCollection>('flashCards');
+      themeSession = await Hive.openBox<String>('theme');
+      settingsSession = await Hive.openBox<Map<String, dynamic>>('settings');
+      debugPrint('Hive initialized');
+    } catch (e) {
+      debugPrint('Error initializing Hive: $e');
+      return false;
+    }
+    return true;
+  }
 
-// db_session = sessionmaker(bind=engine)()
-// receiver_db_session = sessionmaker(bind=engine)()
-
-// test_db_session = sessionmaker(bind=test_engine)()
-
-// Base = declarative_base()
+  static Future<bool> registerAdapters() async {
+    try {
+      Hive.registerAdapter(FlashCardCollectionAdapter());
+      Hive.registerAdapter(FlashCardAdapter());
+      debugPrint('Hive adapters registered');
+    } catch (e) {
+      debugPrint('Error registering Hive adapters: $e');
+      return false;
+    }
+    return true;
+  }
+}
