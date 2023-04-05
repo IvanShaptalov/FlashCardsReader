@@ -1,11 +1,3 @@
-// # from typing import List
-
-// # from flask import make_response, jsonify
-// # from icecream import ic
-// # from sqlalchemy import func
-
-// # from .core import db_session
-
 
 // # # region get_from_db methods
 

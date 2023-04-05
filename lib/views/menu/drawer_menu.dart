@@ -1,4 +1,3 @@
-import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 
 class MenuDrawer extends StatelessWidget {

@@ -2,8 +2,46 @@ import 'package:flashcards_reader/model/flashcards/flashcards.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 
+void main() async {
+  // final FlashCard flashCard1 = FlashCard(
+  //     fromLanguage: 'English',
+  //     toLanguage: 'German',
+  //     questionWords: 'Hello',
+  //     answerWords: 'Hallo',
+  //     lastTested: DateTime.now(),
+  //     nextTest: DateTime.now().add(const Duration(days: 1)),
+  //     correctAnswers: 0,
+  //     wrongAnswers: 0,
+  //     isDeleted: false);
+  // final FlashCard flashCard2 = FlashCard(
+  //     fromLanguage: 'English',
+  //     toLanguage: 'German',
+  //     questionWords: 'Goodbye',
+  //     answerWords: 'Auf Wiedersehen',
+  //     lastTested: DateTime.now(),
+  //     nextTest: DateTime.now().add(const Duration(days: 1)),
+  //     correctAnswers: 0,
+  //     wrongAnswers: 0,
+  //     isDeleted: false);
 
-void main() async{  
+  // final FlashCardCollection testFlashCardCollection = FlashCardCollection(
+  //   title: 'English-German',
+  //   flashCards: [flashCard1, flashCard2],
+  // );
+
+ 
+
+  // await isar.writeTxn(() async {
+  //   await isar.flashCardCollections.put(testFlashCardCollection);
+  // });
+
+  // final collectionFromDb =
+  //     await isar.flashCardCollections.get(testFlashCardCollection.id);
+
+  // final collectionFromDb1 =
+  //     await isar.flashCardCollections.filter().
+
+  // print(collectionFromDb);
   runApp(const MyApp());
 }
 
