@@ -17,15 +17,15 @@ class FlashCardAdapter extends TypeAdapter<FlashCard> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FlashCard(
-      fromLanguage: fields[0] as String?,
-      toLanguage: fields[1] as String?,
-      questionWords: fields[2] as String?,
-      answerWords: fields[3] as String?,
-      lastTested: fields[4] as DateTime?,
-      nextTest: fields[5] as DateTime?,
-      correctAnswers: fields[6] as int?,
-      wrongAnswers: fields[7] as int?,
-      isDeleted: fields[8] as bool?,
+      fromLanguage: fields[0] as String,
+      toLanguage: fields[1] as String,
+      questionWords: fields[2] as String,
+      answerWords: fields[3] as String,
+      lastTested: fields[4] as DateTime,
+      nextTest: fields[5] as DateTime,
+      correctAnswers: fields[6] as int,
+      wrongAnswers: fields[7] as int,
+      isDeleted: fields[8] as bool,
     );
   }
 
@@ -76,9 +76,9 @@ class FlashCardCollectionAdapter extends TypeAdapter<FlashCardCollection> {
     };
     return FlashCardCollection(
       fields[0] as String,
-      title: fields[1] as String?,
-      flashCards: (fields[2] as List?)?.cast<FlashCard>(),
-      createdAt: fields[3] as DateTime?,
+      title: fields[1] as String,
+      flashCards: (fields[2] as List).cast<FlashCard>(),
+      createdAt: fields[3] as DateTime,
     );
   }
 

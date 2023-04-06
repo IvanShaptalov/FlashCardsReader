@@ -18,6 +18,8 @@ class DataBase {
   static Future<bool> initAsync() async {
     try {
       await Hive.initFlutter();
+      // register adapters
+      await registerAdapters();
       // open session boxes
       flashcardsSession = await Hive.openBox<FlashCardCollection>('flashCards');
       flashcardsTestSession =
@@ -27,9 +29,6 @@ class DataBase {
       settingsSession = await Hive.openBox<Themes>('settings');
       settingsTestSession =
           await Hive.openBox<Themes>('testSettings');
-
-      // register adapters
-      await registerAdapters();
 
       // database initialized
       dbInitialized = true;
@@ -43,9 +42,9 @@ class DataBase {
 
   static Future<bool> registerAdapters() async {
     try {
-      Hive.registerAdapter(FlashCardCollectionAdapter());
-      Hive.registerAdapter(FlashCardAdapter());
-      Hive.registerAdapter(ThemesAdapter());
+      Hive.registerAdapter<FlashCardCollection>(FlashCardCollectionAdapter());
+      Hive.registerAdapter<FlashCard>(FlashCardAdapter());
+      Hive.registerAdapter<Themes>(ThemesAdapter());
       debugPrint('Hive adapters registered');
     } catch (e) {
       debugPrint('Error registering Hive adapters: $e');

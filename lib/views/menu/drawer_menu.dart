@@ -1,3 +1,5 @@
+import 'package:flashcards_reader/util/router.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flutter/material.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -66,9 +68,11 @@ class MenuDrawer extends StatelessWidget {
             color: Colors.grey[700],
           ),
           ListTile(
-            leading: const Icon(Icons.layers_rounded),
+            leading: const Icon(Icons.flash_on),
             title: const Text('Flashcards'),
-            onTap: () {},
+            onTap: () {
+              MyRouter.pushPageReplacement(context, FlashCardScreen());
+            },
           ),
           ListTile(
             leading: const Icon(Icons.quiz),

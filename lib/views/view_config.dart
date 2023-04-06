@@ -1,12 +1,14 @@
 import 'package:flutter/widgets.dart';
 
 class SizeConfig {
-  static double getMediaHeight(context, {double percent = 1.0}) {
-    return MediaQuery.of(context).size.height * percent;
+  /// height of the screen p - percentage of the screen height
+  static double getMediaHeight(context, {double p = 1.0}) {
+    return MediaQuery.of(context).size.height * p;
   }
 
-  static double getMediaWidth(context, {double percent = 1.0}) {
-    return MediaQuery.of(context).size.width * percent;
+  /// width of the screen p - percentage of the screen width
+  static double getMediaWidth(context, {double p = 1.0}) {
+    return MediaQuery.of(context).size.width * p;
   }
 }
 

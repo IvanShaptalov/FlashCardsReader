@@ -1,3 +1,6 @@
+import 'package:flashcards_reader/database/core/table_methods.dart';
+import 'package:flashcards_reader/model/flashcards/flashcards.dart';
+import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 
@@ -9,11 +12,51 @@ Future<bool> initAsync() async {
   return dbInit;
 }
 
+FlashCardCollection flashFixture() {
+  final FlashCard flashCard1 = FlashCard(
+    fromLanguage: 'English',
+    toLanguage: 'German',
+    questionWords: 'Hello',
+    answerWords: 'Hallo',
+    nextTest: DateTime.now().add(const Duration(days: 1)),
+    lastTested: DateTime.now(),
+    correctAnswers: 0,
+    wrongAnswers: 0,
+    isDeleted: false,
+  );
+  final FlashCard flashCard2 = FlashCard(
+    fromLanguage: 'English',
+    toLanguage: 'German',
+    questionWords: 'Goodbye',
+    answerWords: 'Auf Wiedersehen',
+    nextTest: DateTime.now().add(const Duration(days: 1)),
+    lastTested: DateTime.now(),
+    correctAnswers: 0,
+    wrongAnswers: 0,
+    isDeleted: false,
+  );
+  final FlashCardCollection testFlashCardCollection = FlashCardCollection(
+    uuid.v4().toString(),
+    title: 'English-German',
+    flashCards: [flashCard1, flashCard2],
+    createdAt: DateTime.now(),
+  );
+  return testFlashCardCollection;
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   bool inited = await initAsync();
   debugPrint('inited: $inited');
   assert(inited, true);
+
+  await FlashcardDatabaseProvider.deleteAllAsync();
+  for (var i = 0; i < 10; i++) {
+    await FlashcardDatabaseProvider.writeEditAsync(
+      flashFixture(),
+    );
+  }
+
 
   runApp(const MyApp());
 }

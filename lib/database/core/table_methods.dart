@@ -3,7 +3,7 @@ import 'package:flashcards_reader/model/flashcards/flashcards.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 
-class FlashcardProvider {
+class FlashcardDatabaseProvider {
   static var currentSession = DataBase.flashcardsSession;
 
   static void selectSession(bool isTest) {
@@ -80,7 +80,7 @@ class FlashcardProvider {
   }
 }
 
-class ThemeProvider {
+class ThemeDatabaseProvider {
   static var currentSession = DataBase.settingsSession;
 
   static void selectSession(bool isTest) {
