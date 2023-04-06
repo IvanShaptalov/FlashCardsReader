@@ -1,7 +1,6 @@
 import 'package:hive/hive.dart';
 part 'flashcards.g.dart';
 
-
 @HiveType(typeId: 1)
 class FlashCard {
   @HiveField(0)
@@ -88,18 +87,36 @@ class FlashCard {
   }
 }
 
-
 @HiveType(typeId: 2)
 class FlashCardCollection {
-  FlashCardCollection(this.id, {this.title, this.flashCards});
+  FlashCardCollection(this.id, {this.title, this.flashCards, this.createdAt});
   @HiveField(0)
   String id;
   @HiveField(1)
   String? title;
   @HiveField(2)
   List<FlashCard>? flashCards;
+  @HiveField(3)
+  DateTime? createdAt;
   @override
   String toString() {
-    return 'FlashCardCollection{title: $title, flashCards: $flashCards}';
+    return 'FlashCardCollection{title: $title, flashCards: $flashCards , createdAt: $createdAt}';
+  }
+
+  static List<FlashCardCollection> sortedByDate(List<FlashCardCollection> list) {
+    list.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+    return list;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other is FlashCardCollection && other.id == id;
+  }
+
+  bool isValid() {
+    return title != null && flashCards != null;
   }
 }

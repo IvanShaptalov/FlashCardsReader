@@ -2,6 +2,7 @@ import 'package:flashcards_reader/database/core/core.dart';
 import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/flashcards/flashcards.dart';
 import 'package:flashcards_reader/util/enums.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:flashcards_reader/main.dart' as app;
@@ -21,6 +22,7 @@ void main() async {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
+        isDeleted: false,
       );
       final FlashCard flashCard2 = FlashCard(
         fromLanguage: 'English',
@@ -31,11 +33,14 @@ void main() async {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
+        isDeleted: false,
       );
       final FlashCardCollection testFlashCardCollection = FlashCardCollection(
         uuid.v4().toString(),
         title: 'English-German',
         flashCards: [flashCard1, flashCard2],
+        createdAt: DateTime.now(),
+
       );
       return testFlashCardCollection;
     }
@@ -109,9 +114,17 @@ void main() async {
           await FlashcardProvider.writeEditAsync(flashcards, isTest: true);
       expect(writed, true);
 
-      var flashcardsList = FlashcardProvider.getAll(isTest: true);
-      print('flashcardsList.length ${flashcardsList.length}');
+      var flashcardsList = 
+          FlashcardProvider.getAll(isTest: true);
+
+      debugPrint('flashcardsList.length ${flashcardsList.length}');
       expect(flashcardsList.length, 2);
+      debugPrint(flashcardsList[0].id);
+      debugPrint(flashcardsList[1].id);
+      debugPrint(flashcards.id);
+      debugPrint(flashcards2.id);
+      expect(flashcardsList[0], flashcards2);
+      expect(flashcardsList[1], flashcards);
     });
   });
 }

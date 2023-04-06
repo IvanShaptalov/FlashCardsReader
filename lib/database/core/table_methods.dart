@@ -59,7 +59,7 @@ class FlashcardProvider {
   static List<FlashCardCollection> getAll({bool isTest = false}) {
     selectSession(isTest);
     try {
-      return currentSession!.values.toList();
+      return FlashCardCollection.sortedByDate(currentSession!.values.toList());
     } catch (e) {
       debugPrint('error while get flashcardCollection $e');
       return [];
