@@ -48,7 +48,6 @@ class FlashCard {
 
   /// returns true if the answer was correct, change correct and wrong answers and delay the next test date
   bool answeredCorrectly() {
-    // TODO implement answeredCorrectlyTest
     correctAnswers = correctAnswers! + 1;
     wrongAnswers = wrongAnswers! - 1 != 0 ? wrongAnswers! - 1 : 0;
     delayTestDate(correctAnswers!);
@@ -57,7 +56,6 @@ class FlashCard {
 
   /// returns true if the answer was wrong, change correct and wrong answers and delay the next test date to today
   bool answeredWrong() {
-    // TODO implement answeredWrongTest
     wrongAnswers = wrongAnswers! + 1;
     correctAnswers = correctAnswers! - 1 != 0 ? correctAnswers! - 1 : 0;
     // delay test date by today for wrong answers
@@ -67,7 +65,6 @@ class FlashCard {
 
   /// returns true if the test date was delayed, change the next test date
   bool delayTestDate(int days) {
-    // TODO: implement delayTestDate
     lastTested = DateTime.now();
     nextTest = nextTest!.add(Duration(days: days));
     return true;

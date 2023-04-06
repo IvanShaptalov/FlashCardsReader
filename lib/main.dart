@@ -1,4 +1,3 @@
-import 'package:flashcards_reader/model/flashcards/flashcards.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +9,11 @@ Future<bool> initAsync() async {
   return dbInit;
 }
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   bool inited = await initAsync();
+  debugPrint('inited: $inited');
+  assert(inited, true);
 
   runApp(const MyApp());
 }

@@ -7,12 +7,31 @@ class DataBase {
   static Box<String>? themeSession;
   static Box<Map<String, dynamic>>? settingsSession;
 
+  static Box<FlashCardCollection>? flashcardsTestSession;
+  static Box<Map<String, dynamic>>? settingsTestSession;
+  static Box<String>? themeTestSession;
+
+  static bool dbInitialized = false;
+  static bool adaptersRegistered = false;
+
   static Future<bool> initAsync() async {
     try {
       await Hive.initFlutter();
+      // open session boxes
       flashcardsSession = await Hive.openBox<FlashCardCollection>('flashCards');
+      flashcardsTestSession =
+          await Hive.openBox<FlashCardCollection>('flashCardsTest');
       themeSession = await Hive.openBox<String>('theme');
+      themeTestSession = await Hive.openBox<String>('testTheme');
       settingsSession = await Hive.openBox<Map<String, dynamic>>('settings');
+      settingsTestSession =
+          await Hive.openBox<Map<String, dynamic>>('testSettings');
+
+      // register adapters
+      await registerAdapters();
+
+      // database initialized
+      dbInitialized = true;
       debugPrint('Hive initialized');
     } catch (e) {
       debugPrint('Error initializing Hive: $e');
@@ -30,6 +49,7 @@ class DataBase {
       debugPrint('Error registering Hive adapters: $e');
       return false;
     }
+    adaptersRegistered = true;
     return true;
   }
 }
