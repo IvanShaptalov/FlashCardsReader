@@ -51,12 +51,11 @@ Future<void> main() async {
   assert(inited, true);
 
   await FlashcardDatabaseProvider.deleteAllAsync();
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 8; i++) {
     await FlashcardDatabaseProvider.writeEditAsync(
       flashFixture(),
     );
   }
-
 
   runApp(const MyApp());
 }
@@ -69,8 +68,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          primarySwatch: Colors.blue,
+          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

@@ -18,61 +18,69 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
           vertical: SizeConfig.getMediaHeight(context, p: 0.01),
           horizontal: SizeConfig.getMediaWidth(context, p: 0.01)),
       child: Card(
-          shape: ShapeBorder.lerp(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+        shape: ShapeBorder.lerp(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            0.5),
+        color: Colors.grey[200],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  top: SizeConfig.getMediaHeight(context, p: 0.03),
+                  bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
+              child: Text(
+                widget.flashCardCollection.title,
+                style: const TextStyle(fontSize: 16),
               ),
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              0.5),
-          color: Colors.grey[200],
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: SizeConfig.getMediaHeight(context, p: 0.01)),
-                child: Text(widget.flashCardCollection.title),
-              ),
-              Expanded(
-                child: widget.flashCardCollection.flashCards.isNotEmpty
-                    ? ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: widget.flashCardCollection.flashCards.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(widget.flashCardCollection
-                                .flashCards[index].questionWords),
-                            subtitle: Text(widget.flashCardCollection
-                                .flashCards[index].answerWords),
-                          );
-                        })
-                    : const Text('No flashcards yet'),
-              ),
-              const Divider(
-                // TODO add divider
-                color: Colors.grey,
-                thickness: 1,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // TODO add languages
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
-                  // const Text('Edit')
+            ),
+            const Divider(
+              color: Colors.grey,
+              thickness: 1,
+            ),
+            Expanded(
+              child: widget.flashCardCollection.flashCards.isNotEmpty
+                  ? ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: widget.flashCardCollection.flashCards.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(widget.flashCardCollection
+                              .flashCards[index].questionWords),
+                          subtitle: Text(widget.flashCardCollection
+                              .flashCards[index].answerWords),
+                        );
+                      })
+                  : const Text('No flashcards yet'),
+            ),
+            const Divider(
+              color: Colors.grey,
+              thickness: 1,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // TODO add languages
+                IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+                // const Text('Edit')
 
-                  IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.merge_sharp)),
-                  // const Text('Merge')
+                IconButton(
+                    onPressed: () {}, icon: const Icon(Icons.merge_sharp)),
+                // const Text('Merge')
 
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
-                  // const Text('Delete')
-                ],
-              ),
-            ],
-          )),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+                // const Text('Delete')
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

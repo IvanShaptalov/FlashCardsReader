@@ -27,11 +27,14 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
         appBar: appBar,
         body: Padding(
           padding: EdgeInsets.symmetric(
-              vertical: SizeConfig.getMediaHeight(context, p: 0.05),
-              horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
+            vertical: SizeConfig.getMediaHeight(context, p: 0.05),
+          ),
           child: widget.flashCardCollection.isNotEmpty
               ? GridView.count(
                   crossAxisCount: 2,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.getMediaWidth(context, p: 0.02)),
+                  childAspectRatio: 0.65,
                   children:
                       List.generate(widget.flashCardCollection.length, (index) {
                     /// ====================================================================[FlashCardCollectionWidget]
