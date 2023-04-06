@@ -32,7 +32,7 @@ class FlashcardProvider {
     selectSession(isTest);
 
     try {
-      var flashCards = getAll();
+      var flashCards = getAll(isTest: isTest);
       List<String> ids = [];
       for (var flashCard in flashCards) {
         ids.add(flashCard.id);

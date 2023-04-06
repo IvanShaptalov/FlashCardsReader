@@ -3,7 +3,6 @@ import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/flashcards/flashcards.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hive/hive.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:flashcards_reader/main.dart' as app;
 
@@ -100,7 +99,6 @@ void main() async {
       var flashcards = flashFixture();
       var flashcards2 = flashFixture();
 
-
       expect(flashcards.id != flashcards2.id, true);
       // save to db
       bool writed2 =
@@ -112,9 +110,8 @@ void main() async {
       expect(writed, true);
 
       var flashcardsList = FlashcardProvider.getAll(isTest: true);
-
+      print('flashcardsList.length ${flashcardsList.length}');
       expect(flashcardsList.length, 2);
-      await FlashcardProvider.deleteAllAsync(isTest: true);
     });
   });
 }
