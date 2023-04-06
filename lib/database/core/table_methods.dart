@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/database/core/core.dart';
 import 'package:flashcards_reader/model/flashcards/flashcards.dart';
+import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 
 class FlashcardProvider {
@@ -75,6 +76,56 @@ class FlashcardProvider {
     } catch (e) {
       debugPrint('error while get flashcardCollection $e');
       return null;
+    }
+  }
+}
+
+class ThemeProvider {
+  static var currentSession = DataBase.settingsSession;
+
+  static void selectSession(bool isTest) {
+    if (isTest) {
+      debugPrint('test session selected');
+      currentSession = DataBase.settingsTestSession;
+    } else {
+      debugPrint('normal session selected');
+      currentSession = DataBase.settingsSession;
+    }
+  }
+
+  /// write flashcardcollection object to hive database in flashcards box
+  static Future<bool> writeEditAsync(Themes theme,
+      {bool isTest = false}) async {
+    selectSession(isTest);
+    try {
+      await currentSession!.put('theme', theme);
+      return true;
+    } catch (e) {
+      debugPrint('error while write or edit flashcardCollection $e');
+      return false;
+    }
+  }
+
+  static Future<Themes> getAsync({bool isTest = false}) async {
+    selectSession(isTest);
+
+    var themeObj = currentSession!.get('theme');
+    if (themeObj == null) {
+      await writeEditAsync(Themes.light, isTest: isTest);
+      return Themes.light;
+    } else {
+      return themeObj;
+    }
+  }
+
+  static Future<bool> deleteAsync({bool isTest = false}) async {
+    selectSession(isTest);
+    try {
+      await currentSession!.delete('theme');
+      return true;
+    } catch (e) {
+      debugPrint('error while delete flashcardCollection $e');
+      return false;
     }
   }
 }

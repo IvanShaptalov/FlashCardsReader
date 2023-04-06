@@ -11,7 +11,7 @@ void main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   await app.main();
 
-  group('DATABASE', () {
+  group('DATABASE and flashcards', () {
     FlashCardCollection flashFixture() {
       final FlashCard flashCard1 = FlashCard(
         fromLanguage: 'English',
@@ -40,7 +40,6 @@ void main() async {
         title: 'English-German',
         flashCards: [flashCard1, flashCard2],
         createdAt: DateTime.now(),
-
       );
       return testFlashCardCollection;
     }
@@ -114,8 +113,7 @@ void main() async {
           await FlashcardProvider.writeEditAsync(flashcards, isTest: true);
       expect(writed, true);
 
-      var flashcardsList = 
-          FlashcardProvider.getAll(isTest: true);
+      var flashcardsList = FlashcardProvider.getAll(isTest: true);
 
       debugPrint('flashcardsList.length ${flashcardsList.length}');
       expect(flashcardsList.length, 2);
@@ -125,6 +123,20 @@ void main() async {
       debugPrint(flashcards2.id);
       expect(flashcardsList[0], flashcards2);
       expect(flashcardsList[1], flashcards);
+    });
+  });
+
+  group('Database theme', () {
+    testWidgets('theme from hive database', (widgetTester) async {
+      await ThemeProvider.writeEditAsync(Themes.dark, isTest: true);
+      var theme = await ThemeProvider.getAsync(isTest: true);
+      expect(theme, Themes.dark);
+    });
+
+    testWidgets('theme from empty hive database', (widgetTester) async {
+      await ThemeProvider.deleteAsync(isTest: true);
+      var theme = await ThemeProvider.getAsync(isTest: true);
+      expect(theme, Themes.light);
     });
   });
 }
