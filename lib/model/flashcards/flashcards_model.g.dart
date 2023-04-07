@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'flashcards.dart';
+part of 'flashcards_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -77,7 +77,7 @@ class FlashCardCollectionAdapter extends TypeAdapter<FlashCardCollection> {
     return FlashCardCollection(
       fields[0] as String,
       title: fields[1] as String,
-      flashCardSet: (fields[2] as Set).cast<FlashCard>(),
+      flashCardSet: (fields[2] as List).toSet().cast<FlashCard>(),
       createdAt: fields[3] as DateTime,
     );
   }

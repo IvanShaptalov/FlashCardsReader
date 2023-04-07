@@ -1,6 +1,6 @@
 import 'package:flashcards_reader/database/core/core.dart';
 import 'package:flashcards_reader/database/core/table_methods.dart';
-import 'package:flashcards_reader/model/flashcards/flashcards.dart';
+import 'package:flashcards_reader/model/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flutter_test/flutter_test.dart';
