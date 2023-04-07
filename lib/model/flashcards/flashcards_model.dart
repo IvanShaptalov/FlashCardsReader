@@ -4,9 +4,9 @@ part 'flashcards_model.g.dart';
 @HiveType(typeId: 1)
 class FlashCard {
   @HiveField(0)
-  String fromLanguage;
+  String questionLanguage;
   @HiveField(1)
-  String toLanguage;
+  String answerLanguage;
   @HiveField(2)
   String questionWords;
   @HiveField(3)
@@ -23,8 +23,8 @@ class FlashCard {
   bool isDeleted;
 
   FlashCard(
-      {required this.fromLanguage,
-      required this.toLanguage,
+      {required this.questionLanguage,
+      required this.answerLanguage,
       required this.questionWords,
       required this.answerWords,
       required this.lastTested,
@@ -59,15 +59,11 @@ class FlashCard {
 
   @override
   String toString() {
-    return 'FlashCard{fromLanguage: $fromLanguage, toLanguage: $toLanguage, questionWords: $questionWords, answerWords: $answerWords, lastTested: $lastTested, nextTest: $nextTest, correctAnswers: $correctAnswers, wrongAnswers: $wrongAnswers, isDeleted: $isDeleted}';
+    return 'FlashCard{fromLanguage: $questionLanguage, toLanguage: $answerLanguage, questionWords: $questionWords, answerWords: $answerWords}';
   }
 
   @override
-  int get hashCode =>
-      fromLanguage.hashCode ^
-      toLanguage.hashCode ^
-      questionWords.hashCode ^
-      answerWords.hashCode;
+  int get hashCode => toString().hashCode;
 
   /// returns true if the hashcodes are the same
   bool hashCheck(FlashCard other) => other.hashCode == hashCode;
@@ -82,27 +78,27 @@ class FlashCard {
 
   /// returns true if the languages are the same
   bool languageCheck(FlashCard other) =>
-      fromLanguage == other.fromLanguage && toLanguage == other.toLanguage;
+      questionLanguage == other.questionLanguage && answerLanguage == other.answerLanguage;
 
   /// returns true if the languages are the same but reversed
   bool reversedLanguageCheck(FlashCard other) =>
-      fromLanguage == other.toLanguage && toLanguage == other.fromLanguage;
+      questionLanguage == other.answerLanguage && answerLanguage == other.questionLanguage;
 
-  /// returns true if the words same or reversed words are the same
-  bool fullWordCheck(FlashCard other) =>
-      wordCheck(other) || reverseWordCheck(other);
+  bool fullEqualCheck(FlashCard other) =>
+      wordCheck(other) && languageCheck(other);
 
-  /// returns true if the languages are the same or reversed languages are the same
-  bool fullLanguageCheck(FlashCard other) =>
-      languageCheck(other) || reversedLanguageCheck(other);
-
+  bool fullReverseEqualCheck(FlashCard other) =>
+      reverseWordCheck(other) && reversedLanguageCheck(other);
   @override
   bool operator ==(Object other) {
     // check if the hashcodes are the same, return true if they are
     bool fastCheck = other is FlashCard && (hashCheck(other));
     if (fastCheck) return true;
     bool slowCheck = other is FlashCard &&
-        (fullWordCheck(other) && fullLanguageCheck(other));
+        // check if the words and languages are the same
+        (fullEqualCheck(other) ||
+            // check if the words and languages are the same but reversed
+            fullReverseEqualCheck(other));
     return slowCheck;
   }
 }

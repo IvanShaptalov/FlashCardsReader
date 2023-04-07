@@ -14,8 +14,8 @@ Future<bool> initAsync() async {
 
 FlashCardCollection flashFixture() {
   final FlashCard flashCard1 = FlashCard(
-    fromLanguage: 'English',
-    toLanguage: 'German',
+    questionLanguage: 'English',
+    answerLanguage: 'German',
     questionWords: 'Hello',
     answerWords: 'Hallo',
     nextTest: DateTime.now().add(const Duration(days: 1)),
@@ -25,8 +25,8 @@ FlashCardCollection flashFixture() {
     isDeleted: false,
   );
   final FlashCard flashCard2 = FlashCard(
-    fromLanguage: 'English',
-    toLanguage: 'German',
+    questionLanguage: 'English',
+    answerLanguage: 'German',
     questionWords: 'Goodbye',
     answerWords: 'Auf Wiedersehen',
     nextTest: DateTime.now().add(const Duration(days: 1)),

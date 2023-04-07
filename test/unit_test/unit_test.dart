@@ -5,8 +5,8 @@ void main() {
   group('Flashcard comparing', () {
      test('hashes same', () async {
       FlashCard flash1 = FlashCard(
-        fromLanguage: 'English',
-        toLanguage: 'German',
+        questionLanguage: 'English',
+        answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
         nextTest: DateTime.now().add(const Duration(days: 1)),
@@ -16,8 +16,8 @@ void main() {
         isDeleted: false,
       );
       FlashCard flash2 =  FlashCard(
-        fromLanguage: 'English',
-        toLanguage: 'German',
+        questionLanguage: 'English',
+        answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
         nextTest: DateTime.now().add(const Duration(days: 1)),
@@ -30,8 +30,8 @@ void main() {
     });
     test('are same', () async {
       FlashCard flash1 = FlashCard(
-        fromLanguage: 'English',
-        toLanguage: 'German',
+        questionLanguage: 'English',
+        answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
         nextTest: DateTime.now().add(const Duration(days: 1)),
@@ -41,8 +41,8 @@ void main() {
         isDeleted: false,
       );
       FlashCard flash2 = FlashCard(
-        fromLanguage: 'English',
-        toLanguage: 'German',
+        questionLanguage: 'English',
+        answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
         nextTest: DateTime.now().add(const Duration(days: 1)),
@@ -56,8 +56,8 @@ void main() {
 
     test('reorder languages are not same', () async {
       FlashCard flash1 = FlashCard(
-        fromLanguage: 'German',
-        toLanguage: 'English',
+        questionLanguage: 'German',
+        answerLanguage: 'English',
         questionWords: 'Hello',
         answerWords: 'Hallo',
         nextTest: DateTime.now().add(const Duration(days: 1)),
@@ -67,10 +67,10 @@ void main() {
         isDeleted: false,
       );
       FlashCard flash2 = FlashCard(
-        fromLanguage: 'English',
-        toLanguage: 'German',
+        questionLanguage: 'English',
+        answerLanguage: 'German',
         questionWords: 'Hello',
-        answerWords: 'Not same',
+        answerWords: 'Hallo',
         nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
@@ -79,10 +79,10 @@ void main() {
       );
       expect(flash1 == flash2, false);
     });
-    test('reorder words same', () async {
+    test('reorder words and language same', () async {
       FlashCard flash1 = FlashCard(
-        fromLanguage: 'English',
-        toLanguage: 'German',
+        questionLanguage: 'German',
+        answerLanguage: 'English',
         questionWords: 'Hallo',
         answerWords: 'Hello',
         nextTest: DateTime.now().add(const Duration(days: 1)),
@@ -92,8 +92,8 @@ void main() {
         isDeleted: false,
       );
       FlashCard flash2 = FlashCard(
-        fromLanguage: 'English',
-        toLanguage: 'German',
+        questionLanguage: 'English',
+        answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
         nextTest: DateTime.now().add(const Duration(days: 1)),
@@ -106,8 +106,8 @@ void main() {
     });
     test('reorder words and languages same', () async {
       FlashCard flash1 = FlashCard(
-        fromLanguage: 'English',
-        toLanguage: 'German',
+        questionLanguage: 'English',
+        answerLanguage: 'German',
         questionWords: 'Hallo',
         answerWords: 'Hello',
         nextTest: DateTime.now().add(const Duration(days: 1)),
@@ -117,8 +117,8 @@ void main() {
         isDeleted: false,
       );
       FlashCard flash2 = FlashCard(
-        fromLanguage: 'German',
-        toLanguage: 'English',
+        questionLanguage: 'English',
+        answerLanguage: 'German',
         questionWords: 'Hallo',
         answerWords: 'Hello',
         nextTest: DateTime.now().add(const Duration(days: 1)),
@@ -131,8 +131,8 @@ void main() {
     });
     test('reorder words but different languages are not same', () async {
       FlashCard flash1 = FlashCard(
-        fromLanguage: 'English',
-        toLanguage: 'German',
+        questionLanguage: 'English',
+        answerLanguage: 'German',
         questionWords: 'Hallo',
         answerWords: 'Hello',
         nextTest: DateTime.now().add(const Duration(days: 1)),
@@ -142,8 +142,8 @@ void main() {
         isDeleted: false,
       );
       FlashCard flash2 = FlashCard(
-        fromLanguage: 'English',
-        toLanguage: 'NotGerman',
+        questionLanguage: 'English',
+        answerLanguage: 'NotGerman',
         questionWords: 'Hello',
         answerWords: 'Hallo',
         nextTest: DateTime.now().add(const Duration(days: 1)),

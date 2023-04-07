@@ -17,8 +17,8 @@ class FlashCardAdapter extends TypeAdapter<FlashCard> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FlashCard(
-      fromLanguage: fields[0] as String,
-      toLanguage: fields[1] as String,
+      questionLanguage: fields[0] as String,
+      answerLanguage: fields[1] as String,
       questionWords: fields[2] as String,
       answerWords: fields[3] as String,
       lastTested: fields[4] as DateTime,
@@ -34,9 +34,9 @@ class FlashCardAdapter extends TypeAdapter<FlashCard> {
     writer
       ..writeByte(9)
       ..writeByte(0)
-      ..write(obj.fromLanguage)
+      ..write(obj.questionLanguage)
       ..writeByte(1)
-      ..write(obj.toLanguage)
+      ..write(obj.answerLanguage)
       ..writeByte(2)
       ..write(obj.questionWords)
       ..writeByte(3)
