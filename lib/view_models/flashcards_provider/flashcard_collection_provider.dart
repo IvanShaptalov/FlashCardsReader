@@ -15,4 +15,11 @@ class FlashCardCollectionProvider {
       FlashCardCollection flashCardCollection) async {
     return await FlashcardDatabaseProvider.deleteAsync(flashCardCollection.id);
   }
+
+  static Future<bool> mergeFlashCardsCollectionAsync(
+      List<FlashCardCollection> mergedFlashCards,
+      FlashCardCollection receiverFlashcard) async {
+    return await FlashcardDatabaseProvider.mergeAsync(
+        mergedFlashCards, receiverFlashcard);
+  }
 }

@@ -9,10 +9,11 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class FlashCardScreen extends StatefulWidget {
   FlashCardScreen({super.key});
-  final columnCount = 2;
+  int columnCount = 2;
   Duration cardAppearDuration = const Duration(milliseconds: 300);
   List<FlashCardCollection> flashCardCollection =
       FlashCardCollectionProvider.getFlashCards();
+  List<FlashCardCollection> cardsToMerge = [];
 
   @override
   State<FlashCardScreen> createState() => _FlashCardScreenState();
@@ -54,7 +55,7 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
                       position: index,
                       duration: widget.cardAppearDuration,
                       columnCount: widget.columnCount,
-                      child: ScaleAnimation(
+                      child: SlideAnimation(
                         child: FadeInAnimation(
                           child: AddFlashCardWidget(updateCallback),
                         ),
@@ -65,7 +66,7 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
                       position: index,
                       duration: widget.cardAppearDuration,
                       columnCount: widget.columnCount,
-                      child: ScaleAnimation(
+                      child: SlideAnimation(
                         child: FadeInAnimation(
                           child: FlashCardCollectionWidget(
                               widget.flashCardCollection[index - 1],

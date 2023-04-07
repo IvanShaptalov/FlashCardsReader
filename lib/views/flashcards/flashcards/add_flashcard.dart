@@ -39,9 +39,9 @@ class _FlashCardCollectionWidgetState1 extends State<AddFlashCardWidget> {
                 padding: EdgeInsets.only(
                     top: SizeConfig.getMediaHeight(context, p: 0.03),
                     bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
-                child: Text(
+                child: const Text(
                   'Add flashcard',
-                  style: const TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
               const Divider(
@@ -54,7 +54,7 @@ class _FlashCardCollectionWidgetState1 extends State<AddFlashCardWidget> {
                       shrinkWrap: true,
                       itemCount: 1,
                       itemBuilder: (context, index) {
-                        return ListTile(
+                        return const ListTile(
                           title: Text('Add Word'),
                           subtitle: Text('Add Flashcard'),
                         );

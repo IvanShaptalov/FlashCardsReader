@@ -29,6 +29,52 @@ class FlashcardDatabaseProvider {
     }
   }
 
+  // TODO test
+  static Future<bool> mergeAsync(List<FlashCardCollection> mergeFlashCards,
+      FlashCardCollection targetFlashCard,
+      {bool isTest = false}) async {
+    selectSession(isTest);
+    try {
+      // merge flashcards
+      Set<FlashCard> flashcards = {};
+      flashcards.addAll(mergeFlashCards
+          .map((e) => e.flashCards)
+          .expand((element) => element));
+      flashcards.addAll(targetFlashCard.flashCards);
+
+      targetFlashCard.flashCards = flashcards.toList();
+
+      // save flashcards in new collection
+      await currentSession!.put(targetFlashCard.id, targetFlashCard);
+
+      // delete old collections
+      await deleteFlashCardsAsync(mergeFlashCards, isTest: isTest);
+      return true;
+    } catch (e) {
+      debugPrint('error while write or edit flashcardCollection $e');
+      return false;
+    }
+  }
+
+  // TODO test
+  static Future<bool> deleteFlashCardsAsync(
+      List<FlashCardCollection> flashCards,
+      {bool isTest = false}) async {
+    selectSession(isTest);
+
+    try {
+      List<String> ids = [];
+      for (var flashCard in flashCards) {
+        ids.add(flashCard.id);
+      }
+      await currentSession!.deleteAll(ids);
+      return true;
+    } catch (e) {
+      debugPrint('error while write or edit flashcardCollection $e');
+      return false;
+    }
+  }
+
   static Future<bool> deleteAllAsync({bool isTest = false}) async {
     selectSession(isTest);
 
