@@ -1,9 +1,15 @@
 import 'package:flashcards_reader/model/flashcards/flashcards.dart';
+import 'package:flashcards_reader/view_models/flashcards_provider/flashcard_collection_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 
 class FlashCardCollectionWidget extends StatefulWidget {
-  const FlashCardCollectionWidget(this.flashCardCollection, {super.key});
+  bool toDelete = false;
+
+  FlashCardCollectionWidget(this.flashCardCollection, this.updateCallback,
+      {super.key});
+  final Function updateCallback;
+
   final FlashCardCollection flashCardCollection;
   @override
   State<FlashCardCollectionWidget> createState() =>
@@ -11,74 +17,97 @@ class FlashCardCollectionWidget extends StatefulWidget {
 }
 
 class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
+  Duration deleteDuration = const Duration(milliseconds: 200);
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          vertical: SizeConfig.getMediaHeight(context, p: 0.01),
-          horizontal: SizeConfig.getMediaWidth(context, p: 0.01)),
-      child: Card(
-        shape: ShapeBorder.lerp(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            0.5),
-        color: Colors.grey[200],
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  top: SizeConfig.getMediaHeight(context, p: 0.03),
-                  bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
-              child: Text(
-                widget.flashCardCollection.title,
-                style: const TextStyle(fontSize: 16),
+    return AnimatedOpacity(
+      opacity: widget.toDelete ? 0 : 1,
+      duration: deleteDuration,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            vertical: SizeConfig.getMediaHeight(context, p: 0.01),
+            horizontal: SizeConfig.getMediaWidth(context, p: 0.01)),
+        child: Card(
+          shape: ShapeBorder.lerp(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
-            ),
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
-            ),
-            Expanded(
-              child: widget.flashCardCollection.flashCards.isNotEmpty
-                  ? ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: widget.flashCardCollection.flashCards.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(widget.flashCardCollection
-                              .flashCards[index].questionWords),
-                          subtitle: Text(widget.flashCardCollection
-                              .flashCards[index].answerWords),
-                        );
-                      })
-                  : const Text('No flashcards yet'),
-            ),
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // TODO add languages
-                IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
-                // const Text('Edit')
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              0.5),
+          color: Colors.grey[200],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    top: SizeConfig.getMediaHeight(context, p: 0.03),
+                    bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
+                child: Text(
+                  widget.flashCardCollection.title,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              const Divider(
+                color: Colors.grey,
+                thickness: 1,
+              ),
+              Expanded(
+                child: widget.flashCardCollection.flashCards.isNotEmpty
+                    ? ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: widget.flashCardCollection.flashCards.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(widget.flashCardCollection
+                                .flashCards[index].questionWords),
+                            subtitle: Text(widget.flashCardCollection
+                                .flashCards[index].answerWords),
+                          );
+                        })
+                    : const Text('No flashcards yet'),
+              ),
+              const Divider(
+                color: Colors.grey,
+                thickness: 1,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // TODO add languages
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+                  // const Text('Edit')
 
-                IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.merge_sharp)),
-                // const Text('Merge')
+                  IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.merge_sharp)),
+                  // const Text('Merge')
 
-                IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
-                // const Text('Delete')
-              ],
-            ),
-          ],
+                  IconButton(
+                      onPressed: () async {
+                        // Start delete animation
+                        setState(() {
+                          widget.toDelete = true;
+                        });
+
+                        await Future.delayed(deleteDuration * 2)
+                            .whenComplete(() async {
+                          // Delete after animation
+                          await FlashCardCollectionProvider
+                              .deleteFlashCardCollectionAsync(
+                                  widget.flashCardCollection);
+                          setState(() {
+                            widget.updateCallback();
+                          });
+                        });
+                      },
+                      icon: const Icon(Icons.delete)),
+                  // const Text('Delete')
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

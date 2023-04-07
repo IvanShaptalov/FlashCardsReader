@@ -53,7 +53,7 @@ Future<void> main() async {
   await FlashcardDatabaseProvider.deleteAllAsync();
   for (var i = 0; i < 8; i++) {
     await FlashcardDatabaseProvider.writeEditAsync(
-      flashFixture(),
+      flashFixture()..title = 'English-German $i',
     );
   }
 

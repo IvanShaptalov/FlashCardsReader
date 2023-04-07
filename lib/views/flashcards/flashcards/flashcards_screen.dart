@@ -4,10 +4,12 @@ import 'package:flashcards_reader/views/flashcards/flashcard_collection_widget.d
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class FlashCardScreen extends StatefulWidget {
   FlashCardScreen({super.key});
-  final List<FlashCardCollection> flashCardCollection =
+  final columnCount = 2;
+  List<FlashCardCollection> flashCardCollection =
       FlashCardCollectionProvider.getFlashCards();
 
   @override
@@ -15,6 +17,12 @@ class FlashCardScreen extends StatefulWidget {
 }
 
 class _FlashCardScreenState extends State<FlashCardScreen> {
+  void updateCallback() {
+    setState(() {
+      widget.flashCardCollection = FlashCardCollectionProvider.getFlashCards();
+    });
+  }
+
   double appBarHeight = 0;
   @override
   Widget build(BuildContext context) {
@@ -30,17 +38,30 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
             vertical: SizeConfig.getMediaHeight(context, p: 0.05),
           ),
           child: widget.flashCardCollection.isNotEmpty
-              ? GridView.count(
-                  crossAxisCount: 2,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.getMediaWidth(context, p: 0.02)),
-                  childAspectRatio: 0.65,
-                  children:
-                      List.generate(widget.flashCardCollection.length, (index) {
-                    /// ====================================================================[FlashCardCollectionWidget]
-                    return FlashCardCollectionWidget(
-                        widget.flashCardCollection[index]);
-                  }))
+              ? AnimationLimiter(
+                  child: GridView.count(
+                      crossAxisCount: widget.columnCount,
+                      padding: EdgeInsets.symmetric(
+                          horizontal:
+                              SizeConfig.getMediaWidth(context, p: 0.02)),
+                      childAspectRatio: 0.65,
+                      children: List.generate(widget.flashCardCollection.length,
+                          (index) {
+                        /// ====================================================================[FlashCardCollectionWidget]
+                        return AnimationConfiguration.staggeredGrid(
+                          position: index,
+                          duration: const Duration(milliseconds: 375),
+                          columnCount: widget.columnCount,
+                          child: SlideAnimation(
+                            child: FadeInAnimation(
+                              child: FlashCardCollectionWidget(
+                                  widget.flashCardCollection[index],
+                                  updateCallback),
+                            ),
+                          ),
+                        );
+                      })),
+                )
               : const Text('No flashcards yet'),
         ),
         drawer: MenuDrawer(appBarHeight),

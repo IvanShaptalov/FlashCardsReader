@@ -5,4 +5,14 @@ class FlashCardCollectionProvider {
   static List<FlashCardCollection> getFlashCards() {
     return FlashcardDatabaseProvider.getAll();
   }
+
+  static Future<bool> addEditFlashCardCollectionAsync(
+      FlashCardCollection flashCardCollection) async {
+    return await FlashcardDatabaseProvider.writeEditAsync(flashCardCollection);
+  }
+
+  static Future<bool> deleteFlashCardCollectionAsync(
+      FlashCardCollection flashCardCollection) async {
+    return await FlashcardDatabaseProvider.deleteAsync(flashCardCollection.id);
+  }
 }
