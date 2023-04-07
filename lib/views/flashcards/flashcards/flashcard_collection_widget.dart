@@ -63,18 +63,18 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
                   thickness: 1,
                 ),
                 Expanded(
-                  child: widget.flashCardCollection.flashCards.isNotEmpty
+                  child: widget.flashCardCollection.flashCardSet.isNotEmpty
                       ? ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           itemCount:
-                              widget.flashCardCollection.flashCards.length,
+                              widget.flashCardCollection.flashCardSet.length,
                           itemBuilder: (context, index) {
                             return ListTile(
                               title: Text(widget.flashCardCollection
-                                  .flashCards[index].questionWords),
+                                  .flashCardSet.toList()[index].questionWords),
                               subtitle: Text(widget.flashCardCollection
-                                  .flashCards[index].answerWords),
+                                  .flashCardSet.toList()[index].answerWords),
                             );
                           })
                       : const Text('No flashcards yet'),

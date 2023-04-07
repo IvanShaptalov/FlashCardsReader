@@ -77,7 +77,7 @@ class FlashCardCollectionAdapter extends TypeAdapter<FlashCardCollection> {
     return FlashCardCollection(
       fields[0] as String,
       title: fields[1] as String,
-      flashCards: (fields[2] as List).cast<FlashCard>(),
+      flashCardSet: (fields[2] as Set).cast<FlashCard>(),
       createdAt: fields[3] as DateTime,
     );
   }
@@ -91,7 +91,7 @@ class FlashCardCollectionAdapter extends TypeAdapter<FlashCardCollection> {
       ..writeByte(1)
       ..write(obj.title)
       ..writeByte(2)
-      ..write(obj.flashCards)
+      ..write(obj.flashCardSet.toList())
       ..writeByte(3)
       ..write(obj.createdAt);
   }

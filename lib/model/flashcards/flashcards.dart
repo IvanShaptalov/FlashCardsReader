@@ -69,33 +69,68 @@ class FlashCard {
       questionWords.hashCode ^
       answerWords.hashCode;
 
+  /// returns true if the hashcodes are the same
+  bool hashCheck(FlashCard other) => other.hashCode == hashCode;
+
+  /// returns true if the words are the same
+  bool wordCheck(FlashCard other) =>
+      questionWords + answerWords == other.questionWords + other.answerWords;
+
+  /// returns true if the words are the same but reversed
+  bool reverseWordCheck(FlashCard other) =>
+      (questionWords + answerWords == other.answerWords + other.questionWords);
+
+  /// returns true if the languages are the same
+  bool languageCheck(FlashCard other) =>
+      fromLanguage == other.fromLanguage && toLanguage == other.toLanguage;
+
+  /// returns true if the languages are the same but reversed
+  bool reversedLanguageCheck(FlashCard other) =>
+      fromLanguage == other.toLanguage && toLanguage == other.fromLanguage;
+
+  /// returns true if the words same or reversed words are the same
+  bool fullWordCheck(FlashCard other) =>
+      wordCheck(other) || reverseWordCheck(other);
+
+  /// returns true if the languages are the same or reversed languages are the same
+  bool fullLanguageCheck(FlashCard other) =>
+      languageCheck(other) || reversedLanguageCheck(other);
+
   @override
   bool operator ==(Object other) {
-    return other is FlashCard && other.hashCode == hashCode;
+    // check if the hashcodes are the same, return true if they are
+    bool fastCheck = other is FlashCard && (hashCheck(other));
+    if (fastCheck) return true;
+    bool slowCheck = other is FlashCard &&
+        (fullWordCheck(other) && fullLanguageCheck(other));
+    return slowCheck;
   }
 }
 
 @HiveType(typeId: 2)
 class FlashCardCollection {
   FlashCardCollection(this.id,
-      {required this.title, required this.flashCards, required this.createdAt});
+      {required this.title,
+      required this.flashCardSet,
+      required this.createdAt});
   @HiveField(0)
   String id;
   @HiveField(1)
   String title;
   @HiveField(2)
-  List<FlashCard> flashCards;
+  Set<FlashCard> flashCardSet;
   @HiveField(3)
   DateTime createdAt;
   @override
   String toString() {
-    return 'FlashCardCollection{title: $title, flashCards: $flashCards , createdAt: $createdAt}';
+    return 'FlashCardCollection{title: $title, flashCards: $flashCardSet , createdAt: $createdAt}';
   }
 
   static List<FlashCardCollection> sortedByDate(
-      List<FlashCardCollection> list) {
-    list.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    return list;
+      Set<FlashCardCollection> setFlashcards) {
+    List<FlashCardCollection> flist = setFlashcards.toList();
+    flist.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return flist;
   }
 
   @override

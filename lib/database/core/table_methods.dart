@@ -38,11 +38,11 @@ class FlashcardDatabaseProvider {
       // merge flashcards
       Set<FlashCard> flashcards = {};
       flashcards.addAll(mergeFlashCards
-          .map((e) => e.flashCards)
+          .map((e) => e.flashCardSet)
           .expand((element) => element));
-      flashcards.addAll(targetFlashCard.flashCards);
+      flashcards.addAll(targetFlashCard.flashCardSet);
 
-      targetFlashCard.flashCards = flashcards.toList();
+      targetFlashCard.flashCardSet = flashcards;
 
       // save flashcards in new collection
       await currentSession!.put(targetFlashCard.id, targetFlashCard);
@@ -106,7 +106,7 @@ class FlashcardDatabaseProvider {
   static List<FlashCardCollection> getAll({bool isTest = false}) {
     selectSession(isTest);
     try {
-      return FlashCardCollection.sortedByDate(currentSession!.values.toList());
+      return FlashCardCollection.sortedByDate(currentSession!.values.toSet()).toList();
     } catch (e) {
       debugPrint('error while get flashcardCollection $e');
       return [];

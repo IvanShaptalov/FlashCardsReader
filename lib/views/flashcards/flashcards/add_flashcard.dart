@@ -8,10 +8,10 @@ class AddFlashCardWidget extends StatefulWidget {
   final Function updateCallback;
 
   @override
-  State<AddFlashCardWidget> createState() => _FlashCardCollectionWidgetState1();
+  State<AddFlashCardWidget> createState() => AddFlashCardWidgetState();
 }
 
-class _FlashCardCollectionWidgetState1 extends State<AddFlashCardWidget> {
+class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
   Duration deleteDuration = const Duration(milliseconds: 170);
   @override
   Widget build(BuildContext context) {
