@@ -81,8 +81,8 @@ void main() async {
 
       var flashcards = flashFixture();
 
-      bool writed =
-          await FlashcardDatabaseProvider.writeEditAsync(flashcards, isTest: true);
+      bool writed = await FlashcardDatabaseProvider.writeEditAsync(flashcards,
+          isTest: true);
       expect(writed, true);
       // get from db
       var collectionFromDb =
@@ -90,7 +90,8 @@ void main() async {
 
       expect(collectionFromDb, flashcards);
 
-      await FlashcardDatabaseProvider.deleteAsync(collectionFromDb!.id, isTest: true);
+      await FlashcardDatabaseProvider.deleteAsync(collectionFromDb!.id,
+          isTest: true);
 
       final collectionFromDbDeleted =
           FlashcardDatabaseProvider.getById(collectionFromDb.id, isTest: true);
@@ -105,12 +106,12 @@ void main() async {
 
       expect(flashcards.id != flashcards2.id, true);
       // save to db
-      bool writed2 =
-          await FlashcardDatabaseProvider.writeEditAsync(flashcards2, isTest: true);
+      bool writed2 = await FlashcardDatabaseProvider.writeEditAsync(flashcards2,
+          isTest: true);
       expect(writed2, true);
 
-      bool writed =
-          await FlashcardDatabaseProvider.writeEditAsync(flashcards, isTest: true);
+      bool writed = await FlashcardDatabaseProvider.writeEditAsync(flashcards,
+          isTest: true);
       expect(writed, true);
 
       var flashcardsList = FlashcardDatabaseProvider.getAll(isTest: true);
@@ -123,6 +124,38 @@ void main() async {
       debugPrint(flashcards2.id);
       expect(flashcardsList[0], flashcards2);
       expect(flashcardsList[1], flashcards);
+    });
+
+    testWidgets('test merge flashcard', (widgetTester) async {
+      await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
+      var flashcards = flashFixture();
+      expect(flashcards.flashCardSet.length, 2);
+      var flashcards2 = flashFixture()..flashCardSet.first.answerWords = 't1';
+      var flashcards3 = flashFixture()..flashCardSet.first.answerWords = 't2';
+      var flashcards4 = flashFixture()..flashCardSet.first.answerWords = 't3';
+      var toMerge = [flashcards2, flashcards3, flashcards4];
+
+      expect(flashcards.id != flashcards2.id, true);
+      // save to db
+
+      bool writed = await FlashcardDatabaseProvider.writeEditAsync(flashcards,
+          isTest: true);
+      await FlashcardDatabaseProvider.writeEditAsync(flashcards2, isTest: true);
+      await FlashcardDatabaseProvider.writeEditAsync(flashcards3, isTest: true);
+      await FlashcardDatabaseProvider.writeEditAsync(flashcards4, isTest: true);
+      expect(writed, true);
+      expect(FlashcardDatabaseProvider.getAll(isTest: true).length, 4);
+
+      bool merged = await FlashcardDatabaseProvider.mergeAsync(
+          toMerge, flashcards,
+          isTest: true);
+
+      expect(merged, true);
+
+      expect(FlashcardDatabaseProvider.getAll(isTest: true).length, 1);
+      var flashcardsList = FlashcardDatabaseProvider.getAll(isTest: true);
+      await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
+      expect(flashcardsList[0].flashCardSet.length, 5);
     });
   });
 
