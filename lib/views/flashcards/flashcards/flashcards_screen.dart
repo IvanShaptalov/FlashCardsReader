@@ -12,7 +12,6 @@ class FlashCardScreen extends StatefulWidget {
   Duration cardAppearDuration = const Duration(milliseconds: 375);
   List<FlashCardCollection> flashCardCollection =
       FlashCardCollectionProvider.getFlashCards();
-  List<FlashCardCollection> cardsToMerge = [];
 
   @override
   State<FlashCardScreen> createState() => _FlashCardScreenState();
@@ -51,6 +50,11 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
     }
     return 15;
   }
+
+  bool mergeModeCondition() =>
+      FlashCardCollectionProvider.isMergeMode &&
+      FlashCardCollectionProvider.targetFlashCard != null &&
+      FlashCardCollectionProvider.flashcardsToMerge.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -102,17 +106,42 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
               })),
         ),
         drawer: MenuDrawer(appBarHeight),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'reading',
+        bottomNavigationBar: BottomAppBar(
+          child: SizedBox(
+            height: SizeConfig.getMediaHeight(context, p: 0.05),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+              /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.book),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/');
+                  },
+                ),
+                mergeModeCondition()
+                    ? IconButton(
+                        icon: const Icon(Icons.merge_type),
+                        onPressed: () async {
+                          await FlashCardCollectionProvider
+                              .mergeFlashCardsCollectionAsync(
+                                  FlashCardCollectionProvider.flashcardsToMerge,
+                                  FlashCardCollectionProvider.targetFlashCard!);
+                          FlashCardCollectionProvider.deactivateMergeMode();
+                          updateCallback();
+                        },
+                      )
+                    : const SizedBox.shrink(),
+                IconButton(
+                  icon: const Icon(Icons.quiz),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/flashcards/info');
+                  },
+                ),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.quiz),
-              label: 'take a quiz',
-            ),
-          ],
+          ),
         ));
   }
 }
