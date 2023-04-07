@@ -17,7 +17,7 @@ class FlashCardCollectionWidget extends StatefulWidget {
 }
 
 class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
-  Duration deleteDuration = const Duration(milliseconds: 200);
+  Duration deleteDuration = const Duration(milliseconds: 300);
   @override
   Widget build(BuildContext context) {
     return AnimatedOpacity(
@@ -91,7 +91,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
                           widget.toDelete = true;
                         });
 
-                        await Future.delayed(deleteDuration * 2)
+                        await Future.delayed(deleteDuration)
                             .whenComplete(() async {
                           // Delete after animation
                           await FlashCardCollectionProvider
