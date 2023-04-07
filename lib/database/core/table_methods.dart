@@ -29,7 +29,6 @@ class FlashcardDatabaseProvider {
     }
   }
 
-  // TODO test
   static Future<bool> mergeAsync(List<FlashCardCollection> mergeFlashCards,
       FlashCardCollection targetFlashCard,
       {bool isTest = false}) async {
@@ -56,7 +55,6 @@ class FlashcardDatabaseProvider {
     }
   }
 
-  // TODO test
   static Future<bool> deleteFlashCardsAsync(
       List<FlashCardCollection> flashCards,
       {bool isTest = false}) async {

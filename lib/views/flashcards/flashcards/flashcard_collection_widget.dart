@@ -82,7 +82,6 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // TODO add languages
                   IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
                   // const Text('Edit')
 
