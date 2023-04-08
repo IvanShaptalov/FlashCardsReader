@@ -107,40 +107,37 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
         ),
         drawer: MenuDrawer(appBarHeight),
         bottomNavigationBar: BottomAppBar(
-          child: SizedBox(
-            height: SizeConfig.getMediaHeight(context, p: 0.05),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-              /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.book),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/');
-                  },
-                ),
-                mergeModeCondition()
-                    ? IconButton(
-                        icon: const Icon(Icons.merge_type),
-                        onPressed: () async {
-                          await FlashCardCollectionProvider
-                              .mergeFlashCardsCollectionAsync(
-                                  FlashCardCollectionProvider.flashcardsToMerge,
-                                  FlashCardCollectionProvider.targetFlashCard!);
-                          FlashCardCollectionProvider.deactivateMergeMode();
-                          updateCallback();
-                        },
-                      )
-                    : const SizedBox.shrink(),
-                IconButton(
-                  icon: const Icon(Icons.quiz),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/flashcards/info');
-                  },
-                ),
-              ],
-            ),
+            /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
+            children: [
+              IconButton(
+                icon: const Icon(Icons.book),
+                onPressed: () {
+                },
+              ),
+
+              /// show merge button if merge mode is available
+              mergeModeCondition()
+                  ? IconButton(
+                      icon: const Icon(Icons.merge_type),
+                      onPressed: () async {
+                        await FlashCardCollectionProvider
+                            .mergeFlashCardsCollectionAsync(
+                                FlashCardCollectionProvider.flashcardsToMerge,
+                                FlashCardCollectionProvider.targetFlashCard!);
+                        FlashCardCollectionProvider.deactivateMergeMode();
+                        updateCallback();
+                      },
+                    )
+                  : const SizedBox.shrink(),
+              IconButton(
+                icon: const Icon(Icons.quiz),
+                onPressed: () {
+                },
+              ),
+            ],
           ),
         ));
   }
