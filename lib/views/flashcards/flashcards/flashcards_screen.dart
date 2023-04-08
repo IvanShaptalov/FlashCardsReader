@@ -142,31 +142,32 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
                   List.generate(widget.flashCardCollection.length + 1, (index) {
                 /// ====================================================================[FlashCardCollectionWidget]
                 // add flashcards
-                if (index == 0) {
-                  return AnimationConfiguration.staggeredGrid(
-                    position: index,
-                    duration: widget.cardAppearDuration,
-                    columnCount: columnCount,
-                    child: SlideAnimation(
-                      child: FadeInAnimation(
-                        child: AddFlashCardWidget(updateCallback),
-                      ),
-                    ),
-                  );
-                } else {
-                  return AnimationConfiguration.staggeredGrid(
-                    position: index,
-                    duration: widget.cardAppearDuration,
-                    columnCount: columnCount,
-                    child: SlideAnimation(
-                      child: FadeInAnimation(
-                        child: FlashCardCollectionWidget(
-                            widget.flashCardCollection[index - 1],
-                            updateCallback),
-                      ),
-                    ),
-                  );
-                }
+                return Transform.scale(
+                  scale: columnCount == 1 ? 0.9 : 1,
+                  child: index == 0
+                      ? AnimationConfiguration.staggeredGrid(
+                          position: index,
+                          duration: widget.cardAppearDuration,
+                          columnCount: columnCount,
+                          child: SlideAnimation(
+                            child: FadeInAnimation(
+                              child: AddFlashCardWidget(updateCallback),
+                            ),
+                          ),
+                        )
+                      : AnimationConfiguration.staggeredGrid(
+                          position: index,
+                          duration: widget.cardAppearDuration,
+                          columnCount: columnCount,
+                          child: SlideAnimation(
+                            child: FadeInAnimation(
+                              child: FlashCardCollectionWidget(
+                                  widget.flashCardCollection[index - 1],
+                                  updateCallback),
+                            ),
+                          ),
+                        ),
+                );
               })),
         ),
         drawer: getDrawer(),
