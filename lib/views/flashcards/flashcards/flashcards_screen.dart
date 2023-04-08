@@ -51,17 +51,78 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
     return 15;
   }
 
-  bool mergeModeCondition() =>
-      FlashCardCollectionProvider.isMergeMode &&
-      FlashCardCollectionProvider.targetFlashCard != null &&
-      FlashCardCollectionProvider.flashcardsToMerge.isNotEmpty;
+  List<Widget> bottomNavigationBarItems() {
+    // deactivate merge mode
+    if (FlashCardCollectionProvider.isMergeModeStarted &&
+        !FlashCardCollectionProvider.mergeModeCondition()) {
+      return [deactivateMergeIcon()];
+    }
+    // deactivate merge mode or merge if possible
+    if (FlashCardCollectionProvider.mergeModeCondition()) {
+      return [
+        deactivateMergeIcon(),
+        IconButton(
+          icon: const Icon(Icons.merge_type),
+          onPressed: () async {
+            await FlashCardCollectionProvider.mergeFlashCardsCollectionAsync(
+                FlashCardCollectionProvider.flashcardsToMerge,
+                FlashCardCollectionProvider.targetFlashCard!);
+            FlashCardCollectionProvider.deactivateMergeMode();
+            updateCallback();
+          },
+        ),
+      ];
+    } else {
+      // dont show merge button or deactivate merge mode
+      return [
+        IconButton(
+          icon: const Icon(Icons.book),
+          onPressed: () {},
+        ),
+
+        /// show merge button if merge mode is available
+        IconButton(
+          icon: const Icon(Icons.quiz),
+          onPressed: () {},
+        ),
+      ];
+    }
+  }
+
+  AppBar getAppBar() {
+    if (FlashCardCollectionProvider.isMergeModeStarted) {
+      return AppBar(
+        title: const Text('Merge mode is on'),
+      );
+    } else {
+      return AppBar(
+        title: Text('Flashcards: ${widget.flashCardCollection.length}'),
+      );
+    }
+  }
+
+  IconButton deactivateMergeIcon() {
+    return IconButton(
+        onPressed: () {
+          debugPrint('merge mode deactivated');
+          FlashCardCollectionProvider.deactivateMergeMode();
+          updateCallback();
+        },
+        icon: const Icon(Icons.cancel));
+  }
+
+  Widget? getDrawer() {
+    if (FlashCardCollectionProvider.isMergeModeStarted) {
+      return null;
+    } else {
+      return MenuDrawer(appBarHeight);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     columnCount = calculateColumnCount(context);
-    var appBar = AppBar(
-      title: Text('Flashcards: ${widget.flashCardCollection.length}'),
-    );
+    var appBar = getAppBar();
     appBarHeight = appBar.preferredSize.height;
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -105,40 +166,13 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
                 }
               })),
         ),
-        drawer: MenuDrawer(appBarHeight),
+        drawer: getDrawer(),
         bottomNavigationBar: BottomAppBar(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-            /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
-            children: [
-              IconButton(
-                icon: const Icon(Icons.book),
-                onPressed: () {
-                },
-              ),
-
-              /// show merge button if merge mode is available
-              mergeModeCondition()
-                  ? IconButton(
-                      icon: const Icon(Icons.merge_type),
-                      onPressed: () async {
-                        await FlashCardCollectionProvider
-                            .mergeFlashCardsCollectionAsync(
-                                FlashCardCollectionProvider.flashcardsToMerge,
-                                FlashCardCollectionProvider.targetFlashCard!);
-                        FlashCardCollectionProvider.deactivateMergeMode();
-                        updateCallback();
-                      },
-                    )
-                  : const SizedBox.shrink(),
-              IconButton(
-                icon: const Icon(Icons.quiz),
-                onPressed: () {
-                },
-              ),
-            ],
-          ),
+              /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
+              children: bottomNavigationBarItems()),
         ));
   }
 }

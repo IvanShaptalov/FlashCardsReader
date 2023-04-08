@@ -25,7 +25,7 @@ class FlashCardCollectionProvider {
   }
 
   static bool _isMergeMode = false;
-  static bool get isMergeMode => _isMergeMode;
+  static bool get isMergeModeStarted => _isMergeMode;
   static List<FlashCardCollection> flashcardsToMerge = [];
   static FlashCardCollection? targetFlashCard;
 
@@ -42,4 +42,7 @@ class FlashCardCollectionProvider {
     flashcardsToMerge.clear();
     targetFlashCard = target;
   }
+
+  static bool mergeModeCondition() =>
+      isMergeModeStarted && targetFlashCard != null && flashcardsToMerge.isNotEmpty;
 }

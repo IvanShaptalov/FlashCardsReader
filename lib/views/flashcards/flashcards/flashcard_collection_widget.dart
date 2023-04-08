@@ -16,7 +16,7 @@ class FlashCardCollectionWidget extends StatefulWidget {
 
 class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
   Color setCardColor() {
-    if (FlashCardCollectionProvider.isMergeMode) {
+    if (FlashCardCollectionProvider.isMergeModeStarted) {
       if (FlashCardCollectionProvider.flashcardsToMerge
           .contains(widget.flashCardCollection)) {
         return Colors.greenAccent[100] ?? Colors.greenAccent;
@@ -27,6 +27,97 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
       }
     }
     return Colors.grey[200] ?? Colors.grey;
+  }
+
+  /// if icon is target, cancel merge mode, otherwise cancel selection
+  IconButton currentCardDeactivateIcon(bool isTarget, bool isSelected) {
+    if (isTarget) {
+      // cancel merge mode
+      return IconButton(
+          onPressed: () {
+            debugPrint('merge mode deactivated');
+            FlashCardCollectionProvider.deactivateMergeMode();
+            widget.updateCallback();
+          },
+          icon: const Icon(Icons.cancel));
+    } else {
+      // cancel selection
+      return IconButton(
+          onPressed: () {
+            debugPrint('card unselected');
+            selectCard();
+            widget.updateCallback();
+          },
+          icon: isSelected? const Icon(Icons.check_circle_outlined) : const Icon(Icons.circle_outlined));
+    }
+  }
+
+  List<Widget> getCardActions(bool isTarget, bool isSelected) {
+    if (FlashCardCollectionProvider.isMergeModeStarted) {
+      return [currentCardDeactivateIcon(isTarget, isSelected)];
+    } else {
+      return [
+        IconButton(
+            onPressed: () {
+              // if merge mode is not activated
+              if (!FlashCardCollectionProvider.isMergeModeStarted) {
+              } else {
+                debugPrint('merge mode is activated, cannot edit');
+              }
+            },
+            icon: const Icon(Icons.edit)),
+        // if merge mode is not activated
+        IconButton(
+            // activate merge mode
+            onPressed: () {
+              debugPrint('merge mode activated');
+
+              FlashCardCollectionProvider.activateMergeMode(
+                  widget.flashCardCollection);
+
+              widget.updateCallback();
+            },
+            // cancel merge mode
+            icon: const Icon(Icons.merge_sharp)),
+
+        IconButton(
+            onPressed: () async {
+              // if merge mode is not activated
+              if (!FlashCardCollectionProvider.isMergeModeStarted) {
+                await FlashCardCollectionProvider
+                    .deleteFlashCardCollectionAsync(widget.flashCardCollection);
+                setState(() {
+                  widget.updateCallback();
+                });
+              } else {
+                debugPrint('merge mode is activated, cannot delete');
+              }
+            },
+            icon: const Icon(Icons.delete)),
+      ];
+    }
+  }
+
+  void selectCard() {
+    debugPrint('tap ${widget.flashCardCollection.title}');
+    // if merge mode is on and the item is not the target item
+    if (FlashCardCollectionProvider.isMergeModeStarted &&
+        FlashCardCollectionProvider.targetFlashCard !=
+            widget.flashCardCollection) {
+      setState(() {
+        if (FlashCardCollectionProvider.flashcardsToMerge
+            .contains(widget.flashCardCollection)) {
+          debugPrint('unselected ${widget.flashCardCollection.title}');
+          FlashCardCollectionProvider.flashcardsToMerge
+              .remove(widget.flashCardCollection);
+        } else {
+          debugPrint('selected ${widget.flashCardCollection.title}');
+          FlashCardCollectionProvider.flashcardsToMerge
+              .add(widget.flashCardCollection);
+        }
+        widget.updateCallback();
+      });
+    }
   }
 
   @override
@@ -46,25 +137,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
       // select items for merge
       child: GestureDetector(
         onTap: () {
-          debugPrint('tap ${widget.flashCardCollection.title}');
-          // if merge mode is on and the item is not the target item
-          if (FlashCardCollectionProvider.isMergeMode &&
-              FlashCardCollectionProvider.targetFlashCard !=
-                  widget.flashCardCollection) {
-            setState(() {
-              if (FlashCardCollectionProvider.flashcardsToMerge
-                  .contains(widget.flashCardCollection)) {
-                debugPrint('unselected ${widget.flashCardCollection.title}');
-                FlashCardCollectionProvider.flashcardsToMerge
-                    .remove(widget.flashCardCollection);
-              } else {
-                debugPrint('selected ${widget.flashCardCollection.title}');
-                FlashCardCollectionProvider.flashcardsToMerge
-                    .add(widget.flashCardCollection);
-              }
-              widget.updateCallback();
-            });
-          }
+          selectCard();
         },
         child: Card(
           shape: ShapeBorder.lerp(
@@ -117,57 +190,8 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
                 thickness: 1,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        // if merge mode is not activated
-                        if (!FlashCardCollectionProvider.isMergeMode) {
-                        } else {
-                          debugPrint('merge mode is activated, cannot edit');
-                        }
-                      },
-                      icon: const Icon(Icons.edit)),
-                  // if merge mode is not activated
-                  !FlashCardCollectionProvider.isMergeMode
-                      ? IconButton(
-                          // activate merge mode
-                          onPressed: () {
-                            debugPrint('merge mode activated');
-
-                            FlashCardCollectionProvider.activateMergeMode(
-                                widget.flashCardCollection);
-
-                            widget.updateCallback();
-                          },
-                          // cancel merge mode
-                          icon: const Icon(Icons.merge_sharp))
-                      : IconButton(
-                          onPressed: () {
-                            debugPrint('merge mode deactivated');
-                            FlashCardCollectionProvider.deactivateMergeMode();
-                            widget.updateCallback();
-                          },
-                          icon: const Icon(Icons.arrow_back)),
-
-                  IconButton(
-                      onPressed: () async {
-                        // if merge mode is not activated
-                        if (!FlashCardCollectionProvider.isMergeMode) {
-                          await FlashCardCollectionProvider
-                              .deleteFlashCardCollectionAsync(
-                                  widget.flashCardCollection);
-                          setState(() {
-                            widget.updateCallback();
-                          });
-                        } else {
-                          debugPrint('merge mode is activated, cannot delete');
-                        }
-                      },
-                      icon: const Icon(Icons.delete)),
-                  // const Text('Delete')
-                ],
-              ),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: getCardActions(isTarget, isSelected)),
             ],
           ),
         ),
