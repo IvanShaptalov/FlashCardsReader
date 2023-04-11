@@ -90,25 +90,24 @@ class _DeletedFlashCardScreenState extends State<DeletedFlashCardScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: appBar,
-        body: AnimationLimiter(
-          child: GridView.count(
-              mainAxisSpacing: SizeConfig.getMediaHeight(context, p: 0.04),
-              crossAxisSpacing: calculateCrossSpacing(context),
-              crossAxisCount: columnCount,
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
-              childAspectRatio: getCardForm(context),
-              children:
-                  List.generate(widget.flashCardCollection.length, (index) {
-                /// ====================================================================[FlashCardCollectionWidget]
-                // add flashcards
-                return Transform.scale(
-                  scale: columnCount == 1 ? 0.9 : 1,
-                  child: index > widget.flashCardCollection.length
-                      ? const Center(
-                          child: Text('nothing to delete yet'),
-                        )
-                      : AnimationConfiguration.staggeredGrid(
+        body: widget.flashCardCollection.isEmpty
+            ? const Center(child:  Text('Bin is empty'))
+            : AnimationLimiter(
+                child: GridView.count(
+                    mainAxisSpacing:
+                        SizeConfig.getMediaHeight(context, p: 0.04),
+                    crossAxisSpacing: calculateCrossSpacing(context),
+                    crossAxisCount: columnCount,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
+                    childAspectRatio: getCardForm(context),
+                    children: List.generate(widget.flashCardCollection.length,
+                        (index) {
+                      /// ====================================================================[FlashCardCollectionWidget]
+                      // add flashcards
+                      return Transform.scale(
+                        scale: columnCount == 1 ? 0.9 : 1,
+                        child: AnimationConfiguration.staggeredGrid(
                           position: index,
                           duration: widget.cardAppearDuration,
                           columnCount: columnCount,
@@ -120,9 +119,9 @@ class _DeletedFlashCardScreenState extends State<DeletedFlashCardScreen> {
                             ),
                           ),
                         ),
-                );
-              })),
-        ),
+                      );
+                    })),
+              ),
         drawer: getDrawer(),
         bottomNavigationBar: BottomAppBar(
           child: Row(
