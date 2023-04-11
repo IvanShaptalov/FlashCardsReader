@@ -126,6 +126,60 @@ void main() async {
       expect(flashcardsList[1], flashcards);
     });
 
+    testWidgets('test to trash, from trash', (widgetTester) async {
+      // ==================================================== to trash
+      await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
+      var flashcards1 = flashFixture();
+      var flashcards2 = flashFixture()..flashCardSet.first.answerWords = 't1';
+      var flashcards3 = flashFixture()..flashCardSet.first.answerWords = 't2';
+      var flashcards4 = flashFixture()..flashCardSet.first.answerWords = 't3';
+
+      // save to db
+
+      await FlashcardDatabaseProvider.writeEditAsync(flashcards1, isTest: true);
+      await FlashcardDatabaseProvider.writeEditAsync(flashcards2, isTest: true);
+      await FlashcardDatabaseProvider.writeEditAsync(flashcards3, isTest: true);
+      await FlashcardDatabaseProvider.writeEditAsync(flashcards4, isTest: true);
+      // check not in trash
+      expect(
+          FlashcardDatabaseProvider.getAllFromTrash(false, isTest: true).length,
+          4);
+      // check trash
+      expect(
+          FlashcardDatabaseProvider.getAllFromTrash(true, isTest: true).length,
+          0);
+      var flashCards = await FlashcardDatabaseProvider.trashMoveFlashCardsAsync(
+          [flashcards1, flashcards2, flashcards3, flashcards4],
+          isTest: true, toTrash: true);
+
+      // check not in trash
+      expect(
+          FlashcardDatabaseProvider.getAllFromTrash(false, isTest: true).length,
+          0);
+      // check trash
+      expect(
+          FlashcardDatabaseProvider.getAllFromTrash(true, isTest: true).length,
+          4);
+
+      // ===========================================================from trash
+      await FlashcardDatabaseProvider.trashMoveFlashCardsAsync(
+          [flashcards1, flashcards2, flashcards3, flashcards4],
+          isTest: true, toTrash: false);
+
+      expect(
+          FlashcardDatabaseProvider.getAllFromTrash(false, isTest: true).length,
+          4);
+      // check trash
+      expect(
+          FlashcardDatabaseProvider.getAllFromTrash(true, isTest: true).length,
+          0);
+
+      expect(
+          await FlashcardDatabaseProvider.deleteAllAsync(isTest: true), true);
+
+      await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
+    });
+
     testWidgets('test merge flashcard', (widgetTester) async {
       await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
       var flashcards = flashFixture();
@@ -144,7 +198,9 @@ void main() async {
       await FlashcardDatabaseProvider.writeEditAsync(flashcards3, isTest: true);
       await FlashcardDatabaseProvider.writeEditAsync(flashcards4, isTest: true);
       expect(writed, true);
-      expect(FlashcardDatabaseProvider.getAll(isTest: true).length, 4);
+      expect(
+          FlashcardDatabaseProvider.getAllFromTrash(false, isTest: true).length,
+          4);
 
       bool merged = await FlashcardDatabaseProvider.mergeAsync(
           toMerge, flashcards,
@@ -152,10 +208,14 @@ void main() async {
 
       expect(merged, true);
 
-      expect(FlashcardDatabaseProvider.getAll(isTest: true).length, 1);
-      var flashcardsList = FlashcardDatabaseProvider.getAll(isTest: true);
-      await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
+      expect(
+          FlashcardDatabaseProvider.getAllFromTrash(false, isTest: true).length,
+          1);
+      var flashcardsList =
+          FlashcardDatabaseProvider.getAllFromTrash(false, isTest: true);
       expect(flashcardsList[0].flashCardSet.length, 5);
+
+      await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
     });
   });
 

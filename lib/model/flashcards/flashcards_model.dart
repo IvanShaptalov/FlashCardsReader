@@ -78,11 +78,13 @@ class FlashCard {
 
   /// returns true if the languages are the same
   bool languageCheck(FlashCard other) =>
-      questionLanguage == other.questionLanguage && answerLanguage == other.answerLanguage;
+      questionLanguage == other.questionLanguage &&
+      answerLanguage == other.answerLanguage;
 
   /// returns true if the languages are the same but reversed
   bool reversedLanguageCheck(FlashCard other) =>
-      questionLanguage == other.answerLanguage && answerLanguage == other.questionLanguage;
+      questionLanguage == other.answerLanguage &&
+      answerLanguage == other.questionLanguage;
 
   bool fullEqualCheck(FlashCard other) =>
       wordCheck(other) && languageCheck(other);
@@ -108,7 +110,8 @@ class FlashCardCollection {
   FlashCardCollection(this.id,
       {required this.title,
       required this.flashCardSet,
-      required this.createdAt});
+      required this.createdAt,
+      this.isDeleted = false});
   @HiveField(0)
   String id;
   @HiveField(1)
@@ -117,9 +120,11 @@ class FlashCardCollection {
   Set<FlashCard> flashCardSet;
   @HiveField(3)
   DateTime createdAt;
+  @HiveField(4)
+  bool isDeleted;
   @override
   String toString() {
-    return 'FlashCardCollection{title: $title, flashCards: $flashCardSet , createdAt: $createdAt}';
+    return 'FlashCardCollection{title: $title, flashCards: $flashCardSet , createdAt: $createdAt}, isDeleted: $isDeleted';
   }
 
   static List<FlashCardCollection> sortedByDate(

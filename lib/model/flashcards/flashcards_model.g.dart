@@ -79,13 +79,14 @@ class FlashCardCollectionAdapter extends TypeAdapter<FlashCardCollection> {
       title: fields[1] as String,
       flashCardSet: (fields[2] as List).toSet().cast<FlashCard>(),
       createdAt: fields[3] as DateTime,
+      isDeleted: fields[4] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, FlashCardCollection obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -93,7 +94,9 @@ class FlashCardCollectionAdapter extends TypeAdapter<FlashCardCollection> {
       ..writeByte(2)
       ..write(obj.flashCardSet.toList())
       ..writeByte(3)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(4)
+      ..write(obj.isDeleted);
   }
 
   @override

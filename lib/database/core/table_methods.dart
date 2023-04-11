@@ -2,6 +2,7 @@ import 'package:flashcards_reader/database/core/core.dart';
 import 'package:flashcards_reader/model/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class FlashcardDatabaseProvider {
   static var currentSession = DataBase.flashcardsSession;
@@ -47,7 +48,8 @@ class FlashcardDatabaseProvider {
       await currentSession!.put(targetFlashCard.id, targetFlashCard);
 
       // delete old collections
-      await deleteFlashCardsAsync(mergeFlashCards, isTest: isTest);
+      await trashMoveFlashCardsAsync(mergeFlashCards, isTest: isTest);
+
       return true;
     } catch (e) {
       debugPrint('error while write or edit flashcardCollection $e');
@@ -68,9 +70,32 @@ class FlashcardDatabaseProvider {
       await currentSession!.deleteAll(ids);
       return true;
     } catch (e) {
-      debugPrint('error while write or edit flashcardCollection $e');
+      debugPrint('error while write or edit List of flashcardCollections $e');
       return false;
     }
+  }
+
+  static Future<bool> trashMoveFlashCardsAsync(
+      List<FlashCardCollection> flashCards,
+      {bool isTest = false, bool toTrash = true}) async {
+    selectSession(isTest);
+
+    try {
+      List<String> ids = [];
+      for (var flashCard in flashCards) {
+        ids.add(flashCard.id);
+        flashCard.isDeleted = toTrash;
+        await writeEditAsync(flashCard, isTest: isTest);
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('error move to trash flashcardCollection $e');
+      return false;
+    }
+  }
+  static Future<bool> moveToTrashAsync(FlashCardCollection flashCard, bool toTrash) async{
+    return await writeEditAsync(flashCard..isDeleted = toTrash);
   }
 
   static Future<bool> deleteAllAsync({bool isTest = false}) async {
@@ -85,7 +110,7 @@ class FlashcardDatabaseProvider {
       await currentSession!.deleteAll(ids);
       return true;
     } catch (e) {
-      debugPrint('error while write or edit flashcardCollection $e');
+      debugPrint('error while delete flashcardCollection $e');
       return false;
     }
   }
@@ -104,7 +129,22 @@ class FlashcardDatabaseProvider {
   static List<FlashCardCollection> getAll({bool isTest = false}) {
     selectSession(isTest);
     try {
-      return FlashCardCollection.sortedByDate(currentSession!.values.toSet()).toList();
+      return FlashCardCollection.sortedByDate(currentSession!.values.toSet())
+          .toList();
+    } catch (e) {
+      debugPrint('error while get flashcardCollection $e');
+      return [];
+    }
+  }
+
+  static List<FlashCardCollection> getAllFromTrash(bool isDeleted,
+      {bool isTest = false}) {
+    selectSession(isTest);
+    try {
+      return FlashCardCollection.sortedByDate(currentSession!.values
+              .where((element) => element.isDeleted == isDeleted)
+              .toSet())
+          .toList();
     } catch (e) {
       debugPrint('error while get flashcardCollection $e');
       return [];

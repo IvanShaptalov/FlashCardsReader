@@ -3,8 +3,10 @@ import 'package:flashcards_reader/model/flashcards/flashcards_model.dart';
 import 'package:flutter/foundation.dart';
 
 class FlashCardCollectionProvider {
-  static List<FlashCardCollection> getFlashCards() {
-    return FlashcardDatabaseProvider.getAll();
+  /// get flashcards or deleted flashcards, not deleted by default
+  static List<FlashCardCollection> getFlashCards({bool? isDeleted}) {
+    isDeleted ??= false;
+    return FlashcardDatabaseProvider.getAllFromTrash(isDeleted = isDeleted);
   }
 
   static Future<bool> addEditFlashCardCollectionAsync(
@@ -15,6 +17,24 @@ class FlashCardCollectionProvider {
   static Future<bool> deleteFlashCardCollectionAsync(
       FlashCardCollection flashCardCollection) async {
     return await FlashcardDatabaseProvider.deleteAsync(flashCardCollection.id);
+  }
+
+  static Future<bool> deleteFromTrashAllAsync() async {
+    var deletedFlashCards = FlashcardDatabaseProvider.getAllFromTrash(true);
+    return await FlashcardDatabaseProvider.deleteFlashCardsAsync(
+        deletedFlashCards);
+  }
+
+  static Future<bool> moveToTrashAsync(
+      FlashCardCollection flashCardCollection) async {
+    return await FlashcardDatabaseProvider.writeEditAsync(
+        flashCardCollection..isDeleted = true);
+  }
+
+  static Future<bool> restoreFlashCardCollectionAsync(
+      FlashCardCollection flashCardCollection) async {
+    return await FlashcardDatabaseProvider.writeEditAsync(
+        flashCardCollection..isDeleted = false);
   }
 
   static Future<bool> mergeFlashCardsCollectionAsync(
@@ -44,5 +64,7 @@ class FlashCardCollectionProvider {
   }
 
   static bool mergeModeCondition() =>
-      isMergeModeStarted && targetFlashCard != null && flashcardsToMerge.isNotEmpty;
+      isMergeModeStarted &&
+      targetFlashCard != null &&
+      flashcardsToMerge.isNotEmpty;
 }

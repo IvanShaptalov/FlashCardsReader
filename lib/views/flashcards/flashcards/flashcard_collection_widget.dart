@@ -85,7 +85,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
               // if merge mode is not activated
               if (!FlashCardCollectionProvider.isMergeModeStarted) {
                 await FlashCardCollectionProvider
-                    .deleteFlashCardCollectionAsync(widget.flashCardCollection);
+                    .moveToTrashAsync(widget.flashCardCollection);
                 setState(() {
                   widget.updateCallback();
                 });

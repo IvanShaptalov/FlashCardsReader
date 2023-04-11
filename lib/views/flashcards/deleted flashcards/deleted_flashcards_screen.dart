@@ -1,27 +1,26 @@
 import 'package:flashcards_reader/model/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/view_models/flashcards_provider/flashcard_collection_provider.dart';
-import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard.dart';
-import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
+import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcard_collection_widget.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class FlashCardScreen extends StatefulWidget {
-  FlashCardScreen({super.key});
+class DeletedFlashCardScreen extends StatefulWidget {
+  DeletedFlashCardScreen({super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
   List<FlashCardCollection> flashCardCollection =
-      FlashCardCollectionProvider.getFlashCards(isDeleted: false);
+      FlashCardCollectionProvider.getFlashCards(isDeleted: true);
 
   @override
-  State<FlashCardScreen> createState() => _FlashCardScreenState();
+  State<DeletedFlashCardScreen> createState() => _DeletedFlashCardScreenState();
 }
 
-class _FlashCardScreenState extends State<FlashCardScreen> {
+class _DeletedFlashCardScreenState extends State<DeletedFlashCardScreen> {
   void updateCallback() {
     setState(() {
       widget.flashCardCollection =
-          FlashCardCollectionProvider.getFlashCards(isDeleted: false);
+          FlashCardCollectionProvider.getFlashCards(isDeleted: true);
     });
   }
 
@@ -56,63 +55,23 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
   }
 
   List<Widget> bottomNavigationBarItems() {
-    // deactivate merge mode
-    if (FlashCardCollectionProvider.isMergeModeStarted &&
-        !FlashCardCollectionProvider.mergeModeCondition()) {
-      return [deactivateMergeIcon()];
-    }
-    // deactivate merge mode or merge if possible
-    if (FlashCardCollectionProvider.mergeModeCondition()) {
-      return [
-        deactivateMergeIcon(),
+    return [
+      if (widget.flashCardCollection.isNotEmpty)
         IconButton(
-          icon: const Icon(Icons.merge_type),
+          icon: const Icon(Icons.delete_forever),
           onPressed: () async {
-            await FlashCardCollectionProvider.mergeFlashCardsCollectionAsync(
-                FlashCardCollectionProvider.flashcardsToMerge,
-                FlashCardCollectionProvider.targetFlashCard!);
-            FlashCardCollectionProvider.deactivateMergeMode();
+            // delete all from trash
+            await FlashCardCollectionProvider.deleteFromTrashAllAsync();
             updateCallback();
           },
         ),
-      ];
-    } else {
-      // dont show merge button or deactivate merge mode
-      return [
-        IconButton(
-          icon: const Icon(Icons.book),
-          onPressed: () {},
-        ),
-
-        /// show merge button if merge mode is available
-        IconButton(
-          icon: const Icon(Icons.quiz),
-          onPressed: () {},
-        ),
-      ];
-    }
+    ];
   }
 
   AppBar getAppBar() {
-    if (FlashCardCollectionProvider.isMergeModeStarted) {
-      return AppBar(
-        title: const Text('Merge mode is on'),
-      );
-    } else {
-      return AppBar(
-        title: Text('Flashcards: ${widget.flashCardCollection.length}'),
-      );
-    }
-  }
-
-  IconButton deactivateMergeIcon() {
-    return IconButton(
-        onPressed: () {
-          debugPrint('merge mode deactivated');
-          FlashCardCollectionProvider.deactivateMergeMode();
-          updateCallback();
-        },
-        icon: const Icon(Icons.cancel));
+    return AppBar(
+      title: Text('Deleted flashcards: ${widget.flashCardCollection.length}'),
+    );
   }
 
   Widget? getDrawer() {
@@ -140,21 +99,14 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
                   horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
               childAspectRatio: getCardForm(context),
               children:
-                  List.generate(widget.flashCardCollection.length + 1, (index) {
+                  List.generate(widget.flashCardCollection.length, (index) {
                 /// ====================================================================[FlashCardCollectionWidget]
                 // add flashcards
                 return Transform.scale(
                   scale: columnCount == 1 ? 0.9 : 1,
-                  child: index == 0
-                      ? AnimationConfiguration.staggeredGrid(
-                          position: index,
-                          duration: widget.cardAppearDuration,
-                          columnCount: columnCount,
-                          child: SlideAnimation(
-                            child: FadeInAnimation(
-                              child: AddFlashCardWidget(updateCallback),
-                            ),
-                          ),
+                  child: index > widget.flashCardCollection.length
+                      ? const Center(
+                          child: Text('nothing to delete yet'),
                         )
                       : AnimationConfiguration.staggeredGrid(
                           position: index,
@@ -162,8 +114,8 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
                           columnCount: columnCount,
                           child: SlideAnimation(
                             child: FadeInAnimation(
-                              child: FlashCardCollectionWidget(
-                                  widget.flashCardCollection[index - 1],
+                              child: DeletedFlashCardCollectionWidget(
+                                  widget.flashCardCollection[index],
                                   updateCallback),
                             ),
                           ),
