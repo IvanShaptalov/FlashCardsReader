@@ -1,0 +1,59 @@
+class CounterPage extends StatelessWidget {
+  const CounterPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Counter App'),
+      ),
+      body: BlocProvider(
+        create: (_) => CounterBloc(),
+        child: const CounterView(),
+      ),
+    );
+  }
+}
+
+class CounterView extends StatelessWidget {
+  const CounterView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CounterBloc, CounterState>(
+      builder: (context, state) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('Counter', style: TextStyle(fontSize: 24.0)),
+              Text('${state.counterValue}',
+                  style: const TextStyle(fontSize: 36.0)),
+              const SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  FloatingActionButton(
+                    onPressed: () => context
+                    // turn to counter bloc and add increment counter event
+                        .read<CounterBloc>()
+                        .add(IncrementCounter(counterValue: 2)),
+                    child: const Icon(Icons.add),
+                  ),
+                  const SizedBox(width: 16.0),
+                  FloatingActionButton(
+                    onPressed: () => context
+                    // turn to counter bloc and add decrement counter event
+                        .read<CounterBloc>()
+                        .add(DecrementCounter(counterValue: 2)),
+                    child: const Icon(Icons.remove),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
