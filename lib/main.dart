@@ -36,11 +36,11 @@ FlashCardCollection flashFixture() {
     isDeleted: false,
   );
   final FlashCardCollection testFlashCardCollection = FlashCardCollection(
-    uuid.v4().toString(),
-    title: 'English-German',
-    flashCardSet: {flashCard1, flashCard2},
-    createdAt: DateTime.now(),
-  );
+      uuid.v4().toString(),
+      title: 'English-German',
+      flashCardSet: {flashCard1, flashCard2},
+      createdAt: DateTime.now(),
+      isDeleted: false);
   return testFlashCardCollection;
 }
 

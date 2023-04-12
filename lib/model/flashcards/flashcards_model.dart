@@ -121,7 +121,7 @@ class FlashCardCollection {
   @HiveField(3)
   DateTime createdAt;
   @HiveField(4)
-  bool isDeleted;
+  bool? isDeleted;
   @override
   String toString() {
     return 'FlashCardCollection{title: $title, flashCards: $flashCardSet , createdAt: $createdAt}, isDeleted: $isDeleted';
