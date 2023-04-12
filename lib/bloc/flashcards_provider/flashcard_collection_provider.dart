@@ -1,5 +1,5 @@
 import 'package:flashcards_reader/database/core/table_methods.dart';
-import 'package:flashcards_reader/model/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flutter/foundation.dart';
 
 class FlashCardCollectionProvider {

@@ -1,4 +1,4 @@
-import 'package:flashcards_reader/model/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

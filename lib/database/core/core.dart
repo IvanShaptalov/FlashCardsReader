@@ -1,4 +1,4 @@
-import 'package:flashcards_reader/model/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:hive_flutter/hive_flutter.dart';

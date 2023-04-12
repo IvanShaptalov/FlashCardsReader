@@ -1,4 +1,4 @@
-import 'package:flashcards_reader/model/reader/settings.dart';
+import 'package:flashcards_reader/model/entities/reader/settings.dart';
 
 class ReadEntity {
   /// nativeMetadata provided by the document.

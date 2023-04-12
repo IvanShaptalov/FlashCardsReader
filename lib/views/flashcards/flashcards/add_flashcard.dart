@@ -1,5 +1,5 @@
 import 'package:flashcards_reader/main.dart';
-import 'package:flashcards_reader/view_models/flashcards_provider/flashcard_collection_provider.dart';
+import 'package:flashcards_reader/bloc/flashcards_provider/flashcard_collection_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 

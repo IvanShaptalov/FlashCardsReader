@@ -1,5 +1,5 @@
-import 'package:flashcards_reader/model/flashcards/flashcards_model.dart';
-import 'package:flashcards_reader/view_models/flashcards_provider/flashcard_collection_provider.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/bloc/flashcards_provider/flashcard_collection_provider.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcard_collection_widget.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
