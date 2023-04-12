@@ -149,7 +149,7 @@ void main() async {
       expect(
           FlashcardDatabaseProvider.getAllFromTrash(true, isTest: true).length,
           0);
-      var flashCards = await FlashcardDatabaseProvider.trashMoveFlashCardsAsync(
+      await FlashcardDatabaseProvider.trashMoveFlashCardsAsync(
           [flashcards1, flashcards2, flashcards3, flashcards4],
           isTest: true, toTrash: true);
 

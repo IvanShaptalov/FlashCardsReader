@@ -6,6 +6,7 @@ import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
+// ignore: must_be_immutable
 class DeletedFlashCardScreen extends StatefulWidget {
   DeletedFlashCardScreen({super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
