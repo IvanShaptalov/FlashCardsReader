@@ -4,15 +4,9 @@ import 'package:flutter/foundation.dart';
 
 class FlashCardCollectionProvider {
   /// get flashcards or deleted flashcards, not deleted by default
-  static List<FlashCardCollection> getFlashCards({bool? isDeleted}) {
-    isDeleted ??= false;
-    return FlashcardDatabaseProvider.getAllFromTrash(isDeleted = isDeleted);
-  }
 
-  // static Future<bool> deleteFlashCardCollectionAsync(
-  //     FlashCardCollection flashCardCollection) async {
-  //   return await FlashcardDatabaseProvider.deleteAsync(flashCardCollection.id);
-  // }  
+
+ 
 
   static Future<bool> mergeFlashCardsCollectionAsync(
       List<FlashCardCollection> mergedFlashCards,

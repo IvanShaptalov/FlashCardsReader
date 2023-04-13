@@ -1,49 +1,49 @@
-part of 'flashcards_bloc.dart';
+part of 'flashcard_merger_bloc.dart';
 
 // initialization of data
 
-class FlashcardsState {
+class FlashcardMergerState {
   List<FlashCardCollection> flashCards = <FlashCardCollection>[];
   bool isDeleted;
 
-  FlashcardsState({required this.isDeleted, this.flashCards = const []});
+  FlashcardMergerState({required this.isDeleted, this.flashCards = const []});
 
   // default state
-  factory FlashcardsState.initial() => FlashcardsState(
+  factory FlashcardMergerState.initial() => FlashcardMergerState(
       isDeleted: false, flashCards: FlashcardDatabaseProvider.getAll());
 
   /// ===============================================================[PROVIDER METHODS]===============================================================
-  FlashcardsState copyWith(
+  FlashcardMergerState copyWith(
       {List<FlashCardCollection>? flashCards, bool fromTrash = false}) {
-    return FlashcardsState(
+    return FlashcardMergerState(
         isDeleted: fromTrash,
         flashCards: FlashcardDatabaseProvider.getAllFromTrash(fromTrash));
   }
 
-  Future<FlashcardsState> deleteFromTrashAllAsync() async {
+  Future<FlashcardMergerState> deleteFromTrashAllAsync() async {
     var deletedFlashCards = FlashcardDatabaseProvider.getAllFromTrash(true);
     await FlashcardDatabaseProvider.deleteFlashCardsAsync(deletedFlashCards);
-    return FlashcardsState.initial().copyWith(fromTrash: true);
+    return FlashcardMergerState.initial().copyWith(fromTrash: true);
   }
 
-  Future<FlashcardsState> restoreFlashCardCollectionAsync(
+  Future<FlashcardMergerState> restoreFlashCardCollectionAsync(
       FlashCardCollection flashCardCollection) async {
     await FlashcardDatabaseProvider.writeEditAsync(
         flashCardCollection..isDeleted = false);
 
-    return FlashcardsState.initial().copyWith(fromTrash: false);
+    return FlashcardMergerState.initial().copyWith(fromTrash: false);
   }
 
-  Future<FlashcardsState> addFlashCardCollectionAsync(
+  Future<FlashcardMergerState> addFlashCardCollectionAsync(
       FlashCardCollection flashCardCollection) async {
     await FlashcardDatabaseProvider.writeEditAsync(flashCardCollection);
-    return FlashcardsState.initial().copyWith(fromTrash: false);
+    return FlashcardMergerState.initial().copyWith(fromTrash: false);
   }
 
-  Future<FlashcardsState> moveToTrashAsync(
+  Future<FlashcardMergerState> moveToTrashAsync(
       FlashCardCollection flashCardCollection) async {
     await FlashcardDatabaseProvider.moveToTrashAsync(flashCardCollection, true);
-    return FlashcardsState.initial().copyWith(fromTrash: false);
+    return FlashcardMergerState.initial().copyWith(fromTrash: false);
   }
 
    // static Future<bool> deleteFlashCardCollectionAsync(
