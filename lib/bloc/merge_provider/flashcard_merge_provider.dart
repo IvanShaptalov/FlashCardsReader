@@ -5,16 +5,6 @@ import 'package:flutter/foundation.dart';
 class FlashCardCollectionProvider {
   /// get flashcards or deleted flashcards, not deleted by default
 
-
- 
-
-  static Future<bool> mergeFlashCardsCollectionAsync(
-      List<FlashCardCollection> mergedFlashCards,
-      FlashCardCollection receiverFlashcard) async {
-    return await FlashcardDatabaseProvider.mergeAsync(
-        mergedFlashCards, receiverFlashcard);
-  }
-
   static bool _isMergeMode = false;
   static bool get isMergeModeStarted => _isMergeMode;
   static List<FlashCardCollection> flashcardsToMerge = [];
@@ -27,6 +17,13 @@ class FlashCardCollectionProvider {
     targetFlashCard = null;
   }
 
+  static Future<bool> mergeFlashCardsCollectionAsync(
+      List<FlashCardCollection> mergedFlashCards,
+      FlashCardCollection receiverFlashcard) async {
+    return await FlashcardDatabaseProvider.mergeAsync(
+        mergedFlashCards, receiverFlashcard);
+  }
+
   static void activateMergeMode(FlashCardCollection target) {
     debugPrint("activateMergeMode");
     _isMergeMode = true;
@@ -34,7 +31,7 @@ class FlashCardCollectionProvider {
     targetFlashCard = target;
   }
 
-  static bool mergeModeCondition() =>
+  static bool readyToMerge() =>
       isMergeModeStarted &&
       targetFlashCard != null &&
       flashcardsToMerge.isNotEmpty;

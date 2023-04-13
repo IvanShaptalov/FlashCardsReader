@@ -73,11 +73,11 @@ class _FlashCardViewState extends State<FlashCardView> {
   List<Widget> bottomNavigationBarItems() {
     // deactivate merge mode
     if (FlashCardCollectionProvider.isMergeModeStarted &&
-        !FlashCardCollectionProvider.mergeModeCondition()) {
+        !FlashCardCollectionProvider.readyToMerge()) {
       return [deactivateMergeIcon()];
     }
     // deactivate merge mode or merge if possible
-    if (FlashCardCollectionProvider.mergeModeCondition()) {
+    if (FlashCardCollectionProvider.readyToMerge()) {
       return [
         deactivateMergeIcon(),
         IconButton(
