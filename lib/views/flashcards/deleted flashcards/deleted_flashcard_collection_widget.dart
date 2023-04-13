@@ -1,6 +1,6 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
-import 'package:flashcards_reader/bloc/flashcards_provider/flashcard_collection_provider.dart';
+import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
