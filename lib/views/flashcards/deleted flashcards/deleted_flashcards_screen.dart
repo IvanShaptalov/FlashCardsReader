@@ -19,7 +19,7 @@ class _DeletedFlashCardPageState extends State<DeletedFlashCardPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => FlashcardsBloc(),
+      create: (_) => FlashCardBloc(),
       child: DeletedFlashCardView(),
     );
   }
@@ -73,11 +73,11 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
       if (flashCardCollection.isNotEmpty)
         IconButton(
           icon: const Icon(Icons.delete_forever),
-          onPressed: () async {
+          onPressed: () {
             // delete all from trash
-            await FlashCardCollectionProvider.deleteFromTrashAllAsync();
+            context.read<FlashCardBloc>().add(DeleteAllTrashEvent());
             context
-                .read<FlashcardsBloc>()
+                .read<FlashCardBloc>()
                 .add(GetFlashCardsEvent(isDeleted: true));
           },
         ),
@@ -101,7 +101,7 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
   @override
   Widget build(BuildContext context) {
     // creating bloc builder for flashcards
-    return BlocBuilder<FlashcardsBloc, FlashcardsState>(
+    return BlocBuilder<FlashCardBloc, FlashcardsState>(
       builder: (context, state) {
         var flashCardCollection = state.copyWith(isDeletedP: true).flashCards;
 

@@ -24,13 +24,13 @@ class _DeletedFlashCardCollectionWidgetState
       bool isTarget, bool isSelected, BuildContext context) {
     return [
       IconButton(
-          onPressed: () async {
+          onPressed: () {
             // if merge mode is not activated
+            context.read<FlashCardBloc>().add(RestoreFromTrashEvent(
+                flashCardCollection: widget.flashCardCollection));
 
-            await FlashCardCollectionProvider.restoreFlashCardCollectionAsync(
-                widget.flashCardCollection);
             context
-                .read<FlashcardsBloc>()
+                .read<FlashCardBloc>()
                 .add(GetFlashCardsEvent(isDeleted: true));
           },
           icon: const Icon(Icons.restore_from_trash))

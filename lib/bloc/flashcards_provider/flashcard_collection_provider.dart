@@ -19,11 +19,7 @@ class FlashCardCollectionProvider {
     return await FlashcardDatabaseProvider.deleteAsync(flashCardCollection.id);
   }
 
-  static Future<bool> deleteFromTrashAllAsync() async {
-    var deletedFlashCards = FlashcardDatabaseProvider.getAllFromTrash(true);
-    return await FlashcardDatabaseProvider.deleteFlashCardsAsync(
-        deletedFlashCards);
-  }
+  
 
   static Future<bool> moveToTrashAsync(
       FlashCardCollection flashCardCollection) async {
