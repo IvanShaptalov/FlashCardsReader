@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class DeletedFlashCardPage extends StatefulWidget {
-  const DeletedFlashCardPage({super.key});
+class DeletedFlashCardScreen extends StatefulWidget {
+  const DeletedFlashCardScreen({super.key});
 
   @override
-  State<DeletedFlashCardPage> createState() => _DeletedFlashCardPageState();
+  State<DeletedFlashCardScreen> createState() => _DeletedFlashCardScreenState();
 }
 
-class _DeletedFlashCardPageState extends State<DeletedFlashCardPage> {
+class _DeletedFlashCardScreenState extends State<DeletedFlashCardScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -103,7 +103,7 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
     // creating bloc builder for flashcards
     return BlocBuilder<FlashCardBloc, FlashcardsState>(
       builder: (context, state) {
-        var flashCardCollection = state.copyWith(isDeletedP: true).flashCards;
+        var flashCardCollection = state.copyWith(fromTrash: true).flashCards;
 
         columnCount = calculateColumnCount(context);
         var appBar = getAppBar(flashCardCollection);

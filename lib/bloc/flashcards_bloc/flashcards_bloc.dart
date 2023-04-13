@@ -16,12 +16,12 @@ class FlashCardBloc extends Bloc<FlashCardsEvent, FlashcardsState> {
     // on<MergeFlashCardsEvent>((event, emit) => incrementCounter(event, emit));
     // on<StartMergeEvent>((event, emit) => incrementCounter(event, emit));
     // on<StopMergeEvent>((event, emit) => incrementCounter(event, emit));
-    // on<AddEditEvent>((event, emit) => incrementCounter(event, emit));
+    on<AddEditEvent>((event, emit) => addEdit(event, emit));
   }
 
   /// realisation of the event, event trigger emit
   getFlashCards(GetFlashCardsEvent event, Emitter<FlashcardsState> emit) {
-    emit(state.copyWith(isDeletedP: event.isDeleted));
+    emit(state.copyWith(fromTrash: event.isDeleted));
   }
 
   deleteAllTrash(
@@ -33,6 +33,10 @@ class FlashCardBloc extends Bloc<FlashCardsEvent, FlashcardsState> {
       RestoreFromTrashEvent event, Emitter<FlashcardsState> emit) async {
     emit(
         await state.restoreFlashCardCollectionAsync(event.flashCardCollection));
+  }
+
+  addEdit(AddEditEvent event, Emitter<FlashcardsState> emit) async {
+    emit(await state.addFlashCardCollectionAsync(event.flashCardCollection));
   }
 
   // deleteToTrash(DeleteToTrashEvent event, Emitter<FlashcardsState> emit) {

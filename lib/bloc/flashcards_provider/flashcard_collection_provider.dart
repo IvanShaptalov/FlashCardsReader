@@ -9,17 +9,10 @@ class FlashCardCollectionProvider {
     return FlashcardDatabaseProvider.getAllFromTrash(isDeleted = isDeleted);
   }
 
-  static Future<bool> addEditFlashCardCollectionAsync(
-      FlashCardCollection flashCardCollection) async {
-    return await FlashcardDatabaseProvider.writeEditAsync(flashCardCollection);
-  }
-
   static Future<bool> deleteFlashCardCollectionAsync(
       FlashCardCollection flashCardCollection) async {
     return await FlashcardDatabaseProvider.deleteAsync(flashCardCollection.id);
   }
-
-  
 
   static Future<bool> moveToTrashAsync(
       FlashCardCollection flashCardCollection) async {
@@ -27,11 +20,7 @@ class FlashCardCollectionProvider {
         flashCardCollection..isDeleted = true);
   }
 
-  static Future<bool> restoreFlashCardCollectionAsync(
-      FlashCardCollection flashCardCollection) async {
-    return await FlashcardDatabaseProvider.writeEditAsync(
-        flashCardCollection..isDeleted = false);
-  }
+  
 
   static Future<bool> mergeFlashCardsCollectionAsync(
       List<FlashCardCollection> mergedFlashCards,

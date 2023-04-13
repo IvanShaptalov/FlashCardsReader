@@ -14,16 +14,16 @@ class FlashcardsState {
 
   /// ===============================================================[PROVIDER METHODS]===============================================================
   FlashcardsState copyWith(
-      {List<FlashCardCollection>? flashCards, bool isDeletedP = false}) {
+      {List<FlashCardCollection>? flashCards, bool fromTrash = false}) {
     return FlashcardsState(
-        isDeleted: isDeletedP,
-        flashCards: FlashcardDatabaseProvider.getAllFromTrash(isDeletedP));
+        isDeleted: fromTrash,
+        flashCards: FlashcardDatabaseProvider.getAllFromTrash(fromTrash));
   }
 
   Future<FlashcardsState> deleteFromTrashAllAsync() async {
     var deletedFlashCards = FlashcardDatabaseProvider.getAllFromTrash(true);
     await FlashcardDatabaseProvider.deleteFlashCardsAsync(deletedFlashCards);
-    return FlashcardsState.initial().copyWith(isDeletedP: true);
+    return FlashcardsState.initial().copyWith(fromTrash: true);
   }
 
   Future<FlashcardsState> restoreFlashCardCollectionAsync(
@@ -31,6 +31,12 @@ class FlashcardsState {
     await FlashcardDatabaseProvider.writeEditAsync(
         flashCardCollection..isDeleted = false);
 
-    return FlashcardsState.initial().copyWith(isDeletedP: false);
+    return FlashcardsState.initial().copyWith(fromTrash: false);
+  }
+
+  Future<FlashcardsState> addFlashCardCollectionAsync(
+      FlashCardCollection flashCardCollection) async {
+    await FlashcardDatabaseProvider.writeEditAsync(flashCardCollection);
+    return FlashcardsState.initial().copyWith(fromTrash: false);
   }
 }

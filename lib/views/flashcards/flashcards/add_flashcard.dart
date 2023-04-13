@@ -1,7 +1,9 @@
+import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/bloc/flashcards_provider/flashcard_collection_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddFlashCardWidget extends StatefulWidget {
   const AddFlashCardWidget(this.updateCallback, {super.key});
@@ -68,10 +70,9 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                 children: [
                   //? in plans add languages
                   IconButton(
-                      onPressed: () async {
-                        await FlashCardCollectionProvider
-                            .addEditFlashCardCollectionAsync(flashFixture());
-                        widget.updateCallback();
+                      onPressed: () {
+                        context.read<FlashCardBloc>().add(
+                            AddEditEvent(flashCardCollection: flashFixture()));
                       },
                       icon: const Icon(Icons.add)),
                 ],

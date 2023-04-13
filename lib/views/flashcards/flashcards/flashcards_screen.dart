@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/bloc/flashcards_provider/flashcard_collection_provider.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard.dart';
@@ -5,25 +6,38 @@ import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collecti
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-// ignore: must_be_immutable
 class FlashCardScreen extends StatefulWidget {
-  FlashCardScreen({super.key});
-  Duration cardAppearDuration = const Duration(milliseconds: 375);
-  List<FlashCardCollection> flashCardCollection =
-      FlashCardCollectionProvider.getFlashCards(isDeleted: false);
+  const FlashCardScreen({super.key});
 
   @override
   State<FlashCardScreen> createState() => _FlashCardScreenState();
 }
 
 class _FlashCardScreenState extends State<FlashCardScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => FlashCardBloc(),
+      child: FlashCardView(),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class FlashCardView extends StatefulWidget {
+  FlashCardView({super.key});
+  Duration cardAppearDuration = const Duration(milliseconds: 375);
+
+  @override
+  State<FlashCardView> createState() => _FlashCardViewState();
+}
+
+class _FlashCardViewState extends State<FlashCardView> {
   void updateCallback() {
-    setState(() {
-      widget.flashCardCollection =
-          FlashCardCollectionProvider.getFlashCards(isDeleted: false);
-    });
+    setState(() {});
   }
 
   int columnCount = 2;
@@ -94,14 +108,14 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
     }
   }
 
-  AppBar getAppBar() {
+  AppBar getAppBar(flashCardCollection) {
     if (FlashCardCollectionProvider.isMergeModeStarted) {
       return AppBar(
         title: const Text('Merge mode is on'),
       );
     } else {
       return AppBar(
-        title: Text('Flashcards: ${widget.flashCardCollection.length}'),
+        title: Text('Flashcards: ${flashCardCollection.length}'),
       );
     }
   }
@@ -126,59 +140,63 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    columnCount = calculateColumnCount(context);
-    var appBar = getAppBar();
-    appBarHeight = appBar.preferredSize.height;
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: appBar,
-        body: AnimationLimiter(
-          child: GridView.count(
-              mainAxisSpacing: SizeConfig.getMediaHeight(context, p: 0.04),
-              crossAxisSpacing: calculateCrossSpacing(context),
-              crossAxisCount: columnCount,
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
-              childAspectRatio: getCardForm(context),
-              children:
-                  List.generate(widget.flashCardCollection.length + 1, (index) {
-                /// ====================================================================[FlashCardCollectionWidget]
-                // add flashcards
-                return Transform.scale(
-                  scale: columnCount == 1 ? 0.9 : 1,
-                  child: index == 0
-                      ? AnimationConfiguration.staggeredGrid(
-                          position: index,
-                          duration: widget.cardAppearDuration,
-                          columnCount: columnCount,
-                          child: SlideAnimation(
-                            child: FadeInAnimation(
-                              child: AddFlashCardWidget(updateCallback),
+    return BlocBuilder<FlashCardBloc, FlashcardsState>(
+        builder: (context, state) {
+      var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
+      columnCount = calculateColumnCount(context);
+      var appBar = getAppBar(flashCardCollection);
+      appBarHeight = appBar.preferredSize.height;
+      return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: appBar,
+          body: AnimationLimiter(
+            child: GridView.count(
+                mainAxisSpacing: SizeConfig.getMediaHeight(context, p: 0.04),
+                crossAxisSpacing: calculateCrossSpacing(context),
+                crossAxisCount: columnCount,
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
+                childAspectRatio: getCardForm(context),
+                children:
+                    List.generate(flashCardCollection.length + 1, (index) {
+                  /// ====================================================================[FlashCardCollectionWidget]
+                  // add flashcards
+                  return Transform.scale(
+                    scale: columnCount == 1 ? 0.9 : 1,
+                    child: index == 0
+                        ? AnimationConfiguration.staggeredGrid(
+                            position: index,
+                            duration: widget.cardAppearDuration,
+                            columnCount: columnCount,
+                            child: SlideAnimation(
+                              child: FadeInAnimation(
+                                child: AddFlashCardWidget(updateCallback),
+                              ),
+                            ),
+                          )
+                        : AnimationConfiguration.staggeredGrid(
+                            position: index,
+                            duration: widget.cardAppearDuration,
+                            columnCount: columnCount,
+                            child: SlideAnimation(
+                              child: FadeInAnimation(
+                                child: FlashCardCollectionWidget(
+                                    flashCardCollection[index - 1],
+                                    updateCallback),
+                              ),
                             ),
                           ),
-                        )
-                      : AnimationConfiguration.staggeredGrid(
-                          position: index,
-                          duration: widget.cardAppearDuration,
-                          columnCount: columnCount,
-                          child: SlideAnimation(
-                            child: FadeInAnimation(
-                              child: FlashCardCollectionWidget(
-                                  widget.flashCardCollection[index - 1],
-                                  updateCallback),
-                            ),
-                          ),
-                        ),
-                );
-              })),
-        ),
-        drawer: getDrawer(),
-        bottomNavigationBar: BottomAppBar(
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  );
+                })),
+          ),
+          drawer: getDrawer(),
+          bottomNavigationBar: BottomAppBar(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-              /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
-              children: bottomNavigationBarItems()),
-        ));
+                /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
+                children: bottomNavigationBarItems()),
+          ));
+    });
   }
 }

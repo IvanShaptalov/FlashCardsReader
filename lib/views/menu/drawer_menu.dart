@@ -97,7 +97,7 @@ class MenuDrawer extends StatelessWidget {
             leading: const Icon(Icons.delete),
             title: const Text('Deleted flashcards'),
             onTap: () {
-              MyRouter.pushPageReplacement(context, DeletedFlashCardPage());
+              MyRouter.pushPageReplacement(context, DeletedFlashCardScreen());
             },
           ),
           Divider(
