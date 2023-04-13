@@ -1,15 +1,50 @@
 part of 'flashcards_bloc.dart';
+
 // flashcards event call it on the bloc
 abstract class FlashCardsEvent {}
 
-class IncrementCounter extends FlashCardsEvent {
-  final int counterValue;
+class GetFlashCardsEvent extends FlashCardsEvent {
+  final bool isDeleted;
 
-  IncrementCounter({required this.counterValue});
+  GetFlashCardsEvent({required this.isDeleted});
 }
 
-class DecrementCounter extends FlashCardsEvent {
-  final int counterValue;
+class DeletePermanentlyEvent extends FlashCardsEvent {
+  final FlashCardCollection flashCardCollection;
 
-  DecrementCounter({required this.counterValue});
+  DeletePermanentlyEvent({required this.flashCardCollection});
+}
+
+class DeleteFromTrashEvent extends FlashCardsEvent {
+  final FlashCardCollection flashCardCollection;
+
+  DeleteFromTrashEvent({required this.flashCardCollection});
+}
+
+class RestoreFromTrashEvent extends FlashCardsEvent {
+  final FlashCardCollection flashCardCollection;
+
+  RestoreFromTrashEvent({required this.flashCardCollection});
+}
+
+class MergeFlashCardsEvent extends FlashCardsEvent {
+  final List<FlashCardCollection> flashCardsToMerge;
+  final FlashCardCollection targetFlashCard;
+
+  MergeFlashCardsEvent(
+      {required this.flashCardsToMerge, required this.targetFlashCard});
+}
+
+class StartMergeEvent extends FlashCardsEvent {
+  final FlashCardCollection targetFlashCard;
+
+  StartMergeEvent({required this.targetFlashCard});
+}
+
+class StopMergeEvent extends FlashCardsEvent {}
+
+class AddEditEvent extends FlashCardsEvent {
+  final FlashCardCollection flashCardCollection;
+
+  AddEditEvent({required this.flashCardCollection});
 }

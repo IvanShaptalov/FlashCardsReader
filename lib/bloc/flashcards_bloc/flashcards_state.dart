@@ -1,15 +1,21 @@
 part of 'flashcards_bloc.dart';
+
 // initialization of data
+
 class FlashCardsState {
-  final int counterValue;
+  List<FlashCardCollection>? flashCards = <FlashCardCollection>[];
+  bool isDeleted;
 
-  FlashCardsState({required this.counterValue});
+  FlashCardsState({required this.isDeleted, this.flashCards});
 
-  factory FlashCardsState.initial() => FlashCardsState(counterValue: 0);
+  // default state
+  factory FlashCardsState.initial() => FlashCardsState(
+      isDeleted: false, flashCards: FlashcardDatabaseProvider.getAll());
 
-  FlashCardsState copyWith({int? counterValue}) {
+  FlashCardsState copyWith(
+      {List<FlashCardCollection>? flashCards, bool isDeletedP = false}) {
     return FlashCardsState(
-      counterValue: counterValue ?? this.counterValue,
-    );
+        isDeleted: isDeletedP,
+        flashCards: FlashcardDatabaseProvider.getAllFromTrash(isDeletedP));
   }
 }
