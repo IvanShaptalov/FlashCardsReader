@@ -1,7 +1,9 @@
+import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/bloc/flashcards_provider/flashcard_collection_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlashCardCollectionWidget extends StatefulWidget {
   const FlashCardCollectionWidget(this.flashCardCollection, this.updateCallback,
@@ -48,7 +50,9 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
             selectCard();
             widget.updateCallback();
           },
-          icon: isSelected? const Icon(Icons.check_circle_outlined) : const Icon(Icons.circle_outlined));
+          icon: isSelected
+              ? const Icon(Icons.check_circle_outlined)
+              : const Icon(Icons.circle_outlined));
     }
   }
 
@@ -84,11 +88,8 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
             onPressed: () async {
               // if merge mode is not activated
               if (!FlashCardCollectionProvider.isMergeModeStarted) {
-                await FlashCardCollectionProvider
-                    .moveToTrashAsync(widget.flashCardCollection);
-                setState(() {
-                  widget.updateCallback();
-                });
+                context.read<FlashCardBloc>().add(MoveToTrashEvent(
+                    flashCardCollection: widget.flashCardCollection));
               } else {
                 debugPrint('merge mode is activated, cannot delete');
               }

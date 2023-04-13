@@ -21,7 +21,7 @@ class MoveToTrashEvent extends FlashCardsEvent {
   MoveToTrashEvent({required this.flashCardCollection});
 }
 
-class DeleteAllTrashEvent extends FlashCardsEvent {}
+class DeleteAllTrashPermanentlyEvent extends FlashCardsEvent {}
 
 class RestoreFromTrashEvent extends FlashCardsEvent {
   final FlashCardCollection flashCardCollection;

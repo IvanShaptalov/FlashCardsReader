@@ -10,8 +10,8 @@ class FlashCardBloc extends Bloc<FlashCardsEvent, FlashcardsState> {
   FlashCardBloc() : super(FlashcardsState.initial()) {
     on<GetFlashCardsEvent>((event, emit) => getFlashCards(event, emit));
     // on<DeletePermanentlyEvent>((event, emit) => incrementCounter(event, emit));
-    on<MoveToTrashEvent>((event, emit) => throw UnimplementedError());
-    on<DeleteAllTrashEvent>((event, emit) => deleteAllTrash(event, emit));
+    on<MoveToTrashEvent>((event, emit) => moveToTrash(event, emit));
+    on<DeleteAllTrashPermanentlyEvent>((event, emit) => deleteAllTrash(event, emit));
     on<RestoreFromTrashEvent>((event, emit) => restoreFromTrash(event, emit));
     // on<MergeFlashCardsEvent>((event, emit) => incrementCounter(event, emit));
     // on<StartMergeEvent>((event, emit) => incrementCounter(event, emit));
@@ -25,7 +25,7 @@ class FlashCardBloc extends Bloc<FlashCardsEvent, FlashcardsState> {
   }
 
   deleteAllTrash(
-      DeleteAllTrashEvent event, Emitter<FlashcardsState> emit) async {
+      DeleteAllTrashPermanentlyEvent event, Emitter<FlashcardsState> emit) async {
     emit(await state.deleteFromTrashAllAsync());
   }
 
@@ -37,6 +37,10 @@ class FlashCardBloc extends Bloc<FlashCardsEvent, FlashcardsState> {
 
   addEdit(AddEditEvent event, Emitter<FlashcardsState> emit) async {
     emit(await state.addFlashCardCollectionAsync(event.flashCardCollection));
+  }
+
+  moveToTrash(MoveToTrashEvent event, Emitter<FlashcardsState> emit) async {
+    emit(await state.moveToTrashAsync(event.flashCardCollection));
   }
 
   // deleteToTrash(DeleteToTrashEvent event, Emitter<FlashcardsState> emit) {

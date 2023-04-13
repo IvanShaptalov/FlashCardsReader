@@ -168,9 +168,9 @@ class _FlashCardViewState extends State<FlashCardView> {
                             position: index,
                             duration: widget.cardAppearDuration,
                             columnCount: columnCount,
-                            child: SlideAnimation(
+                            child: const SlideAnimation(
                               child: FadeInAnimation(
-                                child: AddFlashCardWidget(updateCallback),
+                                child: AddFlashCardWidget(),
                               ),
                             ),
                           )

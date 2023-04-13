@@ -75,7 +75,7 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
           icon: const Icon(Icons.delete_forever),
           onPressed: () {
             // delete all from trash
-            context.read<FlashCardBloc>().add(DeleteAllTrashEvent());
+            context.read<FlashCardBloc>().add(DeleteAllTrashPermanentlyEvent());
             context
                 .read<FlashCardBloc>()
                 .add(GetFlashCardsEvent(isDeleted: true));

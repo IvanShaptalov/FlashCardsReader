@@ -9,18 +9,10 @@ class FlashCardCollectionProvider {
     return FlashcardDatabaseProvider.getAllFromTrash(isDeleted = isDeleted);
   }
 
-  static Future<bool> deleteFlashCardCollectionAsync(
-      FlashCardCollection flashCardCollection) async {
-    return await FlashcardDatabaseProvider.deleteAsync(flashCardCollection.id);
-  }
-
-  static Future<bool> moveToTrashAsync(
-      FlashCardCollection flashCardCollection) async {
-    return await FlashcardDatabaseProvider.writeEditAsync(
-        flashCardCollection..isDeleted = true);
-  }
-
-  
+  // static Future<bool> deleteFlashCardCollectionAsync(
+  //     FlashCardCollection flashCardCollection) async {
+  //   return await FlashcardDatabaseProvider.deleteAsync(flashCardCollection.id);
+  // }  
 
   static Future<bool> mergeFlashCardsCollectionAsync(
       List<FlashCardCollection> mergedFlashCards,

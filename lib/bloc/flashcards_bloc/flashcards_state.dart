@@ -39,4 +39,10 @@ class FlashcardsState {
     await FlashcardDatabaseProvider.writeEditAsync(flashCardCollection);
     return FlashcardsState.initial().copyWith(fromTrash: false);
   }
+
+  Future<FlashcardsState> moveToTrashAsync(
+      FlashCardCollection flashCardCollection) async {
+    await FlashcardDatabaseProvider.moveToTrashAsync(flashCardCollection, true);
+    return FlashcardsState.initial().copyWith(fromTrash: false);
+  }
 }
