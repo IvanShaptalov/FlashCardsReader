@@ -1,6 +1,15 @@
-class CounterPage extends StatelessWidget {
+import 'package:flashcards_reader/bloc/counter/counter_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class CounterPage extends StatefulWidget {
   const CounterPage({super.key});
 
+  @override
+  State<CounterPage> createState() => _CounterPageState();
+}
+
+class _CounterPageState extends State<CounterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,17 +42,11 @@ class CounterView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  FloatingActionButton(
-                    onPressed: () => context
-                    // turn to counter bloc and add increment counter event
-                        .read<CounterBloc>()
-                        .add(IncrementCounter(counterValue: 2)),
-                    child: const Icon(Icons.add),
-                  ),
+                  const Bob(),
                   const SizedBox(width: 16.0),
                   FloatingActionButton(
                     onPressed: () => context
-                    // turn to counter bloc and add decrement counter event
+                        // turn to counter bloc and add decrement counter event
                         .read<CounterBloc>()
                         .add(DecrementCounter(counterValue: 2)),
                     child: const Icon(Icons.remove),
@@ -54,6 +57,26 @@ class CounterView extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class Bob extends StatefulWidget {
+  const Bob({super.key});
+
+  @override
+  State<Bob> createState() => _BobState();
+}
+
+class _BobState extends State<Bob> {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => context
+          // turn to counter bloc and add increment counter event
+          .read<CounterBloc>()
+          .add(IncrementCounter(counterValue: 2)),
+      child: const Icon(Icons.add),
     );
   }
 }

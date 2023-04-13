@@ -2,19 +2,19 @@ part of 'flashcards_bloc.dart';
 
 // initialization of data
 
-class FlashCardsState {
-  List<FlashCardCollection>? flashCards = <FlashCardCollection>[];
+class FlashcardsState {
+  List<FlashCardCollection> flashCards = <FlashCardCollection>[];
   bool isDeleted;
 
-  FlashCardsState({required this.isDeleted, this.flashCards});
+  FlashcardsState({required this.isDeleted, this.flashCards = const []});
 
   // default state
-  factory FlashCardsState.initial() => FlashCardsState(
+  factory FlashcardsState.initial() => FlashcardsState(
       isDeleted: false, flashCards: FlashcardDatabaseProvider.getAll());
 
-  FlashCardsState copyWith(
+  FlashcardsState copyWith(
       {List<FlashCardCollection>? flashCards, bool isDeletedP = false}) {
-    return FlashCardsState(
+    return FlashcardsState(
         isDeleted: isDeletedP,
         flashCards: FlashcardDatabaseProvider.getAllFromTrash(isDeletedP));
   }

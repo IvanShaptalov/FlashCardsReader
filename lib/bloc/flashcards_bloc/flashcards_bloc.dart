@@ -6,11 +6,11 @@ part 'flashcards_event.dart';
 
 part 'flashcards_state.dart';
 
-class FlashcardsBloc extends Bloc<FlashCardsEvent, FlashCardsState> {
-  FlashcardsBloc() : super(FlashCardsState.initial()) {
+class FlashcardsBloc extends Bloc<FlashCardsEvent, FlashcardsState> {
+  FlashcardsBloc() : super(FlashcardsState.initial()) {
     on<GetFlashCardsEvent>((event, emit) => getFlashCards(event, emit));
     // on<DeletePermanentlyEvent>((event, emit) => incrementCounter(event, emit));
-    // on<DeleteFromTrashEvent>((event, emit) => incrementCounter(event, emit));
+    // on<DeleteToTrashEvent>((event, emit) => deleteToTrash(event, emit));
     // on<RestoreFromTrashEvent>((event, emit) => incrementCounter(event, emit));
     // on<MergeFlashCardsEvent>((event, emit) => incrementCounter(event, emit));
     // on<StartMergeEvent>((event, emit) => incrementCounter(event, emit));
@@ -19,9 +19,13 @@ class FlashcardsBloc extends Bloc<FlashCardsEvent, FlashCardsState> {
   }
 
   /// realisation of the event, event trigger emit
-  getFlashCards(GetFlashCardsEvent event, Emitter<FlashCardsState> emit) {
+  getFlashCards(GetFlashCardsEvent event, Emitter<FlashcardsState> emit) {
     emit(state.copyWith(isDeletedP: event.isDeleted));
   }
+
+  // deleteToTrash(DeleteToTrashEvent event, Emitter<FlashcardsState> emit) {
+  //   emit(state.copyWith(isDeletedP: event.isDeleted));
+  // }
 
  
 }

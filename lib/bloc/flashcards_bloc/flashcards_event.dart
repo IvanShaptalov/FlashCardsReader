@@ -15,10 +15,10 @@ class DeletePermanentlyEvent extends FlashCardsEvent {
   DeletePermanentlyEvent({required this.flashCardCollection});
 }
 
-class DeleteFromTrashEvent extends FlashCardsEvent {
+class DeleteToTrashEvent extends FlashCardsEvent {
   final FlashCardCollection flashCardCollection;
 
-  DeleteFromTrashEvent({required this.flashCardCollection});
+  DeleteToTrashEvent({required this.flashCardCollection});
 }
 
 class RestoreFromTrashEvent extends FlashCardsEvent {

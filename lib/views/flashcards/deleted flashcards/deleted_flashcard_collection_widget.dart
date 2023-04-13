@@ -1,13 +1,12 @@
+import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/bloc/flashcards_provider/flashcard_collection_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeletedFlashCardCollectionWidget extends StatefulWidget {
-  const DeletedFlashCardCollectionWidget(
-      this.flashCardCollection, this.updateCallback,
-      {super.key});
-  final Function updateCallback;
+  const DeletedFlashCardCollectionWidget(this.flashCardCollection, {super.key});
 
   final FlashCardCollection flashCardCollection;
   @override
@@ -21,7 +20,8 @@ class _DeletedFlashCardCollectionWidgetState
     return Colors.grey[200] ?? Colors.grey;
   }
 
-  List<Widget> getCardActions(bool isTarget, bool isSelected) {
+  List<Widget> getCardActions(
+      bool isTarget, bool isSelected, BuildContext context) {
     return [
       IconButton(
           onPressed: () async {
@@ -29,9 +29,9 @@ class _DeletedFlashCardCollectionWidgetState
 
             await FlashCardCollectionProvider.restoreFlashCardCollectionAsync(
                 widget.flashCardCollection);
-            setState(() {
-              widget.updateCallback();
-            });
+            context
+                .read<FlashcardsBloc>()
+                .add(GetFlashCardsEvent(isDeleted: true));
           },
           icon: const Icon(Icons.restore_from_trash))
     ];
@@ -103,7 +103,7 @@ class _DeletedFlashCardCollectionWidgetState
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: getCardActions(isTarget, isSelected)),
+                children: getCardActions(isTarget, isSelected, context)),
           ],
         ),
       ),
