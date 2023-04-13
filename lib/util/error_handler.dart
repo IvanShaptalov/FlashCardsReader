@@ -4,5 +4,5 @@ void debugPrint(Object message) {
   if (kDebugMode) {
     print(message);
   }
-  // TODO save logs to file
+  //? in plans save logs to file 
 }

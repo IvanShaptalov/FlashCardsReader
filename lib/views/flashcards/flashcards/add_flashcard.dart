@@ -66,7 +66,7 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // TODO add languages
+                  //? in plans add languages
                   IconButton(
                       onPressed: () async {
                         await FlashCardCollectionProvider
