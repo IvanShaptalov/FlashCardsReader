@@ -1,9 +1,14 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
-import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+class FlashCardCreatingUIProvider {
+  static FlashCardCollection creatingFlashCardCollection = flashFixture();
+}
 
 class AddFlashCardWidget extends StatefulWidget {
   const AddFlashCardWidget({super.key});
@@ -67,11 +72,20 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  /// ============================[ADD FLASHCARD MENU OPEN]============================
                   //? in plans add languages
                   IconButton(
-                      onPressed: () {
-                        context.read<FlashCardBloc>().add(
-                            AddEditEvent(flashCardCollection: flashFixture()));
+                      onPressed: () async {
+                        FlashCardCreatingUIProvider
+                                .creatingFlashCardCollection =
+                            await AddEditFlashCardBottomSheet(
+                                    creatingFlashC: FlashCardCreatingUIProvider
+                                        .creatingFlashCardCollection)
+                                .showAddEditMenu(context);
+                        print(FlashCardCreatingUIProvider
+                            .creatingFlashCardCollection);
+                        // context.read<FlashCardBloc>().add(
+                        //     AddEditEvent(flashCardCollection: flashFixture()));
                       },
                       icon: const Icon(Icons.add)),
                 ],

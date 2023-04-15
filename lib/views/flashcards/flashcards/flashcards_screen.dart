@@ -1,7 +1,6 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
-import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
-import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
@@ -168,7 +167,7 @@ class _FlashCardViewState extends State<FlashCardView> {
                             position: index,
                             duration: widget.cardAppearDuration,
                             columnCount: columnCount,
-                            child: const SlideAnimation(
+                            child: SlideAnimation(
                               child: FadeInAnimation(
                                 child: AddFlashCardWidget(),
                               ),

@@ -73,7 +73,7 @@ class MenuDrawer extends StatelessWidget {
             leading: const Icon(Icons.flash_on),
             title: const Text('Flashcards'),
             onTap: () {
-              MyRouter.pushPageReplacement(context, FlashCardScreen());
+              MyRouter.pushPageReplacement(context, const FlashCardScreen());
             },
           ),
           ListTile(
@@ -97,7 +97,7 @@ class MenuDrawer extends StatelessWidget {
             leading: const Icon(Icons.delete),
             title: const Text('Deleted flashcards'),
             onTap: () {
-              MyRouter.pushPageReplacement(context, DeletedFlashCardScreen());
+              MyRouter.pushPageReplacement(context, const DeletedFlashCardScreen());
             },
           ),
           Divider(
