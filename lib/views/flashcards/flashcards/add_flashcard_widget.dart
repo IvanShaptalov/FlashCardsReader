@@ -1,5 +1,4 @@
 // import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
-import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
@@ -105,17 +104,11 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                   /// ============================[ADD FLASHCARD MENU OPEN]============================
                   //? in plans add languages
                   IconButton(
-                      onPressed: () async {
-                        FlashCardCreatingUIProvider
-                                .creatingFlashCardCollection =
-                            await AddEditFlashCardBottomSheet(
-                                    creatingFlashC: FlashCardCreatingUIProvider
-                                        .creatingFlashCardCollection)
-                                .showAddEditMenu(context);
-                        // TODO delete this
-                        //  context.read<FlashCardBloc>().add(
-                        //     AddEditEvent(flashCardCollection: FlashCardCreatingUIProvider.creatingFlashCardCollection));
-                        //     FlashCardCreatingUIProvider.clear();
+                      onPressed: () {
+                        AddEditFlashCardBottomSheet(
+                                creatingFlashC: FlashCardCreatingUIProvider
+                                    .creatingFlashCardCollection)
+                            .showAddEditMenu(context);
                       },
                       icon: const Icon(Icons.add)),
                 ],

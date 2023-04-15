@@ -34,9 +34,8 @@ class AddEditFlashCardBottomSheet {
   }
   late FlashCardCollection flashCardCollection;
 
-  Future<FlashCardCollection> showAddEditMenu(
-      BuildContext specialContext) async {
-    return showModalBottomSheet(
+  showAddEditMenu(BuildContext specialContext) async {
+    showModalBottomSheet(
         // isDismissible: true,
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
@@ -46,7 +45,7 @@ class AddEditFlashCardBottomSheet {
           return StatefulBuilder(builder: (BuildContext context, setState) {
             return FlashCardCreatingWall(specialContext, flashCardCollection);
           });
-        }).then((value) => flashCardCollection);
+        });
   }
 }
 
