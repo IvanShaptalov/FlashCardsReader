@@ -29,9 +29,12 @@ class FlashCardFormController {
 }
 
 class AddEditFlashCardBottomSheet {
-  AddEditFlashCardBottomSheet({FlashCardCollection? creatingFlashC}) {
+  AddEditFlashCardBottomSheet(
+      {FlashCardCollection? creatingFlashC, this.edit = false}) {
     flashCardCollection = creatingFlashC ?? flashFixture();
   }
+  bool edit;
+
   late FlashCardCollection flashCardCollection;
 
   showAddEditMenu(BuildContext specialContext) async {
@@ -43,7 +46,8 @@ class AddEditFlashCardBottomSheet {
         context: specialContext,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (BuildContext context, setState) {
-            return FlashCardCreatingWall(specialContext, flashCardCollection);
+            return FlashCardCreatingWall(specialContext, flashCardCollection,
+                isEdit: edit);
           });
         });
   }
@@ -52,7 +56,8 @@ class AddEditFlashCardBottomSheet {
 // ignore: must_be_immutable
 class FlashCardCreatingWall extends StatefulWidget {
   FlashCardCreatingWall(this.specialContext, this.flashCardCollection,
-      {super.key});
+      {super.key, this.isEdit = false});
+  bool isEdit;
   BuildContext specialContext;
   FlashCardFormController flashCardFormController = FlashCardFormController();
   FlashCardCollection flashCardCollection;
@@ -70,7 +75,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
           Navigator.pop(context);
           FlashCardCreatingUIProvider.clear();
         },
-        icon: const Icon(Icons.library_add));
+        icon: Icon(widget.isEdit ? Icons.edit_square : Icons.library_add));
   }
 
   ListTile addWordTile() {
@@ -120,9 +125,11 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Add Flashcard Collection',
-                  style: TextStyle(fontSize: 20),
+                Text(
+                  widget.isEdit
+                      ? 'Edit Flashcard Collection'
+                      : 'Add Flashcard Collection',
+                  style: const TextStyle(fontSize: 20),
                 ),
                 addCollectionButton(),
               ],
