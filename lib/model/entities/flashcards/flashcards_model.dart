@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:hive/hive.dart';
 part 'flashcards_model.g.dart';
 
@@ -21,6 +23,19 @@ class FlashCard {
   int wrongAnswers;
   @HiveField(8)
   bool isDeleted;
+
+  static FlashCard fixture() {
+    return FlashCard(
+        questionLanguage: 'English',
+        answerLanguage: 'German',
+        questionWords: 'Hello${Random().nextInt(100)}',
+        answerWords: 'Hallo',
+        lastTested: DateTime.now(),
+        nextTest: DateTime.now(),
+        correctAnswers: 0,
+        wrongAnswers: 0,
+        isDeleted: false);
+  }
 
   FlashCard(
       {required this.questionLanguage,
