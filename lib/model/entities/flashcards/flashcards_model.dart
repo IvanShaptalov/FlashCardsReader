@@ -111,7 +111,10 @@ class FlashCardCollection {
       {required this.title,
       required this.flashCardSet,
       required this.createdAt,
-      this.isDeleted = false});
+      this.isDeleted = false,
+      required this.questionLanguage,
+      required this.answerLanguage});
+  
   @HiveField(0)
   String id;
   @HiveField(1)
@@ -122,6 +125,10 @@ class FlashCardCollection {
   DateTime createdAt;
   @HiveField(4)
   bool? isDeleted;
+  @HiveField(5)
+  String questionLanguage;
+  @HiveField(6)
+  String answerLanguage;
   @override
   String toString() {
     return 'FlashCardCollection{title: $title, flashCards: $flashCardSet , createdAt: $createdAt}, isDeleted: $isDeleted';

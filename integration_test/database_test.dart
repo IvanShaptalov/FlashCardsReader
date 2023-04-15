@@ -41,6 +41,8 @@ void main() async {
         flashCardSet: {flashCard1, flashCard2},
         createdAt: DateTime.now(),
         isDeleted: false,
+        questionLanguage: 'English',
+        answerLanguage: 'German',
       );
       return testFlashCardCollection;
     }
