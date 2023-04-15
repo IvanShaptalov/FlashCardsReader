@@ -74,16 +74,39 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
         icon: const Icon(Icons.library_add));
   }
 
-  IconButton addWordButton() {
-    return IconButton(
-        onPressed: () {
-          debugPrint('add flashcard');
+  ListTile addWordTile() {
+    return ListTile(
+      leading: IconButton(
+          onPressed: () {
+            debugPrint('add flashcard');
+            WordCreatingUIProvider.setQuestionLanguage(
+                widget.flashCardCollection.questionLanguage);
+            WordCreatingUIProvider.setAnswerLanguage(
+                widget.flashCardCollection.answerLanguage);
 
-          setState(() {
-            widget.flashCardCollection.flashCardSet.add(FlashCard.fixture());
-          });
+            widget.flashCardCollection.flashCardSet
+                .add(WordCreatingUIProvider.tmpFlashCard);
+            WordCreatingUIProvider.clear();
+            setState(() {});
+          },
+          icon: const Icon(Icons.add)),
+      title: TextField(
+        decoration: const InputDecoration(
+          labelText: 'Add Word',
+        ),
+        onChanged: (text) {
+          WordCreatingUIProvider.setQuestion(text);
         },
-        icon: const Icon(Icons.add));
+      ),
+      subtitle: TextField(
+        decoration: const InputDecoration(
+          labelText: 'Add Translation',
+        ),
+        onChanged: (text) {
+          WordCreatingUIProvider.setAnswer(text);
+        },
+      ),
+    );
   }
 
   @override
@@ -167,10 +190,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                           border: Border.all(color: Colors.grey)),
                       child: Column(
                         children: [
-                          ListTile(
-                              leading: addWordButton(),
-                              title: const Text('Add Word'),
-                              subtitle: const Text('Add Flashcard')),
+                          addWordTile(),
                           for (var flashCard in widget
                               .flashCardCollection.flashCardSet
                               .toList())
@@ -188,20 +208,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                             ),
                           if (widget.flashCardCollection.flashCardSet.length >
                               2)
-                            ListTile(
-                              leading: IconButton(
-                                  onPressed: () {
-                                    debugPrint('add flashcard');
-
-                                    setState(() {
-                                      widget.flashCardCollection.flashCardSet
-                                          .add(FlashCard.fixture());
-                                    });
-                                  },
-                                  icon: const Icon(Icons.add)),
-                              title: const Text('Add Word'),
-                              subtitle: const Text('Add Flashcard'),
-                            )
+                            addWordTile(),
                         ],
                       )),
                 ),

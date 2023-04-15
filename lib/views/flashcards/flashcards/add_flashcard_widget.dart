@@ -5,13 +5,38 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlashCardCreatingUIProvider {
   static FlashCardCollection creatingFlashCardCollection = flashFixture();
 
   static clear() {
     creatingFlashCardCollection = flashFixture();
+    WordCreatingUIProvider.clear();
+  }
+}
+
+class WordCreatingUIProvider {
+  static FlashCard _tmpFlashCard = FlashCard.fixture();
+  static clear() {
+    _tmpFlashCard = FlashCard.fixture();
+  }
+
+  static FlashCard get tmpFlashCard => _tmpFlashCard;
+
+  static void setQuestionLanguage(String language) {
+    _tmpFlashCard.questionLanguage = language;
+  }
+
+  static void setAnswerLanguage(String language) {
+    _tmpFlashCard.answerLanguage = language;
+  }
+
+  static void setQuestion(String question) {
+    _tmpFlashCard.questionWords = question;
+  }
+
+  static void setAnswer(String answer) {
+    _tmpFlashCard.answerWords = answer;
   }
 }
 
@@ -81,14 +106,13 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                   //? in plans add languages
                   IconButton(
                       onPressed: () async {
-                       
                         FlashCardCreatingUIProvider
                                 .creatingFlashCardCollection =
                             await AddEditFlashCardBottomSheet(
                                     creatingFlashC: FlashCardCreatingUIProvider
                                         .creatingFlashCardCollection)
                                 .showAddEditMenu(context);
-                                // TODO delete this
+                        // TODO delete this
                         //  context.read<FlashCardBloc>().add(
                         //     AddEditEvent(flashCardCollection: FlashCardCreatingUIProvider.creatingFlashCardCollection));
                         //     FlashCardCreatingUIProvider.clear();
