@@ -34,16 +34,17 @@ class AddEditFlashCardBottomSheet {
   }
   late FlashCardCollection flashCardCollection;
 
-  Future<FlashCardCollection> showAddEditMenu(context) async {
+  Future<FlashCardCollection> showAddEditMenu(
+      BuildContext specialContext) async {
     return showModalBottomSheet(
         // isDismissible: true,
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
-        context: context,
+        context: specialContext,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (BuildContext context, setState) {
-            return FlashCardCreatingWall(flashCardCollection);
+            return FlashCardCreatingWall(specialContext, flashCardCollection);
           });
         }).then((value) => flashCardCollection);
   }
@@ -51,7 +52,9 @@ class AddEditFlashCardBottomSheet {
 
 // ignore: must_be_immutable
 class FlashCardCreatingWall extends StatefulWidget {
-  FlashCardCreatingWall(this.flashCardCollection, {super.key});
+  FlashCardCreatingWall(this.specialContext, this.flashCardCollection,
+      {super.key});
+  BuildContext specialContext;
   FlashCardFormController flashCardFormController = FlashCardFormController();
   FlashCardCollection flashCardCollection;
 
@@ -63,9 +66,8 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
   Widget addCollectionButton() {
     return IconButton(
         onPressed: () {
-          context
-              .read<FlashCardBloc>()
-              .add(AddEditEvent(flashCardCollection: flashFixture()));
+          widget.specialContext.read<FlashCardBloc>().add(
+              AddEditEvent(flashCardCollection: widget.flashCardCollection));
           Navigator.pop(context);
           FlashCardCreatingUIProvider.clear();
         },

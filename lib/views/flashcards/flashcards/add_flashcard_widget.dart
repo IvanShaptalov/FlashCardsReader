@@ -1,15 +1,16 @@
 // import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlashCardCreatingUIProvider {
   static FlashCardCollection creatingFlashCardCollection = flashFixture();
 
-  static clear(){
+  static clear() {
     creatingFlashCardCollection = flashFixture();
   }
 }
@@ -80,12 +81,17 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                   //? in plans add languages
                   IconButton(
                       onPressed: () async {
+                       
                         FlashCardCreatingUIProvider
                                 .creatingFlashCardCollection =
                             await AddEditFlashCardBottomSheet(
                                     creatingFlashC: FlashCardCreatingUIProvider
                                         .creatingFlashCardCollection)
                                 .showAddEditMenu(context);
+                                // TODO delete this
+                        //  context.read<FlashCardBloc>().add(
+                        //     AddEditEvent(flashCardCollection: FlashCardCreatingUIProvider.creatingFlashCardCollection));
+                        //     FlashCardCreatingUIProvider.clear();
                       },
                       icon: const Icon(Icons.add)),
                 ],
