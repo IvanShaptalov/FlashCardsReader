@@ -61,7 +61,7 @@ class FlashCardCreatingWall extends StatefulWidget {
   BuildContext specialContext;
   FlashCardFormController flashCardFormController = FlashCardFormController();
   FlashCardCollection flashCardCollection;
-
+  final int wordsBeforeRelocateEditor = 4;
   @override
   State<FlashCardCreatingWall> createState() => _FlashCardCreatingWallState();
 }
@@ -78,22 +78,31 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
         icon: Icon(widget.isEdit ? Icons.edit_square : Icons.library_add));
   }
 
-  ListTile addWordTile() {
+  Widget addWordTile() {
     return ListTile(
-      leading: IconButton(
-          onPressed: () {
-            debugPrint('add flashcard');
-            WordCreatingUIProvider.setQuestionLanguage(
-                widget.flashCardCollection.questionLanguage);
-            WordCreatingUIProvider.setAnswerLanguage(
-                widget.flashCardCollection.answerLanguage);
+      leading: Column(
+        children: [
+          IconButton(
+              onPressed: () {
+                debugPrint('add flashcard');
+                WordCreatingUIProvider.setQuestionLanguage(
+                    widget.flashCardCollection.questionLanguage);
+                WordCreatingUIProvider.setAnswerLanguage(
+                    widget.flashCardCollection.answerLanguage);
 
-            widget.flashCardCollection.flashCardSet
-                .add(WordCreatingUIProvider.tmpFlashCard);
-            WordCreatingUIProvider.clear();
-            setState(() {});
-          },
-          icon: const Icon(Icons.add)),
+                widget.flashCardCollection.flashCardSet
+                    .add(WordCreatingUIProvider.tmpFlashCard);
+                WordCreatingUIProvider.clear();
+                setState(() {});
+              },
+              icon: const Icon(Icons.add)),
+          IconButton(
+              onPressed: () {
+                // TODO implement translation
+              },
+              icon: const Icon(Icons.translate)),
+        ],
+      ),
       title: TextField(
         decoration: const InputDecoration(
           labelText: 'Add Word',
@@ -117,7 +126,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
   Widget build(BuildContext context) {
     widget.flashCardFormController.setUp(widget.flashCardCollection);
     return SizedBox(
-        height: SizeConfig.getMediaHeight(context, p: 0.8),
+        height: SizeConfig.getMediaHeight(context, p: 0.7),
         child: Column(children: [
           Padding(
             padding: EdgeInsets.symmetric(
@@ -135,6 +144,9 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
               ],
             ),
           ),
+          if (widget.flashCardCollection.flashCardSet.length >=
+              widget.wordsBeforeRelocateEditor)
+            addWordTile(),
           const Divider(
             color: Colors.grey,
             thickness: 1,
@@ -196,7 +208,9 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                           border: Border.all(color: Colors.grey)),
                       child: Column(
                         children: [
-                          addWordTile(),
+                          if (widget.flashCardCollection.flashCardSet.length <
+                              widget.wordsBeforeRelocateEditor)
+                            addWordTile(),
                           for (var flashCard in widget
                               .flashCardCollection.flashCardSet
                               .toList())
@@ -212,9 +226,6 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                               title: Text(flashCard.answerWords),
                               subtitle: Text(flashCard.questionWords),
                             ),
-                          if (widget.flashCardCollection.flashCardSet.length >
-                              2)
-                            addWordTile(),
                         ],
                       )),
                 ),
