@@ -7,11 +7,11 @@ class OverlayNotificationProvider {
   static Color _setColor(NotificationStatus status) {
     switch (status) {
       case NotificationStatus.success:
-        return Colors.greenAccent;
+        return Colors.green;
       case NotificationStatus.error:
-        return Colors.redAccent;
+        return Colors.deepPurple;
       case NotificationStatus.warning:
-        return Colors.orangeAccent;
+        return Colors.deepPurple;
       case NotificationStatus.info:
         return Colors.blueAccent;
       default:
@@ -22,8 +22,10 @@ class OverlayNotificationProvider {
   static void showOverlayNotification(String message,
       {NotificationStatus status = NotificationStatus.info}) {
     showSimpleNotification(
-      Text(message),
+      Text(message, style: TextStyle(fontSize: 20),),
+      slideDismissDirection : DismissDirection.up,
       background: _setColor(status),
+      duration: Duration(milliseconds: 800)
     );
   }
 }

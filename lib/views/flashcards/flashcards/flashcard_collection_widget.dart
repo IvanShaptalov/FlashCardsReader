@@ -42,6 +42,10 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
           onPressed: () {
             debugPrint('merge mode deactivated');
             FlashCardCollectionProvider.deactivateMergeMode();
+            OverlayNotificationProvider.showOverlayNotification(
+                'merge mode deactivated',
+                status: NotificationStatus.info);
+
             widget.updateCallback();
           },
           icon: const Icon(Icons.cancel));
@@ -72,7 +76,9 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
                         creatingFlashC: widget.flashCardCollection, edit: true)
                     .showAddEditMenu(context);
               } else {
-                OverlayNotificationProvider.showOverlayNotification('merge mode is activated, cannot edit', status: NotificationStatus.warning);
+                OverlayNotificationProvider.showOverlayNotification(
+                    'merge mode is activated, cannot edit',
+                    status: NotificationStatus.warning);
                 debugPrint('merge mode is activated, cannot edit');
               }
             },
@@ -85,9 +91,9 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
 
               FlashCardCollectionProvider.activateMergeMode(
                   widget.flashCardCollection);
-               OverlayNotificationProvider.showOverlayNotification(
-              'merge mode activated',
-              status: NotificationStatus.info);
+              OverlayNotificationProvider.showOverlayNotification(
+                  'merge mode activated',
+                  status: NotificationStatus.info);
 
               widget.updateCallback();
             },

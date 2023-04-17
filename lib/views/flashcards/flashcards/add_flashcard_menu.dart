@@ -95,6 +95,9 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                 AddEditEvent(flashCardCollection: widget.flashCardCollection));
             Navigator.pop(context);
             FlashCardCreatingUIProvider.clear();
+            OverlayNotificationProvider.showOverlayNotification(
+                'Collection added',
+                status: NotificationStatus.success);
           } else {
             OverlayNotificationProvider.showOverlayNotification(
                 'Your collection not valid',
@@ -140,6 +143,10 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                         widget.flashCardCollection.flashCardSet
                             .add(WordCreatingUIProvider.tmpFlashCard);
                         WordCreatingUIProvider.clear();
+                        OverlayNotificationProvider.showOverlayNotification(
+                            'word added',
+                            status: NotificationStatus.success);
+
                         setState(() {});
                       } else {
                         OverlayNotificationProvider.showOverlayNotification(
