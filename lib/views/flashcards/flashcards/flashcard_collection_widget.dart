@@ -3,6 +3,7 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
+import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,6 +72,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
                         creatingFlashC: widget.flashCardCollection, edit: true)
                     .showAddEditMenu(context);
               } else {
+                OverlayNotificationProvider.showOverlayNotification('merge mode is activated, cannot edit', status: NotificationStatus.warning);
                 debugPrint('merge mode is activated, cannot edit');
               }
             },
@@ -83,6 +85,9 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
 
               FlashCardCollectionProvider.activateMergeMode(
                   widget.flashCardCollection);
+               OverlayNotificationProvider.showOverlayNotification(
+              'merge mode activated',
+              status: NotificationStatus.info);
 
               widget.updateCallback();
             },

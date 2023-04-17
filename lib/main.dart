@@ -3,6 +3,7 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'database/core/core.dart';
 
@@ -67,13 +68,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          // ignore: deprecated_member_use
-          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return OverlaySupport(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+            primarySwatch: Colors.blue,
+            // ignore: deprecated_member_use
+            androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
+        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
   }
 }

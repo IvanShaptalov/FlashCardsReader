@@ -22,6 +22,7 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2
+  overlay_support: ^1.0.0
   integration_test:
     sdk: flutter
 

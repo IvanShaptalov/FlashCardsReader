@@ -2,6 +2,7 @@ import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
+import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -95,6 +96,10 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
             Navigator.pop(context);
             FlashCardCreatingUIProvider.clear();
           } else {
+            OverlayNotificationProvider.showOverlayNotification(
+                'Your collection not valid',
+                status: NotificationStatus.warning);
+
             debugPrint('flash not valid');
           }
         },
@@ -137,6 +142,10 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                         WordCreatingUIProvider.clear();
                         setState(() {});
                       } else {
+                        OverlayNotificationProvider.showOverlayNotification(
+                            'word is not valid',
+                            status: NotificationStatus.warning);
+
                         debugPrint('not valid');
                       }
                     },

@@ -3,6 +3,7 @@ import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.d
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,6 +87,9 @@ class _FlashCardViewState extends State<FlashCardView> {
                 FlashCardCollectionProvider.flashcardsToMerge,
                 FlashCardCollectionProvider.targetFlashCard!);
             FlashCardCollectionProvider.deactivateMergeMode();
+             OverlayNotificationProvider.showOverlayNotification(
+              'merged succesfully',
+              status: NotificationStatus.success);
             updateCallback();
           },
         ),
@@ -122,6 +126,10 @@ class _FlashCardViewState extends State<FlashCardView> {
   IconButton deactivateMergeIcon() {
     return IconButton(
         onPressed: () {
+          OverlayNotificationProvider.showOverlayNotification(
+              'merge mode deactivated',
+              status: NotificationStatus.info);
+
           debugPrint('merge mode deactivated');
           FlashCardCollectionProvider.deactivateMergeMode();
           updateCallback();
