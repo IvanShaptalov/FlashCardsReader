@@ -28,6 +28,24 @@ class FlashCardFormController {
   }
 }
 
+class WordFormContoller {
+  TextEditingController questionController = TextEditingController();
+  TextEditingController answerController = TextEditingController();
+
+  void setUp(FlashCard flashCard) {
+    // update controller text
+    questionController.text = flashCard.questionWords;
+    answerController.text = flashCard.answerWords;
+
+    // set cursor to the end of the text
+
+    questionController.selection = TextSelection.fromPosition(
+        TextPosition(offset: flashCard.questionWords.length));
+    answerController.selection = TextSelection.fromPosition(
+        TextPosition(offset: flashCard.answerWords.length));
+  }
+}
+
 class AddEditFlashCardBottomSheet {
   AddEditFlashCardBottomSheet(
       {FlashCardCollection? creatingFlashC, this.edit = false}) {
@@ -60,6 +78,7 @@ class FlashCardCreatingWall extends StatefulWidget {
   bool isEdit;
   BuildContext specialContext;
   FlashCardFormController flashCardFormController = FlashCardFormController();
+  WordFormContoller wordFormContoller = WordFormContoller();
   FlashCardCollection flashCardCollection;
   final int wordsBeforeRelocateEditor = 4;
   @override
@@ -116,6 +135,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                     icon: const Icon(Icons.add)),
                 Expanded(
                   child: TextField(
+                    controller: widget.wordFormContoller.questionController,
                     decoration: const InputDecoration(
                       labelText: 'Add Word',
                     ),
@@ -135,6 +155,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                     icon: const Icon(Icons.translate)),
                 Expanded(
                   child: TextField(
+                    controller: widget.wordFormContoller.answerController,
                     decoration: const InputDecoration(
                       labelText: 'Add Translation',
                     ),
@@ -152,6 +173,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
   @override
   Widget build(BuildContext context) {
     widget.flashCardFormController.setUp(widget.flashCardCollection);
+    widget.wordFormContoller.setUp(WordCreatingUIProvider.tmpFlashCard);
     return SizedBox(
         height: SizeConfig.getMediaHeight(context, p: 0.7),
         child: Column(children: [
