@@ -89,10 +89,14 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
   Widget addCollectionButton() {
     return IconButton(
         onPressed: () {
-          widget.specialContext.read<FlashCardBloc>().add(
-              AddEditEvent(flashCardCollection: widget.flashCardCollection));
-          Navigator.pop(context);
-          FlashCardCreatingUIProvider.clear();
+          if (widget.flashCardCollection.isValid) {
+            widget.specialContext.read<FlashCardBloc>().add(
+                AddEditEvent(flashCardCollection: widget.flashCardCollection));
+            Navigator.pop(context);
+            FlashCardCreatingUIProvider.clear();
+          } else {
+            debugPrint('flash not valid');
+          }
         },
         icon: Icon(widget.isEdit ? Icons.edit_square : Icons.library_add));
   }
@@ -120,17 +124,21 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
               children: [
                 IconButton(
                     onPressed: () {
-                      debugPrint('add flashcard');
+                      if (WordCreatingUIProvider.tmpFlashCard.isValid) {
+                        debugPrint('add flashcard');
 
-                      WordCreatingUIProvider.setQuestionLanguage(
-                          widget.flashCardCollection.questionLanguage);
-                      WordCreatingUIProvider.setAnswerLanguage(
-                          widget.flashCardCollection.answerLanguage);
+                        WordCreatingUIProvider.setQuestionLanguage(
+                            widget.flashCardCollection.questionLanguage);
+                        WordCreatingUIProvider.setAnswerLanguage(
+                            widget.flashCardCollection.answerLanguage);
 
-                      widget.flashCardCollection.flashCardSet
-                          .add(WordCreatingUIProvider.tmpFlashCard);
-                      WordCreatingUIProvider.clear();
-                      setState(() {});
+                        widget.flashCardCollection.flashCardSet
+                            .add(WordCreatingUIProvider.tmpFlashCard);
+                        WordCreatingUIProvider.clear();
+                        setState(() {});
+                      } else {
+                        debugPrint('not valid');
+                      }
                     },
                     icon: const Icon(Icons.add)),
                 Expanded(
@@ -250,33 +258,27 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
 
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                      // color: Colors.grey[200],
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.grey)),
-                      child: Column(
-                        children: [
-                          if (widget.flashCardCollection.flashCardSet.length <
-                              widget.wordsBeforeRelocateEditor)
-                            addWordWidget(),
-                          for (var flashCard in widget
-                              .flashCardCollection.flashCardSet
-                              .toList())
-                            ListTile(
-                              leading: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      widget.flashCardCollection.flashCardSet
-                                          .remove(flashCard);
-                                    });
-                                  },
-                                  icon: const Icon(Icons.delete_forever)),
-                              title: Text(flashCard.questionWords),
-                              subtitle: Text(flashCard.answerWords),
-                            ),
-                        ],
-                      )),
+                  child: Column(
+                    children: [
+                      if (widget.flashCardCollection.flashCardSet.length <
+                          widget.wordsBeforeRelocateEditor)
+                        addWordWidget(),
+                      for (var flashCard
+                          in widget.flashCardCollection.flashCardSet.toList())
+                        ListTile(
+                          leading: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  widget.flashCardCollection.flashCardSet
+                                      .remove(flashCard);
+                                });
+                              },
+                              icon: const Icon(Icons.delete_forever)),
+                          title: Text(flashCard.questionWords),
+                          subtitle: Text(flashCard.answerWords),
+                        ),
+                    ],
+                  ),
                 ),
               ],
             ),

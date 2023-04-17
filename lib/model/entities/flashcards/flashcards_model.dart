@@ -24,6 +24,12 @@ class FlashCard {
   @HiveField(8)
   bool isDeleted;
 
+  bool get isValid =>
+      questionWords.isNotEmpty &&
+      answerWords.isNotEmpty &&
+      questionLanguage.isNotEmpty &&
+      answerLanguage.isNotEmpty;
+
   static FlashCard fixture() {
     return FlashCard(
         questionLanguage: 'English',
@@ -129,7 +135,7 @@ class FlashCardCollection {
       this.isDeleted = false,
       required this.questionLanguage,
       required this.answerLanguage});
-  
+
   @HiveField(0)
   String id;
   @HiveField(1)
@@ -148,6 +154,15 @@ class FlashCardCollection {
   String toString() {
     return 'FlashCardCollection{title: $title, flashCards: $flashCardSet , createdAt: $createdAt}, isDeleted: $isDeleted';
   }
+
+  // ignore: unnecessary_null_comparison
+  bool get isValid =>
+      title.isNotEmpty &&
+      flashCardSet.isNotEmpty &&
+      id.isNotEmpty &&
+      questionLanguage.isNotEmpty &&
+      answerLanguage.isNotEmpty &&
+      createdAt != null;
 
   static List<FlashCardCollection> sortedByDate(
       Set<FlashCardCollection> setFlashcards) {

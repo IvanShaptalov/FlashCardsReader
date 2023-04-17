@@ -84,9 +84,9 @@ void main() async {
 
       var flashcards = flashFixture();
 
-      bool writed = await FlashcardDatabaseProvider.writeEditAsync(flashcards,
+      bool written = await FlashcardDatabaseProvider.writeEditAsync(flashcards,
           isTest: true);
-      expect(writed, true);
+      expect(written, true);
       // get from db
       var collectionFromDb =
           FlashcardDatabaseProvider.getById(flashcards.id, isTest: true);
@@ -102,6 +102,48 @@ void main() async {
       await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
     });
 
+    testWidgets('Write null', (tester) async {
+      await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
+
+      var emptyFlash = FlashCard(
+        questionLanguage: '',
+        answerLanguage: '',
+        questionWords: '',
+        answerWords: '',
+        nextTest: DateTime.now().add(const Duration(days: 1)),
+        lastTested: DateTime.now(),
+        correctAnswers: 0,
+        wrongAnswers: 0,
+        isDeleted: false,
+      );
+
+      var emptyFlashCollection = FlashCardCollection(
+        uuid.v4().toString(),
+        title: '',
+        flashCardSet: {emptyFlash},
+        createdAt: DateTime.now(),
+        isDeleted: false,
+        questionLanguage: '',
+        answerLanguage: '',
+      );
+
+      bool written = await FlashcardDatabaseProvider.writeEditAsync(
+          emptyFlashCollection,
+          isTest: true);
+      // expect than database not write null
+      expect(written, false);
+
+      expect((emptyFlash..answerLanguage = '1').isValid, false);
+      expect((emptyFlash..answerWords = '1').isValid, false);
+      expect((emptyFlash..correctAnswers = 1).isValid, false);
+      expect((emptyFlash..questionLanguage = '1').isValid, false);
+      expect((emptyFlash..questionWords = '1').isValid, true);
+
+      expect((emptyFlashCollection..title = '1').isValid, false);
+      expect((emptyFlashCollection..questionLanguage = '1').isValid, false);
+      expect((emptyFlashCollection..answerLanguage = '1').isValid, true);
+    });
+
     testWidgets('test get all flashcards', (widgetTester) async {
       await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
       var flashcards = flashFixture();
@@ -109,13 +151,14 @@ void main() async {
 
       expect(flashcards.id != flashcards2.id, true);
       // save to db
-      bool writed2 = await FlashcardDatabaseProvider.writeEditAsync(flashcards2,
+      bool written2 = await FlashcardDatabaseProvider.writeEditAsync(
+          flashcards2,
           isTest: true);
-      expect(writed2, true);
+      expect(written2, true);
 
-      bool writed = await FlashcardDatabaseProvider.writeEditAsync(flashcards,
+      bool written = await FlashcardDatabaseProvider.writeEditAsync(flashcards,
           isTest: true);
-      expect(writed, true);
+      expect(written, true);
 
       var flashcardsList = FlashcardDatabaseProvider.getAll(isTest: true);
 
@@ -195,12 +238,12 @@ void main() async {
       expect(flashcards.id != flashcards2.id, true);
       // save to db
 
-      bool writed = await FlashcardDatabaseProvider.writeEditAsync(flashcards,
+      bool written = await FlashcardDatabaseProvider.writeEditAsync(flashcards,
           isTest: true);
       await FlashcardDatabaseProvider.writeEditAsync(flashcards2, isTest: true);
       await FlashcardDatabaseProvider.writeEditAsync(flashcards3, isTest: true);
       await FlashcardDatabaseProvider.writeEditAsync(flashcards4, isTest: true);
-      expect(writed, true);
+      expect(written, true);
       expect(
           FlashcardDatabaseProvider.getAllFromTrash(false, isTest: true).length,
           4);

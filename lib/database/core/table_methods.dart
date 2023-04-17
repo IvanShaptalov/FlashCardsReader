@@ -19,6 +19,9 @@ class FlashcardDatabaseProvider {
   /// write flashcardcollection object to hive database in flashcards box
   static Future<bool> writeEditAsync(FlashCardCollection flashCard,
       {bool isTest = false}) async {
+    if (!flashCard.isValid) {
+      return false;
+    }
     selectSession(isTest);
     try {
       await currentSession!.put(flashCard.id, flashCard);
@@ -76,7 +79,8 @@ class FlashcardDatabaseProvider {
 
   static Future<bool> trashMoveFlashCardsAsync(
       List<FlashCardCollection> flashCards,
-      {bool isTest = false, bool toTrash = true}) async {
+      {bool isTest = false,
+      bool toTrash = true}) async {
     selectSession(isTest);
 
     try {
@@ -93,7 +97,9 @@ class FlashcardDatabaseProvider {
       return false;
     }
   }
-  static Future<bool> moveToTrashAsync(FlashCardCollection flashCard, bool toTrash) async{
+
+  static Future<bool> moveToTrashAsync(
+      FlashCardCollection flashCard, bool toTrash) async {
     return await writeEditAsync(flashCard..isDeleted = toTrash);
   }
 
