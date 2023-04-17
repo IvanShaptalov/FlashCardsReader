@@ -162,6 +162,7 @@ class FlashCardCollection {
       id.isNotEmpty &&
       questionLanguage.isNotEmpty &&
       answerLanguage.isNotEmpty &&
+      // ignore: unnecessary_null_comparison
       createdAt != null;
 
   static List<FlashCardCollection> sortedByDate(

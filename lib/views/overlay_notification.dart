@@ -22,10 +22,10 @@ class OverlayNotificationProvider {
   static void showOverlayNotification(String message,
       {NotificationStatus status = NotificationStatus.info}) {
     showSimpleNotification(
-      Text(message, style: TextStyle(fontSize: 20),),
+      Text(message, style: const TextStyle(fontSize: 20),),
       slideDismissDirection : DismissDirection.up,
       background: _setColor(status),
-      duration: Duration(milliseconds: 800)
+      duration: const Duration(milliseconds: 800)
     );
   }
 }
