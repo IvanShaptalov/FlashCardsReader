@@ -78,48 +78,75 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
         icon: Icon(widget.isEdit ? Icons.edit_square : Icons.library_add));
   }
 
-  Widget addWordTile() {
-    return ListTile(
-      leading: Column(
-        children: [
-          IconButton(
-              onPressed: () {
-                debugPrint('add flashcard');
-                WordCreatingUIProvider.setQuestionLanguage(
-                    widget.flashCardCollection.questionLanguage);
-                WordCreatingUIProvider.setAnswerLanguage(
-                    widget.flashCardCollection.answerLanguage);
+  Widget addWordWidget() {
+    return Container(
+        height: SizeConfig.getMediaHeight(context, p: 0.2),
+        width: SizeConfig.getMediaWidth(context, p: 0.9),
+        margin: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.blueGrey[200],
 
-                widget.flashCardCollection.flashCardSet
-                    .add(WordCreatingUIProvider.tmpFlashCard);
-                WordCreatingUIProvider.clear();
-                setState(() {});
-              },
-              icon: const Icon(Icons.add)),
-          IconButton(
-              onPressed: () {
-                // TODO implement translation
-              },
-              icon: const Icon(Icons.translate)),
-        ],
-      ),
-      title: TextField(
-        decoration: const InputDecoration(
-          labelText: 'Add Word',
+          // rounded full border
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: const Border(
+              top: BorderSide(color: Colors.grey, width: 1),
+              left: BorderSide(color: Colors.grey, width: 1),
+              right: BorderSide(color: Colors.grey, width: 1),
+              bottom: BorderSide(color: Colors.grey, width: 1)),
         ),
-        onChanged: (text) {
-          WordCreatingUIProvider.setQuestion(text);
-        },
-      ),
-      subtitle: TextField(
-        decoration: const InputDecoration(
-          labelText: 'Add Translation',
-        ),
-        onChanged: (text) {
-          WordCreatingUIProvider.setAnswer(text);
-        },
-      ),
-    );
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      debugPrint('add flashcard');
+
+                      WordCreatingUIProvider.setQuestionLanguage(
+                          widget.flashCardCollection.questionLanguage);
+                      WordCreatingUIProvider.setAnswerLanguage(
+                          widget.flashCardCollection.answerLanguage);
+
+                      widget.flashCardCollection.flashCardSet
+                          .add(WordCreatingUIProvider.tmpFlashCard);
+                      WordCreatingUIProvider.clear();
+                      setState(() {});
+                    },
+                    icon: const Icon(Icons.add)),
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Add Word',
+                    ),
+                    onChanged: (text) {
+                      WordCreatingUIProvider.setQuestion(text);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      // TODO implement translation
+                    },
+                    icon: const Icon(Icons.translate)),
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Add Translation',
+                    ),
+                    onChanged: (text) {
+                      WordCreatingUIProvider.setAnswer(text);
+                    },
+                  ),
+                ),
+              ],
+            )
+          ],
+        ));
   }
 
   @override
@@ -146,7 +173,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
           ),
           if (widget.flashCardCollection.flashCardSet.length >=
               widget.wordsBeforeRelocateEditor)
-            addWordTile(),
+            addWordWidget(),
           const Divider(
             color: Colors.grey,
             thickness: 1,
@@ -210,7 +237,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                         children: [
                           if (widget.flashCardCollection.flashCardSet.length <
                               widget.wordsBeforeRelocateEditor)
-                            addWordTile(),
+                            addWordWidget(),
                           for (var flashCard in widget
                               .flashCardCollection.flashCardSet
                               .toList())
@@ -223,8 +250,8 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                     });
                                   },
                                   icon: const Icon(Icons.delete_forever)),
-                              title: Text(flashCard.answerWords),
-                              subtitle: Text(flashCard.questionWords),
+                              title: Text(flashCard.questionWords),
+                              subtitle: Text(flashCard.answerWords),
                             ),
                         ],
                       )),
