@@ -5,6 +5,7 @@ class FlashCardTrainingModel {
   final FlashCardCollection flashCardsCollection;
   int _currentFlashCardIndex = 0;
   final int numberOfFlashCards;
+  
 
   // training is finished when the current flash card index is greater than the number of flash cards in the collection
   bool get isTrainingFinished =>

@@ -22,6 +22,9 @@ class FlashCard {
   @HiveField(7)
   bool isLearned;
 
+  double get successRate =>
+      correctAnswers / (correctAnswers + wrongAnswers + 1);
+
   bool get isValid =>
       questionWords.isNotEmpty &&
       answerWords.isNotEmpty &&
@@ -143,6 +146,50 @@ class FlashCardCollection {
       Set<FlashCardCollection> setFlashcards) {
     List<FlashCardCollection> flist = setFlashcards.toList();
     flist.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return flist;
+  }
+
+  /// ====================================================[SORTING TO TRAINING]====================================================
+  ///
+  List<FlashCard> sortedByDateAscending() {
+    List<FlashCard> flist = flashCardSet.toList();
+    flist.sort((a, b) => b.lastTested.compareTo(a.lastTested));
+    return flist;
+  }
+
+  List<FlashCard> sortedByDateDescending() {
+    List<FlashCard> flist = flashCardSet.toList();
+    flist.sort((a, b) => a.lastTested.compareTo(b.lastTested));
+    return flist;
+  }
+
+  List<FlashCard> sortedBySuccessRateFromSimplest() {
+    List<FlashCard> flist = flashCardSet.toList();
+    flist.sort((a, b) => a.successRate.compareTo(b.successRate));
+    return flist;
+  }
+
+  List<FlashCard> sortedBySuccessRateFromMostDifficult() {
+    List<FlashCard> flist = flashCardSet.toList();
+    flist.sort((a, b) => b.successRate.compareTo(a.successRate));
+    return flist;
+  }
+
+  List<FlashCard> filteredFromLearned() {
+    List<FlashCard> flist = flashCardSet.toList();
+    flist.removeWhere((element) => element.isLearned);
+    return flist;
+  }
+
+  List<FlashCard> filteredFromNotLearned() {
+    List<FlashCard> flist = flashCardSet.toList();
+    flist.removeWhere((element) => !element.isLearned);
+    return flist;
+  }
+
+  List<FlashCard> randomized() {
+    List<FlashCard> flist = flashCardSet.toList();
+    flist.shuffle();
     return flist;
   }
 
