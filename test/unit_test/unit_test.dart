@@ -3,28 +3,26 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Flashcard comparing', () {
-     test('hashes same', () async {
+    test('hashes same', () async {
       FlashCard flash1 = FlashCard(
         questionLanguage: 'English',
         answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
-      FlashCard flash2 =  FlashCard(
+      FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
         answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       expect(flash1.hashCode == flash2.hashCode, true);
     });
@@ -34,22 +32,20 @@ void main() {
         answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
         answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       expect(flash1 == flash2, true);
     });
@@ -60,22 +56,20 @@ void main() {
         answerLanguage: 'English',
         questionWords: 'Hello',
         answerWords: 'Hallo',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
         answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       expect(flash1 == flash2, false);
     });
@@ -85,22 +79,20 @@ void main() {
         answerLanguage: 'English',
         questionWords: 'Hallo',
         answerWords: 'Hello',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
         answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       expect(flash1 == flash2, true);
     });
@@ -110,22 +102,20 @@ void main() {
         answerLanguage: 'German',
         questionWords: 'Hallo',
         answerWords: 'Hello',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
         answerLanguage: 'German',
         questionWords: 'Hallo',
         answerWords: 'Hello',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       expect(flash1 == flash2, true);
     });
@@ -135,22 +125,20 @@ void main() {
         answerLanguage: 'German',
         questionWords: 'Hallo',
         answerWords: 'Hello',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
         answerLanguage: 'NotGerman',
         questionWords: 'Hello',
         answerWords: 'Hallo',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       expect(flash1 == flash2, false);
     });

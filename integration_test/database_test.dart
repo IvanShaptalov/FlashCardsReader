@@ -18,22 +18,20 @@ void main() async {
         answerLanguage: 'German',
         questionWords: 'Hello',
         answerWords: 'Hallo',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       final FlashCard flashCard2 = FlashCard(
         questionLanguage: 'English',
         answerLanguage: 'German',
         questionWords: 'Goodbye',
         answerWords: 'Auf Wiedersehen',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
       final FlashCardCollection testFlashCardCollection = FlashCardCollection(
         uuid.v4().toString(),
@@ -110,11 +108,10 @@ void main() async {
         answerLanguage: '',
         questionWords: '',
         answerWords: '',
-        nextTest: DateTime.now().add(const Duration(days: 1)),
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false,
+        isLearned: false,
       );
 
       var emptyFlashCollection = FlashCardCollection(

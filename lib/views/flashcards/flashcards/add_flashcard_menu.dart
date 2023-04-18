@@ -199,7 +199,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
     widget.flashCardFormController.setUp(widget.flashCardCollection);
     widget.wordFormContoller.setUp(WordCreatingUIProvider.tmpFlashCard);
     return SizedBox(
-        height: SizeConfig.getMediaHeight(context, p: 0.7),
+        height: SizeConfig.getMediaHeight(context, p: 0.85),
         child: Column(children: [
           Padding(
             padding: EdgeInsets.symmetric(

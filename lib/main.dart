@@ -19,22 +19,20 @@ FlashCardCollection flashFixture() {
     answerLanguage: 'German',
     questionWords: 'Hello',
     answerWords: 'Hallo',
-    nextTest: DateTime.now(),
     lastTested: DateTime.now(),
     correctAnswers: 0,
     wrongAnswers: 0,
-    isDeleted: false,
+    isLearned: false,
   );
   final FlashCard flashCard2 = FlashCard(
     questionLanguage: 'English',
     answerLanguage: 'German',
     questionWords: 'Goodbye',
     answerWords: 'Auf Wiedersehen',
-    nextTest: DateTime.now(),
     lastTested: DateTime.now(),
     correctAnswers: 0,
     wrongAnswers: 0,
-    isDeleted: false,
+    isLearned: false,
   );
   final FlashCardCollection testFlashCardCollection = FlashCardCollection(
       uuid.v4().toString(),

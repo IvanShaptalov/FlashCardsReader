@@ -16,13 +16,11 @@ class FlashCard {
   @HiveField(4)
   DateTime lastTested;
   @HiveField(5)
-  DateTime nextTest;
-  @HiveField(6)
   int correctAnswers;
-  @HiveField(7)
+  @HiveField(6)
   int wrongAnswers;
-  @HiveField(8)
-  bool isDeleted;
+  @HiveField(7)
+  bool isLearned;
 
   bool get isValid =>
       questionWords.isNotEmpty &&
@@ -37,10 +35,9 @@ class FlashCard {
         questionWords: 'Hello${Random().nextInt(100)}',
         answerWords: 'Hallo',
         lastTested: DateTime.now(),
-        nextTest: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isDeleted: false);
+        isLearned: false);
   }
 
   FlashCard(
@@ -49,34 +46,11 @@ class FlashCard {
       required this.questionWords,
       required this.answerWords,
       required this.lastTested,
-      required this.nextTest,
       required this.correctAnswers,
       required this.wrongAnswers,
-      required this.isDeleted});
-
-  /// returns true if the answer was correct, change correct and wrong answers and delay the next test date
-  bool answeredCorrectly() {
-    correctAnswers = correctAnswers + 1;
-    wrongAnswers = wrongAnswers - 1 != 0 ? wrongAnswers - 1 : 0;
-    delayTestDate(correctAnswers);
-    return true;
-  }
-
-  /// returns true if the answer was wrong, change correct and wrong answers and delay the next test date to today
-  bool answeredWrong() {
-    wrongAnswers = wrongAnswers + 1;
-    correctAnswers = correctAnswers - 1 != 0 ? correctAnswers - 1 : 0;
-    // delay test date by today for wrong answers
-    delayTestDate(0);
-    return true;
-  }
+      required this.isLearned});
 
   /// returns true if the test date was delayed, change the next test date
-  bool delayTestDate(int days) {
-    lastTested = DateTime.now();
-    nextTest = nextTest.add(Duration(days: days));
-    return true;
-  }
 
   @override
   String toString() {

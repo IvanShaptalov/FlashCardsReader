@@ -72,7 +72,7 @@ class FlashCardTrainingModel {
     return flashCardsCollection.flashCardSet.elementAt(_currentFlashCardIndex);
   }
 
-  int trainFlashCard(FlashCard flashCard, bool correct) {
+  bool trainFlashCard(FlashCard flashCard, bool correct) {
     if (correct) {
       flashCard.correctAnswers++;
     } else {
@@ -80,9 +80,7 @@ class FlashCardTrainingModel {
     }
 
     // delay next flashcard test date
-    int days = delayTestDate(flashCard, correct);
-    saveTrainedFlashCard(flashCard);
-    return days;
+    return saveTrainedFlashCard(flashCard);
   }
 
   bool saveTrainedFlashCard(FlashCard flashCard) {
@@ -96,51 +94,7 @@ class FlashCardTrainingModel {
 
   /// ================================================[HELPER METHODS]================================================
 
-  int delayTestDate(FlashCard flashCard, bool answerIsCorrect) {
-    Duration difference = flashCard.nextTest.difference(flashCard.lastTested);
-    int delayedDays = 0;
 
-    // round date to switch case
-
-    // add 1 hour to the difference to avoid 0 days difference
-    //for example 1 day difference is 23 hours 59 minutes 59 seconds 999 milliseconds - cpu execution time
-    int difDays = (difference + const Duration(hours: 1)).inDays;
-    if (answerIsCorrect) {
-      if (difDays <= 0) {
-        delayedDays = 1;
-      } else if (difDays <= 2) {
-        delayedDays = 3;
-      } else if (difDays <= 6) {
-        delayedDays = 7;
-      } else if (difDays <= 13) {
-        delayedDays = 14;
-      } else if (difDays <= 29) {
-        delayedDays = 30;
-      } else {
-        delayedDays = 14;
-      }
-    } else {
-      if (difDays <= 1) {
-        delayedDays = 0;
-      } else if (difDays <= 3) {
-        delayedDays = 1;
-      } else if (difDays <= 7) {
-        delayedDays = 3;
-      } else if (difDays <= 14) {
-        delayedDays = 7;
-      } else if (difDays <= 30) {
-        delayedDays = 14;
-      } else {
-        delayedDays = 1;
-      }
-    }
-
-    flashCard.nextTest = DateTime.now().add(Duration(days: delayedDays));
-
-    flashCard.lastTested = DateTime.now();
-    // return delayedDays to test functionality of the method
-    return delayedDays;
-  }
 
   bool isFlashCardLearned(FlashCard flashCard) {
     return flashCard.correctAnswers - flashCard.wrongAnswers >= _learnedBound;
