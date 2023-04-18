@@ -184,5 +184,25 @@ void main() {
         }
       }
     });
+
+    test('flashcards learned test', () async {
+      var collection = flashFixture();
+      var tModel = FlashCardTrainingModel(
+        flashCardsCollection: collection,
+        numberOfFlashCards: collection.flashCardSet.length,
+      );
+
+      // get flashcard
+
+      for (int i = 0; i <= 10; i++) {
+        var tFlash = tModel.getToTrain();
+
+        if (tFlash != null) {
+          tModel.trainFlashCard(tFlash, true);
+        }
+      }
+      expect(tModel.getToTrain(), null);
+      expect(tModel.isTrainingFinished, true);
+    });
   });
 }
