@@ -21,3 +21,12 @@ enum Themes {
   @HiveField(6)
   sepiaSoft
 }
+
+enum FlashCardTrainingMode {
+  all,
+  simple,
+  hard,
+  newest,
+  oldest,
+  random
+}

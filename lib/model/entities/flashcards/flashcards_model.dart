@@ -163,7 +163,7 @@ class FlashCardCollection {
     return flist;
   }
 
-  List<FlashCard> sortedBySuccessRateFromSimplest() {
+  List<FlashCard> sortedBySuccessRateFromMostSimple() {
     List<FlashCard> flist = flashCardSet.toList();
     flist.sort((a, b) => a.successRate.compareTo(b.successRate));
     return flist;

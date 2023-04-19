@@ -1,11 +1,11 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/enums.dart';
 
 class FlashCardTrainingModel {
   /// ==============================================[FIELDS AND CONSTRUCTOR]============================================
   final FlashCardCollection flashCardsCollection;
   int _currentFlashCardIndex = 0;
   final int numberOfFlashCards;
-  
 
   // training is finished when the current flash card index is greater than the number of flash cards in the collection
   bool get isTrainingFinished =>
@@ -55,24 +55,52 @@ class FlashCardTrainingModel {
   }
 
   /// ================================================[TRAINIG METHODS]================================================
-  /// Train a flash card collection
-  FlashCard? getToTrain() {
+  /// get the next flash card to train
+  FlashCard? getToTrain(
+      {FlashCardTrainingMode mode = FlashCardTrainingMode.all}) {
+    List<FlashCard> flashList = flashCardsCollection.flashCardSet.toList();
+
+    switch (mode) {
+      case FlashCardTrainingMode.all:
+        flashList = flashCardsCollection.flashCardSet.toList();
+        break;
+      case FlashCardTrainingMode.hard:
+        flashList = flashCardsCollection.sortedBySuccessRateFromMostDifficult();
+        break;
+      case FlashCardTrainingMode.simple:
+        flashList = flashCardsCollection.sortedBySuccessRateFromMostSimple();
+        break;
+      case FlashCardTrainingMode.newest:
+        flashList = flashCardsCollection.sortedByDateAscending();
+        break;
+      case FlashCardTrainingMode.oldest:
+        flashList = flashCardsCollection.sortedByDateDescending();
+        break;
+      case FlashCardTrainingMode.random:
+        flashList = flashCardsCollection.flashCardSet.toList();
+        break;
+
+      default:
+        flashList = flashCardsCollection.flashCardSet.toList();
+    }
+
     // check if the training is finished
     if (_currentFlashCardIndex > numberOfFlashCards || isTrainingFinished) {
       return null;
     }
     // if learned - get the next flash card
-    if (isFlashCardLearned(
-        flashCardsCollection.flashCardSet.elementAt(_currentFlashCardIndex))) {
+    if (isFlashCardLearned(flashList.elementAt(_currentFlashCardIndex))) {
       // increment the current flash card index and try to get the next flash card
       _currentFlashCardIndex++;
-      return getToTrain();
+
+      return getToTrain(mode: mode);
     }
 
     // if not learned - get the current flash card
-    return flashCardsCollection.flashCardSet.elementAt(_currentFlashCardIndex);
+    return flashList.elementAt(_currentFlashCardIndex);
   }
 
+  /// train and save the flash card
   bool trainFlashCard(FlashCard flashCard, bool correct) {
     if (correct) {
       flashCard.correctAnswers++;
@@ -94,8 +122,6 @@ class FlashCardTrainingModel {
   }
 
   /// ================================================[HELPER METHODS]================================================
-
-
 
   bool isFlashCardLearned(FlashCard flashCard) {
     return flashCard.correctAnswers - flashCard.wrongAnswers >= _learnedBound;
