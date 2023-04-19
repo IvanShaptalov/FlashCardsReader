@@ -89,7 +89,7 @@ class FlashCardTrainingModel {
       return null;
     }
     // if learned - get the next flash card
-    if (isFlashCardLearned(flashList.elementAt(_currentFlashCardIndex))) {
+    if (_isFlashCardLearned(flashList.elementAt(_currentFlashCardIndex))) {
       // increment the current flash card index and try to get the next flash card
       _currentFlashCardIndex++;
 
@@ -109,10 +109,10 @@ class FlashCardTrainingModel {
     }
 
     // delay next flashcard test date
-    return saveTrainedFlashCard(flashCard);
+    return _saveTrainedFlashCard(flashCard);
   }
 
-  bool saveTrainedFlashCard(FlashCard flashCard) {
+  bool _saveTrainedFlashCard(FlashCard flashCard) {
     // remove flashcard from the collection
     flashCardsCollection.flashCardSet
         .removeWhere((element) => element == flashCard);
@@ -123,12 +123,7 @@ class FlashCardTrainingModel {
 
   /// ================================================[HELPER METHODS]================================================
 
-  bool isFlashCardLearned(FlashCard flashCard) {
+  bool _isFlashCardLearned(FlashCard flashCard) {
     return flashCard.correctAnswers - flashCard.wrongAnswers >= _learnedBound;
-  }
-
-  /// Train a flash card
-  FlashCard setUpFlashCard(int index) {
-    return flashCardsCollection.flashCardSet.elementAt(index);
   }
 }

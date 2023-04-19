@@ -1,5 +1,4 @@
 import 'package:flashcards_reader/util/router.dart';
-import 'package:flashcards_reader/views/flashcards/counter_view.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +84,7 @@ class MenuDrawer extends StatelessWidget {
             leading: const Icon(Icons.add_circle_outline),
             title: const Text('Add new words'),
             onTap: () {
-              MyRouter.pushPageReplacement(context, const CounterPage());
+              // MyRouter.pushPageReplacement(context, );
             },
           ),
           ListTile(

@@ -46,8 +46,4 @@ class FlashcardsState {
     return FlashcardsState.initial().copyWith(fromTrash: false);
   }
 
-   // static Future<bool> deleteFlashCardCollectionAsync(
-  //     FlashCardCollection flashCardCollection) async {
-  //   return await FlashcardDatabaseProvider.deleteAsync(flashCardCollection.id);
-  // }  
 }
