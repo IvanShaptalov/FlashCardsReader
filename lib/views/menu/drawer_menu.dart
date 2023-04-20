@@ -80,7 +80,7 @@ class MenuDrawer extends StatelessWidget {
             leading: const Icon(Icons.quiz),
             title: const Text('Take a Quiz'),
             onTap: () {
-              // MyRouter.pushPageReplacement(context, const QuizMenu());
+              MyRouter.pushPageReplacement(context, const QuizMenu());
             },
           ),
           ListTile(

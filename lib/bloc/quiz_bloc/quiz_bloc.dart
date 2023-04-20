@@ -9,8 +9,10 @@ part 'quiz_state.dart';
 
 class QuizBloc extends Bloc<QuizEvent, QuizInitial> {
   QuizBloc()
-      : super(
-            QuizInitial(id: uuid.v4(), flashCardsCollection: flashFixture())) {
+      : super(QuizInitial(
+          id: uuid.v4(),
+          flashCardsCollection: flashFixture(),
+        )) {
     on<StartQuizEvent>((event, emit) {
       emit(QuizInitial(
           id: uuid.v4(), flashCardsCollection: event.flashCardsCollection));
@@ -19,7 +21,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizInitial> {
       emit(state.nextFlash());
     });
     on<AnswerFlashEvent>((event, emit) async {
-      emit(await state.answerFlash(event.isAnswerCorrect, state.currentCard!));
+      emit(await state.answerFlash(event.isAnswerCorrect, state.currentCard));
     });
     on<FinishQuizEvent>((event, emit) {
       emit(state.finishQuiz());

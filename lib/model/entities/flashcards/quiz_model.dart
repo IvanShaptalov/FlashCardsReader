@@ -1,16 +1,17 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 
 class QuizModel {
   /// ==============================================[FIELDS AND CONSTRUCTOR]============================================
   final FlashCardCollection flashCardsCollection;
-  int _currentFlashCardIndex = 0;
+  int flashIndex;
   final int numberOfFlashCards;
 
   // training is finished when the current flash card index is greater than the number of flash cards in the collection
   bool get isQuizFinished =>
-      _currentFlashCardIndex >= flashCardsCollection.flashCardSet.length ||
-      _currentFlashCardIndex >= numberOfFlashCards ||
+      flashIndex >= flashCardsCollection.flashCardSet.length ||
+      flashIndex >= numberOfFlashCards ||
       isEmpty;
 
   bool get isEmpty => flashCardsCollection.flashCardSet.isEmpty;
@@ -18,10 +19,10 @@ class QuizModel {
   /// level of learned flash cards, if upper than this value, the flash card considered as learned
   final int _learnedBound = 5;
 
-  QuizModel({
-    required this.flashCardsCollection,
-    required this.numberOfFlashCards,
-  });
+  QuizModel(
+      {required this.flashCardsCollection,
+      required this.numberOfFlashCards,
+      this.flashIndex = 0});
 
   QuizModel copyWith({
     FlashCardCollection? flashCardsCollection,
@@ -31,6 +32,7 @@ class QuizModel {
     return QuizModel(
       flashCardsCollection: flashCardsCollection ?? this.flashCardsCollection,
       numberOfFlashCards: numberOfFlashCards ?? this.numberOfFlashCards,
+      flashIndex: currentFlashCardIndex ?? this.flashIndex,
     );
   }
 
@@ -40,28 +42,29 @@ class QuizModel {
       other is QuizModel &&
           runtimeType == other.runtimeType &&
           flashCardsCollection == other.flashCardsCollection &&
-          _currentFlashCardIndex == other._currentFlashCardIndex &&
+          flashIndex == other.flashIndex &&
           isQuizFinished == other.isQuizFinished;
 
   @override
   int get hashCode =>
       flashCardsCollection.hashCode ^
-      _currentFlashCardIndex.hashCode ^
+      flashIndex.hashCode ^
       isQuizFinished.hashCode;
 
   @override
   String toString() {
-    return 'FlashCardTrainingModel{flashCards: $flashCardsCollection, currentFlashCardIndex: $_currentFlashCardIndex, isTrainingFinished: $isQuizFinished}';
+    return 'FlashCardTrainingModel{flashCards: $flashCardsCollection, currentFlashCardIndex: $flashIndex, isTrainingFinished: $isQuizFinished}';
   }
 
   /// ================================================[TRAINIG METHODS]================================================
   /// get the next flash card to train
   FlashCard? getNextFlash({QuizMode mode = QuizMode.all}) {
+    /// sort flash cards by mode
     List<FlashCard> flashList = flashCardsCollection.flashCardSet.toList();
 
     switch (mode) {
       case QuizMode.all:
-        flashList = flashCardsCollection.flashCardSet.toList();
+        flashList = flashCardsCollection.sortedByDateAscending();
         break;
       case QuizMode.hard:
         flashList = flashCardsCollection.sortedBySuccessRateFromMostDifficult();
@@ -82,21 +85,33 @@ class QuizModel {
       default:
         flashList = flashCardsCollection.flashCardSet.toList();
     }
+    // check current index not out of range and quiz is not finished
 
-    // check if the training is finished
-    if (_currentFlashCardIndex > numberOfFlashCards || isQuizFinished) {
+    if (flashIndex+1 <= flashList.length) {
+      flashIndex++;
+    } else {
+      debugPrintIt(flashIndex);
+      debugPrintIt('end quiz');
       return null;
     }
-    // if learned - get the next flash card
-    if (_isFlashCardLearned(flashList.elementAt(_currentFlashCardIndex))) {
-      // increment the current flash card index and try to get the next flash card
-      _currentFlashCardIndex++;
+    debugPrintIt('current flash card index: $flashIndex');
 
+    
+    // if learned - get the next flash card
+
+    if (_isFlashCardLearned(flashList.elementAt(flashIndex-1))) {
+      // increment the current flash card index and try to get the next flash card
+      var flash = getNextFlash(mode: mode);
+      debugPrintIt('flash: $flash');
+      debugPrintIt(
+          '==================================================END==================================================');
+
+      // if the next flash null ,try to find the next flash card
       return getNextFlash(mode: mode);
     }
 
-    // if not learned - get the current flash card
-    return flashList.elementAt(_currentFlashCardIndex);
+    // if not learned - get the current flash card and increment the current flash card index
+    return flashList.elementAt(flashIndex - 1);
   }
 
   /// train and save the flash card
