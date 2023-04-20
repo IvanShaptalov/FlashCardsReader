@@ -41,7 +41,7 @@ void main() {
         numberOfFlashCards: collection.flashCardSet.length,
       );
 
-      var qFlash = qModel.getToTrain();
+      var qFlash = qModel.getNextFlash();
 
       qModel.quizFlashCardAsync(qFlash!, true);
 
@@ -60,7 +60,7 @@ void main() {
         numberOfFlashCards: collection.flashCardSet.length,
       );
 
-      var qFlash = qModel.getToTrain();
+      var qFlash = qModel.getNextFlash();
 
       qModel.quizFlashCardAsync(qFlash!, true);
 
@@ -79,7 +79,7 @@ void main() {
         numberOfFlashCards: collection.flashCardSet.length,
       );
 
-      var qFlash = qModel.getToTrain();
+      var qFlash = qModel.getNextFlash();
 
       assert(qFlash != null);
       qModel.quizFlashCardAsync(qFlash!, false);
@@ -102,13 +102,13 @@ void main() {
       // get flashcard
 
       for (int i = 0; i <= 10; i++) {
-        var qFlash = qModel.getToTrain();
+        var qFlash = qModel.getNextFlash();
 
         if (qFlash != null) {
           qModel.quizFlashCardAsync(qFlash, true);
         }
       }
-      expect(qModel.getToTrain(), null);
+      expect(qModel.getNextFlash(), null);
       expect(qModel.isQuizFinished, true);
     });
   });

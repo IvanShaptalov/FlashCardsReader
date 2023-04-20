@@ -56,26 +56,26 @@ class QuizModel {
 
   /// ================================================[TRAINIG METHODS]================================================
   /// get the next flash card to train
-  FlashCard? getToTrain({TrainMode mode = TrainMode.all}) {
+  FlashCard? getNextFlash({QuizMode mode = QuizMode.all}) {
     List<FlashCard> flashList = flashCardsCollection.flashCardSet.toList();
 
     switch (mode) {
-      case TrainMode.all:
+      case QuizMode.all:
         flashList = flashCardsCollection.flashCardSet.toList();
         break;
-      case TrainMode.hard:
+      case QuizMode.hard:
         flashList = flashCardsCollection.sortedBySuccessRateFromMostDifficult();
         break;
-      case TrainMode.simple:
+      case QuizMode.simple:
         flashList = flashCardsCollection.sortedBySuccessRateFromMostSimple();
         break;
-      case TrainMode.newest:
+      case QuizMode.newest:
         flashList = flashCardsCollection.sortedByDateAscending();
         break;
-      case TrainMode.oldest:
+      case QuizMode.oldest:
         flashList = flashCardsCollection.sortedByDateDescending();
         break;
-      case TrainMode.random:
+      case QuizMode.random:
         flashList = flashCardsCollection.flashCardSet.toList();
         break;
 
@@ -92,7 +92,7 @@ class QuizModel {
       // increment the current flash card index and try to get the next flash card
       _currentFlashCardIndex++;
 
-      return getToTrain(mode: mode);
+      return getNextFlash(mode: mode);
     }
 
     // if not learned - get the current flash card

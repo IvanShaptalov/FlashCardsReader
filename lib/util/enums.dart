@@ -22,7 +22,7 @@ enum Themes {
   sepiaSoft
 }
 
-enum TrainMode {
+enum QuizMode {
   all,
   simple,
   hard,
