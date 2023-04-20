@@ -63,7 +63,7 @@ class _QuizViewState extends State<QuizView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext specialContext) {
     return BlocBuilder<FlashTrainingBloc, FlashTrainingState>(
         builder: (context, state) {
       // create app bar
@@ -78,7 +78,7 @@ class _QuizViewState extends State<QuizView> {
       debugPrintIt('====================================== updated');
       debugPrintIt('now training flash: ${state.nowTrainingFlash}');
       debugPrintIt('====================================== updated');
-
+      
       return Scaffold(
         appBar: appBar,
         drawer: getDrawer(),
