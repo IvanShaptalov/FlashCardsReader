@@ -1,7 +1,7 @@
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
-import 'package:flashcards_reader/views/flashcards/quiz/flash_training.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/flash_quiz.dart';
 import 'package:flutter/material.dart';
 
 class MenuDrawer extends StatelessWidget {
