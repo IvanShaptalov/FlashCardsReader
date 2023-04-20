@@ -16,21 +16,19 @@ class QuizMenu extends StatefulWidget {
 class _QuizMenuState extends State<QuizMenu> {
   @override
   Widget build(BuildContext context) {
-    // return multiple bloc providers
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<FlashTrainingBloc>(
-            create: (BuildContext context) => FlashTrainingBloc()),
-        BlocProvider<FlashCardBloc>(
-            create: (BuildContext context) => FlashCardBloc())
-      ],
-      child: const QuizView(),
-    );
+    return MultiBlocProvider(providers: [
+      BlocProvider<FlashTrainingBloc>(
+          create: (BuildContext context) => FlashTrainingBloc()),
+      BlocProvider<FlashCardBloc>(
+          create: (BuildContext context) => FlashCardBloc())
+    ], child: QuizView());
   }
 }
 
+// ignore: must_be_immutable
 class QuizView extends StatefulWidget {
-  const QuizView({super.key});
+  QuizView({super.key});
+  Duration cardAppearDuration = const Duration(milliseconds: 375);
 
   @override
   State<QuizView> createState() => _QuizViewState();
@@ -63,53 +61,46 @@ class _QuizViewState extends State<QuizView> {
   }
 
   @override
-  Widget build(BuildContext specialContext) {
-    return BlocBuilder<FlashTrainingBloc, FlashTrainingState>(
-        builder: (context, state) {
-      // create app bar
-      var appBar = getAppBar();
-      appBarHeight = appBar.preferredSize.height;
-
-      // load model
-      var result =
-          BlocProvider.of<FlashTrainingBloc>(context).state.trainingModel;
-
-      debugPrintIt(result);
-      debugPrintIt('====================================== updated');
-      debugPrintIt('now training flash: ${state.nowTrainingFlash}');
-      debugPrintIt('====================================== updated');
-      
-      return Scaffold(
-        appBar: appBar,
-        drawer: getDrawer(),
-        body: Center(
-          child: Column(
-            children: [
-              IconButton(
-                  onPressed: () {
-                    BlocProvider.of<FlashTrainingBloc>(context)
-                        .add(GetToTrainEvent());
-                    // context.read<FlashTrainingBloc>().add(GetToTrainEvent());
-                    debugPrintIt(state.nowTrainingFlash);
-                    // context
-                    //     .read<FlashTrainingBloc>()
-                    //     .add(TrainFlashCardEvent(isAnswerCorrect: true));
-                    BlocProvider.of<FlashTrainingBloc>(context)
-                        .add(TrainFlashCardEvent(isAnswerCorrect: true));
-                    setState(() {});
-                  },
-                  icon: const Icon(Icons.add)),
-              BlocBuilder<FlashTrainingBloc, FlashTrainingState>(
-                  builder: (context, state) {
-                return Text(
-                    state.nowTrainingFlash?.questionWords ?? 'no flash');
-              }),
-              Text(state.nowTrainingFlash?.answerWords ?? 'no flash'),
-            ],
-          ),
+  Widget build(BuildContext context) {
+    // return BlocBuilder<FlashCardBloc, FlashcardsState>(
+    // builder: (context, state) {
+    var flashCardCollection = BlocProvider.of<FlashCardBloc>(context)
+        .state
+        .copyWith(fromTrash: false)
+        .flashCards;
+    var appBar = getAppBar();
+    appBarHeight = appBar.preferredSize.height;
+    return Scaffold(
+      appBar: appBar,
+      drawer: getDrawer(),
+      body: Center(
+        child: Column(
+          children: [
+            IconButton(
+                onPressed: () {
+                  BlocProvider.of<FlashTrainingBloc>(context)
+                      .add(GetToTrainEvent());
+                  // context.read<FlashTrainingBloc>().add(GetToTrainEvent());
+                  debugPrintIt(context.read<FlashTrainingBloc>().state.nowTrainingFlash);
+                  // context
+                  //     .read<FlashTrainingBloc>()
+                  //     .add(TrainFlashCardEvent(isAnswerCorrect: true));
+                  BlocProvider.of<FlashTrainingBloc>(context)
+                      .add(TrainFlashCardEvent(isAnswerCorrect: true));
+                },
+                icon: const Icon(Icons.add)),
+            BlocBuilder<FlashTrainingBloc, FlashTrainingState>(
+                builder: (context, state) {
+              return Text(state.nowTrainingFlash?.questionWords ?? 'no flash');
+            }),
+            BlocBuilder<FlashTrainingBloc, FlashTrainingState>(
+                builder: (context, state) {
+              return Text(state.nowTrainingFlash?.answerWords ?? 'no flash');
+            }),
+          ],
         ),
-      );
-    });
+      ),
+    );
     // });
   }
 }
