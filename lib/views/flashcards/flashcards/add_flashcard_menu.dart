@@ -92,12 +92,17 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
         onPressed: () {
           if (widget.flashCardCollection.isValid) {
             widget.specialContext.read<FlashCardBloc>().add(
-                UpdateFlashCardEvent(flashCardCollection: widget.flashCardCollection));
+                UpdateFlashCardEvent(
+                    flashCardCollection: widget.flashCardCollection));
             Navigator.pop(context);
             FlashCardCreatingUIProvider.clear();
-            OverlayNotificationProvider.showOverlayNotification(
-                'Collection added',
-                status: NotificationStatus.success);
+            widget.isEdit
+                ? OverlayNotificationProvider.showOverlayNotification(
+                    'Collection edited',
+                    status: NotificationStatus.info)
+                : OverlayNotificationProvider.showOverlayNotification(
+                    'Collection added',
+                    status: NotificationStatus.success);
           } else {
             OverlayNotificationProvider.showOverlayNotification(
                 'Your collection not valid',

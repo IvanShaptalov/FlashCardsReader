@@ -26,6 +26,12 @@ class FlashCard {
     isLearned = true;
   }
 
+  void reset() {
+    correctAnswers = 0;
+    wrongAnswers = 0;
+    isLearned = false;
+  }
+
   double get successRate =>
       correctAnswers / (correctAnswers + wrongAnswers + 1);
 
@@ -34,8 +40,6 @@ class FlashCard {
       answerWords.isNotEmpty &&
       questionLanguage.isNotEmpty &&
       answerLanguage.isNotEmpty;
-
-    
 
   static FlashCard fixture() {
     return FlashCard(
@@ -204,6 +208,9 @@ class FlashCardCollection {
 
   @override
   bool operator ==(Object other) {
-    return other is FlashCardCollection && other.id == id;
+    return other is FlashCardCollection &&
+        other.id == id &&
+        other.title == title &&
+        flashCardSet == other.flashCardSet;
   }
 }

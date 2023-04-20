@@ -58,44 +58,53 @@ class _QuizViewState extends State<QuizView> {
         trainingModel: TrainingModel(
             flashCardsCollection: flashCardCollection,
             numberOfFlashCards: flashCardCollection.flashCardSet.length)));
+
+    context.read<FlashTrainingBloc>().add(GetToTrainEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FlashCardBloc, FlashcardsState>(
-    builder: (context, state) {
-
-    var appBar = getAppBar();
-    appBarHeight = appBar.preferredSize.height;
-    return Scaffold(
-      appBar: appBar,
-      drawer: getDrawer(),
-      body: Center(
-        child: Column(
-          children: [
-            IconButton(
-                onPressed: () {
-                  context.read<FlashTrainingBloc>().add(GetToTrainEvent());
-                  debugPrintIt(
-                      context.read<FlashTrainingBloc>().state.nowTrainingFlash);
-                  context
-                      .read<FlashTrainingBloc>()
-                      .add(TrainFlashCardEvent(isAnswerCorrect: true));
-                  context.read<FlashCardBloc>().add(UpdateFlashCardEvent(flashCardCollection: context.read<FlashTrainingBloc>().state.trainingModel!.flashCardsCollection));
-                },
-                icon: const Icon(Icons.add)),
-            BlocBuilder<FlashTrainingBloc, FlashTrainingState>(
-                builder: (context, state) {
-              return Text(state.nowTrainingFlash?.questionWords ?? 'no flash');
-            }),
-            BlocBuilder<FlashTrainingBloc, FlashTrainingState>(
-                builder: (context, state) {
-              return Text(state.nowTrainingFlash?.answerWords ?? 'no flash');
-            }),
-          ],
+        builder: (context, state) {
+      var appBar = getAppBar();
+      appBarHeight = appBar.preferredSize.height;
+      return Scaffold(
+        appBar: appBar,
+        drawer: getDrawer(),
+        body: Center(
+          child: Column(
+            children: [
+              IconButton(
+                  onPressed: () {
+                    context.read<FlashTrainingBloc>().add(GetToTrainEvent());
+                    debugPrintIt(context
+                        .read<FlashTrainingBloc>()
+                        .state
+                        .nowTrainingFlash);
+                    context
+                        .read<FlashTrainingBloc>()
+                        .add(TrainFlashCardEvent(isAnswerCorrect: true));
+                    context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
+                        flashCardCollection: context
+                            .read<FlashTrainingBloc>()
+                            .state
+                            .trainingModel!
+                            .flashCardsCollection));
+                  },
+                  icon: const Icon(Icons.add)),
+              BlocBuilder<FlashTrainingBloc, FlashTrainingState>(
+                  builder: (context, state) {
+                return Text(
+                    state.nowTrainingFlash?.questionWords ?? 'no flash');
+              }),
+              BlocBuilder<FlashTrainingBloc, FlashTrainingState>(
+                  builder: (context, state) {
+                return Text(state.nowTrainingFlash?.answerWords ?? 'no flash');
+              }),
+            ],
+          ),
         ),
-      ),
-    );
+      );
     });
   }
 }

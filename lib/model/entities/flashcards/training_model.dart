@@ -1,4 +1,3 @@
-import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 

@@ -52,4 +52,24 @@ class FlashTrainingState {
 
   /// is collection empty
   bool get isCollectionEmpty => trainingModel!.isEmpty;
+
+  /// =============================================================[OVERRIDES]===================================
+  @override
+  String toString() {
+    return 'FlashTrainingState{trainingModel: $trainingModel, mode: $mode, nowTrainingFlash: $nowTrainingFlash}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FlashTrainingState &&
+          runtimeType == other.runtimeType &&
+          trainingModel == other.trainingModel &&
+          mode == other.mode &&
+          nowTrainingFlash == other.nowTrainingFlash;
+
+  @override
+  int get hashCode =>
+      trainingModel.hashCode ^ mode.hashCode ^ nowTrainingFlash.hashCode;
+
 }
