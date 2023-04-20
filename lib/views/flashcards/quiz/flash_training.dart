@@ -62,12 +62,9 @@ class _QuizViewState extends State<QuizView> {
 
   @override
   Widget build(BuildContext context) {
-    // return BlocBuilder<FlashCardBloc, FlashcardsState>(
-    // builder: (context, state) {
-    var flashCardCollection = BlocProvider.of<FlashCardBloc>(context)
-        .state
-        .copyWith(fromTrash: false)
-        .flashCards;
+    return BlocBuilder<FlashCardBloc, FlashcardsState>(
+    builder: (context, state) {
+
     var appBar = getAppBar();
     appBarHeight = appBar.preferredSize.height;
     return Scaffold(
@@ -78,15 +75,13 @@ class _QuizViewState extends State<QuizView> {
           children: [
             IconButton(
                 onPressed: () {
-                  BlocProvider.of<FlashTrainingBloc>(context)
-                      .add(GetToTrainEvent());
-                  // context.read<FlashTrainingBloc>().add(GetToTrainEvent());
-                  debugPrintIt(context.read<FlashTrainingBloc>().state.nowTrainingFlash);
-                  // context
-                  //     .read<FlashTrainingBloc>()
-                  //     .add(TrainFlashCardEvent(isAnswerCorrect: true));
-                  BlocProvider.of<FlashTrainingBloc>(context)
+                  context.read<FlashTrainingBloc>().add(GetToTrainEvent());
+                  debugPrintIt(
+                      context.read<FlashTrainingBloc>().state.nowTrainingFlash);
+                  context
+                      .read<FlashTrainingBloc>()
                       .add(TrainFlashCardEvent(isAnswerCorrect: true));
+                  context.read<FlashCardBloc>().add(UpdateFlashCardEvent(flashCardCollection: context.read<FlashTrainingBloc>().state.trainingModel!.flashCardsCollection));
                 },
                 icon: const Icon(Icons.add)),
             BlocBuilder<FlashTrainingBloc, FlashTrainingState>(
@@ -101,6 +96,6 @@ class _QuizViewState extends State<QuizView> {
         ),
       ),
     );
-    // });
+    });
   }
 }

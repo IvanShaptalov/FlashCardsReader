@@ -45,8 +45,8 @@ class StartMergeEvent extends FlashCardsEvent {
 
 class StopMergeEvent extends FlashCardsEvent {}
 
-class AddEditEvent extends FlashCardsEvent {
+class UpdateFlashCardEvent extends FlashCardsEvent {
   final FlashCardCollection flashCardCollection;
 
-  AddEditEvent({required this.flashCardCollection});
+  UpdateFlashCardEvent({required this.flashCardCollection});
 }

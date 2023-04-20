@@ -22,6 +22,10 @@ class FlashCard {
   @HiveField(7)
   bool isLearned;
 
+  void markAsLearned() {
+    isLearned = true;
+  }
+
   double get successRate =>
       correctAnswers / (correctAnswers + wrongAnswers + 1);
 
@@ -30,6 +34,8 @@ class FlashCard {
       answerWords.isNotEmpty &&
       questionLanguage.isNotEmpty &&
       answerLanguage.isNotEmpty;
+
+    
 
   static FlashCard fixture() {
     return FlashCard(

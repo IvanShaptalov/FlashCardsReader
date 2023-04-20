@@ -92,7 +92,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
         onPressed: () {
           if (widget.flashCardCollection.isValid) {
             widget.specialContext.read<FlashCardBloc>().add(
-                AddEditEvent(flashCardCollection: widget.flashCardCollection));
+                UpdateFlashCardEvent(flashCardCollection: widget.flashCardCollection));
             Navigator.pop(context);
             FlashCardCreatingUIProvider.clear();
             OverlayNotificationProvider.showOverlayNotification(

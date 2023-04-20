@@ -101,7 +101,7 @@ class TrainingModel {
   }
 
   /// train and save the flash card
-  Future<bool> trainFlashCardAsync(FlashCard flashCard, bool correct) async{
+  Future<bool> trainFlashCardAsync(FlashCard flashCard, bool correct) async {
     if (correct) {
       flashCard.correctAnswers++;
     } else {
@@ -109,23 +109,22 @@ class TrainingModel {
     }
 
     // delay next flashcard test date
-    return await _saveTrainedFlashCard(flashCard);
+    return await _saveTrainedFlashCardInRuntime(flashCard);
   }
 
-  Future<bool> _saveTrainedFlashCard(FlashCard flashCard) async{
+  Future<bool> _saveTrainedFlashCardInRuntime(FlashCard flashCard) async {
     // remove flashcard from the collection
     flashCardsCollection.flashCardSet
         .removeWhere((element) => element == flashCard);
 
     // add flashcard to the collection
-    flashCardsCollection.flashCardSet.add(flashCard);
-
-    return await FlashcardDatabaseProvider.writeEditAsync(flashCardsCollection);
+    return flashCardsCollection.flashCardSet.add(flashCard);
   }
 
   /// ================================================[HELPER METHODS]================================================
 
   bool _isFlashCardLearned(FlashCard flashCard) {
-    return flashCard.correctAnswers - flashCard.wrongAnswers >= _learnedBound;
+    return flashCard.correctAnswers - flashCard.wrongAnswers >= _learnedBound ||
+        flashCard.isLearned;
   }
 }
