@@ -159,12 +159,12 @@ void main() async {
 
       var flashcardsList = FlashcardDatabaseProvider.getAll(isTest: true);
 
-      debugPrint('flashcardsList.length ${flashcardsList.length}');
+      debugPrintIt('flashcardsList.length ${flashcardsList.length}');
       expect(flashcardsList.length, 2);
-      debugPrint(flashcardsList[0].id);
-      debugPrint(flashcardsList[1].id);
-      debugPrint(flashcards.id);
-      debugPrint(flashcards2.id);
+      debugPrintIt(flashcardsList[0].id);
+      debugPrintIt(flashcardsList[1].id);
+      debugPrintIt(flashcards.id);
+      debugPrintIt(flashcards2.id);
       expect(flashcardsList[0], flashcards2);
       expect(flashcardsList[1], flashcards);
     });

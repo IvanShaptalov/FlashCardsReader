@@ -22,7 +22,7 @@ enum Themes {
   sepiaSoft
 }
 
-enum FlashCardTrainingMode {
+enum TrainMode {
   all,
   simple,
   hard,

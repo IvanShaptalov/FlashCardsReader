@@ -3,30 +3,30 @@ part of 'flash_training_bloc.dart';
 // initialization of data
 
 class FlashTrainingState {
-  FlashCardTrainingModel? trainingModel;
-  FlashCardTrainingMode mode;
+  TrainingModel? trainingModel;
+  TrainMode mode;
   FlashCard? nowTrainingFlash;
 
   FlashTrainingState({this.trainingModel, required this.mode});
 
   // default state
   factory FlashTrainingState.emptyInit() =>
-      FlashTrainingState(mode: FlashCardTrainingMode.all);
+      FlashTrainingState(mode: TrainMode.all);
 
-  /// ===============================================================[PROVIDER METHODS]===============================================================
-  FlashTrainingState init({
-    FlashCardTrainingModel? trainingModel,
+  /// ===============================================================[Initialization]===============================================================
+  FlashTrainingState copyWith({
+    required TrainingModel trainingModel,
   }) {
     return FlashTrainingState(
-      trainingModel: trainingModel ?? this.trainingModel,
+      trainingModel: trainingModel,
       mode: mode,
     );
   }
 
-  FlashTrainingState selectMode(FlashCardTrainingMode mode) {
+  FlashTrainingState selectMode(TrainMode mode) {
     return FlashTrainingState(
       // training model must be initialized
-      trainingModel: trainingModel!,
+      trainingModel: trainingModel,
       mode: mode,
     );
   }
@@ -40,8 +40,9 @@ class FlashTrainingState {
   }
 
   /// train the flash card
-  FlashTrainingState trainFlashCard(bool isAnswerCorrect) {
-    trainingModel!.trainFlashCard(nowTrainingFlash!, isAnswerCorrect);
+  Future<FlashTrainingState> trainFlashCard(bool isAnswerCorrect) async{
+    if (nowTrainingFlash == null) return this;
+    await trainingModel!.trainFlashCardAsync(nowTrainingFlash!, isAnswerCorrect);
     return this;
   }
 

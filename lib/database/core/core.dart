@@ -32,9 +32,9 @@ class DataBase {
 
       // database initialized
       dbInitialized = true;
-      debugPrint('Hive initialized');
+      debugPrintIt('Hive initialized');
     } catch (e) {
-      debugPrint('Error initializing Hive: $e');
+      debugPrintIt('Error initializing Hive: $e');
       return false;
     }
     return true;
@@ -45,9 +45,9 @@ class DataBase {
       Hive.registerAdapter<FlashCardCollection>(FlashCardCollectionAdapter());
       Hive.registerAdapter<FlashCard>(FlashCardAdapter());
       Hive.registerAdapter<Themes>(ThemesAdapter());
-      debugPrint('Hive adapters registered');
+      debugPrintIt('Hive adapters registered');
     } catch (e) {
-      debugPrint('Error registering Hive adapters: $e');
+      debugPrintIt('Error registering Hive adapters: $e');
       return false;
     }
     adaptersRegistered = true;

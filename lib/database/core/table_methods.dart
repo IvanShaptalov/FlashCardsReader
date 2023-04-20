@@ -8,10 +8,10 @@ class FlashcardDatabaseProvider {
 
   static void selectSession(bool isTest) {
     if (isTest) {
-      debugPrint('test session selected');
+      debugPrintIt('test session selected');
       currentSession = DataBase.flashcardsTestSession;
     } else {
-      debugPrint('normal session selected');
+      debugPrintIt('normal session selected');
       currentSession = DataBase.flashcardsSession;
     }
   }
@@ -27,7 +27,7 @@ class FlashcardDatabaseProvider {
       await currentSession!.put(flashCard.id, flashCard);
       return true;
     } catch (e) {
-      debugPrint('error while write or edit flashcardCollection $e');
+      debugPrintIt('error while write or edit flashcardCollection $e');
       return false;
     }
   }
@@ -54,7 +54,7 @@ class FlashcardDatabaseProvider {
 
       return true;
     } catch (e) {
-      debugPrint('error while write or edit flashcardCollection $e');
+      debugPrintIt('error while write or edit flashcardCollection $e');
       return false;
     }
   }
@@ -72,7 +72,7 @@ class FlashcardDatabaseProvider {
       await currentSession!.deleteAll(ids);
       return true;
     } catch (e) {
-      debugPrint('error while write or edit List of flashcardCollections $e');
+      debugPrintIt('error while write or edit List of flashcardCollections $e');
       return false;
     }
   }
@@ -93,7 +93,7 @@ class FlashcardDatabaseProvider {
 
       return true;
     } catch (e) {
-      debugPrint('error move to trash flashcardCollection $e');
+      debugPrintIt('error move to trash flashcardCollection $e');
       return false;
     }
   }
@@ -115,7 +115,7 @@ class FlashcardDatabaseProvider {
       await currentSession!.deleteAll(ids);
       return true;
     } catch (e) {
-      debugPrint('error while delete flashcardCollection $e');
+      debugPrintIt('error while delete flashcardCollection $e');
       return false;
     }
   }
@@ -126,7 +126,7 @@ class FlashcardDatabaseProvider {
       await currentSession!.delete(id);
       return true;
     } catch (e) {
-      debugPrint('error while delete flashcardCollection $e');
+      debugPrintIt('error while delete flashcardCollection $e');
       return false;
     }
   }
@@ -137,7 +137,7 @@ class FlashcardDatabaseProvider {
       return FlashCardCollection.sortedByDate(currentSession!.values.toSet())
           .toList();
     } catch (e) {
-      debugPrint('error while get flashcardCollection $e');
+      debugPrintIt('error while get flashcardCollection $e');
       return [];
     }
   }
@@ -151,7 +151,7 @@ class FlashcardDatabaseProvider {
               .toSet())
           .toList();
     } catch (e) {
-      debugPrint('error while get flashcardCollection $e');
+      debugPrintIt('error while get flashcardCollection $e');
       return [];
     }
   }
@@ -163,7 +163,7 @@ class FlashcardDatabaseProvider {
     try {
       return currentSession!.get(collectionId);
     } catch (e) {
-      debugPrint('error while get flashcardCollection $e');
+      debugPrintIt('error while get flashcardCollection $e');
       return null;
     }
   }
@@ -174,10 +174,10 @@ class ThemeDatabaseProvider {
 
   static void selectSession(bool isTest) {
     if (isTest) {
-      debugPrint('test session selected');
+      debugPrintIt('test session selected');
       currentSession = DataBase.settingsTestSession;
     } else {
-      debugPrint('normal session selected');
+      debugPrintIt('normal session selected');
       currentSession = DataBase.settingsSession;
     }
   }
@@ -190,7 +190,7 @@ class ThemeDatabaseProvider {
       await currentSession!.put('theme', theme);
       return true;
     } catch (e) {
-      debugPrint('error while write or edit flashcardCollection $e');
+      debugPrintIt('error while write or edit flashcardCollection $e');
       return false;
     }
   }
@@ -213,7 +213,7 @@ class ThemeDatabaseProvider {
       await currentSession!.delete('theme');
       return true;
     } catch (e) {
-      debugPrint('error while delete flashcardCollection $e');
+      debugPrintIt('error while delete flashcardCollection $e');
       return false;
     }
   }

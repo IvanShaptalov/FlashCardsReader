@@ -3,13 +3,13 @@ part of 'flash_training_bloc.dart';
 abstract class FlashTrainingEvent {}
 
 class InitTrainingModelEvent extends FlashTrainingEvent {
-  final FlashCardTrainingModel trainingModel;
+  TrainingModel trainingModel;
 
   InitTrainingModelEvent({required this.trainingModel});
 }
 
 class SelectTrainingModeEvent extends FlashTrainingEvent {
-  final FlashCardTrainingMode mode;
+  final TrainMode mode;
 
   SelectTrainingModeEvent({required this.mode});
 }

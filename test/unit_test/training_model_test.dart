@@ -6,7 +6,7 @@ void main() {
   group('Flashcard training', () {
     test('Initialized', () async {
       var collection = flashFixture();
-      var tModel = FlashCardTrainingModel(
+      var tModel = TrainingModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
       );
@@ -22,7 +22,7 @@ void main() {
 
     test('Empty train collection', () async {
       var collection = flashFixture();
-      var tModel = FlashCardTrainingModel(
+      var tModel = TrainingModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
       );
@@ -36,18 +36,18 @@ void main() {
 
     test('train words - correct', () async {
       var collection = flashFixture();
-      var tModel = FlashCardTrainingModel(
+      var tModel = TrainingModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
       );
 
       var tFlash = tModel.getToTrain();
 
-      tModel.trainFlashCard(tFlash!, true);
+      tModel.trainFlashCardAsync(tFlash!, true);
 
       expect(tFlash.correctAnswers, 1);
 
-      tModel.trainFlashCard(tFlash, true);
+      tModel.trainFlashCardAsync(tFlash, true);
 
       expect(tFlash.correctAnswers, 2);
       expect(tFlash.wrongAnswers, 0);
@@ -55,18 +55,18 @@ void main() {
 
     test('train words - correct', () async {
       var collection = flashFixture();
-      var tModel = FlashCardTrainingModel(
+      var tModel = TrainingModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
       );
 
       var tFlash = tModel.getToTrain();
 
-      tModel.trainFlashCard(tFlash!, true);
+      tModel.trainFlashCardAsync(tFlash!, true);
 
       expect(tFlash.correctAnswers, 1);
 
-      tModel.trainFlashCard(tFlash, true);
+      tModel.trainFlashCardAsync(tFlash, true);
 
       expect(tFlash.correctAnswers, 2);
       expect(tFlash.wrongAnswers, 0);
@@ -74,7 +74,7 @@ void main() {
 
     test('train words - incorrect', () async {
       var collection = flashFixture();
-      var tModel = FlashCardTrainingModel(
+      var tModel = TrainingModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
       );
@@ -82,11 +82,11 @@ void main() {
       var tFlash = tModel.getToTrain();
 
       assert(tFlash != null);
-      tModel.trainFlashCard(tFlash!, false);
+      tModel.trainFlashCardAsync(tFlash!, false);
 
       expect(tFlash.wrongAnswers, 1);
 
-      tModel.trainFlashCard(tFlash, false);
+      tModel.trainFlashCardAsync(tFlash, false);
 
       expect(tFlash.correctAnswers, 0);
       expect(tFlash.wrongAnswers, 2);
@@ -94,7 +94,7 @@ void main() {
 
     test('flashcards learned test', () async {
       var collection = flashFixture();
-      var tModel = FlashCardTrainingModel(
+      var tModel = TrainingModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
       );
@@ -105,7 +105,7 @@ void main() {
         var tFlash = tModel.getToTrain();
 
         if (tFlash != null) {
-          tModel.trainFlashCard(tFlash, true);
+          tModel.trainFlashCardAsync(tFlash, true);
         }
       }
       expect(tModel.getToTrain(), null);

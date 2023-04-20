@@ -1,7 +1,8 @@
+import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 
-class FlashCardTrainingModel {
+class TrainingModel {
   /// ==============================================[FIELDS AND CONSTRUCTOR]============================================
   final FlashCardCollection flashCardsCollection;
   int _currentFlashCardIndex = 0;
@@ -18,17 +19,17 @@ class FlashCardTrainingModel {
   /// level of learned flash cards, if upper than this value, the flash card considered as learned
   final int _learnedBound = 5;
 
-  FlashCardTrainingModel({
+  TrainingModel({
     required this.flashCardsCollection,
     required this.numberOfFlashCards,
   });
 
-  FlashCardTrainingModel copyWith({
+  TrainingModel copyWith({
     FlashCardCollection? flashCardsCollection,
     int? currentFlashCardIndex,
     int? numberOfFlashCards,
   }) {
-    return FlashCardTrainingModel(
+    return TrainingModel(
       flashCardsCollection: flashCardsCollection ?? this.flashCardsCollection,
       numberOfFlashCards: numberOfFlashCards ?? this.numberOfFlashCards,
     );
@@ -37,7 +38,7 @@ class FlashCardTrainingModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FlashCardTrainingModel &&
+      other is TrainingModel &&
           runtimeType == other.runtimeType &&
           flashCardsCollection == other.flashCardsCollection &&
           _currentFlashCardIndex == other._currentFlashCardIndex &&
@@ -56,27 +57,26 @@ class FlashCardTrainingModel {
 
   /// ================================================[TRAINIG METHODS]================================================
   /// get the next flash card to train
-  FlashCard? getToTrain(
-      {FlashCardTrainingMode mode = FlashCardTrainingMode.all}) {
+  FlashCard? getToTrain({TrainMode mode = TrainMode.all}) {
     List<FlashCard> flashList = flashCardsCollection.flashCardSet.toList();
 
     switch (mode) {
-      case FlashCardTrainingMode.all:
+      case TrainMode.all:
         flashList = flashCardsCollection.flashCardSet.toList();
         break;
-      case FlashCardTrainingMode.hard:
+      case TrainMode.hard:
         flashList = flashCardsCollection.sortedBySuccessRateFromMostDifficult();
         break;
-      case FlashCardTrainingMode.simple:
+      case TrainMode.simple:
         flashList = flashCardsCollection.sortedBySuccessRateFromMostSimple();
         break;
-      case FlashCardTrainingMode.newest:
+      case TrainMode.newest:
         flashList = flashCardsCollection.sortedByDateAscending();
         break;
-      case FlashCardTrainingMode.oldest:
+      case TrainMode.oldest:
         flashList = flashCardsCollection.sortedByDateDescending();
         break;
-      case FlashCardTrainingMode.random:
+      case TrainMode.random:
         flashList = flashCardsCollection.flashCardSet.toList();
         break;
 
@@ -101,7 +101,7 @@ class FlashCardTrainingModel {
   }
 
   /// train and save the flash card
-  bool trainFlashCard(FlashCard flashCard, bool correct) {
+  Future<bool> trainFlashCardAsync(FlashCard flashCard, bool correct) async{
     if (correct) {
       flashCard.correctAnswers++;
     } else {
@@ -109,16 +109,18 @@ class FlashCardTrainingModel {
     }
 
     // delay next flashcard test date
-    return _saveTrainedFlashCard(flashCard);
+    return await _saveTrainedFlashCard(flashCard);
   }
 
-  bool _saveTrainedFlashCard(FlashCard flashCard) {
+  Future<bool> _saveTrainedFlashCard(FlashCard flashCard) async{
     // remove flashcard from the collection
     flashCardsCollection.flashCardSet
         .removeWhere((element) => element == flashCard);
 
     // add flashcard to the collection
-    return flashCardsCollection.flashCardSet.add(flashCard);
+    flashCardsCollection.flashCardSet.add(flashCard);
+
+    return await FlashcardDatabaseProvider.writeEditAsync(flashCardsCollection);
   }
 
   /// ================================================[HELPER METHODS]================================================
