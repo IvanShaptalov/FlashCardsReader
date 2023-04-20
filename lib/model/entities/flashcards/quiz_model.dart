@@ -1,14 +1,14 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 
-class TrainingModel {
+class QuizModel {
   /// ==============================================[FIELDS AND CONSTRUCTOR]============================================
   final FlashCardCollection flashCardsCollection;
   int _currentFlashCardIndex = 0;
   final int numberOfFlashCards;
 
   // training is finished when the current flash card index is greater than the number of flash cards in the collection
-  bool get isTrainingFinished =>
+  bool get isQuizFinished =>
       _currentFlashCardIndex >= flashCardsCollection.flashCardSet.length ||
       _currentFlashCardIndex >= numberOfFlashCards ||
       isEmpty;
@@ -18,17 +18,17 @@ class TrainingModel {
   /// level of learned flash cards, if upper than this value, the flash card considered as learned
   final int _learnedBound = 5;
 
-  TrainingModel({
+  QuizModel({
     required this.flashCardsCollection,
     required this.numberOfFlashCards,
   });
 
-  TrainingModel copyWith({
+  QuizModel copyWith({
     FlashCardCollection? flashCardsCollection,
     int? currentFlashCardIndex,
     int? numberOfFlashCards,
   }) {
-    return TrainingModel(
+    return QuizModel(
       flashCardsCollection: flashCardsCollection ?? this.flashCardsCollection,
       numberOfFlashCards: numberOfFlashCards ?? this.numberOfFlashCards,
     );
@@ -37,21 +37,21 @@ class TrainingModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TrainingModel &&
+      other is QuizModel &&
           runtimeType == other.runtimeType &&
           flashCardsCollection == other.flashCardsCollection &&
           _currentFlashCardIndex == other._currentFlashCardIndex &&
-          isTrainingFinished == other.isTrainingFinished;
+          isQuizFinished == other.isQuizFinished;
 
   @override
   int get hashCode =>
       flashCardsCollection.hashCode ^
       _currentFlashCardIndex.hashCode ^
-      isTrainingFinished.hashCode;
+      isQuizFinished.hashCode;
 
   @override
   String toString() {
-    return 'FlashCardTrainingModel{flashCards: $flashCardsCollection, currentFlashCardIndex: $_currentFlashCardIndex, isTrainingFinished: $isTrainingFinished}';
+    return 'FlashCardTrainingModel{flashCards: $flashCardsCollection, currentFlashCardIndex: $_currentFlashCardIndex, isTrainingFinished: $isQuizFinished}';
   }
 
   /// ================================================[TRAINIG METHODS]================================================
@@ -84,7 +84,7 @@ class TrainingModel {
     }
 
     // check if the training is finished
-    if (_currentFlashCardIndex > numberOfFlashCards || isTrainingFinished) {
+    if (_currentFlashCardIndex > numberOfFlashCards || isQuizFinished) {
       return null;
     }
     // if learned - get the next flash card
@@ -100,7 +100,7 @@ class TrainingModel {
   }
 
   /// train and save the flash card
-  Future<bool> trainFlashCardAsync(FlashCard flashCard, bool correct) async {
+  Future<bool> quizFlashCardAsync(FlashCard flashCard, bool correct) async {
     if (correct) {
       flashCard.correctAnswers++;
     } else {
@@ -108,10 +108,10 @@ class TrainingModel {
     }
 
     // delay next flashcard test date
-    return await _saveTrainedFlashCardInRuntime(flashCard);
+    return await _saveQuizedFlashCardInRuntime(flashCard);
   }
 
-  Future<bool> _saveTrainedFlashCardInRuntime(FlashCard flashCard) async {
+  Future<bool> _saveQuizedFlashCardInRuntime(FlashCard flashCard) async {
     // remove flashcard from the collection
     flashCardsCollection.flashCardSet
         .removeWhere((element) => element == flashCard);
