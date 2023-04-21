@@ -87,13 +87,6 @@ class _QuizMenuViewState extends State<QuizMenuView> {
 
   @override
   void initState() {
-    // context.read<QuizBloc>().add(InitQuizEvent(
-    //     flashCardsCollection: context
-    //         .read<FlashCardBloc>()
-    //         .state
-    //         .copyWith(fromTrash: false)
-    //         .flashCards
-    //         .first));
     super.initState();
   }
 
@@ -218,16 +211,21 @@ class SelectQuizMode extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
-          backgroundColor: isSelected? Colors.teal: Colors.blueGrey,
+          backgroundColor: isSelected ? Colors.teal : Colors.blueGrey,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
         ),
         onPressed: () {
+          QuizModeProvider.mode = mode;
           context.read<QuizBloc>().add(ChangeQuizModeEvent(mode: mode));
         },
         child: Text(mode.name),
       ),
     );
   }
+}
+
+class QuizModeProvider {
+  static QuizMode mode = QuizMode.all;
 }

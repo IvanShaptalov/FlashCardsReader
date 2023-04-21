@@ -1,12 +1,21 @@
-import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class QuizTrainer extends StatefulWidget {
-  const QuizTrainer({super.key});
+  const QuizTrainer(
+      {required this.numberOfFlashCards,
+      required this.mode,
+      required this.fCollection,
+      super.key});
+  final FlashCardCollection fCollection;
+  final QuizMode mode;
+  final int numberOfFlashCards;
+
   @override
   State<QuizTrainer> createState() => _QuizTrainerState();
 }
@@ -15,16 +24,25 @@ class _QuizTrainerState extends State<QuizTrainer> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => QuizBloc(),
-        child: BlocProvider(
-          create: (_) => FlashCardBloc(),
-          child: const QuizTrainerView(),
-        ));
+      create: (_) => QuizBloc(),
+      child: QuizTrainerView(
+          numberOfFlashCards: widget.numberOfFlashCards,
+          mode: widget.mode,
+          fCollection: widget.fCollection),
+    );
   }
 }
 
 class QuizTrainerView extends StatefulWidget {
-  const QuizTrainerView({super.key});
+  const QuizTrainerView(
+      {required this.numberOfFlashCards,
+      required this.mode,
+      required this.fCollection,
+      super.key});
+  final FlashCardCollection fCollection;
+  final QuizMode mode;
+  final int numberOfFlashCards;
+
   final Duration cardAppearDuration = const Duration(milliseconds: 375);
 
   @override
@@ -50,6 +68,10 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
 
   @override
   void initState() {
+    context.read<QuizBloc>().add(StartQuizEvent(
+        flashCardsCollection: widget.fCollection,
+        mode: widget.mode,
+        numberOfQuestions: widget.numberOfFlashCards));
     super.initState();
   }
 
@@ -80,6 +102,7 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
                   .quizModel
                   .flashCardsCollection
                   .title),
+              Text(context.read<QuizBloc>().state.mode.name),
               const Text('Quiz Menu'),
               IconButton(
                   onPressed: () {

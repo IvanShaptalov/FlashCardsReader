@@ -4,6 +4,7 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,12 +50,14 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
       IconButton(
           onPressed: () {
             // start quiz with the selected flashcard collection
-            context.read<QuizBloc>().add(InitQuizEvent(
-                
-                flashCardsCollection: widget.flashCardCollection));
-            print('====================================================PASSSSED');
-            // navigate to quiz view
-            MyRouter.pushPage(context, const QuizTrainer());
+
+            MyRouter.pushPage(
+                context,
+                QuizTrainer(
+                    numberOfFlashCards:
+                        widget.flashCardCollection.flashCardSet.length,
+                    mode: QuizModeProvider.mode,
+                    fCollection: widget.flashCardCollection));
           },
           icon: const Icon(Icons.run_circle))
     ];
