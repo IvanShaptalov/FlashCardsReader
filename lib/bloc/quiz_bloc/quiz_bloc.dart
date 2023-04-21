@@ -30,5 +30,9 @@ class QuizBloc extends Bloc<QuizEvent, QuizInitial> {
       emit(QuizInitial(
           id: uuid.v4(), flashCardsCollection: event.flashCardsCollection));
     });
+
+    on<ChangeQuizModeEvent>((event, emit) {
+      emit(state.changeQuizMode(event.mode));
+    });
   }
 }

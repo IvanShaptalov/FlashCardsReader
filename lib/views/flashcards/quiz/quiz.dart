@@ -5,26 +5,6 @@ import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class QuizMenu extends StatefulWidget {
-  const QuizMenu({super.key});
-
-  @override
-  State<QuizMenu> createState() => _QuizMenuState();
-}
-
-class _QuizMenuState extends State<QuizMenu> {
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (_) => QuizBloc(),
-        child: BlocProvider(
-          create: (_) => FlashCardBloc(),
-          child: QuizView(),
-        ));
-  }
-}
-
-// ignore: must_be_immutable
 class QuizView extends StatefulWidget {
   QuizView({super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
@@ -70,7 +50,8 @@ class _QuizViewState extends State<QuizView> {
         debugPrintIt(
             '===================================UPDATE UI===================================');
         debugPrintIt(context.read<QuizBloc>().state.currentCard?.questionWords);
-        debugPrintIt(context.read<QuizBloc>().state.currentCard?.correctAnswers);
+        debugPrintIt(
+            context.read<QuizBloc>().state.currentCard?.correctAnswers);
         debugPrintIt(context.read<QuizBloc>().state.currentCard?.wrongAnswers);
         var appBar = getAppBar();
         appBarHeight = appBar.preferredSize.height;

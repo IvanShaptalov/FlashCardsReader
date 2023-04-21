@@ -28,6 +28,14 @@ class AnswerFlashEvent extends QuizEvent {
 
 class FinishQuizEvent extends QuizEvent {}
 
+class ChangeQuizModeEvent extends QuizEvent {
+  final QuizMode mode;
+
+  ChangeQuizModeEvent({
+    required this.mode,
+  });
+}
+
 class InitQuizEvent extends QuizEvent {
   final FlashCardCollection flashCardsCollection;
 
