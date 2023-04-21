@@ -126,7 +126,8 @@ class FlashCardCollection {
   FlashCardCollection copy() {
     return FlashCardCollection(id,
         title: title,
-        flashCardSet: flashCardSet,
+        // copy the flashcard set
+        flashCardSet: Set.from(flashCardSet),
         createdAt: createdAt,
         isDeleted: isDeleted,
         questionLanguage: questionLanguage,
