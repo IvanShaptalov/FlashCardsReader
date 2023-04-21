@@ -5,15 +5,33 @@ import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class QuizView extends StatefulWidget {
-  QuizView({super.key});
-  Duration cardAppearDuration = const Duration(milliseconds: 375);
-
+class QuizTrainer extends StatefulWidget {
+  const QuizTrainer({super.key});
   @override
-  State<QuizView> createState() => _QuizViewState();
+  State<QuizTrainer> createState() => _QuizTrainerState();
 }
 
-class _QuizViewState extends State<QuizView> {
+class _QuizTrainerState extends State<QuizTrainer> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+        create: (_) => QuizBloc(),
+        child: BlocProvider(
+          create: (_) => FlashCardBloc(),
+          child: const QuizTrainerView(),
+        ));
+  }
+}
+
+class QuizTrainerView extends StatefulWidget {
+  const QuizTrainerView({super.key});
+  final Duration cardAppearDuration = const Duration(milliseconds: 375);
+
+  @override
+  State<QuizTrainerView> createState() => _QuizTrainerViewState();
+}
+
+class _QuizTrainerViewState extends State<QuizTrainerView> {
   int columnCount = 2;
   double appBarHeight = 0;
 
@@ -32,13 +50,6 @@ class _QuizViewState extends State<QuizView> {
 
   @override
   void initState() {
-    context.read<QuizBloc>().add(InitQuizEvent(
-        flashCardsCollection: context
-            .read<FlashCardBloc>()
-            .state
-            .copyWith(fromTrash: false)
-            .flashCards
-            .first));
     super.initState();
   }
 
@@ -50,6 +61,7 @@ class _QuizViewState extends State<QuizView> {
         debugPrintIt(
             '===================================UPDATE UI===================================');
         debugPrintIt(context.read<QuizBloc>().state.currentCard?.questionWords);
+        debugPrintIt(context.read<QuizBloc>().state.flashCardsCollection.title);
         debugPrintIt(
             context.read<QuizBloc>().state.currentCard?.correctAnswers);
         debugPrintIt(context.read<QuizBloc>().state.currentCard?.wrongAnswers);
@@ -58,11 +70,16 @@ class _QuizViewState extends State<QuizView> {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: appBar,
-          drawer: getDrawer(),
           body: Center(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              Text(context
+                  .read<QuizBloc>()
+                  .state
+                  .quizModel
+                  .flashCardsCollection
+                  .title),
               const Text('Quiz Menu'),
               IconButton(
                   onPressed: () {

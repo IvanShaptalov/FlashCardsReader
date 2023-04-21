@@ -36,7 +36,7 @@ FlashCardCollection flashFixture() {
   );
   final FlashCardCollection testFlashCardCollection = FlashCardCollection(
       uuid.v4().toString(),
-      title: 'English-German',
+      title: 'Fixture Collection',
       flashCardSet: {flashCard1, flashCard2},
       createdAt: DateTime.now(),
       isDeleted: false,

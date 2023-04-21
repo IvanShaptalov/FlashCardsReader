@@ -15,6 +15,17 @@ class MyRouter {
     return val;
   }
 
+  static pushPage(BuildContext context, Widget page) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return page;
+        },
+      ),
+    );
+  }
+
   static pushPageReplacement(BuildContext context, Widget page) {
     Navigator.pushReplacement(
       context,

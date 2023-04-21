@@ -2,7 +2,6 @@ import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcard_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_flash_collection.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
@@ -88,13 +87,13 @@ class _QuizMenuViewState extends State<QuizMenuView> {
 
   @override
   void initState() {
-    context.read<QuizBloc>().add(InitQuizEvent(
-        flashCardsCollection: context
-            .read<FlashCardBloc>()
-            .state
-            .copyWith(fromTrash: false)
-            .flashCards
-            .first));
+    // context.read<QuizBloc>().add(InitQuizEvent(
+    //     flashCardsCollection: context
+    //         .read<FlashCardBloc>()
+    //         .state
+    //         .copyWith(fromTrash: false)
+    //         .flashCards
+    //         .first));
     super.initState();
   }
 
@@ -192,7 +191,7 @@ class _QuizMenuViewState extends State<QuizMenuView> {
                                     columnCount: columnCount,
                                     child: SlideAnimation(
                                       child: FadeInAnimation(
-                                          child: QuizFlashCardCollectionWidget(
+                                          child: QuizFlashCollectionWidget(
                                               flashCollectionList[index])),
                                     ),
                                   ),

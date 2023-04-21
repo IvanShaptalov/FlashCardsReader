@@ -14,8 +14,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizInitial> {
           flashCardsCollection: flashFixture(),
         )) {
     on<StartQuizEvent>((event, emit) {
-      emit(QuizInitial(
-          id: uuid.v4(), flashCardsCollection: event.flashCardsCollection));
+      emit(state.copyWith(id: uuid.v4(), flashCardsCollection: event.flashCardsCollection, mode: event.mode));
     });
     on<NextFlashEvent>((event, emit) {
       emit(state.nextFlash());
