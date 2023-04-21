@@ -123,6 +123,16 @@ class FlashCardCollection {
       required this.questionLanguage,
       required this.answerLanguage});
 
+  FlashCardCollection copy() {
+    return FlashCardCollection(id,
+        title: title,
+        flashCardSet: flashCardSet,
+        createdAt: createdAt,
+        isDeleted: isDeleted,
+        questionLanguage: questionLanguage,
+        answerLanguage: answerLanguage);
+  }
+
   @HiveField(0)
   String id;
   @HiveField(1)

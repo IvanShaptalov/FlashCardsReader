@@ -1,6 +1,7 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
@@ -47,16 +48,22 @@ class WordFormContoller {
   }
 }
 
-class AddEditFlashCardBottomSheet {
-  AddEditFlashCardBottomSheet(
+class UpdateFlashCardBottomSheet {
+  UpdateFlashCardBottomSheet(
       {FlashCardCollection? creatingFlashC, this.edit = false}) {
-    flashCardCollection = creatingFlashC ?? flashFixture();
+    if (creatingFlashC != null) {
+      debugPrintIt('create copy of flashcard collection');
+      flashCardCollection = creatingFlashC.copy();
+    } else {
+      debugPrintIt('create flashFixture');
+      flashCardCollection = flashFixture();
+    }
   }
   bool edit;
 
   late FlashCardCollection flashCardCollection;
 
-  showAddEditMenu(BuildContext specialContext) async {
+  showUpdateFlashCardMenu(BuildContext specialContext) async {
     showModalBottomSheet(
         // isDismissible: true,
         isScrollControlled: true,
@@ -91,6 +98,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
     return IconButton(
         onPressed: () {
           if (widget.flashCardCollection.isValid) {
+            debugPrint('=====================add collection');
             widget.specialContext.read<FlashCardBloc>().add(
                 UpdateFlashCardEvent(
                     flashCardCollection: widget.flashCardCollection));

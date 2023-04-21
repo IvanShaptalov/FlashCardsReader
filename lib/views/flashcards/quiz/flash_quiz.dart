@@ -1,6 +1,5 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
-import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +28,6 @@ class _QuizMenuState extends State<QuizMenu> {
 class QuizView extends StatefulWidget {
   QuizView({super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
-  // List<FlashCardCollection> flashCardCollection =
-  //     FlashCardCollectionProvider.getFlashCards(isDeleted: true);
 
   @override
   State<QuizView> createState() => _QuizViewState();
@@ -42,23 +39,6 @@ class _QuizViewState extends State<QuizView> {
 
   double getQuizForm(BuildContext context) =>
       MediaQuery.of(context).orientation == Orientation.portrait ? 0.65 : 1;
-
-  // List<Widget> bottomNavigationBarItems(
-  //     List<FlashCardCollection> flashCardCollection) {
-  //   return [
-  //     if (flashCardCollection.isNotEmpty)
-  //       IconButton(
-  //         icon: const Icon(Icons.delete_forever),
-  //         onPressed: () {
-  //           // delete all from trash
-  //           context.read<FlashCardBloc>().add(DeleteAllTrashPermanentlyEvent());
-  //           context
-  //               .read<FlashCardBloc>()
-  //               .add(GetFlashCardsEvent(isDeleted: true));
-  //         },
-  //       ),
-  //   ];
-  // }
 
   AppBar getAppBar() {
     return AppBar(

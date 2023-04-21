@@ -71,9 +71,9 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
             onPressed: () {
               // if merge mode is not activated
               if (!FlashCardCollectionProvider.isMergeModeStarted) {
-                AddEditFlashCardBottomSheet(
+                UpdateFlashCardBottomSheet(
                         creatingFlashC: widget.flashCardCollection, edit: true)
-                    .showAddEditMenu(context);
+                    .showUpdateFlashCardMenu(context);
               } else {
                 OverlayNotificationProvider.showOverlayNotification(
                     'merge mode is activated, cannot edit',

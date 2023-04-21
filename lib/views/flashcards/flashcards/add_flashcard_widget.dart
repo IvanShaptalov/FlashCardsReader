@@ -105,10 +105,10 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                   //? in plans add languages
                   IconButton(
                       onPressed: () {
-                        AddEditFlashCardBottomSheet(
+                        UpdateFlashCardBottomSheet(
                                 creatingFlashC: FlashCardCreatingUIProvider
                                     .creatingFlashCardCollection)
-                            .showAddEditMenu(context);
+                            .showUpdateFlashCardMenu(context);
                       },
                       icon: const Icon(Icons.add)),
                 ],
