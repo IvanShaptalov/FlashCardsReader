@@ -2,6 +2,7 @@ import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,7 +59,8 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
 
   AppBar getAppBar() {
     return AppBar(
-      title: const Text('Quiz Menu'),
+      title: Text(
+          context.read<QuizBloc>().state.quizModel.flashCardsCollection.title),
     );
   }
 
@@ -72,6 +74,7 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
         flashCardCollection: widget.fCollection,
         mode: widget.mode,
         numberOfQuestions: widget.numberOfFlashCards));
+    
     super.initState();
   }
 
@@ -109,50 +112,19 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
         var appBar = getAppBar();
         appBarHeight = appBar.preferredSize.height;
         return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: appBar,
-          body: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(context
-                  .read<QuizBloc>()
-                  .state
-                  .quizModel
-                  .flashCardsCollection
-                  .title),
-              Text(context.read<QuizBloc>().state.quizModel.mode.name),
-              const Text('Quiz Menu'),
-              IconButton(
-                  onPressed: () {
-                    context.read<QuizBloc>().add(NextFlashEvent());
-                  },
-                  icon: const Icon(Icons.get_app)),
-              Text(context
-                      .read<QuizBloc>()
-                      .state
-                      .quizModel
-                      .currentFCard
-                      ?.questionWords ??
-                  'No question'),
-              Text(context
-                      .read<QuizBloc>()
-                      .state
-                      .quizModel
-                      .currentFCard
-                      ?.answerWords ??
-                  'No answer'),
-              IconButton(
-                  onPressed: () {
-                    context
-                        .read<QuizBloc>()
-                        .add(AnswerFlashEvent(isAnswerCorrect: true));
-                  },
-                  icon: const Icon(Icons.question_answer)),
-            ],
-          )),
-        );
+            resizeToAvoidBottomInset: false,
+            appBar: appBar,
+            body: VerticalQuiz());
       },
     );
   }
 }
+
+             
+//               IconButton(
+//                   onPressed: () {
+//                     context
+//                         .read<QuizBloc>()
+//                         .add(AnswerFlashEvent(isAnswerCorrect: true));
+//                   },
+//                   icon: const Icon(Icons.question_answer)),
