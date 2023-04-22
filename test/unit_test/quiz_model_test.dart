@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/quiz_model.dart';
+import 'package:flashcards_reader/util/enums.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -9,6 +10,8 @@ void main() {
       var qModel = QuizModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
+        flashIndex: 0,
+        mode: QuizMode.all,
       );
 
       expect(qModel.isQuizFinished, false);
@@ -25,6 +28,8 @@ void main() {
       var qModel = QuizModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
+        flashIndex: 0,
+        mode: QuizMode.all,
       );
 
       qModel.flashCardsCollection.flashCardSet = {};
@@ -39,6 +44,8 @@ void main() {
       var qModel = QuizModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
+        flashIndex: 0,
+        mode: QuizMode.all,
       );
 
       var qFlash = qModel.getNextFlash();
@@ -58,6 +65,8 @@ void main() {
       var qModel = QuizModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
+        flashIndex: 0,
+        mode: QuizMode.all,
       );
 
       var qFlash = qModel.getNextFlash();
@@ -77,6 +86,8 @@ void main() {
       var qModel = QuizModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
+        flashIndex: 0,
+        mode: QuizMode.all,
       );
 
       var qFlash = qModel.getNextFlash();
@@ -97,6 +108,8 @@ void main() {
       var qModel = QuizModel(
         flashCardsCollection: collection,
         numberOfFlashCards: collection.flashCardSet.length,
+        flashIndex: 0,
+        mode: QuizMode.all,
       );
 
       // get flashcard

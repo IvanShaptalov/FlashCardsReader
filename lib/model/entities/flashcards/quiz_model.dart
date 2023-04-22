@@ -7,6 +7,8 @@ class QuizModel {
   final FlashCardCollection flashCardsCollection;
   int flashIndex;
   final int numberOfFlashCards;
+  FlashCard? currentFCard;
+  final QuizMode mode;
 
   // training is finished when the current flash card index is greater than the number of flash cards in the collection
   bool get isQuizFinished =>
@@ -22,17 +24,21 @@ class QuizModel {
   QuizModel(
       {required this.flashCardsCollection,
       required this.numberOfFlashCards,
-      this.flashIndex = 0});
+      this.flashIndex = 0,
+      required this.mode,
+      this.currentFCard});
 
-  QuizModel copyWith({
-    FlashCardCollection? flashCardsCollection,
-    int? currentFlashCardIndex,
-    int? numberOfFlashCards,
-  }) {
+  QuizModel copyWith(
+      {FlashCardCollection? flashCardsCollection,
+      int? currentFlashCardIndex,
+      int? numberOfFlashCards,
+      QuizMode? mode}) {
     return QuizModel(
       flashCardsCollection: flashCardsCollection ?? this.flashCardsCollection,
       numberOfFlashCards: numberOfFlashCards ?? this.numberOfFlashCards,
       flashIndex: currentFlashCardIndex ?? this.flashIndex,
+      mode: mode ?? this.mode,
+      currentFCard: currentFCard
     );
   }
 
@@ -87,7 +93,7 @@ class QuizModel {
     }
     // check current index not out of range and quiz is not finished
 
-    if (flashIndex+1 <= flashList.length) {
+    if (flashIndex + 1 <= flashList.length) {
       flashIndex++;
     } else {
       debugPrintIt(flashIndex);
@@ -96,10 +102,9 @@ class QuizModel {
     }
     debugPrintIt('current flash card index: $flashIndex');
 
-    
     // if learned - get the next flash card
 
-    if (_isFlashCardLearned(flashList.elementAt(flashIndex-1))) {
+    if (_isFlashCardLearned(flashList.elementAt(flashIndex - 1))) {
       // increment the current flash card index and try to get the next flash card
       var flash = getNextFlash(mode: mode);
       debugPrintIt('flash: $flash');

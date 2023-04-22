@@ -4,53 +4,61 @@ abstract class QuizState {}
 
 // ignore: must_be_immutable
 class QuizInitial extends QuizState {
-  final String id;
-  final FlashCardCollection flashCardsCollection;
-  FlashCard? currentCard;
-
-  QuizMode mode = QuizMode.all;
+  final String stateId;
 
   late QuizModel quizModel;
 
-  // change id to update ui, fucking bloc
+  /// notice, you must manually set [currentCard], else it will be null
   QuizInitial copyWith({
-    String? id,
+    String? stateId,
     FlashCardCollection? flashCardsCollection,
     FlashCard? currentCard,
     int? cFlashIndex,
     QuizMode? mode,
+    int? numberOfFlashCards,
   }) {
     return QuizInitial(
-        id: id ?? this.id,
-        flashCardsCollection: flashCardsCollection ?? this.flashCardsCollection,
-        currentCard: currentCard,
-        flashIndex: cFlashIndex ?? quizModel.flashIndex,
-        mode: mode ?? this.mode);
+      stateId: stateId ?? this.stateId,
+      flashCardsCollection:
+          flashCardsCollection ?? quizModel.flashCardsCollection,
+      // can copy with null
+      currentFlashCard: currentCard,
+      flashIndex: cFlashIndex ?? quizModel.flashIndex,
+      mode: mode ?? quizModel.mode,
+      numberOfFlashCards: numberOfFlashCards ?? quizModel.numberOfFlashCards,
+    );
   }
 
+  /// notice, you must manually set [currentCard], else it will be null
   QuizInitial(
-      {required this.id,
-      required this.flashCardsCollection,
-      this.currentCard,
+      {required this.stateId,
+      flashCardsCollection,
+      numberOfFlashCards,
       flashIndex,
-      this.mode = QuizMode.all}) {
+      currentFlashCard,
+      mode}) {
     quizModel = QuizModel(
         flashCardsCollection: flashCardsCollection,
-        numberOfFlashCards: flashCardsCollection.flashCardSet.length,
-        flashIndex: flashIndex ?? 0);
+        numberOfFlashCards: numberOfFlashCards,
+        flashIndex: flashIndex,
+        currentFCard: currentFlashCard,
+        mode: mode);
   }
 
   /// ==============================================[METHODS]==============================================
   QuizInitial changeCollection(FlashCardCollection fCollection) {
-    return copyWith(id: uuid.v4(), flashCardsCollection: fCollection);
+    return copyWith(
+        stateId: uuid.v4(),
+        flashCardsCollection: fCollection,
+        currentCard: quizModel.currentFCard);
   }
 
   QuizInitial nextFlash() {
     // return state with next card or null if no more cards
-    print('now, when copyWith current Card is :$currentCard');
+    print('now, when copyWith current Card is :$quizModel.currentCard');
     return copyWith(
-      currentCard: quizModel.getNextFlash(mode: mode),
-      id: uuid.v4(),
+      currentCard: quizModel.getNextFlash(mode: quizModel.mode),
+      stateId: uuid.v4(),
     );
   }
 
@@ -61,16 +69,18 @@ class QuizInitial extends QuizState {
     }
 
     // return state with deleted current card from training
-    return copyWith(id: uuid.v4(), currentCard: quizModel.getNextFlash());
+    return copyWith(stateId: uuid.v4(), currentCard: quizModel.getNextFlash());
   }
 
   QuizInitial finishQuiz() {
     // return state with deleted current card from training
     return copyWith(
-        currentCard: null, flashCardsCollection: flashFixture(), id: uuid.v4());
+        currentCard: null,
+        flashCardsCollection: flashFixture(),
+        stateId: uuid.v4());
   }
 
   QuizInitial changeQuizMode(QuizMode mode) {
-    return copyWith(id: uuid.v4(), mode: mode);
+    return copyWith(stateId: uuid.v4(), mode: mode);
   }
 }

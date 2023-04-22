@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
+import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_flash_collection.dart';
@@ -87,6 +88,10 @@ class _QuizMenuViewState extends State<QuizMenuView> {
 
   @override
   void initState() {
+    context.read<QuizBloc>().add(InitQuizEvent(
+        flashCardsCollection:
+            context.read<FlashCardBloc>().state.flashCards.first ??
+                flashFixture()));
     super.initState();
   }
 
@@ -106,10 +111,24 @@ class _QuizMenuViewState extends State<QuizMenuView> {
 
         debugPrintIt(
             '===================================UPDATE MENU UI===================================');
-        debugPrintIt(context.read<QuizBloc>().state.currentCard?.questionWords);
-        debugPrintIt(
-            context.read<QuizBloc>().state.currentCard?.correctAnswers);
-        debugPrintIt(context.read<QuizBloc>().state.currentCard?.wrongAnswers);
+        debugPrintIt(context
+            .read<QuizBloc>()
+            .state
+            .quizModel
+            .currentFCard
+            ?.questionWords);
+        debugPrintIt(context
+            .read<QuizBloc>()
+            .state
+            .quizModel
+            .currentFCard
+            ?.correctAnswers);
+        debugPrintIt(context
+            .read<QuizBloc>()
+            .state
+            .quizModel
+            .currentFCard
+            ?.wrongAnswers);
         var appBar = getAppBar();
         appBarHeight = appBar.preferredSize.height;
         return Scaffold(
@@ -205,7 +224,7 @@ class SelectQuizMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = context.watch<QuizBloc>().state.mode == mode;
+    bool isSelected = context.watch<QuizBloc>().state.quizModel.mode == mode;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextButton(

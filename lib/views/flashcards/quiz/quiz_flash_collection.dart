@@ -50,7 +50,6 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
       IconButton(
           onPressed: () {
             // start quiz with the selected flashcard collection
-
             MyRouter.pushPage(
                 context,
                 QuizTrainer(

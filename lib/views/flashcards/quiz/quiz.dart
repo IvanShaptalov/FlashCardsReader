@@ -69,7 +69,7 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
   @override
   void initState() {
     context.read<QuizBloc>().add(StartQuizEvent(
-        flashCardsCollection: widget.fCollection,
+        flashCardCollection: widget.fCollection,
         mode: widget.mode,
         numberOfQuestions: widget.numberOfFlashCards));
     super.initState();
@@ -82,11 +82,30 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
       builder: (context, state) {
         debugPrintIt(
             '===================================UPDATE UI===================================');
-        debugPrintIt(context.read<QuizBloc>().state.currentCard?.questionWords);
-        debugPrintIt(context.read<QuizBloc>().state.flashCardsCollection.title);
-        debugPrintIt(
-            context.read<QuizBloc>().state.currentCard?.correctAnswers);
-        debugPrintIt(context.read<QuizBloc>().state.currentCard?.wrongAnswers);
+        debugPrintIt(context
+            .read<QuizBloc>()
+            .state
+            .quizModel
+            .currentFCard
+            ?.questionWords);
+        debugPrintIt(context
+            .read<QuizBloc>()
+            .state
+            .quizModel
+            .flashCardsCollection
+            .title);
+        debugPrintIt(context
+            .read<QuizBloc>()
+            .state
+            .quizModel
+            .currentFCard
+            ?.correctAnswers);
+        debugPrintIt(context
+            .read<QuizBloc>()
+            .state
+            .quizModel
+            .currentFCard
+            ?.wrongAnswers);
         var appBar = getAppBar();
         appBarHeight = appBar.preferredSize.height;
         return Scaffold(
@@ -102,16 +121,26 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
                   .quizModel
                   .flashCardsCollection
                   .title),
-              Text(context.read<QuizBloc>().state.mode.name),
+              Text(context.read<QuizBloc>().state.quizModel.mode.name),
               const Text('Quiz Menu'),
               IconButton(
                   onPressed: () {
                     context.read<QuizBloc>().add(NextFlashEvent());
                   },
                   icon: const Icon(Icons.get_app)),
-              Text(context.read<QuizBloc>().state.currentCard?.questionWords ??
+              Text(context
+                      .read<QuizBloc>()
+                      .state
+                      .quizModel
+                      .currentFCard
+                      ?.questionWords ??
                   'No question'),
-              Text(context.read<QuizBloc>().state.currentCard?.answerWords ??
+              Text(context
+                      .read<QuizBloc>()
+                      .state
+                      .quizModel
+                      .currentFCard
+                      ?.answerWords ??
                   'No answer'),
               IconButton(
                   onPressed: () {

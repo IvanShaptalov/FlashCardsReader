@@ -4,13 +4,13 @@ abstract class QuizEvent {}
 
 class StartQuizEvent extends QuizEvent {
   final int numberOfQuestions;
-  final FlashCardCollection flashCardsCollection;
+  final FlashCardCollection flashCardCollection;
   final QuizMode mode;
 
   StartQuizEvent({
     required this.numberOfQuestions,
     required this.mode,
-    required this.flashCardsCollection
+    required this.flashCardCollection
   });
 }
 
