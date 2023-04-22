@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class QuizFlashCard extends StatefulWidget {
-  const QuizFlashCard({super.key});
+  final BuildContext quizContext;
+  const QuizFlashCard({required this.quizContext, super.key});
 
   @override
   State<QuizFlashCard> createState() => _QuizFlashCardState();
@@ -33,8 +34,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                context
-                        .read<QuizBloc>()
+                BlocProvider.of<QuizBloc>(widget.quizContext)
                         .state
                         .quizModel
                         .currentFCard
@@ -50,8 +50,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                context
-                        .read<QuizBloc>()
+                BlocProvider.of<QuizBloc>(widget.quizContext)
                         .state
                         .quizModel
                         .currentFCard

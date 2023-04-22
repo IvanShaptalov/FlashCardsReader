@@ -1,4 +1,5 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_flash_card.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
@@ -20,15 +21,40 @@ class _VerticalQuizState extends State<VerticalQuiz> {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            WrongAnswerArea(),
+          children: [
+            DragTarget<bool>(onAccept: (data) {
+              debugPrintIt('answer is wrong');
+              BlocProvider.of<QuizBloc>(context)
+                  .add(AnswerFlashEvent(isAnswerCorrect: false));
+            },builder: (
+              BuildContext context,
+              List<dynamic> accepted,
+              List<dynamic> rejected,
+            ) {
+              return const WrongAnswerArea();
+            }),
             Draggable<bool>(
               // Data is the value this Draggable stores.
               data: true,
-              feedback: QuizFlashCard(),
-              child: QuizFlashCard(),
+              feedback: QuizFlashCard(
+                quizContext: context,
+              ),
+              child: QuizFlashCard(
+                quizContext: context,
+              ),
             ),
-            CorrectAnswerArea()
+            DragTarget<bool>(
+              onAccept: (data) {
+              debugPrintIt('answer is correct');
+              BlocProvider.of<QuizBloc>(context)
+                  .add(AnswerFlashEvent(isAnswerCorrect: true));
+            }, builder: (
+              BuildContext context,
+              List<dynamic> accepted,
+              List<dynamic> rejected,
+            ) {
+              return const CorrectAnswerArea();
+            })
           ],
         )
       ],
@@ -42,7 +68,7 @@ class CorrectAnswerArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: SizeConfig.getMediaWidth(context, p: 0.02),
+      width: SizeConfig.getMediaWidth(context, p: 0.05),
       height: SizeConfig.getMediaHeight(context, p: 0.6),
       decoration: const BoxDecoration(
           color: Colors.greenAccent,
@@ -60,7 +86,7 @@ class WrongAnswerArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: SizeConfig.getMediaWidth(context, p: 0.02),
+      width: SizeConfig.getMediaWidth(context, p: 0.05),
       height: SizeConfig.getMediaHeight(context, p: 0.6),
       decoration: const BoxDecoration(
           color: Colors.redAccent,
