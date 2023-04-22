@@ -27,23 +27,40 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
         height: SizeConfig.getMediaHeight(context, p: 0.8),
         width: SizeConfig.getMediaWidth(context, p: 0.8),
         child: Center(
-                child: Column(
+            child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text(context
-                    .read<QuizBloc>()
-                    .state
-                    .quizModel
-                    .currentFCard
-                    ?.questionWords ??
-                'Swipe to left if you don\'t know the answer'),
-            Text(context
-                    .read<QuizBloc>()
-                    .state
-                    .quizModel
-                    .currentFCard
-                    ?.answerWords ??
-                'Swipe to right if you know the answer'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                context
+                        .read<QuizBloc>()
+                        .state
+                        .quizModel
+                        .currentFCard
+                        ?.questionWords ??
+                    'Swipe to left if you \ndon\'t know the answer',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                context
+                        .read<QuizBloc>()
+                        .state
+                        .quizModel
+                        .currentFCard
+                        ?.answerWords ??
+                    'Swipe to right if you \n know the answer',
+                style: const TextStyle(color: Colors.white, fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         )),
       ),
