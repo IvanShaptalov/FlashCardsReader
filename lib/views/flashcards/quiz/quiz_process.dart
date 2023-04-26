@@ -85,8 +85,12 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
                     MyRouter.pushPageReplacement(context, const QuizMenu());
                   },
                   icon: const Icon(Icons.arrow_back)),
-              title: Text(
-                  '${context.read<QuizBloc>().state.quizModel.flashCardsCollection.title} last: ${context.read<QuizBloc>().state.quizModel.flashCardsCollection.flashCardSet.length}'),
+              title: Text(context
+                  .read<QuizBloc>()
+                  .state
+                  .quizModel
+                  .flashCardsCollection
+                  .title),
             ),
             body: VerticalQuiz());
       },

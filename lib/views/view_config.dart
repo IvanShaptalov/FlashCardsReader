@@ -19,4 +19,8 @@ class ViewConfig {
   static String formatDate(DateTime date, {String creatingFormat = creatingFormat}) {
     return DateFormat(creatingFormat).format(date);
   }
+
+
+  static double getCardForm(BuildContext context) =>
+      MediaQuery.of(context).orientation == Orientation.portrait ? 0.6 : 1;
 }

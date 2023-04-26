@@ -1,6 +1,7 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/views/flashcards/flashcard_collection_info.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,72 +80,7 @@ class _DeletedFlashCardCollectionWidgetState
               color: Colors.grey,
               thickness: 1,
             ),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView(
-                children: [
-                  Text(
-                    "Flashcards: ${widget.flashCardCollection.flashCardSet.length}\n",
-                    style: const TextStyle(fontSize: 14),
-                    textAlign: TextAlign.start,
-                  ),
-                  Row(
-                    children: [
-                      const Icon(Icons.language),
-                      Text(
-                        "-> ${widget.flashCardCollection.questionLanguage}\n<- ${widget.flashCardCollection.answerLanguage}",
-                        style: const TextStyle(fontSize: 14),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
-                  const Divider(),
-                  Row(
-                    children: const [
-                      Icon(Icons.question_answer),
-                      Text(
-                        "answer summary",
-                        style: TextStyle(fontSize: 14),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Icon(Icons.check_circle_outline),
-                      Text(
-                        "\ncorrect: ${widget.flashCardCollection.correctAnswers}\n",
-                        style: const TextStyle(fontSize: 14),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Icon(Icons.disabled_by_default_outlined),
-                      Text(
-                        "\nwrong: ${widget.flashCardCollection.wrongAnswers}\n",
-                        style: const TextStyle(fontSize: 14),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
-                  const Divider(),
-                  Row(
-                    children: [
-                      const Icon(Icons.date_range),
-                      Text(
-                        ViewConfig.formatDate(
-                            widget.flashCardCollection.createdAt),
-                        style: const TextStyle(fontSize: 14),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )),
+            FlashCardCollectionInfo(widget.flashCardCollection),
             const Divider(
               color: Colors.grey,
               thickness: 1,

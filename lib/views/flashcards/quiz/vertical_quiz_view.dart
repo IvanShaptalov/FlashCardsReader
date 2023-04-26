@@ -64,7 +64,10 @@ class _VerticalQuizState extends State<VerticalQuiz> {
 
                     onDraggableCanceled: (velocity, offset) {
                       debugPrintIt(offset.dx);
-                      debugPrintIt(BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished);
+                      debugPrintIt(BlocProvider.of<QuizBloc>(context)
+                          .state
+                          .quizModel
+                          .isQuizFinished);
 
                       if (offset.dx <
                           SizeConfig.getMediaWidth(context,
@@ -85,7 +88,7 @@ class _VerticalQuizState extends State<VerticalQuiz> {
                   ),
                   const CorrectAnswerArea(),
                 ],
-              )
+              ),
       ],
     ));
   }

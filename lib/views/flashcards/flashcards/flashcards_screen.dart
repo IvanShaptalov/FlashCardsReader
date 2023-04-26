@@ -43,8 +43,6 @@ class _FlashCardViewState extends State<FlashCardView> {
   int columnCount = 2;
   double appBarHeight = 0;
 
-  double getCardForm(BuildContext context) =>
-      MediaQuery.of(context).orientation == Orientation.portrait ? 0.65 : 1;
 
   int calculateColumnCount(BuildContext context) {
     double screenWidth = SizeConfig.getMediaWidth(context);
@@ -163,7 +161,7 @@ class _FlashCardViewState extends State<FlashCardView> {
                 crossAxisCount: columnCount,
                 padding: EdgeInsets.symmetric(
                     horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
-                childAspectRatio: getCardForm(context),
+                childAspectRatio: ViewConfig.getCardForm(context),
                 children:
                     List.generate(flashCardCollection.length + 1, (index) {
                   /// ====================================================================[FlashCardCollectionWidget]

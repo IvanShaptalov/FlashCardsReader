@@ -97,14 +97,24 @@ class _QuizMenuViewState extends State<QuizMenuView> {
     super.initState();
   }
 
-  double getCardForm(BuildContext context) =>
-      MediaQuery.of(context).orientation == Orientation.portrait ? 0.65 : 1;
+  int calculateColumnCount(BuildContext context) {
+    double screenWidth = SizeConfig.getMediaWidth(context);
+    if (screenWidth > 1000) {
+      return SizeConfig.getMediaWidth(context) ~/ 200;
+    } else if (screenWidth > 600) {
+      return 3;
+    } else if (screenWidth >= 380) {
+      return 2;
+    }
+    return 1;
+  }
 
   @override
   Widget build(BuildContext context) {
     // creating bloc builder for flashcards
     return BlocBuilder<QuizBloc, QuizState>(
       builder: (context, state) {
+        columnCount = calculateColumnCount(context);
         var flashCollectionList = context
             .read<FlashCardBloc>()
             .state
@@ -172,7 +182,7 @@ class _QuizMenuViewState extends State<QuizMenuView> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: SizeConfig.getMediaWidth(context,
                                       p: 0.05)),
-                              childAspectRatio: getCardForm(context),
+                              childAspectRatio: ViewConfig.getCardForm(context),
                               children: List.generate(
                                   flashCollectionList.length, (index) {
                                 /// ====================================================================[FlashCardCollectionWidget]

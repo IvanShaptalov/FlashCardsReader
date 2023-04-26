@@ -16,7 +16,6 @@ class QuizModel {
   bool get isEmpty => flashCardsCollection.flashCardSet.isEmpty;
 
   /// level of learned flash cards, if upper than this value, the flash card considered as learned
-  final int _learnedBound = 5;
 
   QuizModel(
       {required this.flashCardsCollection,
@@ -30,11 +29,10 @@ class QuizModel {
       int? numberOfFlashCards,
       QuizMode? mode}) {
     return QuizModel(
-      flashCardsCollection: flashCardsCollection ?? this.flashCardsCollection,
-      flashIndex: currentFlashCardIndex ?? this.flashIndex,
-      mode: mode ?? this.mode,
-      currentFCard: currentFCard
-    );
+        flashCardsCollection: flashCardsCollection ?? this.flashCardsCollection,
+        flashIndex: currentFlashCardIndex ?? flashIndex,
+        mode: mode ?? this.mode,
+        currentFCard: currentFCard);
   }
 
   @override
@@ -139,7 +137,6 @@ class QuizModel {
   /// ================================================[HELPER METHODS]================================================
 
   bool _isFlashCardLearned(FlashCard flashCard) {
-    return flashCard.correctAnswers - flashCard.wrongAnswers >= _learnedBound ||
-        flashCard.isLearned;
+    return flashCard.isLearned;
   }
 }

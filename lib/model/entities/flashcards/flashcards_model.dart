@@ -24,9 +24,9 @@ class FlashCard {
     correctAnswers = 0;
     wrongAnswers = 0;
   }
-
+  static const learnedBound = 5;
   // TODO replace to config
-  bool get isLearned => correctAnswers-wrongAnswers >= 5;
+  bool get isLearned => correctAnswers-wrongAnswers >= learnedBound;
 
   double get successRate =>
       correctAnswers / (correctAnswers + wrongAnswers + 1);
