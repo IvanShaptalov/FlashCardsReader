@@ -64,6 +64,7 @@ class QuizInitial extends QuizState {
 
   Future<QuizInitial> answerFlash(
       bool isAnswerCorrect, FlashCard? flash) async {
+        OverlayNotificationProvider.showOverlayNotification('answer is $isAnswerCorrect');
     if (flash != null) {
       quizModel.quizFlashCardAsync(flash, isAnswerCorrect);
     }

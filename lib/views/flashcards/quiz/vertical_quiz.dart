@@ -1,6 +1,7 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_flash_card.dart';
+import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,39 +23,40 @@ class _VerticalQuizState extends State<VerticalQuiz> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            DragTarget<bool>(onAccept: (data) {
-              debugPrintIt('answer is wrong');
-              BlocProvider.of<QuizBloc>(context)
-                  .add(AnswerFlashEvent(isAnswerCorrect: false));
-            },builder: (
-              BuildContext context,
-              List<dynamic> accepted,
-              List<dynamic> rejected,
-            ) {
-              return const WrongAnswerArea();
-            }),
+            const WrongAnswerArea(),
             Draggable<bool>(
               // Data is the value this Draggable stores.
-              data: true,
+              axis: Axis.horizontal, data: true,
               feedback: QuizFlashCard(
                 quizContext: context,
               ),
               child: QuizFlashCard(
                 quizContext: context,
               ),
+              onDragStarted: () {
+                debugPrintIt('started');
+              },
+              onDragUpdate: (details) {
+                debugPrintIt('update');
+              },
+
+              onDraggableCanceled: (velocity, offset) {
+                debugPrintIt(offset.dx);
+
+                if (offset.dx < SizeConfig.getMediaWidth(context, p: -0.25) /* 5 percent of screen to left*/) {
+                  BlocProvider.of<QuizBloc>(context)
+                      .add(AnswerFlashEvent(isAnswerCorrect: false));
+                } else if (offset.dx > SizeConfig.getMediaWidth(context, p: 0.25)+35 /* 5 percent of screen to right*/) {
+                  BlocProvider.of<QuizBloc>(context)
+                      .add(AnswerFlashEvent(isAnswerCorrect: true));
+                } else {
+                  OverlayNotificationProvider.showOverlayNotification(
+                      'nothing',
+                      status: NotificationStatus.error);
+                }
+              },
             ),
-            DragTarget<bool>(
-              onAccept: (data) {
-              debugPrintIt('answer is correct');
-              BlocProvider.of<QuizBloc>(context)
-                  .add(AnswerFlashEvent(isAnswerCorrect: true));
-            }, builder: (
-              BuildContext context,
-              List<dynamic> accepted,
-              List<dynamic> rejected,
-            ) {
-              return const CorrectAnswerArea();
-            })
+            const CorrectAnswerArea(),
           ],
         )
       ],
