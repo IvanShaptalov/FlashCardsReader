@@ -20,45 +20,51 @@ class _VerticalQuizState extends State<VerticalQuiz> {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const WrongAnswerArea(),
-            Draggable<bool>(
-              // Data is the value this Draggable stores.
-              axis: Axis.horizontal, data: true,
-              feedback: QuizFlashCard(
-                quizContext: context,
-              ),
-              child: QuizFlashCard(
-                quizContext: context,
-              ),
-              onDragStarted: () {
-                debugPrintIt('started');
-              },
-              onDragUpdate: (details) {
-                debugPrintIt('update');
-              },
+        BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished
+            ? const Center(child: Text('Quiz Finished'))
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const WrongAnswerArea(),
+                  Draggable<bool>(
+                    // Data is the value this Draggable stores.
+                    axis: Axis.horizontal, data: true,
+                    feedback: QuizFlashCard(
+                      quizContext: context,
+                    ),
+                    child: QuizFlashCard(
+                      quizContext: context,
+                    ),
+                    onDragStarted: () {
+                      debugPrintIt('started');
+                    },
+                    onDragUpdate: (details) {
+                      debugPrintIt('update');
+                    },
 
-              onDraggableCanceled: (velocity, offset) {
-                debugPrintIt(offset.dx);
+                    onDraggableCanceled: (velocity, offset) {
+                      debugPrintIt(offset.dx);
 
-                if (offset.dx < SizeConfig.getMediaWidth(context, p: -0.25) /* 5 percent of screen to left*/) {
-                  BlocProvider.of<QuizBloc>(context)
-                      .add(AnswerFlashEvent(isAnswerCorrect: false));
-                } else if (offset.dx > SizeConfig.getMediaWidth(context, p: 0.25)+35 /* 5 percent of screen to right*/) {
-                  BlocProvider.of<QuizBloc>(context)
-                      .add(AnswerFlashEvent(isAnswerCorrect: true));
-                } else {
-                  OverlayNotificationProvider.showOverlayNotification(
-                      'nothing',
-                      status: NotificationStatus.error);
-                }
-              },
-            ),
-            const CorrectAnswerArea(),
-          ],
-        )
+                      if (offset.dx <
+                          SizeConfig.getMediaWidth(context,
+                              p: -0.25) /* 25 percent of screen to left*/) {
+                        BlocProvider.of<QuizBloc>(context)
+                            .add(AnswerFlashEvent(isAnswerCorrect: false));
+                      } else if (offset.dx >
+                          SizeConfig.getMediaWidth(context, p: 0.25) +
+                              35 /* 25 percent of screen to right*/) {
+                        BlocProvider.of<QuizBloc>(context)
+                            .add(AnswerFlashEvent(isAnswerCorrect: true));
+                      } else {
+                        OverlayNotificationProvider.showOverlayNotification(
+                            'nothing',
+                            status: NotificationStatus.error);
+                      }
+                    },
+                  ),
+                  const CorrectAnswerArea(),
+                ],
+              )
       ],
     ));
   }

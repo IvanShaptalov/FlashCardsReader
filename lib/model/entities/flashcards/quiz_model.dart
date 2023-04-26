@@ -12,8 +12,8 @@ class QuizModel {
 
   // training is finished when the current flash card index is greater than the number of flash cards in the collection
   bool get isQuizFinished =>
-      flashIndex >= flashCardsCollection.flashCardSet.length ||
-      flashIndex >= numberOfFlashCards ||
+      flashIndex > flashCardsCollection.flashCardSet.length ||
+      flashIndex > numberOfFlashCards ||
       isEmpty;
 
   bool get isEmpty => flashCardsCollection.flashCardSet.isEmpty;
@@ -98,6 +98,7 @@ class QuizModel {
     } else {
       debugPrintIt(flashIndex);
       debugPrintIt('end quiz');
+      flashIndex++;
       return null;
     }
     debugPrintIt('current flash card index: $flashIndex');
