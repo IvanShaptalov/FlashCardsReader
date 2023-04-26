@@ -9,7 +9,6 @@ void main() {
       var collection = flashFixture();
       var qModel = QuizModel(
         flashCardsCollection: collection,
-        numberOfFlashCards: collection.flashCardSet.length,
         flashIndex: 0,
         mode: QuizMode.all,
       );
@@ -27,7 +26,6 @@ void main() {
       var collection = flashFixture();
       var qModel = QuizModel(
         flashCardsCollection: collection,
-        numberOfFlashCards: collection.flashCardSet.length,
         flashIndex: 0,
         mode: QuizMode.all,
       );
@@ -43,7 +41,6 @@ void main() {
       var collection = flashFixture();
       var qModel = QuizModel(
         flashCardsCollection: collection,
-        numberOfFlashCards: collection.flashCardSet.length,
         flashIndex: 0,
         mode: QuizMode.all,
       );
@@ -64,7 +61,6 @@ void main() {
       var collection = flashFixture();
       var qModel = QuizModel(
         flashCardsCollection: collection,
-        numberOfFlashCards: collection.flashCardSet.length,
         flashIndex: 0,
         mode: QuizMode.all,
       );
@@ -85,7 +81,6 @@ void main() {
       var collection = flashFixture();
       var qModel = QuizModel(
         flashCardsCollection: collection,
-        numberOfFlashCards: collection.flashCardSet.length,
         flashIndex: 0,
         mode: QuizMode.all,
       );
@@ -107,7 +102,6 @@ void main() {
       var collection = flashFixture();
       var qModel = QuizModel(
         flashCardsCollection: collection,
-        numberOfFlashCards: collection.flashCardSet.length,
         flashIndex: 0,
         mode: QuizMode.all,
       );

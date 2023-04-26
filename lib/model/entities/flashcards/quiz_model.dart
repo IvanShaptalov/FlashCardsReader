@@ -6,15 +6,12 @@ class QuizModel {
   /// ==============================================[FIELDS AND CONSTRUCTOR]============================================
   final FlashCardCollection flashCardsCollection;
   int flashIndex;
-  final int numberOfFlashCards;
   FlashCard? currentFCard;
   final QuizMode mode;
 
   // training is finished when the current flash card index is greater than the number of flash cards in the collection
   bool get isQuizFinished =>
-      flashIndex > flashCardsCollection.flashCardSet.length ||
-      flashIndex > numberOfFlashCards ||
-      isEmpty;
+      flashIndex > flashCardsCollection.flashCardSet.length;
 
   bool get isEmpty => flashCardsCollection.flashCardSet.isEmpty;
 
@@ -23,7 +20,6 @@ class QuizModel {
 
   QuizModel(
       {required this.flashCardsCollection,
-      required this.numberOfFlashCards,
       this.flashIndex = 0,
       required this.mode,
       this.currentFCard});
@@ -35,7 +31,6 @@ class QuizModel {
       QuizMode? mode}) {
     return QuizModel(
       flashCardsCollection: flashCardsCollection ?? this.flashCardsCollection,
-      numberOfFlashCards: numberOfFlashCards ?? this.numberOfFlashCards,
       flashIndex: currentFlashCardIndex ?? this.flashIndex,
       mode: mode ?? this.mode,
       currentFCard: currentFCard

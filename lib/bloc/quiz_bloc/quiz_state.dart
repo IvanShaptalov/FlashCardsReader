@@ -25,7 +25,6 @@ class QuizInitial extends QuizState {
       currentFlashCard: currentCard,
       flashIndex: cFlashIndex ?? quizModel.flashIndex,
       mode: mode ?? quizModel.mode,
-      numberOfFlashCards: numberOfFlashCards ?? quizModel.numberOfFlashCards,
     );
   }
 
@@ -39,7 +38,6 @@ class QuizInitial extends QuizState {
       mode}) {
     quizModel = QuizModel(
         flashCardsCollection: flashCardsCollection,
-        numberOfFlashCards: numberOfFlashCards,
         flashIndex: flashIndex,
         currentFCard: currentFlashCard,
         mode: mode);
@@ -64,7 +62,8 @@ class QuizInitial extends QuizState {
 
   Future<QuizInitial> answerFlash(
       bool isAnswerCorrect, FlashCard? flash) async {
-        OverlayNotificationProvider.showOverlayNotification('answer is $isAnswerCorrect');
+    OverlayNotificationProvider.showOverlayNotification(
+        'answer is $isAnswerCorrect');
     if (flash != null) {
       quizModel.quizFlashCardAsync(flash, isAnswerCorrect);
     }

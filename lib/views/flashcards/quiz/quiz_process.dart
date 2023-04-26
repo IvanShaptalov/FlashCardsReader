@@ -1,10 +1,9 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
-import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
-import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz_view.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,18 +58,6 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
   double getQuizForm(BuildContext context) =>
       MediaQuery.of(context).orientation == Orientation.portrait ? 0.65 : 1;
 
-  AppBar getAppBar() {
-    return AppBar(
-      leading: IconButton(
-          onPressed: () {
-            MyRouter.pushPageReplacement(context, const QuizMenu());
-          },
-          icon: const Icon(Icons.arrow_back)),
-      title: Text(
-          context.read<QuizBloc>().state.quizModel.flashCardsCollection.title),
-    );
-  }
-
   Widget getDrawer() {
     return MenuDrawer(appBarHeight);
   }
@@ -90,11 +77,17 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
     // creating bloc builder for flashcards
     return BlocBuilder<QuizBloc, QuizState>(
       builder: (context, state) {
-        var appBar = getAppBar();
-        appBarHeight = appBar.preferredSize.height;
         return Scaffold(
             resizeToAvoidBottomInset: false,
-            appBar: appBar,
+            appBar: AppBar(
+              leading: IconButton(
+                  onPressed: () {
+                    MyRouter.pushPageReplacement(context, const QuizMenu());
+                  },
+                  icon: const Icon(Icons.arrow_back)),
+              title: Text(
+                  '${context.read<QuizBloc>().state.quizModel.flashCardsCollection.title} last: ${context.read<QuizBloc>().state.quizModel.flashCardsCollection.flashCardSet.length}'),
+            ),
             body: VerticalQuiz());
       },
     );

@@ -1,7 +1,7 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
-import 'package:flashcards_reader/views/flashcards/quiz/quiz_flash_card.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/quiz_card_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +64,7 @@ class _VerticalQuizState extends State<VerticalQuiz> {
 
                     onDraggableCanceled: (velocity, offset) {
                       debugPrintIt(offset.dx);
+                      debugPrintIt(BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished);
 
                       if (offset.dx <
                           SizeConfig.getMediaWidth(context,
