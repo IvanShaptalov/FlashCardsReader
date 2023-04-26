@@ -3,14 +3,14 @@ import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_flash_card.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
-import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// ignore: must_be_immutable
 class VerticalQuiz extends StatefulWidget {
-  const VerticalQuiz({super.key});
-
+  VerticalQuiz({super.key});
+  bool blurred = true;
   @override
   State<VerticalQuiz> createState() => _VerticalQuizState();
 }
@@ -49,9 +49,11 @@ class _VerticalQuizState extends State<VerticalQuiz> {
                     axis: Axis.horizontal, data: true,
                     feedback: QuizFlashCard(
                       quizContext: context,
+                      blurred: widget.blurred,
                     ),
                     child: QuizFlashCard(
                       quizContext: context,
+                      blurred: widget.blurred,
                     ),
                     onDragStarted: () {
                       debugPrintIt('started');
@@ -74,9 +76,9 @@ class _VerticalQuizState extends State<VerticalQuiz> {
                         BlocProvider.of<QuizBloc>(context)
                             .add(AnswerFlashEvent(isAnswerCorrect: true));
                       } else {
-                        OverlayNotificationProvider.showOverlayNotification(
-                            'nothing',
-                            status: NotificationStatus.error);
+                        setState(() {
+                          widget.blurred = false;
+                        });
                       }
                     },
                   ),

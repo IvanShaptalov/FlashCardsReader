@@ -90,32 +90,6 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
     // creating bloc builder for flashcards
     return BlocBuilder<QuizBloc, QuizState>(
       builder: (context, state) {
-        debugPrintIt(
-            '===================================UPDATE UI===================================');
-        debugPrintIt(context
-            .read<QuizBloc>()
-            .state
-            .quizModel
-            .currentFCard
-            ?.questionWords);
-        debugPrintIt(context
-            .read<QuizBloc>()
-            .state
-            .quizModel
-            .flashCardsCollection
-            .title);
-        debugPrintIt(context
-            .read<QuizBloc>()
-            .state
-            .quizModel
-            .currentFCard
-            ?.correctAnswers);
-        debugPrintIt(context
-            .read<QuizBloc>()
-            .state
-            .quizModel
-            .currentFCard
-            ?.wrongAnswers);
         var appBar = getAppBar();
         appBarHeight = appBar.preferredSize.height;
         return Scaffold(
@@ -126,12 +100,3 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
     );
   }
 }
-
-             
-//               IconButton(
-//                   onPressed: () {
-//                     context
-//                         .read<QuizBloc>()
-//                         .add(AnswerFlashEvent(isAnswerCorrect: true));
-//                   },
-//                   icon: const Icon(Icons.question_answer)),
