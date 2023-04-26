@@ -12,7 +12,6 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
@@ -22,7 +21,6 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
       );
       expect(flash1.hashCode == flash2.hashCode, true);
     });
@@ -35,7 +33,6 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
@@ -45,7 +42,6 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
       );
       expect(flash1 == flash2, true);
     });
@@ -59,7 +55,6 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
@@ -69,7 +64,7 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
+        
       );
       expect(flash1 == flash2, false);
     });
@@ -82,7 +77,7 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
+        
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
@@ -92,7 +87,7 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
+        
       );
       expect(flash1 == flash2, true);
     });
@@ -105,7 +100,7 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
+        
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
@@ -115,7 +110,7 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
+        
       );
       expect(flash1 == flash2, true);
     });
@@ -128,7 +123,7 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
+        
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
@@ -138,7 +133,7 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
+        
       );
       expect(flash1 == flash2, false);
     });

@@ -22,7 +22,6 @@ FlashCardCollection flashFixture() {
     lastTested: DateTime.now(),
     correctAnswers: 0,
     wrongAnswers: 0,
-    isLearned: false,
   );
   final FlashCard flashCard2 = FlashCard(
     questionLanguage: 'English',
@@ -32,7 +31,6 @@ FlashCardCollection flashFixture() {
     lastTested: DateTime.now(),
     correctAnswers: 0,
     wrongAnswers: 0,
-    isLearned: false,
   );
   final FlashCardCollection testFlashCardCollection = FlashCardCollection(
       uuid.v4().toString(),

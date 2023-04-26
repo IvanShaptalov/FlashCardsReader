@@ -21,7 +21,6 @@ void main() async {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
       );
       final FlashCard flashCard2 = FlashCard(
         questionLanguage: 'English',
@@ -31,7 +30,6 @@ void main() async {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
       );
       final FlashCardCollection testFlashCardCollection = FlashCardCollection(
         uuid.v4().toString(),
@@ -111,7 +109,6 @@ void main() async {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        isLearned: false,
       );
 
       var emptyFlashCollection = FlashCardCollection(

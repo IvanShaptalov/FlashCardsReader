@@ -19,18 +19,14 @@ class FlashCard {
   int correctAnswers;
   @HiveField(6)
   int wrongAnswers;
-  @HiveField(7)
-  bool isLearned;
-
-  void markAsLearned() {
-    isLearned = true;
-  }
 
   void reset() {
     correctAnswers = 0;
     wrongAnswers = 0;
-    isLearned = false;
   }
+
+  // TODO replace to config
+  bool get isLearned => correctAnswers-wrongAnswers >= 5;
 
   double get successRate =>
       correctAnswers / (correctAnswers + wrongAnswers + 1);
@@ -49,8 +45,7 @@ class FlashCard {
         answerWords: 'Hallo',
         lastTested: DateTime.now(),
         correctAnswers: 0,
-        wrongAnswers: 0,
-        isLearned: false);
+        wrongAnswers: 0);
   }
 
   FlashCard(
@@ -60,8 +55,7 @@ class FlashCard {
       required this.answerWords,
       required this.lastTested,
       required this.correctAnswers,
-      required this.wrongAnswers,
-      required this.isLearned});
+      required this.wrongAnswers});
 
   /// returns true if the test date was delayed, change the next test date
 
@@ -130,6 +124,10 @@ class FlashCardCollection {
   int get wrongAnswers => flashCardSet
       .map((e) => e.wrongAnswers)
       .reduce((value, element) => value + element);
+
+  bool get isLearned => flashCardSet.every((element) => element.isLearned);
+
+  bool get isEmpty => flashCardSet.isEmpty;
 
   FlashCardCollection copy() {
     return FlashCardCollection(id,

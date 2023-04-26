@@ -24,14 +24,13 @@ class FlashCardAdapter extends TypeAdapter<FlashCard> {
       lastTested: fields[4] as DateTime,
       correctAnswers: fields[5] as int,
       wrongAnswers: fields[6] as int,
-      isLearned: fields[7] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, FlashCard obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.questionLanguage)
       ..writeByte(1)
@@ -45,9 +44,7 @@ class FlashCardAdapter extends TypeAdapter<FlashCard> {
       ..writeByte(5)
       ..write(obj.correctAnswers)
       ..writeByte(6)
-      ..write(obj.wrongAnswers)
-      ..writeByte(7)
-      ..write(obj.isLearned);
+      ..write(obj.wrongAnswers);
   }
 
   @override

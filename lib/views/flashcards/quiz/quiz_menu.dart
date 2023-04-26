@@ -88,10 +88,13 @@ class _QuizMenuViewState extends State<QuizMenuView> {
 
   @override
   void initState() {
-    context.read<QuizBloc>().add(InitQuizEvent(
-        flashCardsCollection:
-            context.read<FlashCardBloc>().state.flashCards.first ??
-                flashFixture()));
+    var flashCardCollection =
+        context.read<FlashCardBloc>().state.flashCards.isNotEmpty
+            ? context.read<FlashCardBloc>().state.flashCards.first
+            : flashFixture();
+    context
+        .read<QuizBloc>()
+        .add(InitQuizEvent(flashCardsCollection: flashCardCollection));
     super.initState();
   }
 
@@ -109,26 +112,6 @@ class _QuizMenuViewState extends State<QuizMenuView> {
             .copyWith(fromTrash: false)
             .flashCards;
 
-        debugPrintIt(
-            '===================================UPDATE MENU UI===================================');
-        debugPrintIt(context
-            .read<QuizBloc>()
-            .state
-            .quizModel
-            .currentFCard
-            ?.questionWords);
-        debugPrintIt(context
-            .read<QuizBloc>()
-            .state
-            .quizModel
-            .currentFCard
-            ?.correctAnswers);
-        debugPrintIt(context
-            .read<QuizBloc>()
-            .state
-            .quizModel
-            .currentFCard
-            ?.wrongAnswers);
         var appBar = getAppBar();
         appBarHeight = appBar.preferredSize.height;
         return Scaffold(

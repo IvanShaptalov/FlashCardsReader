@@ -1,6 +1,8 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_flash_card.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +23,24 @@ class _VerticalQuizState extends State<VerticalQuiz> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished
-            ? const Center(child: Text('Quiz Finished'))
+            ? Center(
+                child: Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Quiz Finished',
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          MyRouter.pushPageReplacement(
+                              context, const QuizMenu());
+                        },
+                        icon: const Icon(Icons.arrow_downward)),
+                  ],
+                ),
+              ))
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
