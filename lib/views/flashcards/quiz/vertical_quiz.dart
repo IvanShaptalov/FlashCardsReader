@@ -24,7 +24,6 @@ class _VerticalQuizState extends State<VerticalQuiz> {
       children: [
         BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished
             ? Center(
-                child: Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -40,7 +39,7 @@ class _VerticalQuizState extends State<VerticalQuiz> {
                         icon: const Icon(Icons.arrow_downward)),
                   ],
                 ),
-              ))
+              )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
