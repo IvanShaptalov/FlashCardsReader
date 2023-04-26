@@ -2,6 +2,8 @@ import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/router.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +61,11 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
 
   AppBar getAppBar() {
     return AppBar(
+      leading: IconButton(
+          onPressed: () {
+            MyRouter.pushPageReplacement(context, const QuizMenu());
+          },
+          icon: const Icon(Icons.arrow_back)),
       title: Text(
           context.read<QuizBloc>().state.quizModel.flashCardsCollection.title),
     );
@@ -74,7 +81,7 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
         flashCardCollection: widget.fCollection,
         mode: widget.mode,
         numberOfQuestions: widget.numberOfFlashCards));
-    
+
     super.initState();
   }
 

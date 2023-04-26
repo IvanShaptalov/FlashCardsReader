@@ -123,6 +123,14 @@ class FlashCardCollection {
       required this.questionLanguage,
       required this.answerLanguage});
 
+  int get correctAnswers => flashCardSet
+      .map((e) => e.correctAnswers)
+      .reduce((value, element) => value + element);
+
+  int get wrongAnswers => flashCardSet
+      .map((e) => e.wrongAnswers)
+      .reduce((value, element) => value + element);
+
   FlashCardCollection copy() {
     return FlashCardCollection(id,
         title: title,

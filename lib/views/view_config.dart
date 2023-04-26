@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 class SizeConfig {
   /// height of the screen p - percentage of the screen height
@@ -13,5 +14,9 @@ class SizeConfig {
 }
 
 class ViewConfig {
-  static const String timeFormat = 'hh:mm:ss a';
+  static const String creatingFormat = 'MMM d, yyyy';
+
+  static String formatDate(DateTime date, {String creatingFormat = creatingFormat}) {
+    return DateFormat(creatingFormat).format(date);
+  }
 }
