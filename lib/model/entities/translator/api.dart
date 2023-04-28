@@ -2,14 +2,11 @@ import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:translator/translator.dart';
 
-
 class TranslateResponse {
   final String fromLanguage;
   final String toLanguage;
   final String from;
   final String to;
-
-  String? exception;
 
   TranslateResponse(
       {required this.fromLanguage,
@@ -35,8 +32,7 @@ class TranslateResponse {
         fromLanguage: sourceLanguage,
         toLanguage: targetLanguage,
         from: source,
-        to: text)
-      ..exception = exception;
+        to: text);
   }
 
   @override
@@ -45,6 +41,8 @@ class TranslateResponse {
 
 class GoogleTranslatorAPIWrapper {
   final GoogleTranslator _translator = GoogleTranslator();
+
+  
 
   Future<TranslateResponse> translate(String text,
       {String from = "auto", String to = "uk"}) async {

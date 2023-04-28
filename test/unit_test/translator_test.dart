@@ -19,9 +19,9 @@ void main() {
       GoogleTranslatorAPIWrapper api = GoogleTranslatorAPIWrapper();
       String text = 'Hello';
       TranslateResponse result =
-          await api.translate(text, to: 'ua', from: 'en');
+          await api.translate(text, to: 'oao', from: 'en');
 
-      expect(result.exception, '${langUnsupported}ua');
+      expect(result.toString(), '${langUnsupported}oao');
     });
 
     test('test lan supported translate', () async {
