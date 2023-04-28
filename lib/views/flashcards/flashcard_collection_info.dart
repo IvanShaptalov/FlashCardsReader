@@ -6,6 +6,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
   final FlashCardCollection flashCardCollection;
   const FlashCardCollectionInfo(this.flashCardCollection, {Key? key})
       : super(key: key);
+  final double iconScale = 0.7;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -21,7 +22,8 @@ class FlashCardCollectionInfo extends StatelessWidget {
           const Divider(),
           Row(
             children: [
-              const Icon(Icons.check_circle_outline),
+              Transform.scale(
+                  scale: iconScale, child: const Icon(Icons.check_circle_outline)),
               Text(
                 "correct\nanswers: ${flashCardCollection.correctAnswers}",
                 style: const TextStyle(fontSize: 14),
@@ -31,7 +33,9 @@ class FlashCardCollectionInfo extends StatelessWidget {
           ),
           Row(
             children: [
-              const Icon(Icons.disabled_by_default_outlined),
+              Transform.scale(
+                  scale: iconScale,
+                  child: const Icon(Icons.disabled_by_default_outlined)),
               Text(
                 "wrong\nanswers: ${flashCardCollection.wrongAnswers}",
                 style: const TextStyle(fontSize: 14),
@@ -42,7 +46,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
           const Divider(),
           Row(
             children: [
-              const Icon(Icons.language),
+              Transform.scale(scale: iconScale, child: const Icon(Icons.language)),
               Text(
                 "-> ${flashCardCollection.questionLanguage}\n<- ${flashCardCollection.answerLanguage}",
                 style: const TextStyle(fontSize: 14),
@@ -53,7 +57,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
           const Divider(),
           Row(
             children: [
-              const Icon(Icons.date_range),
+              Transform.scale(scale: iconScale, child: const Icon(Icons.date_range)),
               Text(
                 ViewConfig.formatDate(flashCardCollection.createdAt),
                 style: const TextStyle(fontSize: 14),

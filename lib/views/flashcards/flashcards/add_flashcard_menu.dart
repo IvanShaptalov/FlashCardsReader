@@ -3,6 +3,7 @@ import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/select_language_widget.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
@@ -213,7 +214,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
     widget.wordFormContoller.setUp(WordCreatingUIProvider.tmpFlashCard);
     return SizedBox(
         height: SizeConfig.getMediaHeight(context, p: 0.85),
-        child: Column(children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Padding(
             padding: EdgeInsets.symmetric(
                 vertical: SizeConfig.getMediaHeight(context, p: 0.03)),
@@ -240,9 +241,11 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
           Expanded(
               child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(
+                      left: SizeConfig.getMediaWidth(context, p: 0.05)),
                   child: TextField(
                     controller: widget.flashCardFormController.titleController,
                     decoration: const InputDecoration(
@@ -254,32 +257,51 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: widget
-                        .flashCardFormController.questionLanguageController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'From language',
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: SizeConfig.getMediaWidth(context, p: 0.085),
+                        top: 10),
+                    child: Text(
+                      'question language',
+                      style:
+                          TextStyle(fontSize: 12, color: Colors.grey.shade600),
                     ),
-                    onChanged: (text) {
-                      widget.flashCardCollection.questionLanguage = text;
-                    },
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller:
-                        widget.flashCardFormController.answerLanguageController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'To language',
+                  padding: EdgeInsets.only(
+                      left: SizeConfig.getMediaWidth(context, p: 0.06)),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: SelectLanguageDropdown(
+                      flashCardCollection: widget.flashCardCollection,
+                      langDestination: 'from',
                     ),
-                    onChanged: (text) {
-                      widget.flashCardCollection.answerLanguage = text;
-                    },
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: SizeConfig.getMediaWidth(context, p: 0.085)),
+                    child: Text(
+                      'answer language',
+                      style:
+                          TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: SizeConfig.getMediaWidth(context, p: 0.06)),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: SelectLanguageDropdown(
+                      flashCardCollection: widget.flashCardCollection,
+                      langDestination: 'to',
+                    ),
                   ),
                 ),
 
