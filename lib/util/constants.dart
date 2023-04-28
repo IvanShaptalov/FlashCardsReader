@@ -106,3 +106,6 @@ final Map<String, String> supportedLangs = {
   'yo': 'Yoruba',
   'zu': 'Zulu'
 };
+
+const String langUnsupported = 'Language not supported : ';
+const String checkInternetConnection = 'Check internet connection';
