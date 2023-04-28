@@ -107,5 +107,11 @@ final Map<String, String> supportedLangs = {
   'zu': 'Zulu'
 };
 
+String getCode(String value) {
+    var code = supportedLangs.keys
+        .firstWhere((k) => supportedLangs[k] == value, orElse: () => 'en');
+    return code;
+  }
+
 const String langUnsupported = 'Language not supported : ';
 const String checkInternetConnection = 'Check internet connection';

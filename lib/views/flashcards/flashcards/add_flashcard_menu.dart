@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/model/entities/translator/api.dart';
+import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/select_language_widget.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
@@ -88,6 +93,7 @@ class FlashCardCreatingWall extends StatefulWidget {
   BuildContext specialContext;
   FlashCardFormController flashCardFormController = FlashCardFormController();
   WordFormContoller wordFormContoller = WordFormContoller();
+  GoogleTranslatorAPIWrapper translator = GoogleTranslatorAPIWrapper();
   FlashCardCollection flashCardCollection;
   final int wordsBeforeRelocateEditor = 4;
   @override
@@ -187,8 +193,31 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
             Row(
               children: [
                 IconButton(
-                    onPressed: () {
-                      // TODO implement translation
+                    onPressed: () async {
+                      if (await InternetChecker.hasConnection()) {
+                        String questionWords =
+                            WordCreatingUIProvider.tmpFlashCard.questionWords;
+                        if (questionWords.isNotEmpty) {
+                          TranslateResponse answerWords =
+                              await widget.translator.translate(questionWords,
+                                  from: getCode(widget
+                                      .flashCardCollection.questionLanguage),
+                                  to: getCode(widget
+                                      .flashCardCollection.answerLanguage));
+                          WordCreatingUIProvider.setAnswer(
+                              answerWords.toString());
+                        } else {
+                          OverlayNotificationProvider.showOverlayNotification(
+                              'No word to translate',
+                              status: NotificationStatus.warning);
+                        }
+                      } else {
+                        OverlayNotificationProvider.showOverlayNotification(
+                            'No internet connection',
+                            status: NotificationStatus.warning);
+                      }
+
+                      setState(() {});
                     },
                     icon: const Icon(Icons.translate)),
                 Expanded(
