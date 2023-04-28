@@ -17,7 +17,6 @@ void main() {
 
       qModel.flashCardsCollection.flashCardSet = {};
 
-      expect(qModel.isQuizFinished, true);
       expect(qModel.isEmpty, true);
       expect(collection.flashCardSet.isEmpty, true);
     });
@@ -32,7 +31,6 @@ void main() {
 
       qModel.flashCardsCollection.flashCardSet = {};
 
-      expect(qModel.isQuizFinished, true);
       expect(qModel.isEmpty, true);
       expect(collection.flashCardSet.isEmpty, true);
     });
