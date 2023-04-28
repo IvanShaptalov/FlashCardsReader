@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
@@ -192,7 +194,8 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
               children: [
                 IconButton(
                     onPressed: () async {
-                      if (await InternetChecker.hasInternet()) {
+                      // if (await InternetChecker.hasConnection()) {
+                      try {
                         String questionWords =
                             WordCreatingUIProvider.tmpFlashCard.questionWords;
                         if (questionWords.isNotEmpty) {
@@ -209,11 +212,12 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                               'No word to translate',
                               status: NotificationStatus.warning);
                         }
-                      } else {
+                      } on SocketException catch (e) {
                         OverlayNotificationProvider.showOverlayNotification(
                             'No internet connection',
                             status: NotificationStatus.warning);
                       }
+
                       setState(() {});
                     },
                     icon: const Icon(Icons.translate)),
