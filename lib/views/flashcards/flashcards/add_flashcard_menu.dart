@@ -70,7 +70,6 @@ class UpdateFlashCardBottomSheet {
 
   showUpdateFlashCardMenu(BuildContext specialContext) async {
     showModalBottomSheet(
-        // isDismissible: true,
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
@@ -94,146 +93,180 @@ class FlashCardCreatingWall extends StatefulWidget {
   WordFormContoller wordFormContoller = WordFormContoller();
   GoogleTranslatorAPIWrapper translator = GoogleTranslatorAPIWrapper();
   FlashCardCollection flashCardCollection;
-  final int wordsBeforeRelocateEditor = 6;
   @override
   State<FlashCardCreatingWall> createState() => _FlashCardCreatingWallState();
 }
 
 class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
   Widget addCollectionButton() {
-    return IconButton(
-        onPressed: () {
-          if (widget.flashCardCollection.isValid) {
-            debugPrint('=====================add collection');
-            widget.specialContext.read<FlashCardBloc>().add(
-                UpdateFlashCardEvent(
-                    flashCardCollection: widget.flashCardCollection));
-            Navigator.pop(context);
-            FlashCardCreatingUIProvider.clear();
-            widget.isEdit
-                ? OverlayNotificationProvider.showOverlayNotification(
-                    'Collection edited',
-                    status: NotificationStatus.info)
-                : OverlayNotificationProvider.showOverlayNotification(
-                    'Collection added',
-                    status: NotificationStatus.success);
-          } else {
-            OverlayNotificationProvider.showOverlayNotification(
-                'Your collection not valid',
-                status: NotificationStatus.warning);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: GestureDetector(
+            child: Container(
+              height: SizeConfig.getMediaHeight(context, p: 0.1),
+              width: SizeConfig.getMediaWidth(context, p: 0.8),
+              decoration: const BoxDecoration(
+                color: Colors.blueGrey,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25)),
+              ),
+              child: const Center(
+                child: Text(
+                  'Update collection',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            onTap: () {
+              if (widget.flashCardCollection.isValid) {
+                debugPrint('=====================add collection');
+                widget.specialContext.read<FlashCardBloc>().add(
+                    UpdateFlashCardEvent(
+                        flashCardCollection: widget.flashCardCollection));
+                Navigator.pop(context);
+                FlashCardCreatingUIProvider.clear();
+                widget.isEdit
+                    ? OverlayNotificationProvider.showOverlayNotification(
+                        'Collection edited',
+                        status: NotificationStatus.info)
+                    : OverlayNotificationProvider.showOverlayNotification(
+                        'Collection added',
+                        status: NotificationStatus.success);
+              } else {
+                OverlayNotificationProvider.showOverlayNotification(
+                    'Your collection not valid',
+                    status: NotificationStatus.warning);
 
-            debugPrint('flash not valid');
-          }
-        },
-        icon: Icon(widget.isEdit ? Icons.edit_square : Icons.library_add));
+                debugPrint('flash not valid');
+              }
+            },
+          ),
+        ),
+      ],
+    );
   }
 
   Widget addWordWidget() {
-    return Container(
-        height: SizeConfig.getMediaHeight(context, p: 0.2),
-        width: SizeConfig.getMediaWidth(context, p: 0.9),
-        margin: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.blueGrey[200],
+    return Transform.scale(
+      scale: 0.9,
+      child: Container(
+          height: SizeConfig.getMediaHeight(context, p: 0.17),
+          width: SizeConfig.getMediaWidth(context, p: 1),
+          decoration: BoxDecoration(
+            color: Colors.blueGrey.shade200,
 
-          // rounded full border
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: const Border(
-              top: BorderSide(color: Colors.grey, width: 1),
-              left: BorderSide(color: Colors.grey, width: 1),
-              right: BorderSide(color: Colors.grey, width: 1),
-              bottom: BorderSide(color: Colors.grey, width: 1)),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () {
-                      if (WordCreatingUIProvider.tmpFlashCard.isValid) {
-                        debugPrint('add flashcard');
-
-                        WordCreatingUIProvider.setQuestionLanguage(
-                            widget.flashCardCollection.questionLanguage);
-                        WordCreatingUIProvider.setAnswerLanguage(
-                            widget.flashCardCollection.answerLanguage);
-
-                        widget.flashCardCollection.flashCardSet
-                            .add(WordCreatingUIProvider.tmpFlashCard);
-                        WordCreatingUIProvider.clear();
-                        OverlayNotificationProvider.showOverlayNotification(
-                            'word added',
-                            status: NotificationStatus.success);
-
-                        setState(() {});
-                      } else {
-                        OverlayNotificationProvider.showOverlayNotification(
-                            'word is not valid',
-                            status: NotificationStatus.warning);
-
-                        debugPrint('not valid');
-                      }
-                    },
-                    icon: const Icon(Icons.add)),
-                Expanded(
-                  child: TextField(
-                    controller: widget.wordFormContoller.questionController,
-                    decoration: const InputDecoration(
-                      labelText: 'Add Word',
-                    ),
-                    onChanged: (text) {
-                      WordCreatingUIProvider.setQuestion(text);
-                    },
-                  ),
-                ),
-              ],
+            // rounded full border
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            border: Border.all(
+              color: Colors.grey,
+              width: 1,
             ),
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () async {
-                      if (await InternetChecker.hasConnection()) {
-                        String questionWords =
-                            WordCreatingUIProvider.tmpFlashCard.questionWords;
-                        if (questionWords.isNotEmpty) {
-                          TranslateResponse answerWords =
-                              await widget.translator.translate(questionWords,
-                                  from: getCode(widget
-                                      .flashCardCollection.questionLanguage),
-                                  to: getCode(widget
-                                      .flashCardCollection.answerLanguage));
-                          WordCreatingUIProvider.setAnswer(
-                              answerWords.toString());
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        if (WordCreatingUIProvider.tmpFlashCard.isValid) {
+                          debugPrint('add flashcard');
+
+                          WordCreatingUIProvider.setQuestionLanguage(
+                              widget.flashCardCollection.questionLanguage);
+                          WordCreatingUIProvider.setAnswerLanguage(
+                              widget.flashCardCollection.answerLanguage);
+
+                          widget.flashCardCollection.flashCardSet
+                              .add(WordCreatingUIProvider.tmpFlashCard);
+                          WordCreatingUIProvider.clear();
+                          OverlayNotificationProvider.showOverlayNotification(
+                              'word added',
+                              status: NotificationStatus.success);
+
+                          setState(() {});
                         } else {
                           OverlayNotificationProvider.showOverlayNotification(
-                              'No word to translate',
+                              'word is not valid',
+                              status: NotificationStatus.warning);
+
+                          debugPrint('not valid');
+                        }
+                      },
+                      icon: const Icon(Icons.save_as_outlined)),
+                  Expanded(
+                    child: TextField(
+                      controller: widget.wordFormContoller.questionController,
+                      decoration: const InputDecoration(
+                        labelText: 'Add Word',
+                      ),
+                      onChanged: (text) {
+                        WordCreatingUIProvider.setQuestion(text);
+                      },
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          WordCreatingUIProvider.clear();
+                        });
+                      },
+                      icon: const Icon(Icons.delete_sweep_outlined))
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                      onPressed: () async {
+                        if (await InternetChecker.hasConnection()) {
+                          String questionWords =
+                              WordCreatingUIProvider.tmpFlashCard.questionWords;
+                          if (questionWords.isNotEmpty) {
+                            TranslateResponse answerWords =
+                                await widget.translator.translate(questionWords,
+                                    from: getCode(widget
+                                        .flashCardCollection.questionLanguage),
+                                    to: getCode(widget
+                                        .flashCardCollection.answerLanguage));
+                            WordCreatingUIProvider.setAnswer(
+                                answerWords.toString());
+                          } else {
+                            OverlayNotificationProvider.showOverlayNotification(
+                                'No word to translate',
+                                status: NotificationStatus.warning);
+                          }
+                        } else {
+                          OverlayNotificationProvider.showOverlayNotification(
+                              'No internet connection',
                               status: NotificationStatus.warning);
                         }
-                      } else {
-                        OverlayNotificationProvider.showOverlayNotification(
-                            'No internet connection',
-                            status: NotificationStatus.warning);
-                      }
 
-                      setState(() {});
-                    },
-                    icon: const Icon(Icons.translate)),
-                Expanded(
-                  child: TextField(
-                    controller: widget.wordFormContoller.answerController,
-                    decoration: const InputDecoration(
-                      labelText: 'Add Translation',
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.translate)),
+                  Expanded(
+                    child: TextField(
+                      controller: widget.wordFormContoller.answerController,
+                      decoration: const InputDecoration(
+                        labelText: 'Add Translation',
+                      ),
+                      onChanged: (text) {
+                        WordCreatingUIProvider.setAnswer(text);
+                      },
                     ),
-                    onChanged: (text) {
-                      WordCreatingUIProvider.setAnswer(text);
-                    },
                   ),
-                ),
-              ],
-            )
-          ],
-        ));
+                  IconButton(onPressed: (){}, icon: const Icon(Icons.record_voice_over_outlined))
+                ],
+              )
+            ],
+          )),
+    );
   }
 
   @override
@@ -249,19 +282,18 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Icon(Icons.arrow_drop_down),
                 Text(
                   widget.isEdit
-                      ? 'Edit Flashcard Collection'
-                      : 'Add Flashcard Collection',
+                      ? 'Drag to cancel editing'
+                      : 'Drag to cancel adding',
                   style: const TextStyle(fontSize: 20),
                 ),
-                addCollectionButton(),
+                const Icon(Icons.arrow_drop_down),
               ],
             ),
           ),
-          if (widget.flashCardCollection.flashCardSet.length >=
-              widget.wordsBeforeRelocateEditor)
-            addWordWidget(),
+          addWordWidget(),
           const Divider(
             color: Colors.grey,
             thickness: 1,
@@ -273,6 +305,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(
+                      top: SizeConfig.getMediaHeight(context, p: 0.01),
                       left: SizeConfig.getMediaWidth(context, p: 0.05)),
                   child: TextField(
                     controller: widget.flashCardFormController.titleController,
@@ -339,9 +372,6 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      if (widget.flashCardCollection.flashCardSet.length <
-                          widget.wordsBeforeRelocateEditor)
-                        addWordWidget(),
                       for (var flashCard
                           in widget.flashCardCollection.flashCardSet.toList())
                         SizedBox(
@@ -522,12 +552,15 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
               ],
             ),
           )),
-          const SizedBox(
-            height: 10,
-          ),
-          const Divider(
-            color: Colors.grey,
-            thickness: 1,
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: SizedBox(
+              height: SizeConfig.getMediaHeight(context, p: 0.08),
+              width: SizeConfig.getMediaWidth(context, p: 1),
+              child: Center(
+                child: addCollectionButton(),
+              ),
+            ),
           ),
         ]));
   }

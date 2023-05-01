@@ -70,7 +70,7 @@ class MenuDrawer extends StatelessWidget {
             color: Colors.grey[700],
           ),
           ListTile(
-            leading: const Icon(Icons.flash_on),
+            leading: const Icon(Icons.web_stories_outlined),
             title: const Text('Flashcards'),
             onTap: () {
               MyRouter.pushPageReplacement(context, const FlashCardScreen());
