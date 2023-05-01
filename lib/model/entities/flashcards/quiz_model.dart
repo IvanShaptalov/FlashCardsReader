@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
@@ -57,36 +58,46 @@ class QuizModel {
 
   /// ================================================[TRAINIG METHODS]================================================
   /// get the next flash card to train
-  FlashCard? getNextFlash({QuizMode mode = QuizMode.all}) {
+  FlashCard? getNextFlash(
+      {QuizMode mode = QuizMode.all, List<FlashCard>? list}) {
+    FlashCard? flash;
+
     /// sort flash cards by mode
-    List<FlashCard> flashList = flashCardsCollection.flashCardSet.toList();
+    List<FlashCard> flashList =
+        list ?? flashCardsCollection.flashCardSet.toList();
+    debugPrintIt('mode: $mode');
+    if (list == null) {
+      switch (mode) {
+        case QuizMode.all:
+          flashList = flashCardsCollection.sortedByDateAscending();
+          break;
+        case QuizMode.hard:
+          flashList =
+              flashCardsCollection.sortedBySuccessRateFromMostDifficult();
+          break;
+        case QuizMode.simple:
+          flashList = flashCardsCollection.sortedBySuccessRateFromMostSimple();
+          break;
+        case QuizMode.newest:
+          flashList = flashCardsCollection.sortedByDateAscending();
+          break;
+        case QuizMode.oldest:
+          flashList = flashCardsCollection.sortedByDateDescending();
+          break;
+        case QuizMode.random:
+          flashList = flashCardsCollection.flashCardSet.toList();
+          break;
 
-    switch (mode) {
-      case QuizMode.all:
-        flashList = flashCardsCollection.sortedByDateAscending();
-        break;
-      case QuizMode.hard:
-        flashList = flashCardsCollection.sortedBySuccessRateFromMostDifficult();
-        break;
-      case QuizMode.simple:
-        flashList = flashCardsCollection.sortedBySuccessRateFromMostSimple();
-        break;
-      case QuizMode.newest:
-        flashList = flashCardsCollection.sortedByDateAscending();
-        break;
-      case QuizMode.oldest:
-        flashList = flashCardsCollection.sortedByDateDescending();
-        break;
-      case QuizMode.random:
-        flashList = flashCardsCollection.flashCardSet.toList();
-        break;
-
-      default:
-        flashList = flashCardsCollection.flashCardSet.toList();
+        default:
+          flashList = flashCardsCollection.flashCardSet.toList();
+      }
+      // check current index not out of range and quiz is not finished
     }
-    // check current index not out of range and quiz is not finished
 
     if (flashIndex + 1 <= flashList.length) {
+      if (!_isFlashCardLearned(flashList.elementAt(flashIndex))) {
+        return flashList.elementAt(flashIndex++);
+      }
       flashIndex++;
     } else {
       debugPrintIt(flashIndex);
@@ -100,17 +111,20 @@ class QuizModel {
 
     if (_isFlashCardLearned(flashList.elementAt(flashIndex - 1))) {
       // increment the current flash card index and try to get the next flash card
-      var flash = getNextFlash(mode: mode);
+      flash = getNextFlash(mode: mode);
       debugPrintIt('flash: $flash');
       debugPrintIt(
           '==================================================END==================================================');
-
+      if (flash != null && !_isFlashCardLearned(flash)) {
+        return flash;
+      }
       // if the next flash null ,try to find the next flash card
-      return getNextFlash(mode: mode);
+      return getNextFlash(mode: mode, list: flashList);
     }
 
+    return null;
+
     // if not learned - get the current flash card and increment the current flash card index
-    return flashList.elementAt(flashIndex - 1);
   }
 
   /// train and save the flash card
@@ -122,16 +136,18 @@ class QuizModel {
     }
 
     // delay next flashcard test date
-    return await _saveQuizedFlashCardInRuntime(flashCard);
+    return await _saveQuizedFlashCard(flashCard);
   }
 
-  Future<bool> _saveQuizedFlashCardInRuntime(FlashCard flashCard) async {
+  Future<bool> _saveQuizedFlashCard(FlashCard flashCard) async {
     // remove flashcard from the collection
     flashCardsCollection.flashCardSet
         .removeWhere((element) => element == flashCard);
 
     // add flashcard to the collection
-    return flashCardsCollection.flashCardSet.add(flashCard);
+    bool result = flashCardsCollection.flashCardSet.add(flashCard);
+    FlashcardDatabaseProvider.writeEditAsync(flashCardsCollection);
+    return result;
   }
 
   /// ================================================[HELPER METHODS]================================================
