@@ -64,7 +64,6 @@ class QuizModel {
     /// sort flash cards by mode
     List<FlashCard> flashList =
         list ?? flashCardsCollection.flashCardSet.toList();
-    debugPrintIt('#(@&(*@#&#@(*)#@)(*&#@()*&#@()*$mode when get: $mode');
     if (list == null) {
       switch (mode) {
         case QuizMode.all:
@@ -92,38 +91,21 @@ class QuizModel {
       }
       // check current index not out of range and quiz is not finished
     }
-
+    // check current index not out of range and quiz is not finished
     if (flashIndex + 1 <= flashList.length) {
-      if (!_isFlashCardLearned(flashList.elementAt(flashIndex))) {
-        return flashList.elementAt(flashIndex++);
-      }
       flashIndex++;
-    } else {
-      debugPrintIt(flashIndex);
-      debugPrintIt('end quiz');
-      flashIndex++;
-      return null;
-    }
-    debugPrintIt('current flash card index: $flashIndex');
+      flash = flashList.elementAt(flashIndex - 1);
 
-    // if learned - get the next flash card
-
-    if (_isFlashCardLearned(flashList.elementAt(flashIndex - 1))) {
-      // increment the current flash card index and try to get the next flash card
-      flash = getNextFlash();
-      debugPrintIt('flash: $flash');
-      debugPrintIt(
-          '==================================================END==================================================');
-      if (flash != null && !_isFlashCardLearned(flash)) {
-        return flash;
+      // check if flash card is learned
+      if (_isFlashCardLearned(flash)){
+        flash = getNextFlash(list: flashList);
       }
-      // if the next flash null ,try to find the next flash card
-      return getNextFlash(list: flashList);
+      // return flash card
+      return flash;
     }
-
+    // return null if quiz is finished
+    flashIndex++;
     return null;
-
-    // if not learned - get the current flash card and increment the current flash card index
   }
 
   /// train and save the flash card
