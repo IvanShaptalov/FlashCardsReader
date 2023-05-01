@@ -3,6 +3,7 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/views/flashcards/flashcard_collection_info.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/view_flashcard_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
     }
   }
 
-  void selectCard() {
+  bool selectCard() {
     debugPrint('tap ${widget.flashCardCollection.title}');
     // if merge mode is on and the item is not the target item
     if (FlashCardCollectionProvider.isMergeModeStarted &&
@@ -134,7 +135,9 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
         }
         widget.updateCallback();
       });
+      return true;
     }
+    return false;
   }
 
   @override
@@ -155,6 +158,10 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
       child: GestureDetector(
         onTap: () {
           selectCard();
+        },
+        onLongPress: () {
+          FlashCardViewBottomSheet(creatingFlashC: widget.flashCardCollection)
+              .showFlashCardViewMenu(context);
         },
         child: Card(
           shape: ShapeBorder.lerp(

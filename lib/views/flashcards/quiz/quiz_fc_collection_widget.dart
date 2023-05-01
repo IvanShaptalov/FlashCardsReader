@@ -67,10 +67,11 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
                       numberOfFlashCards:
                           widget.flashCardCollection.flashCardSet.length,
                       mode: QuizModeProvider.mode,
-                      fCollection: widget.flashCardCollection));
+                      fCollection: widget.flashCardCollection,
+                      fromPage: 'quiz',));
             }
           },
-          icon: const Icon(Icons.start_outlined))
+          icon: const Icon(Icons.quiz))
     ];
   }
 
