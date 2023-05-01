@@ -90,7 +90,7 @@ class _QuizMenuViewState extends State<QuizMenuView> {
     var flashCardCollection =
         context.read<FlashCardBloc>().state.flashCards.isNotEmpty
             ? context.read<FlashCardBloc>().state.flashCards.first
-            : flashFixture();
+            : flashExample();
     context
         .read<QuizBloc>()
         .add(InitQuizEvent(flashCardsCollection: flashCardCollection));

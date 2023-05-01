@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
@@ -62,7 +60,7 @@ class UpdateFlashCardBottomSheet {
       flashCardCollection = creatingFlashC.copy();
     } else {
       debugPrintIt('create flashFixture');
-      flashCardCollection = flashFixture();
+      flashCardCollection = flashExample();
     }
   }
   bool edit;
@@ -95,7 +93,7 @@ class FlashCardCreatingWall extends StatefulWidget {
   WordFormContoller wordFormContoller = WordFormContoller();
   GoogleTranslatorAPIWrapper translator = GoogleTranslatorAPIWrapper();
   FlashCardCollection flashCardCollection;
-  final int wordsBeforeRelocateEditor = 4;
+  final int wordsBeforeRelocateEditor = 6;
   @override
   State<FlashCardCreatingWall> createState() => _FlashCardCreatingWallState();
 }

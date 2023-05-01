@@ -12,11 +12,11 @@ class QuizBloc extends Bloc<QuizEvent, QuizInitial> {
   QuizBloc()
       : super(QuizInitial(
           stateId: uuid.v4(),
-          flashCardsCollection: flashFixture(),
+          flashCardsCollection: flashExample(),
           currentFlashCard: null,
           flashIndex: 0,
           mode: QuizMode.all,
-          numberOfFlashCards: flashFixture().flashCardSet.length,
+          numberOfFlashCards: flashExample().flashCardSet.length,
         )) {
     on<StartQuizEvent>((event, emit) {
       emit(state.copyWith(stateId: uuid.v4(), flashCardsCollection: event.flashCardCollection, mode: event.mode));

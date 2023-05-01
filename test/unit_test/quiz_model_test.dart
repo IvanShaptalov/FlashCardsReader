@@ -1,9 +1,38 @@
-import 'package:flashcards_reader/main.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/flashcards/quiz_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  FlashCardCollection flashFixture() {
+  final FlashCard flashCard1 = FlashCard(
+    questionLanguage: 'English',
+    answerLanguage: 'German',
+    questionWords: 'Hello',
+    answerWords: 'Hallo',
+    lastTested: DateTime.now(),
+    correctAnswers: 0,
+    wrongAnswers: 0,
+  );
+  final FlashCard flashCard2 = FlashCard(
+    questionLanguage: 'English',
+    answerLanguage: 'German',
+    questionWords: 'Goodbye',
+    answerWords: 'Auf Wiedersehen',
+    lastTested: DateTime.now(),
+    correctAnswers: 0,
+    wrongAnswers: 0,
+  );
+  final FlashCardCollection testFlashCardCollection = FlashCardCollection(
+      uuid.v4().toString(),
+      title: 'Fixture Collection',
+      flashCardSet: {flashCard1, flashCard2},
+      createdAt: DateTime.now(),
+      isDeleted: false,
+      questionLanguage: 'English',
+      answerLanguage: 'German');
+  return testFlashCardCollection;
+}
   group('Flashcard quiz', () {
     test('Initialized', () async {
       var collection = flashFixture();

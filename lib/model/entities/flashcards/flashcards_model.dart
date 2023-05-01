@@ -40,9 +40,9 @@ class FlashCard {
   static FlashCard fixture() {
     return FlashCard(
         questionLanguage: 'English',
-        answerLanguage: 'German',
-        questionWords: 'Hello${Random().nextInt(100)}',
-        answerWords: 'Hallo',
+        answerLanguage: 'Ukrainian',
+        questionWords: '',
+        answerWords: '',
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0);

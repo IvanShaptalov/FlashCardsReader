@@ -6,10 +6,10 @@ import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 
 class FlashCardCreatingUIProvider {
-  static FlashCardCollection creatingFlashCardCollection = flashFixture();
+  static FlashCardCollection creatingFlashCardCollection = flashExample();
 
   static clear() {
-    creatingFlashCardCollection = flashFixture();
+    creatingFlashCardCollection = flashExample();
     WordCreatingUIProvider.clear();
   }
 }

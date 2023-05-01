@@ -74,7 +74,7 @@ class QuizInitial extends QuizState {
     // return state with deleted current card from training
     return copyWith(
         currentCard: null,
-        flashCardsCollection: flashFixture(),
+        flashCardsCollection: flashExample(),
         stateId: uuid.v4());
   }
 

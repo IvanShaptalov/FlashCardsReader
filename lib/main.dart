@@ -1,4 +1,3 @@
-import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
@@ -13,33 +12,15 @@ Future<bool> initAsync() async {
   return dbInit;
 }
 
-FlashCardCollection flashFixture() {
-  final FlashCard flashCard1 = FlashCard(
-    questionLanguage: 'English',
-    answerLanguage: 'German',
-    questionWords: 'Hello',
-    answerWords: 'Hallo',
-    lastTested: DateTime.now(),
-    correctAnswers: 0,
-    wrongAnswers: 0,
-  );
-  final FlashCard flashCard2 = FlashCard(
-    questionLanguage: 'English',
-    answerLanguage: 'German',
-    questionWords: 'Goodbye',
-    answerWords: 'Auf Wiedersehen',
-    lastTested: DateTime.now(),
-    correctAnswers: 0,
-    wrongAnswers: 0,
-  );
+FlashCardCollection flashExample() {
   final FlashCardCollection testFlashCardCollection = FlashCardCollection(
       uuid.v4().toString(),
-      title: 'Fixture Collection',
-      flashCardSet: {flashCard1, flashCard2},
+      title: 'Example',
+      flashCardSet: {},
       createdAt: DateTime.now(),
       isDeleted: false,
       questionLanguage: 'English',
-      answerLanguage: 'German');
+      answerLanguage: 'Ukrainian');
   return testFlashCardCollection;
 }
 
@@ -48,13 +29,6 @@ Future<void> main() async {
   bool inited = await initAsync();
   debugPrint('inited: $inited');
   assert(inited, true);
-
-  await FlashcardDatabaseProvider.deleteAllAsync();
-  for (var i = 0; i < 8; i++) {
-    await FlashcardDatabaseProvider.writeEditAsync(
-      flashFixture()..title = 'English-German $i',
-    );
-  }
 
   runApp(const MyApp());
 }
