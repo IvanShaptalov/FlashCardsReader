@@ -1,6 +1,7 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz_view.dart';
@@ -64,7 +65,7 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
 
   @override
   void initState() {
-    print('init mode : ${widget.mode}');
+    debugPrintIt('init mode : ${widget.mode}');
     context.read<QuizBloc>().add(StartQuizEvent(
         flashCardCollection: widget.fCollection,
         mode: widget.mode,

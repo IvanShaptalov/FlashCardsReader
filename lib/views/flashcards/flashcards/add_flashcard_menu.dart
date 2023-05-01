@@ -99,54 +99,48 @@ class FlashCardCreatingWall extends StatefulWidget {
 
 class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
   Widget addCollectionButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: GestureDetector(
-            child: Container(
-              height: SizeConfig.getMediaHeight(context, p: 0.1),
-              width: SizeConfig.getMediaWidth(context, p: 0.8),
-              decoration: const BoxDecoration(
-                color: Colors.blueGrey,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25)),
-              ),
-              child: const Center(
-                child: Text(
-                  'Update collection',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+    return Center(
+      child: GestureDetector(
+        child: Container(
+          height: SizeConfig.getMediaHeight(context, p: 0.1),
+          width: SizeConfig.getMediaWidth(context, p: 0.8),
+          decoration: const BoxDecoration(
+            color: Colors.blueGrey,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+          ),
+          child: const Center(
+            child: Text(
+              'Update collection',
+              style: TextStyle(fontSize: 20, color: Colors.white),
+              textAlign: TextAlign.center,
             ),
-            onTap: () {
-              if (widget.flashCardCollection.isValid) {
-                debugPrint('=====================add collection');
-                widget.specialContext.read<FlashCardBloc>().add(
-                    UpdateFlashCardEvent(
-                        flashCardCollection: widget.flashCardCollection));
-                Navigator.pop(context);
-                FlashCardCreatingUIProvider.clear();
-                widget.isEdit
-                    ? OverlayNotificationProvider.showOverlayNotification(
-                        'Collection edited',
-                        status: NotificationStatus.info)
-                    : OverlayNotificationProvider.showOverlayNotification(
-                        'Collection added',
-                        status: NotificationStatus.success);
-              } else {
-                OverlayNotificationProvider.showOverlayNotification(
-                    'Your collection not valid',
-                    status: NotificationStatus.warning);
-
-                debugPrint('flash not valid');
-              }
-            },
           ),
         ),
-      ],
+        onTap: () {
+          if (widget.flashCardCollection.isValid) {
+            debugPrint('=====================add collection');
+            widget.specialContext.read<FlashCardBloc>().add(
+                UpdateFlashCardEvent(
+                    flashCardCollection: widget.flashCardCollection));
+            Navigator.pop(context);
+            FlashCardCreatingUIProvider.clear();
+            widget.isEdit
+                ? OverlayNotificationProvider.showOverlayNotification(
+                    'Collection edited',
+                    status: NotificationStatus.info)
+                : OverlayNotificationProvider.showOverlayNotification(
+                    'Collection added',
+                    status: NotificationStatus.success);
+          } else {
+            OverlayNotificationProvider.showOverlayNotification(
+                'Your collection not valid',
+                status: NotificationStatus.warning);
+
+            debugPrint('flash not valid');
+          }
+        },
+      ),
     );
   }
 
@@ -261,7 +255,9 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                       },
                     ),
                   ),
-                  IconButton(onPressed: (){}, icon: const Icon(Icons.record_voice_over_outlined))
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.record_voice_over_outlined))
                 ],
               )
             ],
@@ -369,177 +365,269 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                 /// =================== [Flashcard List] ===================
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.symmetric(
+                      vertical: 8.0,
+                      horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
                   child: Column(
                     children: [
                       for (var flashCard
                           in widget.flashCardCollection.flashCardSet.toList())
                         SizedBox(
                           height: SizeConfig.getMediaHeight(context, p: 0.1),
-                          child: ListTile(
-                            leading: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    widget.flashCardCollection.flashCardSet
-                                        .remove(flashCard);
-                                  });
-                                },
-                                icon: const Icon(Icons.delete_forever)),
-                            title: Text(
-                                '${flashCard.questionWords} - ${flashCard.questionLanguage}'),
-                            subtitle: Text(
-                                '${flashCard.answerWords} - ${flashCard.answerLanguage}'),
-                            trailing: SizedBox(
-                              width: SizeConfig.getMediaWidth(context, p: 0.45),
-                              height:
-                                  SizeConfig.getMediaHeight(context, p: 0.15),
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.grey.shade400, width: 1),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // Column(
-                                  //   children: [
-                                  //     Transform.scale(
-                                  //       scale: 0.8,
-                                  //       child: IconButton(
-                                  //           onPressed: () {},
-                                  //           icon: const Icon(Icons
-                                  //               .settings_backup_restore_outlined)),
-                                  //     ),
-                                  //     const Text('Reset Answers',
-                                  //         style: TextStyle(fontSize: 12)),
-                                  //   ],
-                                  // ),
-
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          widget
+                                              .flashCardCollection.flashCardSet
+                                              .remove(flashCard);
+                                        });
+                                      },
+                                      icon: const Icon(
+                                        Icons.delete_forever,
+                                      )),
+                                  SizedBox(
+                                    width: SizeConfig.getMediaWidth(context,
+                                        p: 0.2),
+                                    child: Align(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                         
+                                          RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black),
+                                              children: [
+                                                const WidgetSpan(
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 2.0),
+                                                    child: Icon(
+                                                      Icons.language_outlined,
+                                                      size: 16,
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                    text: flashCard.answerWords,
+                                                    style: const TextStyle(
+                                                        color: Colors.black)),
+                                              ],
+                                            ),
+                                          ),
+                                          RichText(
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                              children: [
+                                                const WidgetSpan(
+                                                  alignment:
+                                                      PlaceholderAlignment
+                                                          .middle,
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 2.0),
+                                                    child: Icon(
+                                                      Icons.translate,
+                                                      size: 16,
+                                                    ),
+                                                  ),
+                                                ),
+                                                WidgetSpan(
+                                                  alignment:
+                                                      PlaceholderAlignment
+                                                          .middle,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 2.0),
+                                                    child: Text(
+                                                        flashCard.questionWords,
+                                                        style: const TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Colors.black)),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8.0),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          const Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text('Status',
+                                                  style: TextStyle())),
+                                          RichText(
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.fade,
+                                            text: TextSpan(
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.white),
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 2.0),
+                                                    child: Icon(
+                                                        flashCard.isLearned
+                                                            ? Icons
+                                                                .check_circle_sharp
+                                                            : Icons.cancel,
+                                                        size: 16,
+                                                        color: flashCard
+                                                                .isLearned
+                                                            ? Colors.green
+                                                            : Colors
+                                                                .deepPurple),
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                    text: flashCard.isLearned
+                                                        ? 'Learned'
+                                                        : 'Unlearned',
+                                                    style: const TextStyle(
+                                                        color: Colors.black)),
+                                              ],
+                                            ),
+                                          ),
+                                          RichText(
+                                            overflow: TextOverflow.fade,
+                                            text: TextSpan(
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.blue),
+                                              children: [
+                                                TextSpan(
+                                                  text: flashCard.isLearned
+                                                      ? 'set unlearned'
+                                                      : 'set learned',
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          setState(() {
+                                                            setState(() {
+                                                              flashCard
+                                                                      .isLearned
+                                                                  ? flashCard
+                                                                      .reset()
+                                                                  : flashCard
+                                                                      .markAsLearned();
+                                                            });
+                                                          });
+                                                        },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Align(
                                     child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                          MainAxisAlignment.spaceAround,
                                       children: [
-                                        const Text('Status:'),
+                                        const Text('Answers',
+                                            style:
+                                                TextStyle(color: Colors.black)),
                                         RichText(
+                                          overflow: TextOverflow.ellipsis,
+                                          text: TextSpan(
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black),
+                                            children: [
+                                              const WidgetSpan(
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 2.0),
+                                                  child: Icon(
+                                                      Icons.check_circle,
+                                                      size: 16,
+                                                      color: Colors.green),
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                  text:
+                                                      'Correct: ${flashCard.correctAnswers}',
+                                                  style: const TextStyle(
+                                                      color: Colors.black)),
+                                            ],
+                                          ),
+                                        ),
+                                        RichText(
+                                          textAlign: TextAlign.left,
                                           overflow: TextOverflow.ellipsis,
                                           text: TextSpan(
                                             style: const TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.grey),
                                             children: [
+                                              const WidgetSpan(
+                                                alignment:
+                                                    PlaceholderAlignment.middle,
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 2.0),
+                                                  child: Icon(Icons.cancel,
+                                                      size: 16,
+                                                      color: Colors.deepPurple),
+                                                ),
+                                              ),
                                               WidgetSpan(
+                                                alignment:
+                                                    PlaceholderAlignment.middle,
                                                 child: Padding(
                                                   padding: const EdgeInsets
                                                           .symmetric(
                                                       horizontal: 2.0),
-                                                  child: Icon(
-                                                      flashCard.isLearned
-                                                          ? Icons
-                                                              .check_circle_sharp
-                                                          : Icons.cancel,
-                                                      size: 12,
-                                                      color: flashCard.isLearned
-                                                          ? Colors.green
-                                                          : Colors.deepPurple),
+                                                  child: Text(
+                                                      'Wrong: ${flashCard.wrongAnswers}',
+                                                      style: const TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.black)),
                                                 ),
-                                              ),
-                                              TextSpan(
-                                                  text: flashCard.isLearned
-                                                      ? 'Learned'
-                                                      : 'Unlearned'),
-                                            ],
-                                          ),
-                                        ),
-                                        RichText(
-                                          overflow: TextOverflow.ellipsis,
-                                          text: TextSpan(
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.blue),
-                                            children: [
-                                              TextSpan(
-                                                text: flashCard.isLearned
-                                                    ? 'set unlearned'
-                                                    : 'set learned',
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        setState(() {
-                                                          setState(() {
-                                                            flashCard.isLearned
-                                                                ? flashCard
-                                                                    .reset()
-                                                                : flashCard
-                                                                    .markAsLearned();
-                                                          });
-                                                        });
-                                                      },
                                               ),
                                             ],
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Text('Answers:'),
-                                      RichText(
-                                        overflow: TextOverflow.ellipsis,
-                                        text: TextSpan(
-                                          style: const TextStyle(
-                                              fontSize: 12, color: Colors.grey),
-                                          children: [
-                                            const WidgetSpan(
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 2.0),
-                                                child: Icon(Icons.check_circle,
-                                                    size: 12,
-                                                    color: Colors.green),
-                                              ),
-                                            ),
-                                            TextSpan(
-                                                text:
-                                                    'Correct: ${flashCard.correctAnswers}'),
-                                          ],
-                                        ),
-                                      ),
-                                      RichText(
-                                        textAlign: TextAlign.left,
-                                        overflow: TextOverflow.ellipsis,
-                                        text: TextSpan(
-                                          style: const TextStyle(
-                                              fontSize: 12, color: Colors.grey),
-                                          children: [
-                                            const WidgetSpan(
-                                              alignment:
-                                                  PlaceholderAlignment.middle,
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 2.0),
-                                                child: Icon(Icons.cancel,
-                                                    size: 12,
-                                                    color: Colors.deepPurple),
-                                              ),
-                                            ),
-                                            WidgetSpan(
-                                              alignment:
-                                                  PlaceholderAlignment.middle,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 2.0),
-                                                child: Text(
-                                                    'Wrong: ${flashCard.wrongAnswers}',
-                                                    style: const TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.grey)),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
                                   ),
                                 ],
                               ),
@@ -554,7 +642,8 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
           )),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
-            child: SizedBox(
+            child: Container(
+              color: Colors.transparent,
               height: SizeConfig.getMediaHeight(context, p: 0.08),
               width: SizeConfig.getMediaWidth(context, p: 1),
               child: Center(

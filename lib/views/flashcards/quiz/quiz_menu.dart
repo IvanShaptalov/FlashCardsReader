@@ -3,6 +3,8 @@ import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/router.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_fc_collection_widget.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
@@ -79,8 +81,10 @@ class _QuizMenuViewState extends State<QuizMenuView> {
 
         /// show merge button if merge mode is available
         IconButton(
-          icon: const Icon(Icons.quiz),
-          onPressed: () {},
+          icon: const Icon(Icons.web_stories_outlined),
+          onPressed: () {
+            MyRouter.pushPageReplacement(context, const FlashCardScreen());
+          },
         ),
       ];
     }
