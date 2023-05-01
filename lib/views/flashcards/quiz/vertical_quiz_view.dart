@@ -22,6 +22,11 @@ class _VerticalQuizState extends State<VerticalQuiz> {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SelectQuizMode(
+              mode: BlocProvider.of<QuizBloc>(context).state.quizModel.mode),
+        ),
         BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished
             ? Center(
                 child: Column(

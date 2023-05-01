@@ -64,6 +64,7 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
 
   @override
   void initState() {
+    print('init mode : ${widget.mode}');
     context.read<QuizBloc>().add(StartQuizEvent(
         flashCardCollection: widget.fCollection,
         mode: widget.mode,

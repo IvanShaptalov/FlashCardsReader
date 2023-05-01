@@ -55,8 +55,9 @@ class QuizInitial extends QuizState {
     // return state with next card or null if no more cards
     print('now, when copyWith current Card is :$quizModel.currentCard');
     return copyWith(
-      currentCard: quizModel.getNextFlash(mode: quizModel.mode),
+      currentCard: quizModel.getNextFlash(),
       stateId: uuid.v4(),
+      mode: quizModel.mode,
     );
   }
 

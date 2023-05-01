@@ -3,7 +3,6 @@ import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/flashcards/quiz_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
-import 'package:flashcards_reader/views/overlay_notification.dart';
 
 part 'quiz_event.dart';
 part 'quiz_state.dart';

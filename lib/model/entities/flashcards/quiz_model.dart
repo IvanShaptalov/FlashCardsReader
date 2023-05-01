@@ -58,14 +58,13 @@ class QuizModel {
 
   /// ================================================[TRAINIG METHODS]================================================
   /// get the next flash card to train
-  FlashCard? getNextFlash(
-      {QuizMode mode = QuizMode.all, List<FlashCard>? list}) {
+  FlashCard? getNextFlash({List<FlashCard>? list}) {
     FlashCard? flash;
 
     /// sort flash cards by mode
     List<FlashCard> flashList =
         list ?? flashCardsCollection.flashCardSet.toList();
-    debugPrintIt('mode: $mode');
+    debugPrintIt('#(@&(*@#&#@(*)#@)(*&#@()*&#@()*$mode when get: $mode');
     if (list == null) {
       switch (mode) {
         case QuizMode.all:
@@ -111,7 +110,7 @@ class QuizModel {
 
     if (_isFlashCardLearned(flashList.elementAt(flashIndex - 1))) {
       // increment the current flash card index and try to get the next flash card
-      flash = getNextFlash(mode: mode);
+      flash = getNextFlash();
       debugPrintIt('flash: $flash');
       debugPrintIt(
           '==================================================END==================================================');
@@ -119,7 +118,7 @@ class QuizModel {
         return flash;
       }
       // if the next flash null ,try to find the next flash card
-      return getNextFlash(mode: mode, list: flashList);
+      return getNextFlash(list: flashList);
     }
 
     return null;
