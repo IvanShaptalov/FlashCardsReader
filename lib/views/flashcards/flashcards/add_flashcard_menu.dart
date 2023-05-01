@@ -9,6 +9,7 @@ import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widg
 import 'package:flashcards_reader/views/flashcards/flashcards/select_language_widget.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -343,17 +344,177 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                         addWordWidget(),
                       for (var flashCard
                           in widget.flashCardCollection.flashCardSet.toList())
-                        ListTile(
-                          leading: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  widget.flashCardCollection.flashCardSet
-                                      .remove(flashCard);
-                                });
-                              },
-                              icon: const Icon(Icons.delete_forever)),
-                          title: Text(flashCard.questionWords),
-                          subtitle: Text(flashCard.answerWords),
+                        SizedBox(
+                          height: SizeConfig.getMediaHeight(context, p: 0.1),
+                          child: ListTile(
+                            leading: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    widget.flashCardCollection.flashCardSet
+                                        .remove(flashCard);
+                                  });
+                                },
+                                icon: const Icon(Icons.delete_forever)),
+                            title: Text(
+                                '${flashCard.questionWords} - ${flashCard.questionLanguage}'),
+                            subtitle: Text(
+                                '${flashCard.answerWords} - ${flashCard.answerLanguage}'),
+                            trailing: SizedBox(
+                              width: SizeConfig.getMediaWidth(context, p: 0.45),
+                              height:
+                                  SizeConfig.getMediaHeight(context, p: 0.15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  // Column(
+                                  //   children: [
+                                  //     Transform.scale(
+                                  //       scale: 0.8,
+                                  //       child: IconButton(
+                                  //           onPressed: () {},
+                                  //           icon: const Icon(Icons
+                                  //               .settings_backup_restore_outlined)),
+                                  //     ),
+                                  //     const Text('Reset Answers',
+                                  //         style: TextStyle(fontSize: 12)),
+                                  //   ],
+                                  // ),
+
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Text('Status:'),
+                                        RichText(
+                                          overflow: TextOverflow.ellipsis,
+                                          text: TextSpan(
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey),
+                                            children: [
+                                              WidgetSpan(
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 2.0),
+                                                  child: Icon(
+                                                      flashCard.isLearned
+                                                          ? Icons
+                                                              .check_circle_sharp
+                                                          : Icons.cancel,
+                                                      size: 12,
+                                                      color: flashCard.isLearned
+                                                          ? Colors.green
+                                                          : Colors.deepPurple),
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                  text: flashCard.isLearned
+                                                      ? 'Learned'
+                                                      : 'Unlearned'),
+                                            ],
+                                          ),
+                                        ),
+                                        RichText(
+                                          overflow: TextOverflow.ellipsis,
+                                          text: TextSpan(
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.blue),
+                                            children: [
+                                              TextSpan(
+                                                text: flashCard.isLearned
+                                                    ? 'set unlearned'
+                                                    : 'set learned',
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        setState(() {
+                                                          setState(() {
+                                                            flashCard.isLearned
+                                                                ? flashCard
+                                                                    .reset()
+                                                                : flashCard
+                                                                    .markAsLearned();
+                                                          });
+                                                        });
+                                                      },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Text('Answers:'),
+                                      RichText(
+                                        overflow: TextOverflow.ellipsis,
+                                        text: TextSpan(
+                                          style: const TextStyle(
+                                              fontSize: 12, color: Colors.grey),
+                                          children: [
+                                            const WidgetSpan(
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 2.0),
+                                                child: Icon(Icons.check_circle,
+                                                    size: 12,
+                                                    color: Colors.green),
+                                              ),
+                                            ),
+                                            TextSpan(
+                                                text:
+                                                    'Correct: ${flashCard.correctAnswers}'),
+                                          ],
+                                        ),
+                                      ),
+                                      RichText(
+                                        textAlign: TextAlign.left,
+                                        overflow: TextOverflow.ellipsis,
+                                        text: TextSpan(
+                                          style: const TextStyle(
+                                              fontSize: 12, color: Colors.grey),
+                                          children: [
+                                            const WidgetSpan(
+                                              alignment:
+                                                  PlaceholderAlignment.middle,
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 2.0),
+                                                child: Icon(Icons.cancel,
+                                                    size: 12,
+                                                    color: Colors.deepPurple),
+                                              ),
+                                            ),
+                                            WidgetSpan(
+                                              alignment:
+                                                  PlaceholderAlignment.middle,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 2.0),
+                                                child: Text(
+                                                    'Wrong: ${flashCard.wrongAnswers}',
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.grey)),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
                     ],
                   ),

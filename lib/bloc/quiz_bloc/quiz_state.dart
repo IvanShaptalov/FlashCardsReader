@@ -53,7 +53,7 @@ class QuizInitial extends QuizState {
 
   QuizInitial nextFlash() {
     // return state with next card or null if no more cards
-    print('now, when copyWith current Card is :$quizModel.currentCard');
+    debugPrintIt('now, when copyWith current Card is :$quizModel.currentCard');
     return copyWith(
       currentCard: quizModel.getNextFlash(),
       stateId: uuid.v4(),
@@ -68,7 +68,7 @@ class QuizInitial extends QuizState {
     }
 
     // return state with deleted current card from training
-    return copyWith(stateId: uuid.v4(), currentCard: quizModel.getNextFlash());
+    return copyWith(stateId: uuid.v4(), currentCard: quizModel.getNextFlash(), mode: quizModel.mode);
   }
 
   QuizInitial finishQuiz() {
@@ -76,7 +76,8 @@ class QuizInitial extends QuizState {
     return copyWith(
         currentCard: null,
         flashCardsCollection: flashExample(),
-        stateId: uuid.v4());
+        stateId: uuid.v4(),
+        mode: quizModel.mode);
   }
 
   QuizInitial changeQuizMode(QuizMode mode) {

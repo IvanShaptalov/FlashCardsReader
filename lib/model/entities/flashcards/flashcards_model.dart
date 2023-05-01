@@ -25,6 +25,11 @@ class FlashCard {
     wrongAnswers = 0;
   }
 
+  void markAsLearned() {
+    correctAnswers = learnedBound;
+    wrongAnswers = 0;
+  }
+
   static const learnedBound = 5;
   // TODO replace to config
   bool get isLearned => correctAnswers - wrongAnswers >= learnedBound;
