@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: Colors.green,
             // ignore: deprecated_member_use
             androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
         home: const MyHomePage(title: 'Flutter Demo Home Page'),

@@ -57,7 +57,12 @@ class FlashCardViewWall extends StatefulWidget {
 class _FlashCardViewWallState extends State<FlashCardViewWall> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: BoxDecoration(
+        color: CardViewConfig.defaultCardColor,
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+      ),
         height: SizeConfig.getMediaHeight(context, p: 0.8),
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Padding(
@@ -341,9 +346,9 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         width: SizeConfig.getMediaWidth(context,
                                             p: 0.4),
                                         decoration: BoxDecoration(
-                                            color: Colors.blueGrey.shade100,
+                                            color: Colors.green.shade200,
                                             border: Border.all(
-                                                color: Colors.grey.shade600,
+                                                color: Colors.grey,
                                                 width: 1),
                                             borderRadius:
                                                 BorderRadius.circular(25)),
@@ -400,7 +405,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       child: Align(
                                         child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             SingleChildScrollView(
                                                 scrollDirection:
@@ -435,7 +440,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         alignment: Alignment.center,
                                         child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             const Align(
                                                 alignment: Alignment.centerLeft,
@@ -483,7 +488,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                     Align(
                                       child: Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           const Text('Answers',
                                               style: TextStyle(

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -24,3 +25,10 @@ class ViewConfig {
   static double getCardForm(BuildContext context) =>
       MediaQuery.of(context).orientation == Orientation.portrait ? 0.6 : 1;
 }
+
+
+class CardViewConfig {
+  static Color defaultCardColor = Colors.amber.shade50;
+}
+
+

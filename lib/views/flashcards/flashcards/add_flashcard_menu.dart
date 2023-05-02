@@ -119,9 +119,9 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
         child: Container(
           height: SizeConfig.getMediaHeight(context, p: 0.1),
           width: SizeConfig.getMediaWidth(context, p: 0.8),
-          decoration: const BoxDecoration(
-            color: Colors.blueGrey,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: Colors.green.shade300,
+            borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(25), topRight: Radius.circular(25)),
           ),
           child: const Center(
@@ -166,7 +166,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
           height: SizeConfig.getMediaHeight(context, p: 0.17),
           width: SizeConfig.getMediaWidth(context, p: 1),
           decoration: BoxDecoration(
-            color: Colors.blueGrey.shade200,
+            color: Colors.green.shade200,
 
             // rounded full border
             borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -265,7 +265,12 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
   Widget build(BuildContext context) {
     widget.flashCardFormController.setUp(widget.flashCardCollection);
     widget.wordFormContoller.setUp(WordCreatingUIProvider.tmpFlashCard);
-    return SizedBox(
+    return Container(
+        decoration: BoxDecoration(
+          color: CardViewConfig.defaultCardColor,
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+        ),
         height: SizeConfig.getMediaHeight(context, p: 0.85),
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Padding(
@@ -477,7 +482,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                             text: TextSpan(
                                               style: const TextStyle(
                                                   fontSize: 12,
-                                                  color: Colors.blue),
+                                                  color: Colors.green),
                                               children: [
                                                 TextSpan(
                                                   text: flashCard.isLearned

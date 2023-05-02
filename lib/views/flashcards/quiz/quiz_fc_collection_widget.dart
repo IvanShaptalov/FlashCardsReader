@@ -43,7 +43,7 @@ class QuizCollectionView extends StatefulWidget {
 
 class _QuizCollectionViewState extends State<QuizCollectionView> {
   Color setCardColor() {
-    return Colors.grey[200] ?? Colors.grey;
+    return CardViewConfig.defaultCardColor;
   }
 
   List<Widget> getCardActions(
@@ -93,25 +93,31 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
             horizontal: SizeConfig.getMediaWidth(context, p: 0.01)),
         // select items for merge
 
-        child: Card(
-          shape: ShapeBorder.lerp(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              0.5),
-          color: setCardColor(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    top: SizeConfig.getMediaHeight(context, p: 0.02),
-                    bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
-               
-                 
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black12,
+            ),
+            color: CardViewConfig.defaultCardColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Card(
+            shape: ShapeBorder.lerp(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                0.5),
+            color: setCardColor(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: SizeConfig.getMediaHeight(context, p: 0.02),
+                      bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: SizeConfig.getMediaWidth(context, p: 0.02)),
@@ -121,23 +127,23 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
                         style: const TextStyle(fontSize: 16),
                         maxLines: 1,
                       ),
-                    
+                    ),
                   ),
                 ),
-              ),
-              const Divider(
-                color: Colors.grey,
-                thickness: 1,
-              ),
-              FlashCardCollectionInfo(widget.flashCardCollection),
-              const Divider(
-                color: Colors.grey,
-                thickness: 1,
-              ),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: getCardActions(isTarget, isSelected, context)),
-            ],
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                ),
+                FlashCardCollectionInfo(widget.flashCardCollection),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: getCardActions(isTarget, isSelected, context)),
+              ],
+            ),
           ),
         ),
       );

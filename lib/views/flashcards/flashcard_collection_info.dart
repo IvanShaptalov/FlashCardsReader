@@ -23,9 +23,9 @@ class FlashCardCollectionInfo extends StatelessWidget {
           Row(
             children: [
               Transform.scale(
-                  scale: iconScale, child: const Icon(Icons.check_circle_outline)),
+                  scale: iconScale, child: const Icon(Icons.language)),
               Text(
-                "correct\nanswers: ${flashCardCollection.correctAnswers}",
+                "-> ${flashCardCollection.questionLanguage}\n<- ${flashCardCollection.answerLanguage}",
                 style: const TextStyle(fontSize: 14),
                 textAlign: TextAlign.start,
               ),
@@ -34,30 +34,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
           Row(
             children: [
               Transform.scale(
-                  scale: iconScale,
-                  child: const Icon(Icons.disabled_by_default_outlined)),
-              Text(
-                "wrong\nanswers: ${flashCardCollection.wrongAnswers}",
-                style: const TextStyle(fontSize: 14),
-                textAlign: TextAlign.start,
-              ),
-            ],
-          ),
-          const Divider(),
-          Row(
-            children: [
-              Transform.scale(scale: iconScale, child: const Icon(Icons.language)),
-              Text(
-                "-> ${flashCardCollection.questionLanguage}\n<- ${flashCardCollection.answerLanguage}",
-                style: const TextStyle(fontSize: 14),
-                textAlign: TextAlign.start,
-              ),
-            ],
-          ),
-          const Divider(),
-          Row(
-            children: [
-              Transform.scale(scale: iconScale, child: const Icon(Icons.date_range)),
+                  scale: iconScale, child: const Icon(Icons.date_range)),
               Text(
                 ViewConfig.formatDate(flashCardCollection.createdAt),
                 style: const TextStyle(fontSize: 14),
