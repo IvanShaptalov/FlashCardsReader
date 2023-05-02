@@ -7,7 +7,6 @@ import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz_view.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
-import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

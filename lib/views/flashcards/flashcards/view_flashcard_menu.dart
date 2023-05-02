@@ -4,7 +4,6 @@ import 'package:flashcards_reader/model/entities/translator/api.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
-import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_process.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';

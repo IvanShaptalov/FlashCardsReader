@@ -98,6 +98,21 @@ class FlashCardCreatingWall extends StatefulWidget {
 }
 
 class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
+  bool _isPressed = false;
+  bool _oldPress = false;
+
+  void callback() {
+    setState(() {});
+  }
+
+  Widget loadTranslate() {
+    if (_isPressed != _oldPress) {
+      _oldPress = _isPressed;
+      return TranslateButton(widget: widget, callback: callback);
+    }
+    return const Icon(Icons.translate);
+  }
+
   Widget addCollectionButton() {
     return Center(
       child: GestureDetector(
@@ -217,33 +232,14 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   IconButton(
-                      onPressed: () async {
-                        if (await InternetChecker.hasConnection()) {
-                          String questionWords =
-                              WordCreatingUIProvider.tmpFlashCard.questionWords;
-                          if (questionWords.isNotEmpty) {
-                            TranslateResponse answerWords =
-                                await widget.translator.translate(questionWords,
-                                    from: getCode(widget
-                                        .flashCardCollection.questionLanguage),
-                                    to: getCode(widget
-                                        .flashCardCollection.answerLanguage));
-                            WordCreatingUIProvider.setAnswer(
-                                answerWords.toString());
-                          } else {
-                            OverlayNotificationProvider.showOverlayNotification(
-                                'No word to translate',
-                                status: NotificationStatus.warning);
-                          }
-                        } else {
-                          OverlayNotificationProvider.showOverlayNotification(
-                              'No internet connection',
-                              status: NotificationStatus.warning);
-                        }
+                      onPressed: () {
+                        _isPressed = !_isPressed;
 
-                        setState(() {});
+                        setState(() {
+                          debugPrintIt('pressed');
+                        });
                       },
-                      icon: const Icon(Icons.translate)),
+                      icon: loadTranslate()),
                   Expanded(
                     child: TextField(
                       controller: widget.wordFormContoller.answerController,
@@ -405,7 +401,6 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                         
                                           RichText(
                                             overflow: TextOverflow.ellipsis,
                                             text: TextSpan(
@@ -652,5 +647,60 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
             ),
           ),
         ]));
+  }
+}
+
+// ignore: must_be_immutable
+class TranslateButton extends StatelessWidget {
+  dynamic widget;
+  Function callback;
+
+  Future<bool>? translate() async {
+    if (await InternetChecker.hasConnection()) {
+      String questionWords = WordCreatingUIProvider.tmpFlashCard.questionWords;
+      if (questionWords.isNotEmpty) {
+        TranslateResponse answerWords = await widget.translator.translate(
+            questionWords,
+            from: getCode(widget.flashCardCollection.questionLanguage),
+            to: getCode(widget.flashCardCollection.answerLanguage));
+        WordCreatingUIProvider.setAnswer(answerWords.toString());
+      } else {
+        OverlayNotificationProvider.showOverlayNotification(
+            'No word to translate',
+            status: NotificationStatus.warning);
+      }
+    } else {
+      OverlayNotificationProvider.showOverlayNotification(
+          'No internet connection',
+          status: NotificationStatus.warning);
+    }
+    callback();
+    return true;
+  }
+
+  TranslateButton({required this.callback ,required this.widget, super.key});
+  @override
+  Widget build(BuildContext context) {
+    var translateIcon = const Icon(
+      Icons.translate,
+    );
+    Future<bool>? result = translate();
+    return FutureBuilder<bool>(
+        future: result, // a previously-obtained Future<String> or null
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          Widget childIcon;
+          if (snapshot.hasData) {
+            childIcon = snapshot.data == true ? translateIcon : translateIcon;
+          } else {
+            childIcon = Transform.scale(
+                scale: 0.6,
+                child: const CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  color: Colors.black,
+                ));
+          }
+
+          return childIcon;
+        });
   }
 }
