@@ -665,11 +665,14 @@ class TranslateButton extends StatelessWidget {
             to: getCode(widget.flashCardCollection.answerLanguage));
         WordCreatingUIProvider.setAnswer(answerWords.toString());
       } else {
+        await Future.delayed(const Duration(milliseconds: 250));
+
         OverlayNotificationProvider.showOverlayNotification(
             'No word to translate',
             status: NotificationStatus.warning);
       }
     } else {
+      await Future.delayed(const Duration(milliseconds: 250));
       OverlayNotificationProvider.showOverlayNotification(
           'No internet connection',
           status: NotificationStatus.warning);
@@ -678,7 +681,7 @@ class TranslateButton extends StatelessWidget {
     return true;
   }
 
-  TranslateButton({required this.callback ,required this.widget, super.key});
+  TranslateButton({required this.callback, required this.widget, super.key});
   @override
   Widget build(BuildContext context) {
     var translateIcon = const Icon(
@@ -693,11 +696,12 @@ class TranslateButton extends StatelessWidget {
             childIcon = snapshot.data == true ? translateIcon : translateIcon;
           } else {
             childIcon = Transform.scale(
-                scale: 0.6,
-                child: const CircularProgressIndicator(
-                  strokeWidth: 2.5,
-                  color: Colors.black,
-                ));
+              scale: 0.6,
+              child: const CircularProgressIndicator(
+                strokeWidth: 2.5,
+                color: Colors.black,
+              ),
+            );
           }
 
           return childIcon;
