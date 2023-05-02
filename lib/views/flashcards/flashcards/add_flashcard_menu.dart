@@ -395,78 +395,31 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                       )),
                                   SizedBox(
                                     width: SizeConfig.getMediaWidth(context,
-                                        p: 0.2),
+                                        p: 0.3),
                                     child: Align(
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          RichText(
-                                            overflow: TextOverflow.ellipsis,
-                                            text: TextSpan(
+                                          SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Text(
+                                              flashCard.questionWords,
                                               style: const TextStyle(
-                                                  fontSize: 12,
                                                   color: Colors.black),
-                                              children: [
-                                                const WidgetSpan(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 2.0),
-                                                    child: Icon(
-                                                      Icons.language_outlined,
-                                                      size: 16,
-                                                    ),
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                    text: flashCard.answerWords,
-                                                    style: const TextStyle(
-                                                        color: Colors.black)),
-                                              ],
+                                              maxLines: 1,
                                             ),
                                           ),
-                                          RichText(
-                                            textAlign: TextAlign.left,
-                                            overflow: TextOverflow.ellipsis,
-                                            text: TextSpan(
-                                              style: const TextStyle(
+                                          SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Text(
+                                                flashCard.answerWords,
+                                                style: const TextStyle(
                                                   fontSize: 12,
-                                                  color: Colors.grey),
-                                              children: [
-                                                const WidgetSpan(
-                                                  alignment:
-                                                      PlaceholderAlignment
-                                                          .middle,
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 2.0),
-                                                    child: Icon(
-                                                      Icons.translate,
-                                                      size: 16,
-                                                    ),
-                                                  ),
+                                                  color: Colors.black,
                                                 ),
-                                                WidgetSpan(
-                                                  alignment:
-                                                      PlaceholderAlignment
-                                                          .middle,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 2.0),
-                                                    child: Text(
-                                                        flashCard.questionWords,
-                                                        style: const TextStyle(
-                                                            fontSize: 12,
-                                                            color:
-                                                                Colors.black)),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                                maxLines: 1,
+                                              ))
                                         ],
                                       ),
                                     ),

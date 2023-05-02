@@ -71,9 +71,21 @@ class _DeletedFlashCardCollectionWidgetState
               padding: EdgeInsets.only(
                   top: SizeConfig.getMediaHeight(context, p: 0.03),
                   bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
-              child: Text(
-                widget.flashCardCollection.title,
-                style: const TextStyle(fontSize: 16),
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: SizeConfig.getMediaHeight(context, p: 0.03),
+                    bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.getMediaWidth(context, p: 0.02)),
+                  child: Center(
+                    child: Text(
+                      widget.flashCardCollection.title,
+                      style: const TextStyle(fontSize: 16),
+                      maxLines: 1,
+                    ),
+                  ),
+                ),
               ),
             ),
             const Divider(

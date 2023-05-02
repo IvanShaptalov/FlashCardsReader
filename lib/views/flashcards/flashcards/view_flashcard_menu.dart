@@ -10,46 +10,6 @@ import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 
-class FlashCardFormController {
-  TextEditingController titleController = TextEditingController();
-  TextEditingController questionLanguageController = TextEditingController();
-  TextEditingController answerLanguageController = TextEditingController();
-
-  void setUp(FlashCardCollection flashCardCollection) {
-    // update controller text
-    titleController.text = flashCardCollection.title;
-    questionLanguageController.text = flashCardCollection.questionLanguage;
-    answerLanguageController.text = flashCardCollection.answerLanguage;
-
-    // set cursor to the end of the text
-
-    titleController.selection = TextSelection.fromPosition(
-        TextPosition(offset: flashCardCollection.title.length));
-    questionLanguageController.selection = TextSelection.fromPosition(
-        TextPosition(offset: flashCardCollection.questionLanguage.length));
-    answerLanguageController.selection = TextSelection.fromPosition(
-        TextPosition(offset: flashCardCollection.answerLanguage.length));
-  }
-}
-
-class WordFormContoller {
-  TextEditingController questionController = TextEditingController();
-  TextEditingController answerController = TextEditingController();
-
-  void setUp(FlashCard flashCard) {
-    // update controller text
-    questionController.text = flashCard.questionWords;
-    answerController.text = flashCard.answerWords;
-
-    // set cursor to the end of the text
-
-    questionController.selection = TextSelection.fromPosition(
-        TextPosition(offset: flashCard.questionWords.length));
-    answerController.selection = TextSelection.fromPosition(
-        TextPosition(offset: flashCard.answerWords.length));
-  }
-}
-
 class FlashCardViewBottomSheet {
   FlashCardViewBottomSheet({FlashCardCollection? creatingFlashC}) {
     if (creatingFlashC != null) {
@@ -88,9 +48,7 @@ class FlashCardViewWall extends StatefulWidget {
     super.key,
   });
   BuildContext specialContext;
-  FlashCardFormController flashCardFormController = FlashCardFormController();
-  WordFormContoller wordFormContoller = WordFormContoller();
-  GoogleTranslatorAPIWrapper translator = GoogleTranslatorAPIWrapper();
+
   FlashCardCollection flashCardCollection;
   @override
   State<FlashCardViewWall> createState() => _FlashCardViewWallState();
@@ -99,8 +57,6 @@ class FlashCardViewWall extends StatefulWidget {
 class _FlashCardViewWallState extends State<FlashCardViewWall> {
   @override
   Widget build(BuildContext context) {
-    widget.flashCardFormController.setUp(widget.flashCardCollection);
-    widget.wordFormContoller.setUp(WordCreatingUIProvider.tmpFlashCard);
     return SizedBox(
         height: SizeConfig.getMediaHeight(context, p: 0.8),
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -167,14 +123,23 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                             ),
                                           ],
                                         ),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Text(
-                                            widget.flashCardCollection.title,
-                                            textAlign: TextAlign.start,
-                                            style:
-                                                const TextStyle(fontSize: 18),
-                                            maxLines: 1,
+                                        SizedBox(
+                                          width: SizeConfig.getMediaWidth(
+                                              context,
+                                              p: 0.3),
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Text(
+                                                widget
+                                                    .flashCardCollection.title,
+                                                textAlign: TextAlign.start,
+                                                style: const TextStyle(
+                                                    fontSize: 18),
+                                                maxLines: 1,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -370,7 +335,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         }
                                       },
                                       child: Container(
-                                        height: SizeConfig.getMediaHeight(context,
+                                        height: SizeConfig.getMediaHeight(
+                                            context,
                                             p: 0.06),
                                         width: SizeConfig.getMediaWidth(context,
                                             p: 0.4),
@@ -436,75 +402,28 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
-                                            RichText(
-                                              overflow: TextOverflow.ellipsis,
-                                              text: TextSpan(
-                                                style: const TextStyle(
+                                            SingleChildScrollView(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                child: Text(
+                                                  flashCard.answerWords,
+                                                  style: const TextStyle(
                                                     fontSize: 12,
-                                                    color: Colors.black),
-                                                children: [
-                                                  const WidgetSpan(
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 2.0),
-                                                      child: Icon(
-                                                        Icons.language_outlined,
-                                                        size: 16,
-                                                      ),
-                                                    ),
+                                                    color: Colors.black,
                                                   ),
-                                                  TextSpan(
-                                                      text:
-                                                          flashCard.answerWords,
-                                                      style: const TextStyle(
-                                                          color: Colors.black)),
-                                                ],
-                                              ),
-                                            ),
-                                            RichText(
-                                              textAlign: TextAlign.left,
-                                              overflow: TextOverflow.ellipsis,
-                                              text: TextSpan(
-                                                style: const TextStyle(
+                                                  maxLines: 1,
+                                                )),
+                                            SingleChildScrollView(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                child: Text(
+                                                  flashCard.questionWords,
+                                                  style: const TextStyle(
                                                     fontSize: 12,
-                                                    color: Colors.grey),
-                                                children: [
-                                                  const WidgetSpan(
-                                                    alignment:
-                                                        PlaceholderAlignment
-                                                            .middle,
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 2.0),
-                                                      child: Icon(
-                                                        Icons.translate,
-                                                        size: 16,
-                                                      ),
-                                                    ),
+                                                    color: Colors.black,
                                                   ),
-                                                  WidgetSpan(
-                                                    alignment:
-                                                        PlaceholderAlignment
-                                                            .middle,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 2.0),
-                                                      child: Text(
-                                                          flashCard
-                                                              .questionWords,
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 12,
-                                                                  color: Colors
-                                                                      .black)),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                                  maxLines: 1,
+                                                ))
                                           ],
                                         ),
                                       ),

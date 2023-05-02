@@ -64,11 +64,12 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
               MyRouter.pushPage(
                   context,
                   QuizTrainer(
-                      numberOfFlashCards:
-                          widget.flashCardCollection.flashCardSet.length,
-                      mode: QuizModeProvider.mode,
-                      fCollection: widget.flashCardCollection,
-                      fromPage: 'quiz',));
+                    numberOfFlashCards:
+                        widget.flashCardCollection.flashCardSet.length,
+                    mode: QuizModeProvider.mode,
+                    fCollection: widget.flashCardCollection,
+                    fromPage: 'quiz',
+                  ));
             }
           },
           icon: const Icon(Icons.quiz))
@@ -107,11 +108,21 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    top: SizeConfig.getMediaHeight(context, p: 0.03),
+                    top: SizeConfig.getMediaHeight(context, p: 0.02),
                     bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
-                child: Text(
-                  widget.flashCardCollection.title,
-                  style: const TextStyle(fontSize: 16),
+               
+                 
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.getMediaWidth(context, p: 0.02)),
+                    child: Center(
+                      child: Text(
+                        widget.flashCardCollection.title,
+                        style: const TextStyle(fontSize: 16),
+                        maxLines: 1,
+                      ),
+                    
+                  ),
                 ),
               ),
               const Divider(

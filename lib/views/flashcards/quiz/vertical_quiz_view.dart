@@ -1,6 +1,6 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_card_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
@@ -11,11 +11,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class VerticalQuiz extends StatefulWidget {
   VerticalQuiz({super.key});
   bool blurred = true;
+  List<Set> flashListResult = [];
   @override
   State<VerticalQuiz> createState() => _VerticalQuizState();
 }
 
 class _VerticalQuizState extends State<VerticalQuiz> {
+  Widget loadEndQuiz() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text(
+            'Quiz Finished',
+            style: TextStyle(fontSize: 24),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void addToResult (bool answer){
+    var flash = 
+    BlocProvider.of<QuizBloc>(context).state.quizModel.currentFCard; 
+
+    if (flash is FlashCard){
+      var flashMap = {'words': {'answer': flash.answerWords, 'question': flash.questionWords}, 'isCorrect': answer};
+      
+      // widget.flashListResult.add(flashMap);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -28,23 +54,7 @@ class _VerticalQuizState extends State<VerticalQuiz> {
               mode: BlocProvider.of<QuizBloc>(context).state.quizModel.mode),
         ),
         BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Quiz Finished',
-                      style: TextStyle(fontSize: 24),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          MyRouter.pushPageReplacement(
-                              context, const QuizMenu());
-                        },
-                        icon: const Icon(Icons.arrow_downward)),
-                  ],
-                ),
-              )
+            ? loadEndQuiz()
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
