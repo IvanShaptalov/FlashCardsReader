@@ -63,7 +63,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(25), topRight: Radius.circular(25)),
       ),
-        height: SizeConfig.getMediaHeight(context, p: 0.8),
+        height: SizeConfig.getMediaHeight(context, p: 0.85),
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Padding(
             padding: EdgeInsets.symmetric(
@@ -95,7 +95,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                   child: Align(
                     alignment: Alignment.center,
                     child: SizedBox(
-                        width: SizeConfig.getMediaWidth(context, p: 0.8),
+                        width: SizeConfig.getMediaWidth(context, p: 0.99),
                         child: Container(
                             margin: const EdgeInsets.symmetric(vertical: 4),
                             decoration: BoxDecoration(
@@ -344,7 +344,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                             context,
                                             p: 0.06),
                                         width: SizeConfig.getMediaWidth(context,
-                                            p: 0.4),
+                                            p: 0.6),
                                         decoration: BoxDecoration(
                                             color: Colors.green.shade200,
                                             border: Border.all(
@@ -386,7 +386,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                           alignment: Alignment.center,
                           child: SizedBox(
                             height: SizeConfig.getMediaHeight(context, p: 0.1),
-                            width: SizeConfig.getMediaWidth(context, p: 0.7),
+                            width: SizeConfig.getMediaWidth(context, p: 0.89),
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 4),
                               decoration: BoxDecoration(
