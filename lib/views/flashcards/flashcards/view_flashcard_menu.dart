@@ -89,13 +89,19 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                 vertical: SizeConfig.getMediaHeight(context, p: 0.03)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children:  [
-                Icon(Icons.arrow_drop_down, color: ConfigFlashCardView.descriptionIconColor,),
+              children: [
+                Icon(
+                  Icons.arrow_drop_down,
+                  color: ConfigFlashCardView.descriptionIconColor,
+                ),
                 Text(
-                  'hide menu',
+                  'drag to hide menu',
                   style: ConfigFlashCardView.h2TextStyle,
                 ),
-                Icon(Icons.arrow_drop_down, color: ConfigFlashCardView.descriptionIconColor,),
+                Icon(
+                  Icons.arrow_drop_down,
+                  color: ConfigFlashCardView.descriptionIconColor,
+                ),
               ],
             ),
           ),
@@ -160,12 +166,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                             alignment: Alignment.centerRight,
                                             child: SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
-                                              dragStartBehavior: DragStartBehavior.down,
+                                              dragStartBehavior:
+                                                  DragStartBehavior.down,
                                               child: Align(
-                                                alignment: Alignment.centerRight,
+                                                alignment:
+                                                    Alignment.centerRight,
                                                 child: Text(
-                                                  widget
-                                                      .flashCardCollection.title,
+                                                  widget.flashCardCollection
+                                                      .title,
                                                   textAlign: TextAlign.start,
                                                   style: ConfigFlashCardView
                                                       .h2TextStyle,
@@ -435,7 +443,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                         Align(
                           alignment: Alignment.center,
                           child: SizedBox(
-                            height: SizeConfig.getMediaHeight(context, p: 0.13),
+                            height: SizeConfig.getMediaHeight(context, p: 0.2),
                             width: SizeConfig.getMediaWidth(context, p: 0.89),
                             child: Container(
                                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -451,16 +459,22 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         alignment: Alignment.center,
                                         child: Text(
                                           flashCard.questionWords,
-                                          style:
-                                              ConfigFlashCardView.h2TextStyleBlack,
+                                          style: ConfigFlashCardView
+                                              .h2TextStyleBlack.copyWith(fontWeight: FontWeight.w500),
                                         )),
+                                    Divider(
+                                      thickness: 1,
+                                    ),
                                     Align(
                                         alignment: Alignment.center,
                                         child: Text(
                                           flashCard.answerWords,
-                                          style:
-                                              ConfigFlashCardView.h2TextStyleBlack,
+                                          style: ConfigFlashCardView
+                                              .h2TextStyleBlack,
                                         )),
+                                    Divider(
+                                      thickness: 1,
+                                    ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
