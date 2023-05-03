@@ -46,33 +46,12 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
     return CardViewConfig.defaultCardColor;
   }
 
-  List<Widget> getCardActions(
-      bool isTarget, bool isSelected, BuildContext context) {
+  List<Widget> getCardActions() {
     return [
-      IconButton(
-          onPressed: () {
-            // start quiz with the selected flashcard collection if possible
-            if (widget.flashCardCollection.isLearned) {
-              OverlayNotificationProvider.showOverlayNotification(
-                  'This collection is already learned',
-                  status: NotificationStatus.info);
-            } else if (widget.flashCardCollection.isEmpty) {
-              OverlayNotificationProvider.showOverlayNotification(
-                  'This collection is empty',
-                  status: NotificationStatus.info);
-            } else {
-              MyRouter.pushPage(
-                  context,
-                  QuizTrainer(
-                    numberOfFlashCards:
-                        widget.flashCardCollection.flashCardSet.length,
-                    mode: QuizModeProvider.mode,
-                    fCollection: widget.flashCardCollection,
-                    fromPage: 'quiz',
-                  ));
-            }
-          },
-          icon: const Icon(Icons.quiz))
+      const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Icon(Icons.quiz),
+      )
     ];
   }
 
@@ -87,20 +66,34 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
       bool isSelected = FlashCardCollectionProvider.flashcardsToMerge
               .contains(widget.flashCardCollection) &&
           !isTarget;
-      return Padding(
-        padding: EdgeInsets.symmetric(
-            vertical: SizeConfig.getMediaHeight(context, p: 0.01),
-            horizontal: SizeConfig.getMediaWidth(context, p: 0.01)),
-        // select items for merge
+      return GestureDetector(
+        onTap: () {
+          if (widget.flashCardCollection.isLearned) {
+            OverlayNotificationProvider.showOverlayNotification(
+                'This collection is already learned',
+                status: NotificationStatus.info);
+          } else if (widget.flashCardCollection.isEmpty) {
+            OverlayNotificationProvider.showOverlayNotification(
+                'This collection is empty',
+                status: NotificationStatus.info);
+          } else {
+            MyRouter.pushPage(
+                context,
+                QuizTrainer(
+                  numberOfFlashCards:
+                      widget.flashCardCollection.flashCardSet.length,
+                  mode: QuizModeProvider.mode,
+                  fCollection: widget.flashCardCollection,
+                  fromPage: 'quiz',
+                ));
+          }
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              vertical: SizeConfig.getMediaHeight(context, p: 0.01),
+              horizontal: SizeConfig.getMediaWidth(context, p: 0.01)),
+          // select items for merge
 
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black12,
-            ),
-            color: CardViewConfig.defaultCardColor,
-            borderRadius: BorderRadius.circular(10),
-          ),
           child: Card(
             shape: ShapeBorder.lerp(
                 RoundedRectangleBorder(
@@ -135,10 +128,9 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
                   thickness: 1,
                 ),
                 FlashCardCollectionInfo(widget.flashCardCollection),
-               
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: getCardActions(isTarget, isSelected, context)),
+                    children: getCardActions()),
               ],
             ),
           ),

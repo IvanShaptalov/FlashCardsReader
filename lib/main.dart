@@ -46,8 +46,9 @@ class MyApp extends StatelessWidget {
           // ignore: deprecated_member_use
           androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
           iconTheme: IconThemeData(color: Colors.grey.shade700),
+          scaffoldBackgroundColor: Colors.grey.shade200,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home:  const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }

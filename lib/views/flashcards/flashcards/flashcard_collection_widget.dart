@@ -176,9 +176,8 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                    top: SizeConfig.getMediaHeight(context, p: 0.03),
-                    bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
+                padding:
+                    EdgeInsets.all(SizeConfig.getMediaHeight(context, p: 0.02)),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: SizeConfig.getMediaWidth(context, p: 0.02)),
