@@ -1,4 +1,3 @@
-
 import 'package:hive/hive.dart';
 part 'flashcards_model.g.dart';
 
@@ -143,6 +142,15 @@ class FlashCardCollection {
         isDeleted: isDeleted,
         questionLanguage: questionLanguage,
         answerLanguage: answerLanguage);
+  }
+
+  int learnedCount() {
+    return flashCardSet.where((element) => element.isLearned).length;
+  }
+
+  int learnedPercent() {
+    if (flashCardSet.isEmpty || learnedCount() == 0) return 0;
+    return (learnedCount() / flashCardSet.length * 100).round();
   }
 
   @HiveField(0)

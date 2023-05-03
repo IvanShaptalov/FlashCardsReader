@@ -9,25 +9,7 @@ import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class ConfigFlashCardView {
-  static const TextStyle h1TextStyle =
-      TextStyle(fontSize: 20, color: Colors.black);
 
-  static TextStyle h2TextStyle =
-      TextStyle(fontSize: 18, color: Colors.grey.shade800);
-
-  static const TextStyle h2TextStyleBlack =
-      TextStyle(fontSize: 18, color: Colors.black);
-
-  static TextStyle h3TextStyle =
-      TextStyle(fontSize: 16, color: Colors.grey.shade800);
-
-  static const TextStyle h3TextStyleBlack =
-      TextStyle(fontSize: 16, color: Colors.black);
-
-  static Color descriptionIconColor = Colors.blueGrey.shade700;
-  static Color quizIconColor = Colors.grey.shade800;
-}
 
 class FlashCardViewBottomSheet {
   FlashCardViewBottomSheet({FlashCardCollection? creatingFlashC}) {
@@ -434,157 +416,160 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
 
                 Padding(
                   padding: EdgeInsets.symmetric(
-                      vertical: 8.0,
+                      vertical: 32.0,
                       horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
                   child: Column(
                     children: [
                       for (var flashCard
                           in widget.flashCardCollection.flashCardSet.toList())
-                        Align(
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                            height: SizeConfig.getMediaHeight(context, p: 0.2),
-                            width: SizeConfig.getMediaWidth(context, p: 0.89),
-                            child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 4),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey.shade400, width: 1),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          flashCard.questionWords,
-                                          style: ConfigFlashCardView
-                                              .h2TextStyleBlack.copyWith(fontWeight: FontWeight.w500),
-                                        )),
-                                    Divider(
-                                      thickness: 1,
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          flashCard.answerWords,
-                                          style: ConfigFlashCardView
-                                              .h2TextStyleBlack,
-                                        )),
-                                    Divider(
-                                      thickness: 1,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        RichText(
-                                          overflow: TextOverflow.ellipsis,
-                                          text: TextSpan(
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.black),
-                                            children: [
-                                              const WidgetSpan(
-                                                child: Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 2.0),
-                                                  child: Icon(
-                                                      Icons.check_circle,
-                                                      size: 16,
-                                                      color: Colors.green),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                              height: SizeConfig.getMediaHeight(context, p: 0.2),
+                              width: SizeConfig.getMediaWidth(context, p: 0.89),
+                              child: Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 4),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey.shade400, width: 1),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            flashCard.questionWords,
+                                            style: ConfigFlashCardView
+                                                .h2TextStyleBlack.copyWith(fontWeight: FontWeight.w500),
+                                          )),
+                                      Divider(
+                                        thickness: 1,
+                                      ),
+                                      Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            flashCard.answerWords,
+                                            style: ConfigFlashCardView
+                                                .h2TextStyleBlack,
+                                          )),
+                                      Divider(
+                                        thickness: 1,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black),
+                                              children: [
+                                                const WidgetSpan(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.symmetric(
+                                                        horizontal: 2.0),
+                                                    child: Icon(
+                                                        Icons.check_circle,
+                                                        size: 16,
+                                                        color: Colors.green),
+                                                  ),
                                                 ),
-                                              ),
-                                              TextSpan(
-                                                  text:
-                                                      'Correct: ${flashCard.correctAnswers}',
-                                                  style: ConfigFlashCardView
-                                                      .h2TextStyle),
-                                            ],
+                                                TextSpan(
+                                                    text:
+                                                        'Correct: ${flashCard.correctAnswers}',
+                                                    style: ConfigFlashCardView
+                                                        .h2TextStyle),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        RichText(
-                                          textAlign: TextAlign.left,
-                                          overflow: TextOverflow.ellipsis,
-                                          text: TextSpan(
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.grey),
-                                            children: [
-                                              WidgetSpan(
-                                                alignment:
-                                                    PlaceholderAlignment.middle,
-                                                child: Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 2.0),
-                                                    child: flashCard.wrongAnswers ==
-                                                                0 &&
-                                                            flashCard.isLearned
-                                                        ? Icon(
-                                                            Icons.check_circle,
-                                                            size: 16,
-                                                            color: Colors.green)
-                                                        : Icon(
-                                                            Icons
+                                          RichText(
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                              children: [
+                                                WidgetSpan(
+                                                  alignment:
+                                                      PlaceholderAlignment.middle,
+                                                  child: Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 2.0),
+                                                      child: flashCard.wrongAnswers ==
+                                                                  0 &&
+                                                              flashCard.isLearned
+                                                          ? Icon(
+                                                              Icons.check_circle,
+                                                              size: 16,
+                                                              color: Colors.green)
+                                                          : Icon(
+                                                              Icons
+                                                                  .cancel_outlined,
+                                                              size: 16,
+                                                              color: Colors
+                                                                  .deepPurple)),
+                                                ),
+                                                WidgetSpan(
+                                                  alignment:
+                                                      PlaceholderAlignment.middle,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 2.0),
+                                                    child: Text(
+                                                        'Wrong: ${flashCard.wrongAnswers}',
+                                                        style: ConfigFlashCardView
+                                                            .h2TextStyle),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          RichText(
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.fade,
+                                            text: TextSpan(
+                                              style:
+                                                  ConfigFlashCardView.h2TextStyle,
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 2.0),
+                                                    child: Icon(
+                                                        flashCard.isLearned
+                                                            ? Icons.check_circle
+                                                            : Icons
                                                                 .cancel_outlined,
-                                                            size: 16,
-                                                            color: Colors
-                                                                .deepPurple)),
-                                              ),
-                                              WidgetSpan(
-                                                alignment:
-                                                    PlaceholderAlignment.middle,
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 2.0),
-                                                  child: Text(
-                                                      'Wrong: ${flashCard.wrongAnswers}',
-                                                      style: ConfigFlashCardView
-                                                          .h2TextStyle),
+                                                        size: 16,
+                                                        color: flashCard.isLearned
+                                                            ? Colors.green
+                                                            : Colors.deepPurple),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                                TextSpan(
+                                                    text: flashCard.isLearned
+                                                        ? 'Learned'
+                                                        : 'Unlearned',
+                                                    style: ConfigFlashCardView
+                                                        .h2TextStyle),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        RichText(
-                                          textAlign: TextAlign.left,
-                                          overflow: TextOverflow.fade,
-                                          text: TextSpan(
-                                            style:
-                                                ConfigFlashCardView.h2TextStyle,
-                                            children: [
-                                              WidgetSpan(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 2.0),
-                                                  child: Icon(
-                                                      flashCard.isLearned
-                                                          ? Icons.check_circle
-                                                          : Icons
-                                                              .cancel_outlined,
-                                                      size: 16,
-                                                      color: flashCard.isLearned
-                                                          ? Colors.green
-                                                          : Colors.deepPurple),
-                                                ),
-                                              ),
-                                              TextSpan(
-                                                  text: flashCard.isLearned
-                                                      ? 'Learned'
-                                                      : 'Unlearned',
-                                                  style: ConfigFlashCardView
-                                                      .h2TextStyle),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                )),
+                                        ],
+                                      )
+                                    ],
+                                  )),
+                            ),
                           ),
                         ),
                     ],

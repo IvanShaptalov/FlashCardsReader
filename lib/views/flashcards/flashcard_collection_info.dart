@@ -14,19 +14,16 @@ class FlashCardCollectionInfo extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: ListView(
         children: [
-          Text(
-            "Flashcards: ${flashCardCollection.flashCardSet.length}",
-            style: const TextStyle(fontSize: 14),
-            textAlign: TextAlign.start,
-          ),
-          const Divider(),
           Row(
             children: [
               Transform.scale(
-                  scale: iconScale, child: const Icon(Icons.language)),
+                scale: iconScale,
+                child: Icon(Icons.language,
+                    color: ConfigFCWordsInfo.questionLanguageIconColor),
+              ),
               Text(
-                "-> ${flashCardCollection.questionLanguage}\n<- ${flashCardCollection.answerLanguage}",
-                style: const TextStyle(fontSize: 14),
+                flashCardCollection.questionLanguage,
+                style: ConfigFlashCardView.h3TextStyle,
                 textAlign: TextAlign.start,
               ),
             ],
@@ -34,11 +31,59 @@ class FlashCardCollectionInfo extends StatelessWidget {
           Row(
             children: [
               Transform.scale(
-                  scale: iconScale, child: const Icon(Icons.date_range)),
+                scale: iconScale,
+                child: Icon(Icons.language,
+                    color: ConfigFCWordsInfo.answerLanguageIconColor),
+              ),
               Text(
-                ViewConfig.formatDate(flashCardCollection.createdAt),
-                style: const TextStyle(fontSize: 14),
+                flashCardCollection.answerLanguage,
+                style: ConfigFlashCardView.h3TextStyle,
                 textAlign: TextAlign.start,
+              ),
+            ],
+          ),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.web_stories_outlined,
+                      size: 14, color: Colors.green.shade300),
+                  Text(
+                    flashCardCollection.flashCardSet.length.toString(),
+                    style: ConfigFlashCardView.h3TextStyle
+                        .copyWith(color: Colors.green.shade300, fontSize: 14),
+                    textAlign: TextAlign.start,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Row(
+                children: [
+                  const Icon(Icons.school_outlined,
+                      size: 16, color: Colors.blueAccent),
+                  Text(
+                    flashCardCollection.learnedCount().toString(),
+                    style: ConfigFlashCardView.h3TextStyle
+                        .copyWith(color: Colors.blueAccent, fontSize: 14),
+                    textAlign: TextAlign.start,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.bar_chart_rounded,
+                  size: 16, color: Colors.blueAccent),
+              Text(
+                '${flashCardCollection.learnedPercent()} %',
+                style: ConfigFlashCardView.h3TextStyle.copyWith(fontSize: 14),
               ),
             ],
           ),

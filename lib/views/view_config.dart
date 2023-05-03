@@ -17,18 +17,43 @@ class SizeConfig {
 class ViewConfig {
   static const String creatingFormat = 'MMM d, yyyy';
 
-  static String formatDate(DateTime date, {String creatingFormat = creatingFormat}) {
+  static String formatDate(DateTime date,
+      {String creatingFormat = creatingFormat}) {
     return DateFormat(creatingFormat).format(date);
   }
-
 
   static double getCardForm(BuildContext context) =>
       MediaQuery.of(context).orientation == Orientation.portrait ? 0.6 : 1;
 }
 
-
 class CardViewConfig {
   static Color defaultCardColor = Colors.amber.shade50;
 }
 
+class ConfigFlashCardView {
+  static const TextStyle h1TextStyle =
+      TextStyle(fontSize: 20, color: Colors.black);
 
+  static TextStyle h2TextStyle =
+      TextStyle(fontSize: 18, color: Colors.grey.shade800);
+
+  static const TextStyle h2TextStyleBlack =
+      TextStyle(fontSize: 18, color: Colors.black);
+
+  static TextStyle h3TextStyle =
+      TextStyle(fontSize: 16, color: Colors.grey.shade800);
+
+  static const TextStyle h3TextStyleBlack =
+      TextStyle(fontSize: 16, color: Colors.black);
+
+  static Color descriptionIconColor = Colors.blueGrey.shade700;
+  static Color quizIconColor = Colors.grey.shade800;
+
+  static const TextStyle cardTitleTextStyle =
+      TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+}
+
+class ConfigFCWordsInfo {
+  static Color questionLanguageIconColor = Colors.blueAccent;
+  static Color answerLanguageIconColor = Colors.green.shade600;
+}

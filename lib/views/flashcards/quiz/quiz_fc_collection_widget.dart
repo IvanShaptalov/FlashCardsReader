@@ -124,7 +124,7 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
                     child: Center(
                       child: Text(
                         widget.flashCardCollection.title,
-                        style: const TextStyle(fontSize: 16),
+                        style: ConfigFlashCardView.cardTitleTextStyle,
                         maxLines: 1,
                       ),
                     ),
@@ -135,10 +135,7 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
                   thickness: 1,
                 ),
                 FlashCardCollectionInfo(widget.flashCardCollection),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 1,
-                ),
+               
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: getCardActions(isTarget, isSelected, context)),

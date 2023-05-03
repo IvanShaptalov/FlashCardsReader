@@ -57,72 +57,62 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
         padding: EdgeInsets.symmetric(
             vertical: SizeConfig.getMediaHeight(context, p: 0.01),
             horizontal: SizeConfig.getMediaWidth(context, p: 0.01)),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black12,
-            ),
-            color: CardViewConfig.defaultCardColor,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Card(
-            shape: ShapeBorder.lerp(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+        child: Card(
+          shape: ShapeBorder.lerp(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              0.5),
+          color: CardViewConfig.defaultCardColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    top: SizeConfig.getMediaHeight(context, p: 0.03),
+                    bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
+                child: const Text(
+                  'Add flashcard',
+                  style: ConfigFlashCardView.cardTitleTextStyle,
                 ),
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                0.5),
-            color: CardViewConfig.defaultCardColor,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: SizeConfig.getMediaHeight(context, p: 0.03),
-                      bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
-                  child: const Text(
-                    'Add flashcard',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 1,
-                ),
-                Expanded(
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: 1,
-                        itemBuilder: (context, index) {
-                          return const ListTile(
-                            title: Text('Add Word'),
-                            subtitle: Text('Add Flashcard'),
-                          );
-                        })),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 1,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    /// ============================[ADD FLASHCARD MENU OPEN]============================
-                    //? in plans add languages
-                    IconButton(
-                        onPressed: () {
-                          UpdateFlashCardBottomSheet(
-                                  creatingFlashC: FlashCardCreatingUIProvider
-                                      .creatingFlashCardCollection)
-                              .showUpdateFlashCardMenu(context);
-                        },
-                        icon: const Icon(Icons.add)),
-                  ],
-                ),
-              ],
-            ),
+              ),
+              const Divider(
+                color: Colors.grey,
+                thickness: 1,
+              ),
+              Expanded(
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        return const ListTile(
+                          title: Text('Add Word'),
+                          subtitle: Text(
+                            'Add Flashcard',
+                          ),
+                        );
+                      })),
+             
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  /// ============================[ADD FLASHCARD MENU OPEN]============================
+                  //? in plans add languages
+                  IconButton(
+                      onPressed: () {
+                        UpdateFlashCardBottomSheet(
+                                creatingFlashC: FlashCardCreatingUIProvider
+                                    .creatingFlashCardCollection)
+                            .showUpdateFlashCardMenu(context);
+                      },
+                      icon: const Icon(Icons.add)),
+                ],
+              ),
+            ],
           ),
         ),
       ),
