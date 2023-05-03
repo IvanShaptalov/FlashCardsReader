@@ -500,7 +500,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                   text:
                                                       'Correct: ${flashCard.correctAnswers}',
                                                   style: ConfigFlashCardView
-                                                      .h3TextStyle),
+                                                      .h2TextStyle),
                                             ],
                                           ),
                                         ),
@@ -543,7 +543,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                   child: Text(
                                                       'Wrong: ${flashCard.wrongAnswers}',
                                                       style: ConfigFlashCardView
-                                                          .h3TextStyle),
+                                                          .h2TextStyle),
                                                 ),
                                               ),
                                             ],
@@ -554,7 +554,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           overflow: TextOverflow.fade,
                                           text: TextSpan(
                                             style:
-                                                ConfigFlashCardView.h3TextStyle,
+                                                ConfigFlashCardView.h2TextStyle,
                                             children: [
                                               WidgetSpan(
                                                 child: Padding(
@@ -577,7 +577,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                       ? 'Learned'
                                                       : 'Unlearned',
                                                   style: ConfigFlashCardView
-                                                      .h3TextStyle),
+                                                      .h2TextStyle),
                                             ],
                                           ),
                                         ),
