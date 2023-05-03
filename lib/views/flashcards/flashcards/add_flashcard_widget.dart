@@ -76,7 +76,7 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                     bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
                 child: const Text(
                   'Add flashcard',
-                  style: ConfigFlashCardView.cardTitleTextStyle,
+                  style: FontConfigs.cardTitleTextStyle,
                 ),
               ),
               const Divider(
@@ -119,3 +119,5 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
     );
   }
 }
+
+

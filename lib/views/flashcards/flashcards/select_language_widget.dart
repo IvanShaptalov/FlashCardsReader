@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/constants.dart';
+import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -32,13 +33,17 @@ class _SelectLanguageDropdownState extends State<SelectLanguageDropdown> {
     return Column(
       children: [
         DropdownButton<String>(
+          dropdownColor: ConfigViewUpdateMenu.dropDownColor,
           value: widget.startValue,
-          icon: const Icon(Icons.arrow_downward),
+          icon: Icon(
+            Icons.arrow_drop_down,
+            color: ConfigViewUpdateMenu.iconColor,
+          ),
           elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple),
+          style: FontConfigs.h3TextStyleBlack,
           underline: Container(
             height: 2,
-            color: Colors.deepPurpleAccent,
+            color: ConfigViewUpdateMenu.dropDownColorUndlerline,
           ),
           onChanged: (String? value) {
             // This is called when the user selects an item.
@@ -62,4 +67,5 @@ class _SelectLanguageDropdownState extends State<SelectLanguageDropdown> {
       ],
     );
   }
+
 }

@@ -72,15 +72,15 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
               children: [
                 Icon(
                   Icons.arrow_drop_down,
-                  color: ConfigFlashCardView.descriptionIconColor,
+                  color: ConfigFlashcardView.descriptionIconColor,
                 ),
                 Text(
                   'drag to hide menu',
-                  style: ConfigFlashCardView.h2TextStyle,
+                  style: FontConfigs.h2TextStyle,
                 ),
                 Icon(
                   Icons.arrow_drop_down,
-                  color: ConfigFlashCardView.descriptionIconColor,
+                  color: ConfigFlashcardView.descriptionIconColor,
                 ),
               ],
             ),
@@ -125,15 +125,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               padding: EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.verified_outlined,
-                                                color: ConfigFlashCardView
+                                                color: ConfigFlashcardView
                                                     .descriptionIconColor,
                                               ),
                                             ),
                                             Text(
                                               'Flashcard Title : ',
                                               textAlign: TextAlign.start,
-                                              style: ConfigFlashCardView
-                                                  .h1TextStyle,
+                                              style: FontConfigs.h1TextStyle,
                                               maxLines: 1,
                                             ),
                                           ],
@@ -155,8 +154,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                   widget.flashCardCollection
                                                       .title,
                                                   textAlign: TextAlign.start,
-                                                  style: ConfigFlashCardView
-                                                      .h2TextStyle,
+                                                  style:
+                                                      FontConfigs.h2TextStyle,
                                                   maxLines: 1,
                                                 ),
                                               ),
@@ -182,15 +181,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               padding: EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.language,
-                                                color: ConfigFlashCardView
+                                                color: ConfigFlashcardView
                                                     .descriptionIconColor,
                                               ),
                                             ),
                                             Text(
                                               'Question Language : ',
                                               textAlign: TextAlign.start,
-                                              style: ConfigFlashCardView
-                                                  .h1TextStyle,
+                                              style: FontConfigs.h1TextStyle,
                                               maxLines: 1,
                                             ),
                                           ],
@@ -201,8 +199,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                             widget.flashCardCollection
                                                 .questionLanguage,
                                             textAlign: TextAlign.start,
-                                            style:
-                                                ConfigFlashCardView.h2TextStyle,
+                                            style: FontConfigs.h2TextStyle,
                                             maxLines: 1,
                                           ),
                                         ),
@@ -221,15 +218,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               padding: EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.translate,
-                                                color: ConfigFlashCardView
+                                                color: ConfigFlashcardView
                                                     .descriptionIconColor,
                                               ),
                                             ),
                                             Text(
                                               'Answer Language : ',
                                               textAlign: TextAlign.start,
-                                              style: ConfigFlashCardView
-                                                  .h1TextStyle,
+                                              style: FontConfigs.h1TextStyle,
                                               maxLines: 1,
                                             ),
                                           ],
@@ -240,8 +236,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                             widget.flashCardCollection
                                                 .answerLanguage,
                                             textAlign: TextAlign.start,
-                                            style:
-                                                ConfigFlashCardView.h2TextStyle,
+                                            style: FontConfigs.h2TextStyle,
                                             maxLines: 1,
                                           ),
                                         ),
@@ -264,15 +259,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               padding: EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.calendar_month_outlined,
-                                                color: ConfigFlashCardView
+                                                color: ConfigFlashcardView
                                                     .descriptionIconColor,
                                               ),
                                             ),
                                             Text(
                                               'Created : ',
                                               textAlign: TextAlign.start,
-                                              style: ConfigFlashCardView
-                                                  .h1TextStyle,
+                                              style: FontConfigs.h1TextStyle,
                                               maxLines: 1,
                                             ),
                                           ],
@@ -283,8 +277,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                             ViewConfig.formatDate(widget
                                                 .flashCardCollection.createdAt),
                                             textAlign: TextAlign.start,
-                                            style:
-                                                ConfigFlashCardView.h2TextStyle,
+                                            style: FontConfigs.h2TextStyle,
                                             maxLines: 1,
                                           ),
                                         ),
@@ -307,15 +300,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               padding: EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.web_stories_outlined,
-                                                color: ConfigFlashCardView
+                                                color: ConfigFlashcardView
                                                     .descriptionIconColor,
                                               ),
                                             ),
                                             Text(
                                               'Flashcards : ',
                                               textAlign: TextAlign.start,
-                                              style: ConfigFlashCardView
-                                                  .h1TextStyle,
+                                              style: FontConfigs.h1TextStyle,
                                               maxLines: 1,
                                             ),
                                           ],
@@ -327,8 +319,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                 .flashCardSet.length
                                                 .toString(),
                                             textAlign: TextAlign.start,
-                                            style:
-                                                ConfigFlashCardView.h2TextStyle,
+                                            style: FontConfigs.h2TextStyle,
                                             maxLines: 1,
                                           ),
                                         ),
@@ -391,13 +382,13 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Icon(
                                               Icons.quiz_outlined,
-                                              color: ConfigFlashCardView
+                                              color: ConfigFlashcardView
                                                   .quizIconColor,
                                             ),
                                             const Text(
                                               'Start Quiz',
-                                              style: ConfigFlashCardView
-                                                  .h2TextStyleBlack,
+                                              style:
+                                                  FontConfigs.h2TextStyleBlack,
                                             ),
                                           ],
                                         ),
@@ -448,7 +439,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               alignment: Alignment.center,
                                               child: Text(
                                                 flashCard.questionWords,
-                                                style: ConfigFlashCardView
+                                                style: FontConfigs
                                                     .h2TextStyleBlack
                                                     .copyWith(
                                                         fontWeight:
@@ -468,7 +459,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               alignment: Alignment.center,
                                               child: Text(
                                                 flashCard.answerWords,
-                                                style: ConfigFlashCardView
+                                                style: FontConfigs
                                                     .h2TextStyleBlack,
                                               )),
                                         ],
@@ -508,9 +499,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                     TextSpan(
                                                         text:
                                                             'Correct: ${flashCard.correctAnswers}',
-                                                        style:
-                                                            ConfigFlashCardView
-                                                                .h2TextStyle),
+                                                        style: FontConfigs
+                                                            .h2TextStyle),
                                                   ],
                                                 ),
                                               ),
@@ -560,9 +550,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                                     2.0),
                                                         child: Text(
                                                             'Wrong: ${flashCard.wrongAnswers}',
-                                                            style:
-                                                                ConfigFlashCardView
-                                                                    .h2TextStyle),
+                                                            style: FontConfigs
+                                                                .h2TextStyle),
                                                       ),
                                                     ),
                                                   ],
@@ -572,8 +561,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                 textAlign: TextAlign.left,
                                                 overflow: TextOverflow.fade,
                                                 text: TextSpan(
-                                                  style: ConfigFlashCardView
-                                                      .h2TextStyle,
+                                                  style:
+                                                      FontConfigs.h2TextStyle,
                                                   children: [
                                                     WidgetSpan(
                                                       child: Padding(
@@ -601,9 +590,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                             flashCard.isLearned
                                                                 ? 'Learned'
                                                                 : 'Unlearned',
-                                                        style:
-                                                            ConfigFlashCardView
-                                                                .h2TextStyle),
+                                                        style: FontConfigs
+                                                            .h2TextStyle),
                                                   ],
                                                 ),
                                               ),

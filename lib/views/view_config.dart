@@ -30,7 +30,7 @@ class CardViewConfig {
   static Color defaultCardColor = Colors.amber.shade50;
 }
 
-class ConfigFlashCardView {
+class FontConfigs {
   static const TextStyle h1TextStyle =
       TextStyle(fontSize: 20, color: Colors.black);
 
@@ -46,14 +46,28 @@ class ConfigFlashCardView {
   static const TextStyle h3TextStyleBlack =
       TextStyle(fontSize: 16, color: Colors.black);
 
-  static Color descriptionIconColor = Colors.blueGrey.shade700;
-  static Color quizIconColor = Colors.grey.shade800;
-
   static const TextStyle cardTitleTextStyle =
       TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+}
+
+class ConfigFlashcardView {
+  static Color descriptionIconColor = Colors.blueGrey.shade700;
+  static Color quizIconColor = Colors.grey.shade800;
 }
 
 class ConfigFCWordsInfo {
   static Color questionLanguageIconColor = Colors.blueAccent;
   static Color answerLanguageIconColor = Colors.green.shade600;
+}
+
+class ConfigViewUpdateMenu{
+  static Color iconColor = Colors.blueGrey.shade700;
+  static Color backgroundColor = Colors.white;
+  static Color textColor = Colors.black;
+  static Color dividerColor = Colors.grey.shade300;
+  static Color dropDownColor = Colors.amber.shade50;
+  static Color dropDownColorUndlerline = Colors.green.shade300;
+  static Color buttonColor = Colors.green.shade300;
+  static Color buttonIconColor = Colors.grey.shade800;
+  static double wordButtonWidthPercent = 0.3;
 }

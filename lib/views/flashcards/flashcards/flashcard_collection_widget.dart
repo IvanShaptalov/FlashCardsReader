@@ -184,7 +184,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
                   child: Center(
                     child: Text(
                       widget.flashCardCollection.title,
-                      style: ConfigFlashCardView.cardTitleTextStyle,
+                      style: FontConfigs.cardTitleTextStyle,
                       maxLines: 1,
                     ),
                   ),

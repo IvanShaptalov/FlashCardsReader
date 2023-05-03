@@ -23,7 +23,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
               ),
               Text(
                 flashCardCollection.questionLanguage,
-                style: ConfigFlashCardView.h3TextStyle,
+                style: FontConfigs.h3TextStyle,
                 textAlign: TextAlign.start,
               ),
             ],
@@ -37,7 +37,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
               ),
               Text(
                 flashCardCollection.answerLanguage,
-                style: ConfigFlashCardView.h3TextStyle,
+                style: FontConfigs.h3TextStyle,
                 textAlign: TextAlign.start,
               ),
             ],
@@ -52,7 +52,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
                       size: 14, color: Colors.green.shade300),
                   Text(
                     flashCardCollection.flashCardSet.length.toString(),
-                    style: ConfigFlashCardView.h3TextStyle
+                    style: FontConfigs.h3TextStyle
                         .copyWith(color: Colors.green.shade300, fontSize: 14),
                     textAlign: TextAlign.start,
                   ),
@@ -67,7 +67,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
                       size: 16, color: Colors.blueAccent),
                   Text(
                     flashCardCollection.learnedCount().toString(),
-                    style: ConfigFlashCardView.h3TextStyle
+                    style: FontConfigs.h3TextStyle
                         .copyWith(color: Colors.blueAccent, fontSize: 14),
                     textAlign: TextAlign.start,
                   ),
@@ -83,7 +83,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
                   size: 16, color: Colors.blueAccent),
               Text(
                 '${flashCardCollection.learnedPercent()} %',
-                style: ConfigFlashCardView.h3TextStyle.copyWith(fontSize: 14),
+                style: FontConfigs.h3TextStyle.copyWith(fontSize: 14),
               ),
             ],
           ),
