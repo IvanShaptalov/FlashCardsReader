@@ -112,12 +112,41 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
     return const Icon(Icons.translate);
   }
 
+  void updateCollection() {
+    if (WordCreatingUIProvider.tmpFlashCard.isValid) {
+      debugPrint('add flashcard');
+
+      WordCreatingUIProvider.setQuestionLanguage(
+          widget.flashCardCollection.questionLanguage);
+      WordCreatingUIProvider.setAnswerLanguage(
+          widget.flashCardCollection.answerLanguage);
+
+      widget.flashCardCollection.flashCardSet
+          .add(WordCreatingUIProvider.tmpFlashCard);
+      WordCreatingUIProvider.clear();
+      OverlayNotificationProvider.showOverlayNotification('word added',
+          status: NotificationStatus.success);
+
+      setState(() {});
+    } else {
+      if (WordCreatingUIProvider.tmpFlashCard.answerWords.isEmpty) {
+        OverlayNotificationProvider.showOverlayNotification('add translation',
+            status: NotificationStatus.info);
+      } else if (WordCreatingUIProvider.tmpFlashCard.questionWords.isEmpty) {
+        OverlayNotificationProvider.showOverlayNotification('add word',
+            status: NotificationStatus.info);
+      }
+
+      debugPrint('not valid');
+    }
+  }
+
   Widget addCollectionButton() {
     return Center(
       child: GestureDetector(
         child: Container(
           height: SizeConfig.getMediaHeight(context, p: 0.1),
-          width: SizeConfig.getMediaWidth(context, p:  0.8),
+          width: SizeConfig.getMediaWidth(context, p: 0.8),
           decoration: BoxDecoration(
             color: Colors.green.shade300,
             borderRadius: const BorderRadius.only(
@@ -182,31 +211,9 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        if (WordCreatingUIProvider.tmpFlashCard.isValid) {
-                          debugPrint('add flashcard');
-
-                          WordCreatingUIProvider.setQuestionLanguage(
-                              widget.flashCardCollection.questionLanguage);
-                          WordCreatingUIProvider.setAnswerLanguage(
-                              widget.flashCardCollection.answerLanguage);
-
-                          widget.flashCardCollection.flashCardSet
-                              .add(WordCreatingUIProvider.tmpFlashCard);
-                          WordCreatingUIProvider.clear();
-                          OverlayNotificationProvider.showOverlayNotification(
-                              'word added',
-                              status: NotificationStatus.success);
-
-                          setState(() {});
-                        } else {
-                          OverlayNotificationProvider.showOverlayNotification(
-                              'word is not valid',
-                              status: NotificationStatus.warning);
-
-                          debugPrint('not valid');
-                        }
+                        updateCollection();
                       },
-                      icon: const Icon(Icons.save_as_outlined)),
+                      icon: const Icon(Icons.add_circle_outlined)),
                   Expanded(
                     child: TextField(
                       controller: widget.wordFormContoller.questionController,
@@ -216,6 +223,9 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                       ),
                       onChanged: (text) {
                         WordCreatingUIProvider.setQuestion(text);
+                      },
+                      onSubmitted: (value) {
+                        updateCollection();
                       },
                     ),
                   ),
@@ -250,6 +260,9 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                       onChanged: (text) {
                         WordCreatingUIProvider.setAnswer(text);
                       },
+                      onSubmitted: (value) {
+                        updateCollection();
+                      },
                     ),
                   ),
                   IconButton(
@@ -273,7 +286,8 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25)),
         ),
-        height: SizeConfig.getMediaHeight(context, p: widget.flashCardCollection.isEmpty? 0.55: 0.85),
+        height: SizeConfig.getMediaHeight(context,
+            p: widget.flashCardCollection.isEmpty ? 0.55 : 0.85),
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Padding(
             padding: EdgeInsets.symmetric(
@@ -313,7 +327,6 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                       border: const OutlineInputBorder(),
                       labelText: 'Flashcard Collection Name',
                       labelStyle: FontConfigs.h3TextStyle,
-
                     ),
                     onChanged: (text) {
                       widget.flashCardCollection.title = text;

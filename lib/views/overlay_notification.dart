@@ -9,11 +9,11 @@ class OverlayNotificationProvider {
       case NotificationStatus.success:
         return Colors.green;
       case NotificationStatus.error:
-        return Colors.deepPurple;
+        return Colors.blueGrey;
       case NotificationStatus.warning:
-        return Colors.deepPurple;
+        return Colors.blueGrey;
       case NotificationStatus.info:
-        return Colors.blueAccent;
+        return Colors.teal;
       default:
         return Colors.greenAccent;
     }
