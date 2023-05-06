@@ -410,7 +410,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                   child: Column(
                     children: [
                       for (var flashCard
-                          in widget.flashCardCollection.flashCardSet.toList())
+                          in widget.flashCardCollection.flashCardSet.toList().reversed)
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Align(

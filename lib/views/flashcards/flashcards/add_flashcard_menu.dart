@@ -160,7 +160,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
     if (onSubmitted &&
         flash.answerWords.isEmpty &&
         flash.questionWords.isEmpty) {
-          debugPrintIt('on submitted and word empty, do nothing');
+      debugPrintIt('on submitted and word empty, do nothing');
     } else if (WordCreatingUIProvider.tmpFlashCard.isValid) {
       debugPrint('add flashcard');
 
@@ -313,8 +313,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                     ),
                   ),
                   IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.record_voice_over_outlined))
+                      onPressed: () {}, icon: const Icon(Icons.play_arrow))
                 ],
               )
             ],
@@ -333,8 +332,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25)),
         ),
-        height: SizeConfig.getMediaHeight(context,
-            p: widget.flashCardCollection.isEmpty ? 0.55 : 0.85),
+        height: SizeConfig.getMediaHeight(context, p: 0.85),
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Padding(
             padding: EdgeInsets.symmetric(
@@ -425,8 +423,10 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                       vertical: 32.0,
                       horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
                   child: Column(children: [
-                    for (var flashCard
-                        in widget.flashCardCollection.flashCardSet.toList())
+                    for (var flashCard in widget
+                        .flashCardCollection.flashCardSet
+                        .toList()
+                        .reversed)
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Align(

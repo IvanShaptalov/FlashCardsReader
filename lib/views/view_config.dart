@@ -60,7 +60,7 @@ class ConfigFCWordsInfo {
   static Color answerLanguageIconColor = Colors.green.shade600;
 }
 
-class ConfigViewUpdateMenu{
+class ConfigViewUpdateMenu {
   static Color iconColor = Colors.blueGrey.shade700;
   static Color backgroundColor = Colors.white;
   static Color textColor = Colors.black;
@@ -70,4 +70,26 @@ class ConfigViewUpdateMenu{
   static Color buttonColor = Colors.green.shade300;
   static Color buttonIconColor = Colors.grey.shade800;
   static double wordButtonWidthPercent = 0.3;
+}
+
+class MyConfigOrientation {
+  static bool isPortrait(context) =>
+      MediaQuery.of(context).orientation == Orientation.portrait;
+
+  static bool isLandscape(context) => !isPortrait(context);
+}
+
+class ListOrColumn extends StatelessWidget {
+  final List<Widget> children;
+  const ListOrColumn({required this.children, Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return MyConfigOrientation.isPortrait(context)
+        ? Column(
+            children: children,
+          )
+        : ListView(
+            children: children,
+          );
+  }
 }

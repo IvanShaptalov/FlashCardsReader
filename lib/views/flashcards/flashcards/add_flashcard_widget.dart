@@ -90,31 +90,27 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                   color: Colors.grey,
                   thickness: 1,
                 ),
-                Expanded(
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: 1,
-                        itemBuilder: (context, index) {
-                          return const ListTile(
-                            title: Text('Add Word'),
-                            subtitle: Text(
-                              'Add Flashcard',
-                            ),
-                          );
-                        })),
+                const Expanded(
+                    child: ListOrColumn(
+                        children: [
+                      ListTile(
+                        title: Text('Add Word'),
+                        subtitle: Text(
+                          'Add Flashcard',
+                        ),
+                      )
+                    ])),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     /// ============================[ADD FLASHCARD MENU OPEN]============================
                     //? in plans add languages
-                     Padding(
-                       padding: EdgeInsets.all(8.0),
-                       child: Icon(Icons.add_circle_outline),
-                     ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.add_circle_outline),
+                    ),
                   ],
                 ),
-                
               ],
             ),
           ),

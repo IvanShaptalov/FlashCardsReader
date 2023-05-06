@@ -12,7 +12,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
     return Expanded(
         child: Padding(
       padding: const EdgeInsets.all(8.0),
-      child: ListView(
+      child: ListOrColumn(
         children: [
           Row(
             children: [
