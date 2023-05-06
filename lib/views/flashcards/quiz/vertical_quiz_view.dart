@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: must_be_immutable
 class VerticalQuiz extends StatefulWidget {
   VerticalQuiz({super.key});
-  bool blurred = true;
   List<Set> flashListResult = [];
   @override
   State<VerticalQuiz> createState() => _VerticalQuizState();
@@ -30,13 +29,13 @@ class _VerticalQuizState extends State<VerticalQuiz> {
     );
   }
 
-  void addToResult (bool answer){
-    // var flash = 
-    // BlocProvider.of<QuizBloc>(context).state.quizModel.currentFCard; 
+  void addToResult(bool answer) {
+    // var flash =
+    // BlocProvider.of<QuizBloc>(context).state.quizModel.currentFCard;
 
     // if (flash is FlashCard){
     //   var flashMap = {'words': {'answer': flash.answerWords, 'question': flash.questionWords}, 'isCorrect': answer};
-      
+
     //   // widget.flashListResult.add(flashMap);
     // }
   }
@@ -63,11 +62,13 @@ class _VerticalQuizState extends State<VerticalQuiz> {
                     axis: Axis.horizontal, data: true,
                     feedback: QuizFlashCard(
                       quizContext: context,
-                      blurred: widget.blurred,
                     ),
                     child: QuizFlashCard(
                       quizContext: context,
-                      blurred: widget.blurred,
+                    ),
+                    childWhenDragging: QuizFlashCard(
+                      quizContext: context,
+                      empty: true,
                     ),
                     onDragStarted: () {
                       debugPrintIt('started');
@@ -85,19 +86,15 @@ class _VerticalQuizState extends State<VerticalQuiz> {
 
                       if (offset.dx <
                           SizeConfig.getMediaWidth(context,
-                              p: -0.25) /* 25 percent of screen to left*/) {
+                              p: -0.1) /* 25 percent of screen to left*/) {
                         BlocProvider.of<QuizBloc>(context)
                             .add(AnswerFlashEvent(isAnswerCorrect: false));
                       } else if (offset.dx >
-                          SizeConfig.getMediaWidth(context, p: 0.25) +
+                          SizeConfig.getMediaWidth(context, p: 0.1) +
                               35 /* 25 percent of screen to right*/) {
                         BlocProvider.of<QuizBloc>(context)
                             .add(AnswerFlashEvent(isAnswerCorrect: true));
-                      } else {
-                        setState(() {
-                          widget.blurred = false;
-                        });
-                      }
+                      } else {}
                     },
                   ),
                   const CorrectAnswerArea(),
