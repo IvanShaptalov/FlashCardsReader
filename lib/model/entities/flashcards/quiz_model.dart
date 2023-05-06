@@ -1,10 +1,12 @@
 import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 
 class QuizModel {
   /// ==============================================[FIELDS AND CONSTRUCTOR]============================================
   final FlashCardCollection flashCardsCollection;
+  List<FlashCard> flashList = [];
   int flashIndex;
   FlashCard? currentFCard;
   final QuizMode mode;
@@ -21,7 +23,9 @@ class QuizModel {
       {required this.flashCardsCollection,
       this.flashIndex = 0,
       required this.mode,
-      this.currentFCard});
+      this.currentFCard}) {
+    selectQuizMode();
+  }
 
   QuizModel copyWith(
       {FlashCardCollection? flashCardsCollection,
@@ -56,40 +60,41 @@ class QuizModel {
   }
 
   /// ================================================[TRAINIG METHODS]================================================
-  /// get the next flash card to train
-  FlashCard? getNextFlash({List<FlashCard>? list}) {
-    FlashCard? flash;
+  void selectQuizMode() {
+    debugPrintIt('selected mode is $mode');
+    switch (mode) {
+      case QuizMode.all:
+        flashList = flashCardsCollection.sortedByDateAscending();
+        break;
+      case QuizMode.hard:
+        flashList = flashCardsCollection.sortedBySuccessRateFromMostDifficult();
+        break;
+      case QuizMode.simple:
+        flashList = flashCardsCollection.sortedBySuccessRateFromMostSimple();
+        break;
+      case QuizMode.newest:
+        flashList = flashCardsCollection.sortedByDateAscending();
+        break;
+      case QuizMode.oldest:
+        flashList = flashCardsCollection.sortedByDateDescending();
+        break;
+      case QuizMode.random:
+        flashList = flashCardsCollection.flashCardSet.toList();
+        break;
 
-    /// sort flash cards by mode
-    List<FlashCard> flashList =
-        list ?? flashCardsCollection.flashCardSet.toList();
-    if (list == null) {
-      switch (mode) {
-        case QuizMode.all:
-          flashList = flashCardsCollection.sortedByDateAscending();
-          break;
-        case QuizMode.hard:
-          flashList =
-              flashCardsCollection.sortedBySuccessRateFromMostDifficult();
-          break;
-        case QuizMode.simple:
-          flashList = flashCardsCollection.sortedBySuccessRateFromMostSimple();
-          break;
-        case QuizMode.newest:
-          flashList = flashCardsCollection.sortedByDateAscending();
-          break;
-        case QuizMode.oldest:
-          flashList = flashCardsCollection.sortedByDateDescending();
-          break;
-        case QuizMode.random:
-          flashList = flashCardsCollection.flashCardSet.toList();
-          break;
+      default:
+        flashList = flashCardsCollection.flashCardSet.toList();
 
-        default:
-          flashList = flashCardsCollection.flashCardSet.toList();
-      }
       // check current index not out of range and quiz is not finished
     }
+  }
+
+  /// get the next flash card to train
+  FlashCard? getNextFlash() {
+    FlashCard? flash;
+    debugPrintIt('selected mode is $mode');
+
+    /// sort flash cards by mode
     // check current index not out of range and quiz is not finished
     if (flashIndex + 1 <= flashList.length) {
       flashIndex++;
@@ -97,7 +102,7 @@ class QuizModel {
 
       // check if flash card is learned
       if (_isFlashCardLearned(flash)) {
-        flash = getNextFlash(list: flashList);
+        flash = getNextFlash();
       }
       // return flash card
       return flash;

@@ -41,6 +41,7 @@ class QuizInitial extends QuizState {
         flashIndex: flashIndex,
         currentFCard: currentFlashCard,
         mode: mode);
+    quizModel.selectQuizMode();
   }
 
   /// ==============================================[METHODS]==============================================
@@ -68,7 +69,10 @@ class QuizInitial extends QuizState {
     }
 
     // return state with deleted current card from training
-    return copyWith(stateId: uuid.v4(), currentCard: quizModel.getNextFlash(), mode: quizModel.mode);
+    return copyWith(
+        stateId: uuid.v4(),
+        currentCard: quizModel.getNextFlash(),
+        mode: quizModel.mode);
   }
 
   QuizInitial finishQuiz() {
