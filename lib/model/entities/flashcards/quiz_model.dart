@@ -96,7 +96,7 @@ class QuizModel {
       flash = flashList.elementAt(flashIndex - 1);
 
       // check if flash card is learned
-      if (_isFlashCardLearned(flash)){
+      if (_isFlashCardLearned(flash)) {
         flash = getNextFlash(list: flashList);
       }
       // return flash card

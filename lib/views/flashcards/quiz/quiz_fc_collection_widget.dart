@@ -1,7 +1,6 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
-import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcard_collection_info.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_process.dart';
@@ -59,13 +58,7 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
   Widget build(BuildContext context) {
     return BlocBuilder<QuizBloc, QuizState>(builder: (context, state) {
       // set the target item for merge
-      bool isTarget = FlashCardCollectionProvider.targetFlashCard ==
-          widget.flashCardCollection;
 
-      // check if the item is selected for merge
-      bool isSelected = FlashCardCollectionProvider.flashcardsToMerge
-              .contains(widget.flashCardCollection) &&
-          !isTarget;
       return GestureDetector(
         onTap: () {
           if (widget.flashCardCollection.isLearned) {

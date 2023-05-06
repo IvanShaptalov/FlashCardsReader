@@ -1,5 +1,4 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
-import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_card_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
@@ -32,14 +31,14 @@ class _VerticalQuizState extends State<VerticalQuiz> {
   }
 
   void addToResult (bool answer){
-    var flash = 
-    BlocProvider.of<QuizBloc>(context).state.quizModel.currentFCard; 
+    // var flash = 
+    // BlocProvider.of<QuizBloc>(context).state.quizModel.currentFCard; 
 
-    if (flash is FlashCard){
-      var flashMap = {'words': {'answer': flash.answerWords, 'question': flash.questionWords}, 'isCorrect': answer};
+    // if (flash is FlashCard){
+    //   var flashMap = {'words': {'answer': flash.answerWords, 'question': flash.questionWords}, 'isCorrect': answer};
       
-      // widget.flashListResult.add(flashMap);
-    }
+    //   // widget.flashListResult.add(flashMap);
+    // }
   }
 
   @override

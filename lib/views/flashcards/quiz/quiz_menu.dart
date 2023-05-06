@@ -96,9 +96,11 @@ class _QuizMenuViewState extends State<QuizMenuView> {
         context.read<FlashCardBloc>().state.flashCards.isNotEmpty
             ? context.read<FlashCardBloc>().state.flashCards.first
             : flashExample();
+
     context
         .read<QuizBloc>()
         .add(InitQuizEvent(flashCardsCollection: flashCardCollection));
+
     super.initState();
   }
 
@@ -120,6 +122,7 @@ class _QuizMenuViewState extends State<QuizMenuView> {
     return BlocBuilder<QuizBloc, QuizState>(
       builder: (context, state) {
         columnCount = calculateColumnCount(context);
+
         var flashCollectionList = context
             .read<FlashCardBloc>()
             .state
@@ -140,73 +143,81 @@ class _QuizMenuViewState extends State<QuizMenuView> {
             appBar: appBar,
             drawer: getDrawer(),
             body: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      labelText: 'Find quiz',
-                      prefixIcon: Icon(Icons.search),
-                    ),
-                  ),
-                ),
-                const Center(child: Text('Select quiz mode')),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics()),
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          SelectQuizMode(
-                            mode: QuizMode.all,
-                          ),
-                          SelectQuizMode(mode: QuizMode.simple),
-                          SelectQuizMode(mode: QuizMode.hard),
-                          SelectQuizMode(mode: QuizMode.newest),
-                          SelectQuizMode(mode: QuizMode.oldest),
-                          SelectQuizMode(mode: QuizMode.random),
-                        ],
-                      )),
-                ),
-                Container(
-                  height: SizeConfig.getMediaHeight(context, p: 0.6),
-                  color: Colors.blueGrey,
-                  child: flashCollectionList.isEmpty
-                      ? const Center(child: Text('Bin is empty'))
-                      : AnimationLimiter(
-                          child: GridView.count(
-                              mainAxisSpacing:
-                                  SizeConfig.getMediaHeight(context, p: 0.04),
-                              crossAxisSpacing: calculateCrossSpacing(context),
-                              crossAxisCount: columnCount,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: SizeConfig.getMediaWidth(context,
-                                      p: 0.05)),
-                              childAspectRatio: ViewConfig.getCardForm(context),
-                              children: List.generate(
-                                  flashCollectionList.length, (index) {
-                                /// ====================================================================[FlashCardCollectionWidget]
-                                // add flashcards
-                                return Transform.scale(
-                                  scale: columnCount == 1 ? 0.9 : 1,
-                                  child: AnimationConfiguration.staggeredGrid(
-                                    position: index,
-                                    duration: widget.cardAppearDuration,
-                                    columnCount: columnCount,
-                                    child: SlideAnimation(
-                                      child: FadeInAnimation(
-                                          child: QuizFlashCollectionWidget(
-                                              flashCollectionList[index])),
-                                    ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Center(
+                        child: Padding(
+                      padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+                      child: Text('Select quiz mode',
+                          style: FontConfigs.h1TextStyle),
+                    )),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics()),
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  SelectQuizMode(
+                                    mode: QuizMode.all,
                                   ),
-                                );
-                              })),
-                        ),
+                                  SelectQuizMode(mode: QuizMode.simple),
+                                  SelectQuizMode(mode: QuizMode.hard),
+                                  SelectQuizMode(mode: QuizMode.newest),
+                                  SelectQuizMode(mode: QuizMode.oldest),
+                                  SelectQuizMode(mode: QuizMode.random),
+                                ],
+                              ),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Container(
+                    color: Colors.grey.shade300,
+                    child: flashCollectionList.isEmpty
+                        ? const Center(child: Text('Bin is empty'))
+                        : AnimationLimiter(
+                            child: GridView.count(
+                                mainAxisSpacing:
+                                    SizeConfig.getMediaHeight(context, p: 0.04),
+                                crossAxisSpacing:
+                                    calculateCrossSpacing(context),
+                                crossAxisCount: columnCount,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: SizeConfig.getMediaWidth(
+                                        context,
+                                        p: 0.05)),
+                                childAspectRatio:
+                                    ViewConfig.getCardForm(context),
+                                children: List.generate(
+                                    flashCollectionList.length, (index) {
+                                  /// ====================================================================[FlashCardCollectionWidget]
+                                  // add flashcards
+                                  return Transform.scale(
+                                    scale: columnCount == 1 ? 0.9 : 1,
+                                    child: AnimationConfiguration.staggeredGrid(
+                                      position: index,
+                                      duration: widget.cardAppearDuration,
+                                      columnCount: columnCount,
+                                      child: SlideAnimation(
+                                        child: FadeInAnimation(
+                                            child: QuizFlashCollectionWidget(
+                                                flashCollectionList[index])),
+                                      ),
+                                    ),
+                                  );
+                                })),
+                          ),
+                  ),
                 )
               ],
             ));

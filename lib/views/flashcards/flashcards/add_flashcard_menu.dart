@@ -530,7 +530,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                                           PlaceholderAlignment
                                                               .middle,
                                                       child: Padding(
-                                                          padding: EdgeInsets
+                                                          padding: const EdgeInsets
                                                               .symmetric(
                                                                   horizontal:
                                                                       2.0),
@@ -538,13 +538,13 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                                                       0 &&
                                                                   flashCard
                                                                       .isLearned
-                                                              ? Icon(
+                                                              ? const Icon(
                                                                   Icons
                                                                       .check_circle,
                                                                   size: 16,
                                                                   color: Colors
                                                                       .green)
-                                                              : Icon(
+                                                              : const Icon(
                                                                   Icons
                                                                       .cancel_outlined,
                                                                   size: 16,

@@ -28,5 +28,5 @@ enum QuizMode {
   hard,
   newest,
   oldest,
-  random
+  random,
 }

@@ -21,7 +21,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: Colors.blueGrey,
+        color: Colors.amber.shade50,
         shape: ShapeBorder.lerp(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -45,11 +45,8 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                           .quizModel
                           .currentFCard
                           ?.questionWords ??
-                      'Swipe to left if you \ndon\'t know the answer',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
+                      'Swipe right\nif you know',
+                  style: FontConfigs.cardQuestionTextStyle,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -65,8 +62,8 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                             .quizModel
                             .currentFCard
                             ?.answerWords ??
-                        'Swipe to right if you \n know the answer',
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                        'Swipe left\nif you don\'t',
+                    style: FontConfigs.cardAnswerTextStyle,
                     textAlign: TextAlign.center,
                   ),
                 ),

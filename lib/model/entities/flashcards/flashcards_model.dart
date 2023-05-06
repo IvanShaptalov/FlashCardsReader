@@ -29,7 +29,6 @@ class FlashCard {
   }
 
   static const learnedBound = 5;
-  // TODO replace to config
   bool get isLearned => correctAnswers - wrongAnswers >= learnedBound;
 
   double get successRate =>
@@ -215,15 +214,9 @@ class FlashCardCollection {
     return flist;
   }
 
-  List<FlashCard> filteredFromLearned() {
+  List<FlashCard> learnedCards() {
     List<FlashCard> flist = flashCardSet.toList();
     flist.removeWhere((element) => element.isLearned);
-    return flist;
-  }
-
-  List<FlashCard> filteredFromNotLearned() {
-    List<FlashCard> flist = flashCardSet.toList();
-    flist.removeWhere((element) => !element.isLearned);
     return flist;
   }
 

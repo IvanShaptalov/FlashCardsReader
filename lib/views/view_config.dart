@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class SizeConfig {
@@ -48,6 +47,11 @@ class FontConfigs {
 
   static const TextStyle cardTitleTextStyle =
       TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+
+  static const TextStyle cardAnswerTextStyle =
+      TextStyle(fontSize: 20, color: Colors.black);
+  static const TextStyle cardQuestionTextStyle =
+      TextStyle(fontSize: 20, color: Colors.black);
 }
 
 class ConfigFlashcardView {

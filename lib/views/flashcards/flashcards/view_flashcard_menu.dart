@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
@@ -122,14 +123,15 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         Row(
                                           children: [
                                             Padding(
-                                              padding: EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.verified_outlined,
                                                 color: ConfigFlashcardView
                                                     .descriptionIconColor,
                                               ),
                                             ),
-                                            Text(
+                                            const Text(
                                               'Flashcard Title : ',
                                               textAlign: TextAlign.start,
                                               style: FontConfigs.h1TextStyle,
@@ -178,14 +180,15 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         Row(
                                           children: [
                                             Padding(
-                                              padding: EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.language,
                                                 color: ConfigFlashcardView
                                                     .descriptionIconColor,
                                               ),
                                             ),
-                                            Text(
+                                            const Text(
                                               'Question Language : ',
                                               textAlign: TextAlign.start,
                                               style: FontConfigs.h1TextStyle,
@@ -215,14 +218,15 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         Row(
                                           children: [
                                             Padding(
-                                              padding: EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.translate,
                                                 color: ConfigFlashcardView
                                                     .descriptionIconColor,
                                               ),
                                             ),
-                                            Text(
+                                            const Text(
                                               'Answer Language : ',
                                               textAlign: TextAlign.start,
                                               style: FontConfigs.h1TextStyle,
@@ -256,14 +260,15 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         Row(
                                           children: [
                                             Padding(
-                                              padding: EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.calendar_month_outlined,
                                                 color: ConfigFlashcardView
                                                     .descriptionIconColor,
                                               ),
                                             ),
-                                            Text(
+                                            const Text(
                                               'Created : ',
                                               textAlign: TextAlign.start,
                                               style: FontConfigs.h1TextStyle,
@@ -297,14 +302,15 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         Row(
                                           children: [
                                             Padding(
-                                              padding: EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.web_stories_outlined,
                                                 color: ConfigFlashcardView
                                                     .descriptionIconColor,
                                               ),
                                             ),
-                                            Text(
+                                            const Text(
                                               'Flashcards : ',
                                               textAlign: TextAlign.start,
                                               style: FontConfigs.h1TextStyle,
@@ -409,8 +415,10 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                       horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
                   child: Column(
                     children: [
-                      for (var flashCard
-                          in widget.flashCardCollection.flashCardSet.toList().reversed)
+                      for (var flashCard in widget
+                          .flashCardCollection.flashCardSet
+                          .toList()
+                          .reversed)
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Align(
@@ -517,21 +525,22 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                           PlaceholderAlignment
                                                               .middle,
                                                       child: Padding(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
                                                                   horizontal:
                                                                       2.0),
                                                           child: flashCard.wrongAnswers ==
                                                                       0 &&
                                                                   flashCard
                                                                       .isLearned
-                                                              ? Icon(
+                                                              ? const Icon(
                                                                   Icons
                                                                       .check_circle,
                                                                   size: 16,
                                                                   color: Colors
                                                                       .green)
-                                                              : Icon(
+                                                              : const Icon(
                                                                   Icons
                                                                       .cancel_outlined,
                                                                   size: 16,
