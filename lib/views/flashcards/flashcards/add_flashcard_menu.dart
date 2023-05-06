@@ -40,15 +40,15 @@ class WordFormContoller {
 
   void setUp(FlashCard flashCard) {
     // update controller text
-    questionController.text = flashCard.questionWords;
-    answerController.text = flashCard.answerWords;
+    questionController.text = flashCard.question;
+    answerController.text = flashCard.answer;
 
     // set cursor to the end of the text
 
     questionController.selection = TextSelection.fromPosition(
-        TextPosition(offset: flashCard.questionWords.length));
+        TextPosition(offset: flashCard.question.length));
     answerController.selection = TextSelection.fromPosition(
-        TextPosition(offset: flashCard.answerWords.length));
+        TextPosition(offset: flashCard.answer.length));
   }
 }
 
@@ -158,8 +158,8 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
   void updateWord({bool onSubmitted = false}) {
     var flash = WordCreatingUIProvider.tmpFlashCard;
     if (onSubmitted &&
-        flash.answerWords.isEmpty &&
-        flash.questionWords.isEmpty) {
+        flash.answer.isEmpty &&
+        flash.question.isEmpty) {
       debugPrintIt('on submitted and word empty, do nothing');
     } else if (WordCreatingUIProvider.tmpFlashCard.isValid) {
       debugPrint('add flashcard');
@@ -177,10 +177,10 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
 
       setState(() {});
     } else {
-      if (WordCreatingUIProvider.tmpFlashCard.questionWords.isEmpty) {
+      if (WordCreatingUIProvider.tmpFlashCard.question.isEmpty) {
         OverlayNotificationProvider.showOverlayNotification('add word',
             status: NotificationStatus.info);
-      } else if (WordCreatingUIProvider.tmpFlashCard.answerWords.isEmpty) {
+      } else if (WordCreatingUIProvider.tmpFlashCard.answer.isEmpty) {
         OverlayNotificationProvider.showOverlayNotification(
             'tap translate button',
             status: NotificationStatus.info);
@@ -451,7 +451,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                         Align(
                                             alignment: Alignment.center,
                                             child: Text(
-                                              flashCard.questionWords,
+                                              flashCard.question,
                                               style: FontConfigs
                                                   .h2TextStyleBlack
                                                   .copyWith(
@@ -471,7 +471,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                         Align(
                                             alignment: Alignment.center,
                                             child: Text(
-                                              flashCard.answerWords,
+                                              flashCard.answer,
                                               style:
                                                   FontConfigs.h2TextStyleBlack,
                                             )),
@@ -766,7 +766,7 @@ class TranslateButton extends StatelessWidget {
 
   Future<bool>? translate() async {
     if (await InternetChecker.hasConnection()) {
-      String questionWords = WordCreatingUIProvider.tmpFlashCard.questionWords;
+      String questionWords = WordCreatingUIProvider.tmpFlashCard.question;
       if (questionWords.isNotEmpty) {
         TranslateResponse answerWords = await widget.translator.translate(
             questionWords,

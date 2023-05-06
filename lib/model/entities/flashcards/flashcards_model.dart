@@ -8,9 +8,9 @@ class FlashCard {
   @HiveField(1)
   String answerLanguage;
   @HiveField(2)
-  String questionWords;
+  String question;
   @HiveField(3)
-  String answerWords;
+  String answer;
   @HiveField(4)
   DateTime lastTested;
   @HiveField(5)
@@ -35,8 +35,8 @@ class FlashCard {
       correctAnswers / (correctAnswers + wrongAnswers + 1);
 
   bool get isValid =>
-      questionWords.isNotEmpty &&
-      answerWords.isNotEmpty &&
+      question.isNotEmpty &&
+      answer.isNotEmpty &&
       questionLanguage.isNotEmpty &&
       answerLanguage.isNotEmpty;
 
@@ -44,8 +44,8 @@ class FlashCard {
     return FlashCard(
         questionLanguage: 'English',
         answerLanguage: 'Ukrainian',
-        questionWords: '',
-        answerWords: '',
+        question: '',
+        answer: '',
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0);
@@ -54,8 +54,8 @@ class FlashCard {
   FlashCard(
       {required this.questionLanguage,
       required this.answerLanguage,
-      required this.questionWords,
-      required this.answerWords,
+      required this.question,
+      required this.answer,
       required this.lastTested,
       required this.correctAnswers,
       required this.wrongAnswers});
@@ -64,7 +64,7 @@ class FlashCard {
 
   @override
   String toString() {
-    return 'FlashCard{fromLanguage: $questionLanguage, toLanguage: $answerLanguage, questionWords: $questionWords, answerWords: $answerWords}';
+    return 'FlashCard{fromLanguage: $questionLanguage, toLanguage: $answerLanguage, questionWords: $question, answerWords: $answer}';
   }
 
   @override
@@ -75,11 +75,11 @@ class FlashCard {
 
   /// returns true if the words are the same
   bool wordCheck(FlashCard other) =>
-      questionWords + answerWords == other.questionWords + other.answerWords;
+      question + answer == other.question + other.answer;
 
   /// returns true if the words are the same but reversed
   bool reverseWordCheck(FlashCard other) =>
-      (questionWords + answerWords == other.answerWords + other.questionWords);
+      (question + answer == other.answer + other.question);
 
   /// returns true if the languages are the same
   bool languageCheck(FlashCard other) =>

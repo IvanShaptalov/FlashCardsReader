@@ -446,7 +446,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           Align(
                                               alignment: Alignment.center,
                                               child: Text(
-                                                flashCard.questionWords,
+                                                flashCard.question,
                                                 style: FontConfigs
                                                     .h2TextStyleBlack
                                                     .copyWith(
@@ -466,7 +466,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           Align(
                                               alignment: Alignment.center,
                                               child: Text(
-                                                flashCard.answerWords,
+                                                flashCard.answer,
                                                 style: FontConfigs
                                                     .h2TextStyleBlack,
                                               )),

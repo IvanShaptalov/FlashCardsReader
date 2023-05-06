@@ -1,3 +1,6 @@
+import 'package:flashcards_reader/util/router.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -23,6 +26,12 @@ class ViewConfig {
 
   static double getCardForm(BuildContext context) =>
       MediaQuery.of(context).orientation == Orientation.portrait ? 0.6 : 1;
+
+  static void pushFromQuizProcess(
+      {required context, required String fromPage}) {
+    MyRouter.pushPageReplacement(context,
+        fromPage == 'collection' ? const FlashCardScreen() : const QuizMenu());
+  }
 }
 
 class CardViewConfig {
@@ -96,4 +105,24 @@ class ListOrColumn extends StatelessWidget {
             children: children,
           );
   }
+}
+
+class ConfigQuizView {
+  static Color backFromQuizButtonBackgroundColor = Colors.green.shade500;
+  static Color backFromQuizIconColor = Colors.white;
+  static Color wrongAreaColor = Colors.red.shade300;
+  static TextStyle backFromQuizTextStyle = const TextStyle(
+      fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white);
+  static Color correctAreaColor = Colors.green.shade300;
+  static Color selectedModeColor = Colors.teal;
+  static Color unselectedModeColor = Colors.blueGrey;
+  static Color foregroundModeColor = Colors.white;
+  static Color cardQuizColor = Colors.amber.shade50;
+  static Color quizResultBackgroundColor = Colors.grey.shade300;
+
+  static TextStyle quizSummaryTextStyle = TextStyle(
+      fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade800);
+
+  static TextStyle quizWordSummaryTextStyleBlack =
+      TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
 }

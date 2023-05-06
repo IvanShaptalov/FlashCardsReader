@@ -4,6 +4,7 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/model/entities/flashcards/quiz_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz_view.dart';
 
 part 'quiz_event.dart';
 part 'quiz_state.dart';
@@ -23,6 +24,8 @@ class QuizBloc extends Bloc<QuizEvent, QuizInitial> {
           stateId: uuid.v4(),
           flashCardsCollection: event.flashCardCollection,
           mode: event.mode));
+      // clear the previous quiz
+      SummaryFlashCardsProvider.clear();
     });
     on<NextFlashEvent>((event, emit) {
       emit(state.nextFlash());

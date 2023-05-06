@@ -8,8 +8,8 @@ void main() {
   final FlashCard flashCard1 = FlashCard(
     questionLanguage: 'English',
     answerLanguage: 'German',
-    questionWords: 'Hello',
-    answerWords: 'Hallo',
+    question: 'Hello',
+    answer: 'Hallo',
     lastTested: DateTime.now(),
     correctAnswers: 0,
     wrongAnswers: 0,
@@ -17,8 +17,8 @@ void main() {
   final FlashCard flashCard2 = FlashCard(
     questionLanguage: 'English',
     answerLanguage: 'German',
-    questionWords: 'Goodbye',
-    answerWords: 'Auf Wiedersehen',
+    question: 'Goodbye',
+    answer: 'Auf Wiedersehen',
     lastTested: DateTime.now(),
     correctAnswers: 0,
     wrongAnswers: 0,

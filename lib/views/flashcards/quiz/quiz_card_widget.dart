@@ -19,7 +19,6 @@ class QuizFlashCard extends StatefulWidget {
 }
 
 class _QuizFlashCardState extends State<QuizFlashCard> {
-  
   @override
   Widget build(BuildContext context) {
     var currentFcard = BlocProvider.of<QuizBloc>(widget.quizContext)
@@ -34,8 +33,8 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
             ? const SizedBox.shrink()
             : Text(
                 widget.swap
-                    ? currentFcard?.answerWords ?? widget.swipeRight
-                    : currentFcard?.questionWords ?? widget.swipeLeft,
+                    ? currentFcard?.answer ?? widget.swipeRight
+                    : currentFcard?.question ?? widget.swipeLeft,
                 style: FontConfigs.cardQuestionTextStyle,
                 textAlign: TextAlign.center,
               ),
@@ -62,10 +61,8 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                   ? const SizedBox.shrink()
                   : Text(
                       widget.swap
-                          ? currentFcard?.questionWords ??
-                              widget.swipeLeft
-                          : currentFcard?.answerWords ??
-                              widget.swipeRight,
+                          ? currentFcard?.question ?? widget.swipeLeft
+                          : currentFcard?.answer ?? widget.swipeRight,
                       style: FontConfigs.cardAnswerTextStyle,
                       textAlign: TextAlign.center,
                     ),
@@ -77,7 +74,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: Colors.amber.shade50,
+        color: ConfigQuizView.cardQuizColor,
         shape: ShapeBorder.lerp(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),

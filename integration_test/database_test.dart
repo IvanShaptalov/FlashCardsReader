@@ -16,8 +16,8 @@ void main() async {
       final FlashCard flashCard1 = FlashCard(
         questionLanguage: 'English',
         answerLanguage: 'German',
-        questionWords: 'Hello',
-        answerWords: 'Hallo',
+        question: 'Hello',
+        answer: 'Hallo',
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
@@ -25,8 +25,8 @@ void main() async {
       final FlashCard flashCard2 = FlashCard(
         questionLanguage: 'English',
         answerLanguage: 'German',
-        questionWords: 'Goodbye',
-        answerWords: 'Auf Wiedersehen',
+        question: 'Goodbye',
+        answer: 'Auf Wiedersehen',
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
@@ -104,8 +104,8 @@ void main() async {
       var emptyFlash = FlashCard(
         questionLanguage: '',
         answerLanguage: '',
-        questionWords: '',
-        answerWords: '',
+        question: '',
+        answer: '',
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
@@ -128,10 +128,10 @@ void main() async {
       expect(written, false);
 
       expect((emptyFlash..answerLanguage = '1').isValid, false);
-      expect((emptyFlash..answerWords = '1').isValid, false);
+      expect((emptyFlash..answer = '1').isValid, false);
       expect((emptyFlash..correctAnswers = 1).isValid, false);
       expect((emptyFlash..questionLanguage = '1').isValid, false);
-      expect((emptyFlash..questionWords = '1').isValid, true);
+      expect((emptyFlash..question = '1').isValid, true);
 
       expect((emptyFlashCollection..title = '1').isValid, false);
       expect((emptyFlashCollection..questionLanguage = '1').isValid, false);
@@ -170,9 +170,9 @@ void main() async {
       // ==================================================== to trash
       await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
       var flashcards1 = flashFixture();
-      var flashcards2 = flashFixture()..flashCardSet.first.answerWords = 't1';
-      var flashcards3 = flashFixture()..flashCardSet.first.answerWords = 't2';
-      var flashcards4 = flashFixture()..flashCardSet.first.answerWords = 't3';
+      var flashcards2 = flashFixture()..flashCardSet.first.answer = 't1';
+      var flashcards3 = flashFixture()..flashCardSet.first.answer = 't2';
+      var flashcards4 = flashFixture()..flashCardSet.first.answer = 't3';
 
       // save to db
 
@@ -224,9 +224,9 @@ void main() async {
       await FlashcardDatabaseProvider.deleteAllAsync(isTest: true);
       var flashcards = flashFixture();
       expect(flashcards.flashCardSet.length, 2);
-      var flashcards2 = flashFixture()..flashCardSet.first.answerWords = 't1';
-      var flashcards3 = flashFixture()..flashCardSet.first.answerWords = 't2';
-      var flashcards4 = flashFixture()..flashCardSet.first.answerWords = 't3';
+      var flashcards2 = flashFixture()..flashCardSet.first.answer = 't1';
+      var flashcards3 = flashFixture()..flashCardSet.first.answer = 't2';
+      var flashcards4 = flashFixture()..flashCardSet.first.answer = 't3';
       var toMerge = [flashcards2, flashcards3, flashcards4];
 
       expect(flashcards.id != flashcards2.id, true);

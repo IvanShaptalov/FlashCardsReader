@@ -19,8 +19,8 @@ class FlashCardAdapter extends TypeAdapter<FlashCard> {
     return FlashCard(
       questionLanguage: fields[0] as String,
       answerLanguage: fields[1] as String,
-      questionWords: fields[2] as String,
-      answerWords: fields[3] as String,
+      question: fields[2] as String,
+      answer: fields[3] as String,
       lastTested: fields[4] as DateTime,
       correctAnswers: fields[5] as int,
       wrongAnswers: fields[6] as int,
@@ -36,9 +36,9 @@ class FlashCardAdapter extends TypeAdapter<FlashCard> {
       ..writeByte(1)
       ..write(obj.answerLanguage)
       ..writeByte(2)
-      ..write(obj.questionWords)
+      ..write(obj.question)
       ..writeByte(3)
-      ..write(obj.answerWords)
+      ..write(obj.answer)
       ..writeByte(4)
       ..write(obj.lastTested)
       ..writeByte(5)

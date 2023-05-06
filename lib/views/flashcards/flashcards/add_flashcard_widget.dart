@@ -31,11 +31,11 @@ class WordCreatingUIProvider {
   }
 
   static void setQuestion(String question) {
-    _tmpFlashCard.questionWords = question;
+    _tmpFlashCard.question = question;
   }
 
   static void setAnswer(String answer) {
-    _tmpFlashCard.answerWords = answer;
+    _tmpFlashCard.answer = answer;
   }
 }
 

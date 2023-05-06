@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/main.dart';
@@ -229,7 +227,7 @@ class _QuizMenuViewState extends State<QuizMenuView> {
 }
 
 class SelectQuizMode extends StatelessWidget {
-  const SelectQuizMode({this.explisit = false,required this.mode, super.key});
+  const SelectQuizMode({this.explisit = false, required this.mode, super.key});
   final QuizMode mode;
   final bool explisit;
 
@@ -242,8 +240,10 @@ class SelectQuizMode extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: TextButton(
         style: TextButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: isSelected ? Colors.teal : Colors.blueGrey,
+          foregroundColor: ConfigQuizView.foregroundModeColor,
+          backgroundColor: isSelected
+              ? ConfigQuizView.selectedModeColor
+              : ConfigQuizView.unselectedModeColor,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
@@ -254,7 +254,9 @@ class SelectQuizMode extends StatelessWidget {
               'mode changed to ${mode.name}=========================================');
           context.read<QuizBloc>().add(ChangeQuizModeEvent(mode: mode));
         },
-        child: explisit? Text('Selected mode: ${mode.name} cards' ): Text(mode.name),
+        child: explisit
+            ? Text('Selected mode: ${mode.name} cards')
+            : Text(mode.name),
       ),
     );
   }
