@@ -18,14 +18,14 @@ class QuizModel {
   bool get isEmpty => flashCardsCollection.flashCardSet.isEmpty;
 
   /// level of learned flash cards, if upper than this value, the flash card considered as learned
+  // TODO put flashlist in model
 
   QuizModel(
       {required this.flashCardsCollection,
       this.flashIndex = 0,
       required this.mode,
-      this.currentFCard}) {
-    selectQuizMode();
-  }
+      this.currentFCard});
+  // TODO put flashlist in model
 
   QuizModel copyWith(
       {FlashCardCollection? flashCardsCollection,
@@ -61,7 +61,7 @@ class QuizModel {
 
   /// ================================================[TRAINIG METHODS]================================================
   void selectQuizMode() {
-    debugPrintIt('selected mode is $mode');
+    debugPrintIt('now select mode $mode');
     switch (mode) {
       case QuizMode.all:
         flashList = flashCardsCollection.sortedByDateAscending();
@@ -92,7 +92,11 @@ class QuizModel {
   /// get the next flash card to train
   FlashCard? getNextFlash() {
     FlashCard? flash;
-    debugPrintIt('selected mode is $mode');
+    if (flashList.isEmpty) {
+      debugPrintIt('flash syka empty, select by mode $mode');
+
+      selectQuizMode();
+    }
 
     /// sort flash cards by mode
     // check current index not out of range and quiz is not finished

@@ -27,7 +27,7 @@ class QuizInitial extends QuizState {
       mode: mode ?? quizModel.mode,
     );
   }
-
+  // TODO put flashlist in model
   /// notice, you must manually set [currentCard], else it will be null
   QuizInitial(
       {required this.stateId,
@@ -41,7 +41,6 @@ class QuizInitial extends QuizState {
         flashIndex: flashIndex,
         currentFCard: currentFlashCard,
         mode: mode);
-    quizModel.selectQuizMode();
   }
 
   /// ==============================================[METHODS]==============================================
