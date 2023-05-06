@@ -46,7 +46,8 @@ class QuizBloc extends Bloc<QuizEvent, QuizInitial> {
           currentFlashCard: null,
           flashIndex: 0,
           mode: QuizMode.all,
-          numberOfFlashCards: 0));
+          numberOfFlashCards: 0,
+          flashList: emptyList));
     });
 
     on<ChangeQuizModeEvent>((event, emit) {

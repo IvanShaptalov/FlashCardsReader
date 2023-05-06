@@ -243,7 +243,7 @@ class SelectQuizMode extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(
           foregroundColor: ConfigQuizView.foregroundModeColor,
-          backgroundColor: isSelected
+          backgroundColor: isSelected || explisit
               ? ConfigQuizView.selectedModeColor
               : ConfigQuizView.unselectedModeColor,
           shape: const RoundedRectangleBorder(
