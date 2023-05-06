@@ -29,4 +29,5 @@ enum QuizMode {
   newest,
   oldest,
   random,
+  learned,
 }

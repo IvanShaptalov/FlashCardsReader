@@ -168,11 +168,13 @@ class _QuizMenuViewState extends State<QuizMenuView> {
                                   SelectQuizMode(
                                     mode: QuizMode.all,
                                   ),
+                                  SelectQuizMode(mode: QuizMode.learned),
                                   SelectQuizMode(mode: QuizMode.simple),
                                   SelectQuizMode(mode: QuizMode.hard),
                                   SelectQuizMode(mode: QuizMode.newest),
                                   SelectQuizMode(mode: QuizMode.oldest),
                                   SelectQuizMode(mode: QuizMode.random),
+                                  
                                 ],
                               ),
                             ],

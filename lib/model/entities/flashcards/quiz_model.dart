@@ -12,8 +12,7 @@ class QuizModel {
   final QuizMode mode;
 
   // training is finished when the current flash card index is greater than the number of flash cards in the collection
-  bool get isQuizFinished =>
-      flashIndex > flashCardsCollection.flashCardSet.length;
+  bool get isQuizFinished => flashIndex > flashList.length;
 
   bool get isEmpty => flashCardsCollection.flashCardSet.isEmpty;
 
@@ -83,6 +82,10 @@ class QuizModel {
         flashList = flashCardsCollection.flashCardSet.toList();
         break;
 
+      case QuizMode.learned:
+        flashList = flashCardsCollection.learnedCards();
+        break;
+
       default:
         flashList = flashCardsCollection.flashCardSet.toList();
 
@@ -99,22 +102,42 @@ class QuizModel {
       selectQuizMode();
     }
 
-    /// sort flash cards by mode
-    // check current index not out of range and quiz is not finished
-    if (flashIndex + 1 <= flashList.length) {
-      flashIndex++;
-      flash = flashList.elementAt(flashIndex - 1);
+    // get learned flash card
+    if (mode == QuizMode.learned) {
+      if (flashIndex + 1 <= flashList.length) {
+        flashIndex++;
+        flash = flashList.elementAt(flashIndex - 1);
+        //
 
-      // check if flash card is learned
-      if (_isFlashCardLearned(flash)) {
-        flash = getNextFlash();
+        // check if flash card is learned
+        if (!_isFlashCardLearned(flash)) {
+          flash = getNextFlash();
+        }
+        // return flash card
+        return flash;
       }
-      // return flash card
-      return flash;
+      // return null if quiz is finished
+      flashIndex++;
+      return null;
+    } else 
+    // get not learned flash card
+    {
+      if (flashIndex + 1 <= flashList.length) {
+        flashIndex++;
+        flash = flashList.elementAt(flashIndex - 1);
+        //
+
+        // check if flash card is learned
+        if (_isFlashCardLearned(flash)) {
+          flash = getNextFlash();
+        }
+        // return flash card
+        return flash;
+      }
+      // return null if quiz is finished
+      flashIndex++;
+      return null;
     }
-    // return null if quiz is finished
-    flashIndex++;
-    return null;
   }
 
   /// train and save the flash card

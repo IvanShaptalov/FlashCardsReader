@@ -70,7 +70,6 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
                 'This collection is empty',
                 status: NotificationStatus.info);
           } else {
-            
             MyRouter.pushPage(
                 context,
                 QuizTrainer(

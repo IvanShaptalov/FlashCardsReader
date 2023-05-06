@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
@@ -341,11 +342,19 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       onTap: () {
                                         if (widget
                                             .flashCardCollection.isLearned) {
-                                          OverlayNotificationProvider
-                                              .showOverlayNotification(
-                                                  'This collection is already learned',
-                                                  status:
-                                                      NotificationStatus.info);
+                                          MyRouter.pushPage(
+                                            context,
+                                            QuizTrainer(
+                                              numberOfFlashCards: widget
+                                                  .flashCardCollection
+                                                  .flashCardSet
+                                                  .length,
+                                              mode: QuizMode.learned,
+                                              fCollection:
+                                                  widget.flashCardCollection,
+                                              fromPage: 'collection',
+                                            ),
+                                          );
                                         } else if (widget
                                             .flashCardCollection.isEmpty) {
                                           OverlayNotificationProvider
@@ -361,7 +370,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                   .flashCardCollection
                                                   .flashCardSet
                                                   .length,
-                                              mode: QuizModeProvider.mode,
+                                              mode: QuizMode.all,
                                               fCollection:
                                                   widget.flashCardCollection,
                                               fromPage: 'collection',

@@ -132,6 +132,8 @@ class FlashCardCollection {
 
   bool get isEmpty => flashCardSet.isEmpty;
 
+  bool get hasLearned => flashCardSet.any((element) => element.isLearned);
+
   FlashCardCollection copy() {
     return FlashCardCollection(id,
         title: title,
@@ -216,7 +218,7 @@ class FlashCardCollection {
 
   List<FlashCard> learnedCards() {
     List<FlashCard> flist = flashCardSet.toList();
-    flist.removeWhere((element) => element.isLearned);
+    flist.removeWhere((element) => !element.isLearned);
     return flist;
   }
 
