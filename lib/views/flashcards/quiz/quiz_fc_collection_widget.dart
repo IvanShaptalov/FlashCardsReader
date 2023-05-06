@@ -1,6 +1,7 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcard_collection_info.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_process.dart';
@@ -61,9 +62,10 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
 
       return GestureDetector(
         onTap: () {
-          if (widget.flashCardCollection.isLearned) {
+
+          if (widget.flashCardCollection.isLearned && QuizModeProvider.mode != QuizMode.learned) {
             OverlayNotificationProvider.showOverlayNotification(
-                'This collection is already learned',
+                'To review select "Learned" mode',
                 status: NotificationStatus.info);
           } else if (widget.flashCardCollection.isEmpty) {
             OverlayNotificationProvider.showOverlayNotification(
