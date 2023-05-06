@@ -104,6 +104,49 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
     setState(() {});
   }
 
+  void saveCollectionFromWord({required bool onSubmitted}) {
+    updateWord(onSubmitted: onSubmitted);
+    if (widget.flashCardCollection.isValid) {
+      widget.specialContext.read<FlashCardBloc>().add(UpdateFlashCardEvent(
+          flashCardCollection: widget.flashCardCollection));
+    } else {
+      showValidatorMessage();
+    }
+  }
+
+  void showValidatorMessage() {
+    if (widget.flashCardCollection.title.isEmpty) {
+      OverlayNotificationProvider.showOverlayNotification(
+          'Add collection title',
+          status: NotificationStatus.info);
+
+      debugPrint('title');
+    } else if (widget.flashCardCollection.isEmpty) {
+      OverlayNotificationProvider.showOverlayNotification(
+          'Add at least one flashcard',
+          status: NotificationStatus.info);
+
+      debugPrint('Add at least one flashcard');
+    } else if (widget.flashCardCollection.answerLanguage.isEmpty) {
+      OverlayNotificationProvider.showOverlayNotification(
+          'Add question language',
+          status: NotificationStatus.info);
+
+      debugPrint('Add question language');
+    } else if (widget.flashCardCollection.answerLanguage.isEmpty) {
+      OverlayNotificationProvider.showOverlayNotification('Add answerlanguage',
+          status: NotificationStatus.info);
+
+      debugPrint('Add answerlanguage');
+    } else {
+      OverlayNotificationProvider.showOverlayNotification(
+          'Your collection not valid',
+          status: NotificationStatus.info);
+
+      debugPrint('flash not valid');
+    }
+  }
+
   Widget loadTranslate() {
     if (_isPressed != _oldPress) {
       _oldPress = _isPressed;
@@ -112,8 +155,13 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
     return const Icon(Icons.translate);
   }
 
-  void updateCollection() {
-    if (WordCreatingUIProvider.tmpFlashCard.isValid) {
+  void updateWord({bool onSubmitted = false}) {
+    var flash = WordCreatingUIProvider.tmpFlashCard;
+    if (onSubmitted &&
+        flash.answerWords.isEmpty &&
+        flash.questionWords.isEmpty) {
+          debugPrintIt('on submitted and word empty, do nothing');
+    } else if (WordCreatingUIProvider.tmpFlashCard.isValid) {
       debugPrint('add flashcard');
 
       WordCreatingUIProvider.setQuestionLanguage(
@@ -129,12 +177,15 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
 
       setState(() {});
     } else {
-      if (WordCreatingUIProvider.tmpFlashCard.answerWords.isEmpty) {
-        OverlayNotificationProvider.showOverlayNotification('add translation',
-            status: NotificationStatus.info);
-      } else if (WordCreatingUIProvider.tmpFlashCard.questionWords.isEmpty) {
+      if (WordCreatingUIProvider.tmpFlashCard.questionWords.isEmpty) {
         OverlayNotificationProvider.showOverlayNotification('add word',
             status: NotificationStatus.info);
+      } else if (WordCreatingUIProvider.tmpFlashCard.answerWords.isEmpty) {
+        OverlayNotificationProvider.showOverlayNotification(
+            'tap translate button',
+            status: NotificationStatus.info);
+      } else {
+        // ====================[save whole collection]
       }
 
       debugPrint('not valid');
@@ -176,11 +227,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                     'Collection added',
                     status: NotificationStatus.success);
           } else {
-            OverlayNotificationProvider.showOverlayNotification(
-                'Your collection not valid',
-                status: NotificationStatus.warning);
-
-            debugPrint('flash not valid');
+            showValidatorMessage();
           }
         },
       ),
@@ -211,7 +258,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        updateCollection();
+                        saveCollectionFromWord(onSubmitted: false);
                       },
                       icon: const Icon(Icons.add_circle_outlined)),
                   Expanded(
@@ -225,7 +272,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                         WordCreatingUIProvider.setQuestion(text);
                       },
                       onSubmitted: (value) {
-                        updateCollection();
+                        saveCollectionFromWord(onSubmitted: true);
                       },
                     ),
                   ),
@@ -261,7 +308,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                         WordCreatingUIProvider.setAnswer(text);
                       },
                       onSubmitted: (value) {
-                        updateCollection();
+                        saveCollectionFromWord(onSubmitted: true);
                       },
                     ),
                   ),

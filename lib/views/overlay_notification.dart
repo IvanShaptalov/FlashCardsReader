@@ -15,7 +15,7 @@ class OverlayNotificationProvider {
       case NotificationStatus.info:
         return Colors.teal;
       default:
-        return Colors.greenAccent;
+        return Colors.green;
     }
   }
 
