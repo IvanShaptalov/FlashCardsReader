@@ -49,9 +49,9 @@ class FontConfigs {
       TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
 
   static const TextStyle cardAnswerTextStyle =
-      TextStyle(fontSize: 20, color: Colors.black);
+      TextStyle(fontSize: 24, color: Colors.black);
   static const TextStyle cardQuestionTextStyle =
-      TextStyle(fontSize: 20, color: Colors.black);
+      TextStyle(fontSize: 24, color: Colors.black);
 }
 
 class ConfigFlashcardView {

@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/util_provider.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_card_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
@@ -44,12 +45,14 @@ class _VerticalQuizState extends State<VerticalQuiz> {
   Widget build(BuildContext context) {
     return Center(
         child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
+        Transform.scale(
+          scale: 1.5,
           child: SelectQuizMode(
-              mode: BlocProvider.of<QuizBloc>(context).state.quizModel.mode),
+            mode: BlocProvider.of<QuizBloc>(context).state.quizModel.mode,
+            explisit: true,
+          ),
         ),
         BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished
             ? loadEndQuiz()
@@ -63,9 +66,6 @@ class _VerticalQuizState extends State<VerticalQuiz> {
                     feedback: QuizFlashCard(
                       quizContext: context,
                     ),
-                    child: QuizFlashCard(
-                      quizContext: context,
-                    ),
                     childWhenDragging: QuizFlashCard(
                       quizContext: context,
                       empty: true,
@@ -73,6 +73,7 @@ class _VerticalQuizState extends State<VerticalQuiz> {
                     onDragStarted: () {
                       debugPrintIt('started');
                     },
+                    affinity: Axis.horizontal,
                     onDragUpdate: (details) {
                       debugPrintIt('update');
                     },
@@ -89,13 +90,18 @@ class _VerticalQuizState extends State<VerticalQuiz> {
                               p: -0.1) /* 25 percent of screen to left*/) {
                         BlocProvider.of<QuizBloc>(context)
                             .add(AnswerFlashEvent(isAnswerCorrect: false));
+                        BlurProvider.blurred = true;
                       } else if (offset.dx >
                           SizeConfig.getMediaWidth(context, p: 0.1) +
                               35 /* 25 percent of screen to right*/) {
                         BlocProvider.of<QuizBloc>(context)
                             .add(AnswerFlashEvent(isAnswerCorrect: true));
+                        BlurProvider.blurred = true;
                       } else {}
                     },
+                    child: QuizFlashCard(
+                      quizContext: context,
+                    ),
                   ),
                   const CorrectAnswerArea(),
                 ],
