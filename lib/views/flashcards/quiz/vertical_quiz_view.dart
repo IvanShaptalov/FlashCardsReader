@@ -107,15 +107,15 @@ class _VerticalQuizState extends State<VerticalQuiz> {
 
     for (var flash in SummaryFlashCardsProvider.flashSetMock.toList()) {
       list.add(Padding(
-        padding: EdgeInsets.all(SizeConfig.getMediaHeight(context, p: 0.02)),
+        padding: EdgeInsets.all(SizeConfig.getMediaHeight(context, p: 0.01)),
         child: Container(
-            height: SizeConfig.getMediaHeight(context, p: 0.1),
-            width: SizeConfig.getMediaWidth(context, p: 0.7),
+            height: SizeConfig.getMediaHeight(context, p: 0.08),
+            width: SizeConfig.getMediaWidth(context, p: 0.6),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
                 color: flash.isCorrect
-                    ? ConfigQuizView.correctAreaColor
-                    : ConfigQuizView.wrongAreaColor),
+                    ? ConfigQuizView.correctAreaColor.withOpacity(0.7)
+                    : ConfigQuizView.wrongAreaColor.withOpacity(0.7)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -125,6 +125,7 @@ class _VerticalQuizState extends State<VerticalQuiz> {
                     child: Text(
                       flash.question,
                       style: ConfigQuizView.quizWordSummaryTextStyleBlack,
+                      maxLines: 1,
                     ),
                   ),
                 ),
@@ -136,7 +137,8 @@ class _VerticalQuizState extends State<VerticalQuiz> {
                   child: Center(
                     child: Text(
                       flash.answer,
-                      style: ConfigQuizView.quizWordSummaryTextStyleBlack,
+                      style: ConfigQuizView.quizWordSummaryTextStyle,
+                      maxLines: 1,
                     ),
                   ),
                 ),
@@ -155,8 +157,12 @@ class _VerticalQuizState extends State<VerticalQuiz> {
           Container(
             color: ConfigQuizView.quizResultBackgroundColor,
             height: SizeConfig.getMediaHeight(context, p: 0.7),
-            child: ListView(
-              children: loadListItems(),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.getMediaWidth(context, p: 0.02)),
+              child: ListView(
+                children: loadListItems(),
+              ),
             ),
           ),
           Padding(
@@ -210,6 +216,9 @@ class _VerticalQuizState extends State<VerticalQuiz> {
 
   @override
   Widget build(BuildContext context) {
+    var dragCard = QuizFlashCard(
+      quizContext: context,
+    );
     return Center(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -228,53 +237,51 @@ class _VerticalQuizState extends State<VerticalQuiz> {
                 children: [
                   const WrongAnswerArea(),
                   Draggable<bool>(
-                    // Data is the value this Draggable stores.
-                    axis: Axis.horizontal, data: true,
-                    feedback: QuizFlashCard(
-                      quizContext: context,
-                    ),
-                    childWhenDragging: QuizFlashCard(
-                      quizContext: context,
-                      empty: true,
-                    ),
-                    onDragStarted: () {
-                      debugPrintIt('started');
-                    },
-                    affinity: Axis.horizontal,
-                    onDragUpdate: (details) {
-                      debugPrintIt('update');
-                    },
+                      // Data is the value this Draggable stores.
+                      axis: Axis.horizontal,
+                      data: true,
+                      feedback: dragCard,
+                      childWhenDragging: QuizFlashCard(
+                        quizContext: context,
+                        empty: true,
+                      ),
+                      onDragStarted: () {
+                        debugPrintIt('started');
+                      },
+                      affinity: Axis.horizontal,
+                      onDragUpdate: (details) {
+                        debugPrintIt('update');
+                      },
+                      onDraggableCanceled: (velocity, offset) {
+                        debugPrintIt(offset.dx);
+                        debugPrintIt(BlocProvider.of<QuizBloc>(context)
+                            .state
+                            .quizModel
+                            .isQuizFinished);
 
-                    onDraggableCanceled: (velocity, offset) {
-                      debugPrintIt(offset.dx);
-                      debugPrintIt(BlocProvider.of<QuizBloc>(context)
-                          .state
-                          .quizModel
-                          .isQuizFinished);
-
-                      if (offset.dx <
-                          SizeConfig.getMediaWidth(context,
-                              p: -0.1) /* 25 percent of screen to left*/) {
-                        BlocProvider.of<QuizBloc>(context)
-                            .add(AnswerFlashEvent(isAnswerCorrect: false));
-                        BlurProvider.blurred = true;
-                        addWordToResult(false);
-                      } else if (offset.dx >
-                          SizeConfig.getMediaWidth(context, p: 0.1) +
-                              35 /* 25 percent of screen to right*/) {
-                        BlocProvider.of<QuizBloc>(context)
-                            .add(AnswerFlashEvent(isAnswerCorrect: true));
-                        BlurProvider.blurred = true;
-                        addWordToResult(true);
-                      } else {}
-                    },
-                    child: QuizFlashCard(
-                      quizContext: context,
-                    ),
-                  ),
+                        if (offset.dx <
+                            SizeConfig.getMediaWidth(context,
+                                p: -0.1) /* 25 percent of screen to left*/) {
+                          BlocProvider.of<QuizBloc>(context)
+                              .add(AnswerFlashEvent(isAnswerCorrect: false));
+                          BlurProvider.blurred = true;
+                          addWordToResult(false);
+                        } else if (offset.dx >
+                            SizeConfig.getMediaWidth(context, p: 0.1) +
+                                35 /* 25 percent of screen to right*/) {
+                          BlocProvider.of<QuizBloc>(context)
+                              .add(AnswerFlashEvent(isAnswerCorrect: true));
+                          BlurProvider.blurred = true;
+                          addWordToResult(true);
+                        } else {}
+                      },
+                      child: dragCard),
                   const CorrectAnswerArea(),
                 ],
               ),
+        SizedBox(
+          height: SizeConfig.getMediaHeight(context, p: 0.01),
+        ),
       ],
     ));
   }

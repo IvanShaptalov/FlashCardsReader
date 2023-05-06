@@ -58,9 +58,9 @@ class FontConfigs {
       TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
 
   static const TextStyle cardAnswerTextStyle =
-      TextStyle(fontSize: 24, color: Colors.black);
+      TextStyle(fontSize: 22, color: Colors.black);
   static const TextStyle cardQuestionTextStyle =
-      TextStyle(fontSize: 24, color: Colors.black);
+      TextStyle(fontSize: 22, color: Colors.black);
 }
 
 class ConfigFlashcardView {
@@ -121,8 +121,10 @@ class ConfigQuizView {
   static Color quizResultBackgroundColor = Colors.grey.shade300;
 
   static TextStyle quizSummaryTextStyle = TextStyle(
-      fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey.shade800);
+      fontSize: 18, fontWeight: FontWeight.w700, color: Colors.grey.shade800);
 
   static TextStyle quizWordSummaryTextStyleBlack =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
+      const TextStyle(fontSize: 18, color: Colors.black);
+  static TextStyle quizWordSummaryTextStyle =
+      TextStyle(fontSize: 16,  color: Colors.grey.shade900);
 }

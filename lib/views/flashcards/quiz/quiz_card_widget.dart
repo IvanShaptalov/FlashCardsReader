@@ -11,7 +11,6 @@ class QuizFlashCard extends StatefulWidget {
   final BuildContext quizContext;
   bool empty;
   QuizFlashCard({this.empty = false, required this.quizContext, super.key});
-  bool swap = SwapWordsProvider.swap;
   String swipeRight = 'Swipe right\nif you know';
   String swipeLeft = 'Swipe left\nif you don\'t';
   @override
@@ -32,7 +31,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
         child: widget.empty
             ? const SizedBox.shrink()
             : Text(
-                widget.swap
+                SwapWordsProvider.swap
                     ? currentFcard?.answer ?? widget.swipeRight
                     : currentFcard?.question ?? widget.swipeLeft,
                 style: FontConfigs.cardQuestionTextStyle,
@@ -60,7 +59,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
               child: widget.empty
                   ? const SizedBox.shrink()
                   : Text(
-                      widget.swap
+                      SwapWordsProvider.swap
                           ? currentFcard?.question ?? widget.swipeLeft
                           : currentFcard?.answer ?? widget.swipeRight,
                       style: FontConfigs.cardAnswerTextStyle,
@@ -96,7 +95,6 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                 child: IconButton(
                     onPressed: () {
                       SwapWordsProvider.swapIt();
-                      widget.swap = SwapWordsProvider.swap;
                       setState(() {});
                     },
                     icon: Icon(
