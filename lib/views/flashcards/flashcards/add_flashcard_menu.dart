@@ -205,7 +205,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
           ),
           child: const Center(
             child: Text(
-              'Update collection',
+              'Save collection',
               style: TextStyle(fontSize: 20, color: Colors.white),
               textAlign: TextAlign.center,
             ),
