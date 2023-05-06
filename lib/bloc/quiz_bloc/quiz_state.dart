@@ -16,6 +16,7 @@ class QuizInitial extends QuizState {
     int? cFlashIndex,
     QuizMode? mode,
     int? numberOfFlashCards,
+    List<FlashCard>? flashList,
   }) {
     return QuizInitial(
       stateId: stateId ?? this.stateId,
@@ -25,9 +26,10 @@ class QuizInitial extends QuizState {
       currentFlashCard: currentCard,
       flashIndex: cFlashIndex ?? quizModel.flashIndex,
       mode: mode ?? quizModel.mode,
+      flashList: flashList ?? quizModel.flashList,
     );
   }
-  // TODO put flashlist in model
+
   /// notice, you must manually set [currentCard], else it will be null
   QuizInitial(
       {required this.stateId,
@@ -35,12 +37,14 @@ class QuizInitial extends QuizState {
       numberOfFlashCards,
       flashIndex,
       currentFlashCard,
-      mode}) {
+      mode,
+      flashList}) {
     quizModel = QuizModel(
         flashCardsCollection: flashCardsCollection,
         flashIndex: flashIndex,
         currentFCard: currentFlashCard,
-        mode: mode);
+        mode: mode,
+        flashList: flashList);
   }
 
   /// ==============================================[METHODS]==============================================

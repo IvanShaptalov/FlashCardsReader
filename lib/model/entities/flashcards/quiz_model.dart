@@ -18,25 +18,26 @@ class QuizModel {
   bool get isEmpty => flashCardsCollection.flashCardSet.isEmpty;
 
   /// level of learned flash cards, if upper than this value, the flash card considered as learned
-  // TODO put flashlist in model
 
   QuizModel(
       {required this.flashCardsCollection,
       this.flashIndex = 0,
       required this.mode,
-      this.currentFCard});
-  // TODO put flashlist in model
+      this.currentFCard,
+      this.flashList = const []});
 
   QuizModel copyWith(
       {FlashCardCollection? flashCardsCollection,
       int? currentFlashCardIndex,
       int? numberOfFlashCards,
-      QuizMode? mode}) {
+      QuizMode? mode,
+      List<FlashCard>? flashList}) {
     return QuizModel(
         flashCardsCollection: flashCardsCollection ?? this.flashCardsCollection,
         flashIndex: currentFlashCardIndex ?? flashIndex,
         mode: mode ?? this.mode,
-        currentFCard: currentFCard);
+        currentFCard: currentFCard,
+        flashList: flashList ?? this.flashList);
   }
 
   @override
