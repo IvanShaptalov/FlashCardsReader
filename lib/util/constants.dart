@@ -108,10 +108,18 @@ final Map<String, String> supportedLangs = {
 };
 
 String getCode(String value) {
-    var code = supportedLangs.keys
-        .firstWhere((k) => supportedLangs[k] == value, orElse: () => 'en');
-    return code;
+  var code = supportedLangs.keys
+      .firstWhere((k) => supportedLangs[k] == value, orElse: () => 'en');
+  return code;
+}
+
+String convertLangToTextToSpeechCode(String lang) {
+  String code = getCode(lang);
+  if (code == 'auto') {
+    code = 'en';
   }
+  return code;
+}
 
 const String langUnsupported = 'Language not supported : ';
 const String checkInternetConnection = 'Check internet connection';

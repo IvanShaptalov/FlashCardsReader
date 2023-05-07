@@ -1,4 +1,5 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.grey.shade700),
           scaffoldBackgroundColor: Colors.grey.shade200,
         ),
-        home:  const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }

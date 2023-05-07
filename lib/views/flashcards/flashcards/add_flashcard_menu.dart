@@ -2,6 +2,7 @@ import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/translator/api.dart';
+import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/internet_checker.dart';
@@ -157,9 +158,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
 
   void updateWord({bool onSubmitted = false}) {
     var flash = WordCreatingUIProvider.tmpFlashCard;
-    if (onSubmitted &&
-        flash.answer.isEmpty &&
-        flash.question.isEmpty) {
+    if (onSubmitted && flash.answer.isEmpty && flash.question.isEmpty) {
       debugPrintIt('on submitted and word empty, do nothing');
     } else if (WordCreatingUIProvider.tmpFlashCard.isValid) {
       debugPrint('add flashcard');
@@ -277,12 +276,35 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                     ),
                   ),
                   IconButton(
-                      onPressed: () {
-                        setState(() {
-                          WordCreatingUIProvider.clear();
-                        });
+                      onPressed: () async {
+                        var text =
+                            widget.wordFormContoller.questionController.text;
+                        if (text.isNotEmpty) {
+                          if (await InternetChecker.hasConnection()) {
+                            TextToSpeechService.speak(
+                                    text,
+                                    convertLangToTextToSpeechCode(widget
+                                        .flashCardCollection.questionLanguage))
+                                .then((value) {
+                              if (!value) {
+                                OverlayNotificationProvider
+                                    .showOverlayNotification(
+                                        'something went wrong',
+                                        status: NotificationStatus.error);
+                              }
+                            });
+                          } else {
+                            OverlayNotificationProvider.showOverlayNotification(
+                                'check internet connection',
+                                status: NotificationStatus.info);
+                          }
+                        } else {
+                          OverlayNotificationProvider.showOverlayNotification(
+                              'add word first',
+                              status: NotificationStatus.info);
+                        }
                       },
-                      icon: const Icon(Icons.delete_sweep_outlined))
+                      icon: const Icon(Icons.play_arrow)),
                 ],
               ),
               Row(
@@ -313,7 +335,12 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                     ),
                   ),
                   IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.play_arrow))
+                      onPressed: () {
+                        setState(() {
+                          WordCreatingUIProvider.clear();
+                        });
+                      },
+                      icon: const Icon(Icons.delete_sweep_outlined)),
                 ],
               )
             ],
@@ -530,8 +557,9 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                                           PlaceholderAlignment
                                                               .middle,
                                                       child: Padding(
-                                                          padding: const EdgeInsets
-                                                              .symmetric(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
                                                                   horizontal:
                                                                       2.0),
                                                           child: flashCard.wrongAnswers ==
