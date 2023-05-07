@@ -39,7 +39,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
             ? const SizedBox.shrink()
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -48,7 +48,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
-                      width: SizeConfig.getMediaWidth(context, p: 0.05),
+                      height: SizeConfig.getMediaHeight(context, p: 0.05),
                     ),
                     Transform.scale(
                       scale: 1.5,
@@ -83,9 +83,17 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                 ? const SizedBox.shrink()
                 : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Transform.scale(
+                          scale: 1.5,
+                          child: TextToSpeechWidget(
+                              text: secondText, language: secondLanguage),
+                        ),
+                        SizedBox(
+                          height: SizeConfig.getMediaHeight(context, p: 0.05),
+                        ),
                         ImageFiltered(
                           imageFilter: BlurProvider.blurred
                               ? ImageFilter.blur(sigmaX: 5, sigmaY: 5)
@@ -95,14 +103,6 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                             style: FontConfigs.cardQuestionTextStyle,
                             textAlign: TextAlign.center,
                           ),
-                        ),
-                        SizedBox(
-                          width: SizeConfig.getMediaWidth(context, p: 0.05),
-                        ),
-                        Transform.scale(
-                          scale: 1.5,
-                          child: TextToSpeechWidget(
-                              text: secondText, language: secondLanguage),
                         ),
                       ],
                     ),

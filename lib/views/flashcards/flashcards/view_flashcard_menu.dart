@@ -462,14 +462,25 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    Text(
-                                                      flashCard.question,
-                                                      style: FontConfigs
-                                                          .h2TextStyleBlack
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                    SizedBox(
+                                                      width: SizeConfig
+                                                          .getMediaWidth(
+                                                              context,
+                                                              p: 0.6),
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        child: Text(
+                                                          flashCard.question,
+                                                          style: FontConfigs
+                                                              .h2TextStyleBlack
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                        ),
+                                                      ),
                                                     ),
                                                     TextToSpeechWidget(
                                                         text:
@@ -500,10 +511,21 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    Text(
-                                                      flashCard.answer,
-                                                      style: FontConfigs
-                                                          .h2TextStyleBlack,
+                                                    SizedBox(
+                                                      width: SizeConfig
+                                                          .getMediaWidth(
+                                                              context,
+                                                              p: 0.6),
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        child: Text(
+                                                          flashCard.answer,
+                                                          style: FontConfigs
+                                                              .h2TextStyleBlack,
+                                                        ),
+                                                      ),
                                                     ),
                                                     TextToSpeechWidget(
                                                         text: flashCard.answer,
