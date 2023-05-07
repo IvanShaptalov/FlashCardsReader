@@ -3,6 +3,7 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_process.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
@@ -452,13 +453,31 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         children: [
                                           Align(
                                               alignment: Alignment.center,
-                                              child: Text(
-                                                flashCard.question,
-                                                style: FontConfigs
-                                                    .h2TextStyleBlack
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w500),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      flashCard.question,
+                                                      style: FontConfigs
+                                                          .h2TextStyleBlack
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                    ),
+                                                    TextToSpeechWidget(
+                                                        text:
+                                                            flashCard.question,
+                                                        language: flashCard
+                                                            .questionLanguage),
+                                                  ],
+                                                ),
                                               )),
                                         ],
                                       ),
@@ -472,10 +491,26 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         children: [
                                           Align(
                                               alignment: Alignment.center,
-                                              child: Text(
-                                                flashCard.answer,
-                                                style: FontConfigs
-                                                    .h2TextStyleBlack,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      flashCard.answer,
+                                                      style: FontConfigs
+                                                          .h2TextStyleBlack,
+                                                    ),
+                                                    TextToSpeechWidget(
+                                                        text: flashCard.answer,
+                                                        language: flashCard
+                                                            .answerLanguage)
+                                                  ],
+                                                ),
                                               )),
                                         ],
                                       ),

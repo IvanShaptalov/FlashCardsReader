@@ -278,7 +278,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                   ),
                   TextToSpeechWidget(
                     text: widget.wordFormContoller.questionController.text,
-                    lang: widget.flashCardCollection.questionLanguage,
+                    language: widget.flashCardCollection.questionLanguage,
                   ),
                 ],
               ),
@@ -452,13 +452,30 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                       children: [
                                         Align(
                                             alignment: Alignment.center,
-                                            child: Text(
-                                              flashCard.question,
-                                              style: FontConfigs
-                                                  .h2TextStyleBlack
-                                                  .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w500),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    flashCard.question,
+                                                    style: FontConfigs
+                                                        .h2TextStyleBlack
+                                                        .copyWith(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                  ),
+                                                  TextToSpeechWidget(
+                                                      text: flashCard.question,
+                                                      language: flashCard
+                                                          .questionLanguage),
+                                                ],
+                                              ),
                                             )),
                                       ],
                                     ),
@@ -472,10 +489,26 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                       children: [
                                         Align(
                                             alignment: Alignment.center,
-                                            child: Text(
-                                              flashCard.answer,
-                                              style:
-                                                  FontConfigs.h2TextStyleBlack,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    flashCard.answer,
+                                                    style: FontConfigs
+                                                        .h2TextStyleBlack,
+                                                  ),
+                                                  TextToSpeechWidget(
+                                                      text: flashCard.answer,
+                                                      language:  flashCard
+                                                          .answerLanguage),
+                                                ],
+                                              ),
                                             )),
                                       ],
                                     ),

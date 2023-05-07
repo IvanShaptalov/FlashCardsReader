@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 
 class TextToSpeechWidget extends StatelessWidget {
   String text;
-  String lang;
-  TextToSpeechWidget({Key? key, required this.text, required this.lang})
+  String language;
+  TextToSpeechWidget({Key? key, required this.text, required this.language})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class TextToSpeechWidget extends StatelessWidget {
             if (await InternetChecker.hasConnection()) {
               if (text.length <= ttsMaxLength) {
                 TextToSpeechService.speak(
-                        text, convertLangToTextToSpeechCode(lang))
+                        text, convertLangToTextToSpeechCode(language))
                     .then((value) {
                   if (!value) {
                     OverlayNotificationProvider.showOverlayNotification(
