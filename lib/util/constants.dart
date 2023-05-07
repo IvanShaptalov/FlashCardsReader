@@ -107,17 +107,90 @@ final Map<String, String> supportedLangs = {
   'zu': 'Zulu'
 };
 
+final Map<String, String> supportedTtsLangs = {
+  "ko-KR": "Korean",
+  "mr-IN": "Marathi",
+  "ru-RU": "Russian",
+  "zh-TW": "Chinese Traditional",
+  "hu-HU": "Hungarian",
+  "th-TH": "Thai",
+  "ur-PK": "Urdu",
+  "nb-NO": "Norwegian",
+  "da-DK": "Danish",
+  "tr-TR": "Turkish",
+  "et-EE": "Estonian",
+  "bs": "Bosnian",
+  "sw": "Swahili",
+  "pt-PT": "Portuguese",
+  "vi-VN": "Vietnamese",
+  "en-US": "English",
+  "sv-SE": "Swedish",
+  "ar": "Arabic",
+  "su-ID": "Sundanese",
+  "bn-BD": "Bengali",
+  "gu-IN": "Gujarati",
+  "kn-IN": "Kannada",
+  "el-GR": "Greek",
+  "hi-IN": "Hindi",
+  "fi-FI": "Finnish",
+  "km-KH": "Khmer",
+  "bn-IN": "Bengali",
+  "fr-FR": "French",
+  "uk-UA": "Ukrainian",
+  "pa-IN": "Punjabi",
+  "lv-LV": "Latvian",
+  "nl-NL": "Dutch",
+  "fr-CA": "French",
+  "sr": "Serbian",
+  "pt-BR": "Portuguese",
+  "ml-IN": "Malayalam",
+  "si-LK": "Sinhala",
+  "de-DE": "German",
+  "ku": "Kurdish",
+  "cs-CZ": "Czech",
+  "pl-PL": "Polish",
+  "sk-SK": "Slovak",
+  "fil-PH": "Filipino",
+  "it-IT": "Italian",
+  "ne-NP": "Nepali",
+  "ms-MY": "Malay",
+  "hr": "Croatian",
+  "en-NG": "English",
+  "nl-BE": "Dutch",
+  "zh-CN": "Chinese Simplified",
+  "es-ES": "Spanish",
+  "cy": "Welsh",
+  "ta-IN": "Tamil",
+  "ja-JP": "Japanese",
+  "bg-BG": "Bulgarian",
+  "sq": "Albanian",
+  "yue-HK": "Cantonese",
+  "es-US": "Spanish",
+  "jv-ID": "Javanese",
+  "la": "Latin",
+  "id-ID": "Indonesian",
+  "te-IN": "Telugu",
+  "ro-RO": "Romanian",
+  "ca": "Catalan",
+};
+
 String getCode(String value) {
   var code = supportedLangs.keys
       .firstWhere((k) => supportedLangs[k] == value, orElse: () => 'en');
   return code;
 }
 
+String getTtsCode(String language) {
+  var code = supportedTtsLangs.keys.firstWhere(
+      (k) => supportedTtsLangs[k] == language,
+      orElse: () => 'en-US');
+  return code;
+}
+
 String convertLangToTextToSpeechCode(String lang) {
-  String code = getCode(lang);
-  if (code == 'auto') {
-    code = 'en';
-  }
+  // en-US is the default language
+  String code = getTtsCode(lang);
+
   return code;
 }
 
