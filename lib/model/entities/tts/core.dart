@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -7,9 +8,19 @@ class TextToSpeechService {
   factory TextToSpeechService() => _instance;
   TextToSpeechService._internal();
 
-  Future<bool> initTtsEngineAsync() async {
+  static Future<bool> initTtsEngineAsync() async {
     try {
+      flutterTts.setInitHandler(() {
+        debugPrintIt('tts engine initialized');
+      });
+      await flutterTts.getEngines;
+      await flutterTts.getLanguages;
       await flutterTts.setEngine(await flutterTts.getDefaultEngine);
+
+      await flutterTts.setPitch(1);
+      await flutterTts.setSpeechRate(0.4);
+      debugPrintIt(await flutterTts.getLanguages);
+
       return true;
     } catch (e) {
       debugPrintIt(e);
@@ -19,17 +30,24 @@ class TextToSpeechService {
 
   static FlutterTts flutterTts = FlutterTts();
 
-  static Future<bool> speak(String text, String languageCode) async {
+  static Future<void> speak(String text, String language) async {
     try {
-      print('try');
-      await flutterTts.setLanguage(languageCode);
-      await flutterTts.setPitch(1);
-      await flutterTts.setSpeechRate(0.4);
-      await flutterTts.speak(text);
+      String code = convertLangToTextToSpeechCode(language);
+      if (!await flutterTts.isLanguageAvailable(code)) {
+        code = 'en-US';
+      }
+      if (!await flutterTts.isLanguageInstalled(code)) {
+        debugPrintIt('language not installed');
+      }
+      await flutterTts.setLanguage(code);
+      await flutterTts
+          .speak(text)
+          .then((value) => debugPrintIt('ready to speak'));
+      return;
     } catch (e) {
+      await initTtsEngineAsync();
       debugPrintIt(e);
-      return false;
+      return;
     }
-    return true;
   }
 }

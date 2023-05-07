@@ -6,27 +6,31 @@ import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flutter/material.dart';
 
-class TextToSpeechWidget extends StatelessWidget {
+class TextToSpeechWidget extends StatefulWidget {
   String text;
   String language;
   TextToSpeechWidget({Key? key, required this.text, required this.language})
       : super(key: key);
+
+  @override
+  State<TextToSpeechWidget> createState() => _TextToSpeechWidgetState();
+}
+
+class _TextToSpeechWidgetState extends State<TextToSpeechWidget> {
+  @override
+  void dispose() {
+    super.dispose();
+    TextToSpeechService.flutterTts.stop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () async {
-          if (text.isNotEmpty) {
+          if (widget.text.isNotEmpty) {
             if (await InternetChecker.hasConnection()) {
-              if (text.length <= ttsMaxLength) {
-                TextToSpeechService.speak(
-                        text, convertLangToTextToSpeechCode(language))
-                    .then((value) {
-                  if (!value) {
-                    OverlayNotificationProvider.showOverlayNotification(
-                        'something went wrong',
-                        status: NotificationStatus.error);
-                  }
-                });
+              if (widget.text.length <= ttsMaxLength) {
+                await TextToSpeechService.speak(widget.text, widget.language);
               } else {
                 OverlayNotificationProvider.showOverlayNotification(
                     'text too long',

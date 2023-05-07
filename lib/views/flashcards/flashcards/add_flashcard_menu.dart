@@ -276,10 +276,13 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                       },
                     ),
                   ),
-                  TextToSpeechWidget(
-                    text: widget.wordFormContoller.questionController.text,
-                    language: widget.flashCardCollection.questionLanguage,
-                  ),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          WordCreatingUIProvider.clear();
+                        });
+                      },
+                      icon: const Icon(Icons.delete_sweep_outlined)),
                 ],
               ),
               Row(
@@ -505,7 +508,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                                   ),
                                                   TextToSpeechWidget(
                                                       text: flashCard.answer,
-                                                      language:  flashCard
+                                                      language: flashCard
                                                           .answerLanguage),
                                                 ],
                                               ),
