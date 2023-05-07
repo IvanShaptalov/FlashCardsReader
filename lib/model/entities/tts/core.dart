@@ -7,6 +7,16 @@ class TextToSpeechService {
   factory TextToSpeechService() => _instance;
   TextToSpeechService._internal();
 
+  Future<bool> initTtsEngineAsync() async {
+    try {
+      await flutterTts.setEngine(await flutterTts.getDefaultEngine);
+      return true;
+    } catch (e) {
+      debugPrintIt(e);
+      return false;
+    }
+  }
+
   static FlutterTts flutterTts = FlutterTts();
 
   static Future<bool> speak(String text, String languageCode) async {

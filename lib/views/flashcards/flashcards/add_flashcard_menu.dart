@@ -8,6 +8,7 @@ import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/select_language_widget.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
@@ -275,36 +276,10 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                       },
                     ),
                   ),
-                  IconButton(
-                      onPressed: () async {
-                        var text =
-                            widget.wordFormContoller.questionController.text;
-                        if (text.isNotEmpty) {
-                          if (await InternetChecker.hasConnection()) {
-                            TextToSpeechService.speak(
-                                    text,
-                                    convertLangToTextToSpeechCode(widget
-                                        .flashCardCollection.questionLanguage))
-                                .then((value) {
-                              if (!value) {
-                                OverlayNotificationProvider
-                                    .showOverlayNotification(
-                                        'something went wrong',
-                                        status: NotificationStatus.error);
-                              }
-                            });
-                          } else {
-                            OverlayNotificationProvider.showOverlayNotification(
-                                'check internet connection',
-                                status: NotificationStatus.info);
-                          }
-                        } else {
-                          OverlayNotificationProvider.showOverlayNotification(
-                              'add word first',
-                              status: NotificationStatus.info);
-                        }
-                      },
-                      icon: const Icon(Icons.play_arrow)),
+                  TextToSpeechWidget(
+                    text: widget.wordFormContoller.questionController.text,
+                    lang: widget.flashCardCollection.questionLanguage,
+                  ),
                 ],
               ),
               Row(

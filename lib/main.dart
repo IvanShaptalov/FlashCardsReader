@@ -9,6 +9,9 @@ import 'database/core/core.dart';
 
 Future<bool> initAsync() async {
   bool dbInit = await DataBase.initAsync();
+  TextToSpeechService()
+      .initTtsEngineAsync()
+      .then((value) => debugPrint('tts engine inited: $value'));
 
   return dbInit;
 }
