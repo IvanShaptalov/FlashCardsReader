@@ -51,7 +51,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                       height: SizeConfig.getMediaHeight(context, p: 0.05),
                     ),
                     Transform.scale(
-                      scale: 1.5,
+                      scale: 1.2,
                       child: TextToSpeechWidget(
                           text: firstText, language: firstLanguage),
                     ),
@@ -87,7 +87,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Transform.scale(
-                          scale: 1.5,
+                          scale: 1.2,
                           child: TextToSpeechWidget(
                               text: secondText, language: secondLanguage),
                         ),
@@ -132,7 +132,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
             children: [
               first,
               Transform.scale(
-                scale: 1.2,
+                scale: 1,
                 child: IconButton(
                     onPressed: () {
                       SwapWordsProvider.swapIt();

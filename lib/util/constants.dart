@@ -198,3 +198,7 @@ const String langUnsupported = 'Language not supported : ';
 const String checkInternetConnection = 'Check internet connection';
 
 const int ttsMaxLength = 400;
+
+const double pitch = 1.0;
+const double rate = 0.4;
+const double volume = 1.0;

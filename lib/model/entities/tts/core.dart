@@ -17,13 +17,11 @@ class TextToSpeechService {
       await flutterTts.getLanguages;
       await flutterTts.setEngine(await flutterTts.getDefaultEngine);
 
-      await flutterTts.setPitch(1);
-      await flutterTts.setVolume(1);
-      await flutterTts.setSpeechRate(0.35);
+      await flutterTts.setPitch(pitch);
+      await flutterTts.setVolume(volume);
+      await flutterTts.setSpeechRate(rate);
       debugPrintIt(await flutterTts.getLanguages);
-      var copyOfFlutterTts = FlutterTts().setErrorHandler((message) {
-        debugPrintIt(message);
-      });
+
       return true;
     } catch (e) {
       debugPrintIt(e);

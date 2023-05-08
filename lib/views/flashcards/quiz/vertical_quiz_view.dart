@@ -219,71 +219,74 @@ class _VerticalQuizState extends State<VerticalQuiz> {
     var dragCard = QuizFlashCard(
       quizContext: context,
     );
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Transform.scale(
-          scale: 1.2,
-          child: SelectQuizMode(
-            mode: BlocProvider.of<QuizBloc>(context).state.quizModel.mode,
-            explisit: true,
+    return Container(
+      color: ConfigQuizView.quizResultBackgroundColor,
+      child: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Transform.scale(
+            scale: 1.2,
+            child: SelectQuizMode(
+              mode: BlocProvider.of<QuizBloc>(context).state.quizModel.mode,
+              explisit: true,
+            ),
           ),
-        ),
-        BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished
-            ? loadEndQuiz()
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const WrongAnswerArea(),
-                  Draggable<bool>(
-                      // Data is the value this Draggable stores.
-                      axis: Axis.horizontal,
-                      data: true,
-                      feedback: dragCard,
-                      childWhenDragging: QuizFlashCard(
-                        quizContext: context,
-                        empty: true,
-                      ),
-                      onDragStarted: () {
-                        debugPrintIt('started');
-                      },
-                      affinity: Axis.horizontal,
-                      onDragUpdate: (details) {
-                        debugPrintIt('update');
-                      },
-                      onDraggableCanceled: (velocity, offset) {
-                        debugPrintIt(offset.dx);
-                        debugPrintIt(BlocProvider.of<QuizBloc>(context)
-                            .state
-                            .quizModel
-                            .isQuizFinished);
+          BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished
+              ? loadEndQuiz()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const WrongAnswerArea(),
+                    Draggable<bool>(
+                        // Data is the value this Draggable stores.
+                        axis: Axis.horizontal,
+                        data: true,
+                        feedback: dragCard,
+                        childWhenDragging: QuizFlashCard(
+                          quizContext: context,
+                          empty: true,
+                        ),
+                        onDragStarted: () {
+                          debugPrintIt('started');
+                        },
+                        affinity: Axis.horizontal,
+                        onDragUpdate: (details) {
+                          debugPrintIt('update');
+                        },
+                        onDraggableCanceled: (velocity, offset) {
+                          debugPrintIt(offset.dx);
+                          debugPrintIt(BlocProvider.of<QuizBloc>(context)
+                              .state
+                              .quizModel
+                              .isQuizFinished);
 
-                        if (offset.dx <
-                            SizeConfig.getMediaWidth(context,
-                                p: -0.1) /* 25 percent of screen to left*/) {
-                          BlocProvider.of<QuizBloc>(context)
-                              .add(AnswerFlashEvent(isAnswerCorrect: false));
-                          BlurProvider.blurred = true;
-                          addWordToResult(false);
-                        } else if (offset.dx >
-                            SizeConfig.getMediaWidth(context, p: 0.1) +
-                                35 /* 25 percent of screen to right*/) {
-                          BlocProvider.of<QuizBloc>(context)
-                              .add(AnswerFlashEvent(isAnswerCorrect: true));
-                          BlurProvider.blurred = true;
-                          addWordToResult(true);
-                        } else {}
-                      },
-                      child: dragCard),
-                  const CorrectAnswerArea(),
-                ],
-              ),
-        SizedBox(
-          height: SizeConfig.getMediaHeight(context, p: 0.01),
-        ),
-      ],
-    ));
+                          if (offset.dx <
+                              SizeConfig.getMediaWidth(context,
+                                  p: -0.1) /* 25 percent of screen to left*/) {
+                            BlocProvider.of<QuizBloc>(context)
+                                .add(AnswerFlashEvent(isAnswerCorrect: false));
+                            BlurProvider.blurred = true;
+                            addWordToResult(false);
+                          } else if (offset.dx >
+                              SizeConfig.getMediaWidth(context, p: 0.1) +
+                                  35 /* 25 percent of screen to right*/) {
+                            BlocProvider.of<QuizBloc>(context)
+                                .add(AnswerFlashEvent(isAnswerCorrect: true));
+                            BlurProvider.blurred = true;
+                            addWordToResult(true);
+                          } else {}
+                        },
+                        child: dragCard),
+                    const CorrectAnswerArea(),
+                  ],
+                ),
+          SizedBox(
+            height: SizeConfig.getMediaHeight(context, p: 0.01),
+          ),
+        ],
+      )),
+    );
   }
 }
 
