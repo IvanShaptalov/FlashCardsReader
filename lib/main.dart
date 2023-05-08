@@ -1,7 +1,10 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/quick_actions/quick_actions.dart';
+import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -81,9 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const QuickActions quickActions = QuickActions();
     quickActions.initialize((String shortcutType) {
       setState(() {
-        if (shortcutType != null) {
-          widget.shortcut = shortcutType;
-        }
+        widget.shortcut = shortcutType;
       });
     });
 
@@ -91,16 +92,14 @@ class _MyHomePageState extends State<MyHomePage> {
       // NOTE: This first action icon will only work on iOS.
       // In a real world project keep the same file name for both platforms.
       const ShortcutItem(
-        type: 'action_one',
-        localizedTitle: 'Action one',
-        icon: 'AppIcon',
+        type: addWordAction,
+        localizedTitle: addWordAction,
+        icon: 'add_circle',
       ),
       // NOTE: This second action icon will only work on Android.
       // In a real world project keep the same file name for both platforms.
       const ShortcutItem(
-          type: 'action_two',
-          localizedTitle: 'Action two',
-          icon: 'ic_launcher'),
+          type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
     ]).then((void _) {
       setState(() {
         if (widget.shortcut == 'no action set') {
@@ -112,18 +111,29 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  Widget loadMenu() {
+    if (widget.shortcut == addWordAction) {
+      return AddWordFastScreen();
+    } else if (widget.shortcut == quizAction) {
+      return const QuizMenu();
+    } else {
+      var appBar = AppBar(
+        title: Text(widget.title),
+      );
+      appBarHeight = appBar.preferredSize.height;
+      return Scaffold(
+        appBar: appBar,
+        body: Center(
+            child: Column(
+          children: const [Text('hello world')],
+        )),
+        drawer: MenuDrawer(appBarHeight),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
-      title: Text(widget.title),
-    );
-    appBarHeight = appBar.preferredSize.height;
-    return Scaffold(
-      appBar: appBar,
-      body: Center(
-        child: Column(children: [Text('shortcut: ${widget.shortcut}')]),
-      ),
-      drawer: MenuDrawer(appBarHeight),
-    );
+    return loadMenu();
   }
 }
