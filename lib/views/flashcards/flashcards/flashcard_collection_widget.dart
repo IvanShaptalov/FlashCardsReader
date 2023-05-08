@@ -25,11 +25,11 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
     if (FlashCardCollectionProvider.isMergeModeStarted) {
       if (FlashCardCollectionProvider.flashcardsToMerge
           .contains(widget.flashCardCollection)) {
-        return Colors.greenAccent[100] ?? Colors.greenAccent;
+        return ConfigFlashcardView.mergeObjectColor;
       }
       if (FlashCardCollectionProvider.targetFlashCard ==
           widget.flashCardCollection) {
-        return Colors.indigoAccent[100] ?? Colors.indigoAccent;
+        return ConfigFlashcardView.mergeTargetColor;
       }
     }
     return CardViewConfig.defaultCardColor;

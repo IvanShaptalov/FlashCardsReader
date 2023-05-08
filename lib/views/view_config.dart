@@ -67,6 +67,8 @@ class FontConfigs {
 class ConfigFlashcardView {
   static Color descriptionIconColor = Colors.blueGrey.shade700;
   static Color quizIconColor = Colors.grey.shade800;
+  static Color mergeTargetColor = Colors.green.shade100;
+  static Color mergeObjectColor = Colors.amber.shade200;
 }
 
 class ConfigFCWordsInfo {
