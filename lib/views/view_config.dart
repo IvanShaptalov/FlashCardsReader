@@ -36,6 +36,7 @@ class ViewConfig {
 
 class CardViewConfig {
   static Color defaultCardColor = Colors.amber.shade50;
+  static Color selectedCardColor = Colors.amber.shade100;
 }
 
 class FontConfigs {
@@ -99,6 +100,7 @@ class ListOrColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyConfigOrientation.isPortrait(context)
         ? Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: children,
           )
         : ListView(
@@ -126,5 +128,5 @@ class ConfigQuizView {
   static TextStyle quizWordSummaryTextStyleBlack =
       const TextStyle(fontSize: 18, color: Colors.black);
   static TextStyle quizWordSummaryTextStyle =
-      TextStyle(fontSize: 16,  color: Colors.grey.shade900);
+      TextStyle(fontSize: 16, color: Colors.grey.shade900);
 }

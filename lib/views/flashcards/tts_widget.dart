@@ -1,11 +1,10 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class TextToSpeechWidget extends StatefulWidget {
   String text;
   String language;
@@ -47,6 +46,6 @@ class _TextToSpeechWidgetState extends State<TextToSpeechWidget> {
                 status: NotificationStatus.info);
           }
         },
-        icon: const Icon(Icons.play_arrow));
+        icon: const Icon(Icons.volume_up_outlined));
   }
 }

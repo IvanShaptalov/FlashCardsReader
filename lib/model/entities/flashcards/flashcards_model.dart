@@ -238,4 +238,11 @@ class FlashCardCollection {
         other.title == title &&
         flashCardSet == other.flashCardSet;
   }
+
+  /// returns true if the words are the same
+  bool compareWithoutId(FlashCardCollection other) {
+    return other.title == title &&
+        answerLanguage == other.answerLanguage &&
+        questionLanguage == other.questionLanguage;
+  }
 }

@@ -1,14 +1,12 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
-import 'package:flashcards_reader/model/entities/translator/api.dart';
-import 'package:flashcards_reader/model/entities/tts/core.dart';
-import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/select_language_widget.dart';
-import 'package:flashcards_reader/views/flashcards/flashcards/tts_widget.dart';
+import 'package:flashcards_reader/views/flashcards/translate.dart';
+import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +90,6 @@ class FlashCardCreatingWall extends StatefulWidget {
   BuildContext specialContext;
   FlashCardFormController flashCardFormController = FlashCardFormController();
   WordFormContoller wordFormContoller = WordFormContoller();
-  GoogleTranslatorAPIWrapper translator = GoogleTranslatorAPIWrapper();
   FlashCardCollection flashCardCollection;
   @override
   State<FlashCardCreatingWall> createState() => _FlashCardCreatingWallState();
@@ -152,7 +149,8 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
   Widget loadTranslate() {
     if (_isPressed != _oldPress) {
       _oldPress = _isPressed;
-      return TranslateButton(widget: widget, callback: callback);
+      return TranslateButton(
+          flashCardCollection: widget.flashCardCollection, callback: callback);
     }
     return const Icon(Icons.translate);
   }
@@ -815,64 +813,5 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
             ),
           ),
         ]));
-  }
-}
-
-// ignore: must_be_immutable
-class TranslateButton extends StatelessWidget {
-  dynamic widget;
-  Function callback;
-
-  Future<bool>? translate() async {
-    if (await InternetChecker.hasConnection()) {
-      String questionWords = WordCreatingUIProvider.tmpFlashCard.question;
-      if (questionWords.isNotEmpty) {
-        TranslateResponse answerWords = await widget.translator.translate(
-            questionWords,
-            from: getCode(widget.flashCardCollection.questionLanguage),
-            to: getCode(widget.flashCardCollection.answerLanguage));
-        WordCreatingUIProvider.setAnswer(answerWords.toString());
-      } else {
-        await Future.delayed(const Duration(milliseconds: 250));
-
-        OverlayNotificationProvider.showOverlayNotification(
-            'No word to translate',
-            status: NotificationStatus.warning);
-      }
-    } else {
-      await Future.delayed(const Duration(milliseconds: 250));
-      OverlayNotificationProvider.showOverlayNotification(
-          'No internet connection',
-          status: NotificationStatus.warning);
-    }
-    callback();
-    return true;
-  }
-
-  TranslateButton({required this.callback, required this.widget, super.key});
-  @override
-  Widget build(BuildContext context) {
-    var translateIcon = const Icon(
-      Icons.translate,
-    );
-    Future<bool>? result = translate();
-    return FutureBuilder<bool>(
-        future: result, // a previously-obtained Future<String> or null
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          Widget childIcon;
-          if (snapshot.hasData) {
-            childIcon = snapshot.data == true ? translateIcon : translateIcon;
-          } else {
-            childIcon = Transform.scale(
-              scale: 0.6,
-              child: const CircularProgressIndicator(
-                strokeWidth: 2.5,
-                color: Colors.black,
-              ),
-            );
-          }
-
-          return childIcon;
-        });
   }
 }
