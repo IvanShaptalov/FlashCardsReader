@@ -272,16 +272,22 @@ class _AddWordViewState extends State<AddWordView> {
                         ),
                         onChanged: (text) {
                           WordCreatingUIProvider.setQuestion(text);
+                          debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
+                          debugPrintIt('question changed to $text');
                         },
                         onSubmitted: (value) {
                           saveCollectionFromWord(onSubmitted: true);
                         },
                       ),
                     ),
-                    TextToSpeechWidget(
-                        text: WordCreatingUIProvider.tmpFlashCard.question,
-                        language: WordCreatingUIProvider
-                            .tmpFlashCard.questionLanguage),
+                    IconButton(
+                        onPressed: () {
+                          TextToSpeechWrapper.onPressed(
+                              WordCreatingUIProvider.tmpFlashCard.question,
+                              WordCreatingUIProvider
+                                  .tmpFlashCard.questionLanguage);
+                        },
+                        icon: const Icon(Icons.volume_up_outlined)),
                   ],
                 ),
                 Row(
@@ -303,16 +309,22 @@ class _AddWordViewState extends State<AddWordView> {
                         ),
                         onChanged: (text) {
                           WordCreatingUIProvider.setAnswer(text);
+                          debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
+                          debugPrintIt('answer changed to $text');
                         },
                         onSubmitted: (value) {
                           saveCollectionFromWord(onSubmitted: true);
                         },
                       ),
                     ),
-                    TextToSpeechWidget(
-                        text: WordCreatingUIProvider.tmpFlashCard.question,
-                        language: WordCreatingUIProvider
-                            .tmpFlashCard.questionLanguage),
+                    IconButton(
+                        onPressed: () {
+                          TextToSpeechWrapper.onPressed(
+                              WordCreatingUIProvider.tmpFlashCard.answer,
+                              WordCreatingUIProvider
+                                  .tmpFlashCard.answerLanguage);
+                        },
+                        icon: const Icon(Icons.volume_up_outlined)),
                   ],
                 ),
                 Padding(

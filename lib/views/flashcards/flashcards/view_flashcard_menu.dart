@@ -482,11 +482,17 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                         ),
                                                       ),
                                                     ),
-                                                    TextToSpeechWidget(
-                                                        text:
-                                                            flashCard.question,
-                                                        language: flashCard
-                                                            .questionLanguage),
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          TextToSpeechWrapper
+                                                              .onPressed(
+                                                                  flashCard
+                                                                      .question,
+                                                                  flashCard
+                                                                      .questionLanguage);
+                                                        },
+                                                        icon: const Icon(Icons
+                                                            .volume_up_outlined)),
                                                   ],
                                                 ),
                                               )),
@@ -527,10 +533,17 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                         ),
                                                       ),
                                                     ),
-                                                    TextToSpeechWidget(
-                                                        text: flashCard.answer,
-                                                        language: flashCard
-                                                            .answerLanguage)
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          TextToSpeechWrapper
+                                                              .onPressed(
+                                                                  flashCard
+                                                                      .answer,
+                                                                  flashCard
+                                                                      .answerLanguage);
+                                                        },
+                                                        icon: const Icon(Icons
+                                                            .volume_up_outlined)),
                                                   ],
                                                 ),
                                               )),

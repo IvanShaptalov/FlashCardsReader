@@ -52,8 +52,12 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                     ),
                     Transform.scale(
                       scale: 1.2,
-                      child: TextToSpeechWidget(
-                          text: firstText, language: firstLanguage),
+                      child: IconButton(
+                          onPressed: () {
+                            TextToSpeechWrapper.onPressed(
+                                firstText, firstLanguage);
+                          },
+                          icon: const Icon(Icons.volume_up_outlined)),
                     ),
                   ],
                 ),
@@ -88,8 +92,12 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                       children: [
                         Transform.scale(
                           scale: 1.2,
-                          child: TextToSpeechWidget(
-                              text: secondText, language: secondLanguage),
+                          child: IconButton(
+                              onPressed: () {
+                                TextToSpeechWrapper.onPressed(
+                                    secondText, secondLanguage);
+                              },
+                              icon: const Icon(Icons.volume_up_outlined)),
                         ),
                         SizedBox(
                           height: SizeConfig.getMediaHeight(context, p: 0.05),
