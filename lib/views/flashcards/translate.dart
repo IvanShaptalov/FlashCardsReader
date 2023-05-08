@@ -10,9 +10,11 @@ import 'package:flutter/material.dart';
 class TranslateButton extends StatelessWidget {
   FlashCardCollection flashCardCollection;
   Function callback;
-  GoogleTranslatorAPIWrapper translator = GoogleTranslatorAPIWrapper();
+  static GoogleTranslatorAPIWrapper translator = GoogleTranslatorAPIWrapper();
 
-  Future<bool>? translate() async {
+  static Future<bool>? translate(
+      {required FlashCardCollection flashCardCollection,
+      required Function callback}) async {
     if (await InternetChecker.hasConnection()) {
       String questionWords = WordCreatingUIProvider.tmpFlashCard.question;
       if (questionWords.isNotEmpty) {
@@ -45,7 +47,8 @@ class TranslateButton extends StatelessWidget {
     var translateIcon = const Icon(
       Icons.translate,
     );
-    Future<bool>? result = translate();
+    Future<bool>? result =
+        translate(flashCardCollection: flashCardCollection, callback: callback);
     return FutureBuilder<bool>(
         future: result, // a previously-obtained Future<String> or null
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {

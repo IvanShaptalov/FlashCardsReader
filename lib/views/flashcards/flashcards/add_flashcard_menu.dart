@@ -268,6 +268,10 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                       ),
                       onChanged: (text) {
                         WordCreatingUIProvider.setQuestion(text);
+                        TranslateButton.translate(
+                            flashCardCollection:
+                                AddWordCollectionProvider.selectedFc,
+                            callback: callback);
                       },
                       onSubmitted: (value) {
                         saveCollectionFromWord(onSubmitted: true);
