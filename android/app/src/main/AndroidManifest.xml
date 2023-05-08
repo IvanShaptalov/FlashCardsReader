@@ -2,6 +2,7 @@
     package="com.example.flashcards_reader">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <queries>
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />

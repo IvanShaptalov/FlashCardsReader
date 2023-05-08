@@ -1,18 +1,25 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
+import 'package:flashcards_reader/quick_actions/quick_actions.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:quick_actions/quick_actions.dart';
 
 import 'database/core/core.dart';
 
 Future<bool> initAsync() async {
   bool dbInit = await DataBase.initAsync();
+  debugPrint('db inited: $dbInit');
+
+  // TODO add later
+  // bool quickInit = QuickActionsService.init();
+  // debugPrint('quick actions inited: $quickInit');
   TextToSpeechService.initTtsEngineAsync()
       .then((value) => debugPrint('tts engine inited: $value'));
 
-  return dbInit;
+  return dbInit /* && quickInit */;
 }
 
 FlashCardCollection flashExample() {
@@ -51,15 +58,16 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.grey.shade700),
           scaffoldBackgroundColor: Colors.grey.shade200,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title});
   final String title;
+  String shortcut = 'no action set';
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -67,6 +75,42 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   double appBarHeight = 0;
+
+  @override
+  void initState() {
+    const QuickActions quickActions = QuickActions();
+    quickActions.initialize((String shortcutType) {
+      setState(() {
+        if (shortcutType != null) {
+          widget.shortcut = shortcutType;
+        }
+      });
+    });
+
+    quickActions.setShortcutItems(<ShortcutItem>[
+      // NOTE: This first action icon will only work on iOS.
+      // In a real world project keep the same file name for both platforms.
+      const ShortcutItem(
+        type: 'action_one',
+        localizedTitle: 'Action one',
+        icon: 'AppIcon',
+      ),
+      // NOTE: This second action icon will only work on Android.
+      // In a real world project keep the same file name for both platforms.
+      const ShortcutItem(
+          type: 'action_two',
+          localizedTitle: 'Action two',
+          icon: 'ic_launcher'),
+    ]).then((void _) {
+      setState(() {
+        if (widget.shortcut == 'no action set') {
+          widget.shortcut = 'actions ready';
+        }
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: appBar,
       body: Center(
-        child: Column(children: const [Text('Hello World!')]),
+        child: Column(children: [Text('shortcut: ${widget.shortcut}')]),
       ),
       drawer: MenuDrawer(appBarHeight),
     );
