@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/translator/api.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
@@ -95,7 +96,7 @@ class _AddWordViewState extends State<AddWordView> {
         .flashCards;
 
     FlashCardCollection? selected = AddWordCollectionProvider.selectedFc;
-    if (collection.isNotEmpty) {
+    if (collection.isNotEmpty && selected.compareWithoutId(flashExample())) {
       selected = collection.first;
       AddWordCollectionProvider.selectedFc = selected;
     }
@@ -142,7 +143,10 @@ class _AddWordViewState extends State<AddWordView> {
                           debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
                           debugPrintIt('question changed to $text');
                           // translate if needed
-                          TranslateButton.translate(flashCardCollection: AddWordCollectionProvider.selectedFc,  callback: widget.callback);
+                          TranslateButton.translate(
+                              flashCardCollection:
+                                  AddWordCollectionProvider.selectedFc,
+                              callback: widget.callback);
                         },
                         onSubmitted: (value) {
                           saveCollectionFromWord(onSubmitted: true);
