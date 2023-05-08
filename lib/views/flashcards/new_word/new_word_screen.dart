@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
-import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/translator/api.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
@@ -65,14 +64,6 @@ class _AddWordFastScreenState extends State<AddWordFastScreen> {
   }
 }
 
-class AddWordCollectionProvider {
-  static FlashCardCollection? selectedFc;
-
-  static void clear() {
-    selectedFc = null;
-  }
-}
-
 class AddWordView extends StatefulWidget {
   AddWordView(
       {required this.scrollController,
@@ -132,7 +123,7 @@ class _AddWordViewState extends State<AddWordView> {
         .flashCards;
 
     FlashCardCollection? selected = AddWordCollectionProvider.selectedFc;
-    if (collection.isNotEmpty && selected == null) {
+    if (collection.isNotEmpty) {
       selected = collection.first;
       AddWordCollectionProvider.selectedFc = selected;
     }
@@ -143,7 +134,7 @@ class _AddWordViewState extends State<AddWordView> {
     var index = collection.indexWhere((element) => element == selected);
     if (index != -1) {
       collection.removeAt(index);
-      collection.insert(0, selected!);
+      collection.insert(0, selected);
     }
   }
 
@@ -159,8 +150,7 @@ class _AddWordViewState extends State<AddWordView> {
     if (isPressed != oldPress) {
       oldPress = isPressed;
       return TranslateButton(
-          flashCardCollection:
-              AddWordCollectionProvider.selectedFc ?? flashExample(),
+          flashCardCollection: AddWordCollectionProvider.selectedFc,
           callback: widget.callback);
     }
     return const Icon(Icons.translate);
@@ -168,9 +158,9 @@ class _AddWordViewState extends State<AddWordView> {
 
   void saveCollectionFromWord({required bool onSubmitted}) {
     updateWord(onSubmitted: onSubmitted);
-    if (AddWordCollectionProvider.selectedFc!.isValid) {
+    if (AddWordCollectionProvider.selectedFc.isValid) {
       context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
-          flashCardCollection: AddWordCollectionProvider.selectedFc!));
+          flashCardCollection: AddWordCollectionProvider.selectedFc));
     } else {
       showValidatorMessage();
     }
@@ -178,25 +168,25 @@ class _AddWordViewState extends State<AddWordView> {
   }
 
   void showValidatorMessage() {
-    if (AddWordCollectionProvider.selectedFc!.title.isEmpty) {
+    if (AddWordCollectionProvider.selectedFc.title.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add collection title',
           status: NotificationStatus.info);
 
       debugPrint('title');
-    } else if (AddWordCollectionProvider.selectedFc!.isEmpty) {
+    } else if (AddWordCollectionProvider.selectedFc.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add at least one flashcard',
           status: NotificationStatus.info);
 
       debugPrint('Add at least one flashcard');
-    } else if (AddWordCollectionProvider.selectedFc!.answerLanguage.isEmpty) {
+    } else if (AddWordCollectionProvider.selectedFc.answerLanguage.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add question language',
           status: NotificationStatus.info);
 
       debugPrint('Add question language');
-    } else if (AddWordCollectionProvider.selectedFc!.answerLanguage.isEmpty) {
+    } else if (AddWordCollectionProvider.selectedFc.answerLanguage.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification('Add answerlanguage',
           status: NotificationStatus.info);
 
@@ -218,11 +208,11 @@ class _AddWordViewState extends State<AddWordView> {
       debugPrint('add flashcard');
 
       WordCreatingUIProvider.setQuestionLanguage(
-          AddWordCollectionProvider.selectedFc!.questionLanguage);
+          AddWordCollectionProvider.selectedFc.questionLanguage);
       WordCreatingUIProvider.setAnswerLanguage(
-          AddWordCollectionProvider.selectedFc!.answerLanguage);
+          AddWordCollectionProvider.selectedFc.answerLanguage);
 
-      AddWordCollectionProvider.selectedFc!.flashCardSet
+      AddWordCollectionProvider.selectedFc.flashCardSet
           .add(WordCreatingUIProvider.tmpFlashCard);
       WordCreatingUIProvider.clear();
       OverlayNotificationProvider.showOverlayNotification('word added',
@@ -391,7 +381,8 @@ class _AddWordViewState extends State<AddWordView> {
                                         padding: const EdgeInsets.all(8.0),
                                         child: FastAddWordFCcWidget(
                                           flashCardCollection.isEmpty
-                                              ? flashExample()
+                                              ? AddWordCollectionProvider
+                                                  .selectedFc
                                               : flashCardCollection[index],
                                           widget.callback,
                                           backToListStart: backToStartCallback,
