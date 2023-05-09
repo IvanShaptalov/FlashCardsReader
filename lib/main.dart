@@ -1,7 +1,9 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
+import 'package:flashcards_reader/quick_actions.dart';
 import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
@@ -80,10 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    const QuickActions quickActions = QuickActions();
+    QuickActions quickActions = QuickActions();
+
     quickActions.initialize((String shortcutType) {
       setState(() {
-        widget.shortcut = shortcutType;
+        ShortcutsProvider.shortcut = shortcutType;
       });
     });
 
@@ -100,39 +103,29 @@ class _MyHomePageState extends State<MyHomePage> {
       const ShortcutItem(
           type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
     ]).then((void _) {
-      setState(() {
-        if (widget.shortcut == 'no action set') {
-          widget.shortcut = 'actions ready';
-        }
-      });
+      if (ShortcutsProvider.shortcut == 'no action set') {
+        setState(() {
+          ShortcutsProvider.shortcut = 'actions ready';
+        });
+      }
     });
-
     super.initState();
-  }
-
-  Widget loadMenu() {
-    if (widget.shortcut == addWordAction) {
-      return AddWordFastScreen();
-    } else if (widget.shortcut == quizAction) {
-      return const QuizMenu();
-    } else {
-      var appBar = AppBar(
-        title: Text(widget.title),
-      );
-      appBarHeight = appBar.preferredSize.height;
-      return Scaffold(
-        appBar: appBar,
-        body: Center(
-            child: Column(
-          children: const [Text('hello world')],
-        )),
-        drawer: MenuDrawer(appBarHeight),
-      );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return loadMenu();
+    var appBar = AppBar(
+      title: Text(widget.title),
+    );
+    appBarHeight = appBar.preferredSize.height;
+    return ShortcutsProvider.wrapper(
+        child: Scaffold(
+      appBar: appBar,
+      body: Center(
+          child: Column(
+        children: const [Text('hello world')],
+      )),
+      drawer: MenuDrawer(appBarHeight),
+    ));
   }
 }

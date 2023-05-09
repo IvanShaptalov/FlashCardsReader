@@ -1,27 +1,24 @@
 import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flutter/material.dart';
 
 import 'views/flashcards/new_word/new_word_screen.dart';
 
-class QuickActionProvider {
+class ShortcutsProvider {
   static String shortcut = 'no action set';
-  static void pushMenu(Widget page, context) {
-    debugPrintIt(shortcut);
+
+  static Widget wrapper({required Widget child}) {
+    debugPrintIt(
+        ' ========================================== ${shortcut} ==========================================');
     if (shortcut == addWordAction) {
       shortcut = 'no action set';
-      MyRouter.pushPageReplacement(context, AddWordFastScreen());
+      return AddWordFastScreen();
     } else if (shortcut == quizAction) {
       shortcut = 'no action set';
-      MyRouter.pushPageReplacement(context, const QuizMenu());
+      return const QuizMenu();
     } else {
-      MyRouter.pushPage(context, page);
+      return child;
     }
-  }
-
-  static void init() {
-    //TODO later
   }
 }

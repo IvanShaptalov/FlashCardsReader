@@ -1,5 +1,7 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/quick_actions.dart';
+import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
@@ -10,6 +12,7 @@ import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:quick_actions/quick_actions.dart';
 
 class FlashCardScreen extends StatefulWidget {
   const FlashCardScreen({super.key});
@@ -20,10 +23,42 @@ class FlashCardScreen extends StatefulWidget {
 
 class _FlashCardScreenState extends State<FlashCardScreen> {
   @override
+  void initState() {
+    const QuickActions quickActions = QuickActions();
+
+    quickActions.initialize((String shortcutType) {
+      setState(() {
+        ShortcutsProvider.shortcut = shortcutType;
+      });
+    });
+
+    quickActions.setShortcutItems(<ShortcutItem>[
+      // NOTE: This first action icon will only work on iOS.
+      // In a real world project keep the same file name for both platforms.
+      const ShortcutItem(
+        type: addWordAction,
+        localizedTitle: addWordAction,
+        icon: 'add_circle',
+      ),
+      // NOTE: This second action icon will only work on Android.
+      // In a real world project keep the same file name for both platforms.
+      const ShortcutItem(
+          type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
+    ]).then((void _) {
+      if (ShortcutsProvider.shortcut == 'no action set') {
+        setState(() {
+          ShortcutsProvider.shortcut = 'actions ready';
+        });
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => FlashCardBloc(),
-      child: FlashCardView(),
+      child: ShortcutsProvider.wrapper(child: FlashCardView()),
     );
   }
 }
