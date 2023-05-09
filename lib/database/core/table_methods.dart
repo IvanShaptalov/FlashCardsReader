@@ -1,4 +1,5 @@
 import 'package:flashcards_reader/database/core/core.dart';
+import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
@@ -30,6 +31,26 @@ class FlashcardDatabaseProvider {
       debugPrintIt('error while write or edit flashcardCollection $e');
       return false;
     }
+  }
+
+  static Future<bool> saveSelectedCollection(
+    FlashCardCollection flashCard,
+  ) async {
+    if (!flashCard.isValid) {
+      return false;
+    }
+    try {
+      await DataBase.selectedAddWordFlashCard!.put('1', flashCard);
+      return true;
+    } catch (e) {
+      debugPrintIt('error while write or edit flashcardCollection $e');
+      return false;
+    }
+  }
+
+  static FlashCardCollection getSelectedCollection() {
+    var result = DataBase.selectedAddWordFlashCard!.get('1') ?? flashExample();
+    return result;
   }
 
   static Future<bool> mergeAsync(List<FlashCardCollection> mergeFlashCards,

@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class DataBase {
   static Box<FlashCardCollection>? flashcardsSession;
+  static Box<FlashCardCollection>? selectedAddWordFlashCard;
   static Box<String>? themeSession;
   static Box<Themes>? settingsSession;
 
@@ -22,13 +23,16 @@ class DataBase {
       await registerAdapters();
       // open session boxes
       flashcardsSession = await Hive.openBox<FlashCardCollection>('flashCards');
+      selectedAddWordFlashCard =
+          await Hive.openBox<FlashCardCollection>('flashCards');
+
       flashcardsTestSession =
           await Hive.openBox<FlashCardCollection>('flashCardsTest');
+
       themeSession = await Hive.openBox<String>('theme');
       themeTestSession = await Hive.openBox<String>('testTheme');
       settingsSession = await Hive.openBox<Themes>('settings');
-      settingsTestSession =
-          await Hive.openBox<Themes>('testSettings');
+      settingsTestSession = await Hive.openBox<Themes>('testSettings');
 
       // database initialized
       dbInitialized = true;

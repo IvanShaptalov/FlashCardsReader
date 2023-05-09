@@ -1,15 +1,17 @@
-import 'package:flashcards_reader/main.dart';
+import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 
 class AddWordCollectionProvider {
-  static FlashCardCollection selectedFc = flashExample();
+  static FlashCardCollection _selectedFc =
+      FlashcardDatabaseProvider.getSelectedCollection();
 
-  static void clear() {
-    selectedFc = flashExample();
+  static FlashCardCollection get selectedFc => _selectedFc;
+
+  static set selectedFc(FlashCardCollection fc) {
+    _selectedFc = fc;
+    FlashcardDatabaseProvider.saveSelectedCollection(fc);
   }
 }
-
-
 
 class WordCreatingUIProvider {
   static FlashCard _tmpFlashCard = FlashCard.fixture();

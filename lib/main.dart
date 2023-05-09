@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.grey.shade700),
           scaffoldBackgroundColor: Colors.grey.shade200,
         ),
-        home: MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }
