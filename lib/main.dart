@@ -3,9 +3,6 @@ import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/quick_actions.dart';
 import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
-import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
-import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -17,9 +14,6 @@ Future<bool> initAsync() async {
   bool dbInit = await DataBase.initAsync();
   debugPrint('db inited: $dbInit');
 
-  // TODO add later
-  // bool quickInit = QuickActionsService.init();
-  // debugPrint('quick actions inited: $quickInit');
   TextToSpeechService.initTtsEngineAsync()
       .then((value) => debugPrint('tts engine inited: $value'));
 
@@ -69,9 +63,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title});
   final String title;
-  String shortcut = 'no action set';
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -82,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    QuickActions quickActions = QuickActions();
+    QuickActions quickActions = const QuickActions();
 
     quickActions.initialize((String shortcutType) {
       setState(() {
