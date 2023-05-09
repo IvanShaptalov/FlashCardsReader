@@ -24,7 +24,7 @@ class DataBase {
       // open session boxes
       flashcardsSession = await Hive.openBox<FlashCardCollection>('flashCards');
       selectedAddWordFlashCard =
-          await Hive.openBox<FlashCardCollection>('flashCards');
+          await Hive.openBox<FlashCardCollection>('selectedFlashCards');
 
       flashcardsTestSession =
           await Hive.openBox<FlashCardCollection>('flashCardsTest');

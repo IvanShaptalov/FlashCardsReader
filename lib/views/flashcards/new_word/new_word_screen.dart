@@ -132,7 +132,10 @@ class _AddWordViewState extends State<AddWordView> {
         .copyWith(fromTrash: false)
         .flashCards;
 
-    FlashCardCollection? selected = AddWordCollectionProvider.selectedFc;
+    FlashCardCollection selected = AddWordCollectionProvider.selectedFc;
+    // if collection is not empty and selected is not set
+    selected =
+        collection.firstWhere((element) => element.compareWithoutId(selected));
     if (collection.isNotEmpty && selected.compareWithoutId(flashExample())) {
       selected = collection.first;
       AddWordCollectionProvider.selectedFc = selected;
@@ -359,7 +362,8 @@ class _AddWordViewState extends State<AddWordView> {
 
   void putSelectedCardToFirstPosition(List<FlashCardCollection> collection) {
     var selected = AddWordCollectionProvider.selectedFc;
-    var index = collection.indexWhere((element) => element == selected);
+    var index =
+        collection.indexWhere((element) => element.compareWithoutId(selected));
     if (index != -1) {
       collection.removeAt(index);
       collection.insert(0, selected);
