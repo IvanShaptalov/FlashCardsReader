@@ -9,7 +9,7 @@ import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
-import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/horizontal_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/flashcards/translate.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
@@ -278,40 +278,84 @@ class _AddWordViewState extends State<AddWordView> {
               const SizedBox.shrink(),
               Column(
                 children: [
-                  const Divider(
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
                   AnimationLimiter(
                     child: SizedBox(
-                      height: SizeConfig.getMediaHeight(context, p: 0.35),
+                      height: SizeConfig.getMediaHeight(context, p: 0.4),
                       width: SizeConfig.getMediaWidth(context, p: 1),
-                      child: ListView.builder(
-                          controller: widget.scrollController,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: flashCardCollection.isEmpty
-                              ? 1
-                              : flashCardCollection.length,
-                          itemBuilder: (context, index) {
-                            return AnimationConfiguration.staggeredList(
-                              position: index,
-                              duration: widget.cardAppearDuration,
-                              child: SlideAnimation(
-                                verticalOffset: 50.0,
-                                child: FadeInAnimation(
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: FastAddWordFCcWidget(
-                                          flashCardCollection.isEmpty
-                                              ? AddWordCollectionProvider
-                                                  .selectedFc
-                                              : flashCardCollection[index],
-                                          widget.callback,
-                                          backToListStart: backToStartCallback,
-                                        ))),
-                              ),
-                            );
-                          }),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            height: SizeConfig.getMediaHeight(context, p: 0.35),
+                            width: SizeConfig.getMediaWidth(context, p: 1),
+                            child: ListView.builder(
+                                controller: widget.scrollController,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: flashCardCollection.isEmpty
+                                    ? 1
+                                    : flashCardCollection.length,
+                                itemBuilder: (context, index) {
+                                  return AnimationConfiguration.staggeredList(
+                                    position: index,
+                                    duration: widget.cardAppearDuration,
+                                    child: SlideAnimation(
+                                      verticalOffset: 50.0,
+                                      child: FadeInAnimation(
+                                          child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: FastAddWordFCcWidget(
+                                                flashCardCollection.isEmpty
+                                                    ? AddWordCollectionProvider
+                                                        .selectedFc
+                                                    : flashCardCollection[
+                                                        index],
+                                                widget.callback,
+                                                backToListStart:
+                                                    backToStartCallback,
+                                              ))),
+                                    ),
+                                  );
+                                }),
+                          ),
+                          // minimap listview
+                          SizedBox(
+                            height:
+                                SizeConfig.getMediaHeight(context, p: 0.035),
+                            width: SizeConfig.getMediaWidth(context, p: 1),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8.0,
+                                  horizontal: SizeConfig.getMediaWidth(context,
+                                      p: 0.035)),
+                              child: ListView.builder(
+                                  controller: widget.scrollController,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: flashCardCollection.isEmpty
+                                      ? 1
+                                      : flashCardCollection.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: SizeConfig.getMediaWidth(
+                                                  context) *
+                                              0.01,
+                                        ),
+                                        child: Container(
+                                            height: 10,
+                                            width: 10,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: index == 0
+                                                  ? Colors.amber
+                                                  : Colors.amber.shade300,
+                                            )));
+                                  }),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
