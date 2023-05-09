@@ -1,6 +1,5 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
-import 'package:flashcards_reader/quick_actions/quick_actions.dart';
 import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
