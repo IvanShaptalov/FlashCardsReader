@@ -149,6 +149,7 @@ class _FlashCardViewState extends State<FlashCardView> {
       return MenuDrawer(appBarHeight);
     }
   }
+
   // String shortcut = 'no action set';
   // shortcut actions region ==================================================
   @override
@@ -196,7 +197,7 @@ class _FlashCardViewState extends State<FlashCardView> {
 
   @override
   Widget build(BuildContext context) {
-    return loadMenu(
+    var screenNow = loadMenu(
       child: BlocBuilder<FlashCardBloc, FlashcardsState>(
           builder: (context, state) {
         var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
@@ -255,6 +256,13 @@ class _FlashCardViewState extends State<FlashCardView> {
                   children: bottomNavigationBarItems()),
             ));
       }),
+    );
+    return DesignIdentifier.returnScreen(
+      context: context,
+      portraitScreen: screenNow,
+      landscapeScreen: screenNow,
+      portraitSmallScreen: screenNow,
+      landscapeSmallScreen: screenNow,
     );
   }
 }

@@ -163,7 +163,7 @@ class _QuizMenuViewState extends State<QuizMenuView> {
   @override
   Widget build(BuildContext context) {
     // creating bloc builder for flashcards
-    return loadMenu(
+    var screenNow = loadMenu(
       child: BlocBuilder<QuizBloc, QuizState>(
         builder: (context, state) {
           columnCount = calculateColumnCount(context);
@@ -272,6 +272,13 @@ class _QuizMenuViewState extends State<QuizMenuView> {
               ));
         },
       ),
+    );
+    return DesignIdentifier.returnScreen(
+      context: context,
+      portraitScreen: screenNow,
+      landscapeScreen: screenNow,
+      portraitSmallScreen: screenNow,
+      landscapeSmallScreen: screenNow,
     );
   }
 }

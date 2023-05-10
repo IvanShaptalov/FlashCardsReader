@@ -270,8 +270,8 @@ class _AddWordViewState extends State<AddWordView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FlashCardBloc, FlashcardsState>(
-        builder: (context, state) {
+    var screenNow =
+        BlocBuilder<FlashCardBloc, FlashcardsState>(builder: (context, state) {
       var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
       putSelectedCardToFirstPosition(flashCardCollection);
       var appbar = getAppBar(flashCardCollection);
@@ -339,6 +339,13 @@ class _AddWordViewState extends State<AddWordView> {
                 children: bottomNavigationBarItems()),
           ));
     });
+    return DesignIdentifier.returnScreen(
+      context: context,
+      portraitScreen: screenNow,
+      landscapeScreen: screenNow,
+      portraitSmallScreen: screenNow,
+      landscapeSmallScreen: screenNow,
+    );
   }
 
   List<Widget> bottomNavigationBarItems() {

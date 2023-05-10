@@ -35,7 +35,6 @@ class DeletedFlashCardView extends StatefulWidget {
   Duration cardAppearDuration = const Duration(milliseconds: 375);
   String shortcut = 'no action set';
 
- 
   @override
   State<DeletedFlashCardView> createState() => _DeletedFlashCardViewState();
 }
@@ -43,7 +42,6 @@ class DeletedFlashCardView extends StatefulWidget {
 class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
   int columnCount = 2;
   double appBarHeight = 0;
-
 
   int calculateColumnCount(BuildContext context) {
     double screenWidth = SizeConfig.getMediaWidth(context);
@@ -144,18 +142,16 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
   }
   // end shortcut actions region ==============================================
 
-
   @override
   Widget build(BuildContext context) {
     // creating bloc builder for flashcards
     return BlocBuilder<FlashCardBloc, FlashcardsState>(
       builder: (context, state) {
         var flashCardCollection = state.copyWith(fromTrash: true).flashCards;
-
         columnCount = calculateColumnCount(context);
         var appBar = getAppBar(flashCardCollection);
         appBarHeight = appBar.preferredSize.height;
-        return Scaffold(
+        var screenNow = Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: appBar,
             body: flashCardCollection.isEmpty
@@ -197,6 +193,14 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
                   /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
                   children: bottomNavigationBarItems(flashCardCollection)),
             ));
+
+        return DesignIdentifier.returnScreen(
+          context: context,
+          portraitScreen: screenNow,
+          landscapeScreen: screenNow,
+          portraitSmallScreen: screenNow,
+          landscapeSmallScreen: screenNow,
+        );
       },
     );
   }

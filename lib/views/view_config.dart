@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
@@ -131,4 +132,49 @@ class ConfigQuizView {
       const TextStyle(fontSize: 18, color: Colors.black);
   static TextStyle quizWordSummaryTextStyle =
       TextStyle(fontSize: 16, color: Colors.grey.shade900);
+}
+
+enum ScreenDesign { portrait, landscape, portraitSmall, landscapeSmall }
+
+class DesignIdentifier {
+  static _identifyScreenDesign(BuildContext context) {
+    if (MyConfigOrientation.isPortrait(context)) {
+      if (SizeConfig.getMediaHeight(context) < 600) {
+        debugPrintIt('selected portraitSmall');
+        return ScreenDesign.portraitSmall;
+      } else {
+        debugPrintIt('selected portraitSmall');
+
+        return ScreenDesign.portrait;
+      }
+    } else {
+      if (SizeConfig.getMediaWidth(context) < 600) {
+        debugPrintIt('selected portraitSmall');
+        return ScreenDesign.landscapeSmall;
+      } else {
+        debugPrintIt('selected portraitSmall');
+        return ScreenDesign.landscape;
+      }
+    }
+  }
+
+  static Widget returnScreen(
+      {required Widget portraitScreen,
+      required Widget landscapeScreen,
+      required Widget portraitSmallScreen,
+      required Widget landscapeSmallScreen,
+      required BuildContext context}) {
+    switch (_identifyScreenDesign(context)) {
+      case ScreenDesign.portrait:
+        return portraitScreen;
+      case ScreenDesign.landscape:
+        return landscapeScreen;
+      case ScreenDesign.portraitSmall:
+        return portraitSmallScreen;
+      case ScreenDesign.landscapeSmall:
+        return landscapeSmallScreen;
+      default:
+        return portraitScreen;
+    }
+  }
 }
