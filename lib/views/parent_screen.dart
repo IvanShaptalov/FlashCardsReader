@@ -39,25 +39,24 @@ class ParentStatelessWidget extends StatelessWidget {
 // ignore: must_be_immutable
 class ParentStatefulWidget extends StatefulWidget {
   Widget portraitPage = const Center(child: Text('default portrait page'));
-  Widget smallPortraitPage =
+  Widget portraitSmallPage =
       const Center(child: Text('default small portrait page'));
   Widget landscapePage = const Center(child: Text('default landscape page'));
-  Widget smallLandscapePage =
+  Widget landscapeSmallPage =
       const Center(child: Text('default small landscape page'));
   String shortcut = 'no action set';
 
   ParentStatefulWidget({super.key});
   @override
-  ParentStatefulWidgetState createState() => ParentStatefulWidgetState();
+  ParentState createState() => ParentState();
 }
 
-class ParentStatefulWidgetState<T extends ParentStatefulWidget>
-    extends State<T> {
+class ParentState<T extends ParentStatefulWidget> extends State<T> {
   void bindAllPages(Widget page) {
     widget.portraitPage = page;
-    widget.smallPortraitPage = page;
+    widget.portraitSmallPage = page;
     widget.landscapePage = page;
-    widget.smallLandscapePage = page;
+    widget.landscapeSmallPage = page;
   }
 
   // shortcut modification
@@ -104,9 +103,9 @@ class ParentStatefulWidgetState<T extends ParentStatefulWidget>
   Widget build(BuildContext context) {
     var selectedPage = DesignIdentifier.returnScreen(
         portraitScreen: widget.portraitPage,
-        landscapeScreen: widget.portraitPage,
-        portraitSmallScreen: widget.portraitPage,
-        landscapeSmallScreen: widget.portraitPage,
+        landscapeScreen: widget.landscapePage,
+        portraitSmallScreen: widget.portraitSmallPage,
+        landscapeSmallScreen: widget.landscapeSmallPage,
         context: context);
     widget.portraitPage = selectedPage;
     return shortCutWrapper();

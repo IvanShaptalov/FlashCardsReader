@@ -74,10 +74,10 @@ class MyHomePage extends ParentStatefulWidget {
   final String title;
 
   @override
-  ParentStatefulWidgetState<MyHomePage> createState() => _MyHomePageState();
+  ParentState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends ParentStatefulWidgetState<MyHomePage> {
+class _MyHomePageState extends ParentState<MyHomePage> {
   double appBarHeight = 0;
 
   @override

@@ -8,6 +8,7 @@ import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,16 +33,15 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
 }
 
 // ignore: must_be_immutable
-class FlashCardView extends StatefulWidget {
+class FlashCardView extends ParentStatefulWidget {
   FlashCardView({super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
-  String shortcut = 'no action set';
 
   @override
-  State<FlashCardView> createState() => _FlashCardViewState();
+  ParentState<FlashCardView> createState() => _FlashCardViewState();
 }
 
-class _FlashCardViewState extends State<FlashCardView> {
+class _FlashCardViewState extends ParentState<FlashCardView> {
   void updateCallback() {
     setState(() {});
   }
@@ -150,119 +150,69 @@ class _FlashCardViewState extends State<FlashCardView> {
     }
   }
 
-  // String shortcut = 'no action set';
-  // shortcut actions region ==================================================
-  @override
-  void initState() {
-    const QuickActions quickActions = QuickActions();
-    quickActions.initialize((String shortcutType) {
-      setState(() {
-        widget.shortcut = shortcutType;
-      });
-    });
-
-    quickActions.setShortcutItems(<ShortcutItem>[
-      // NOTE: This first action icon will only work on iOS.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-        type: addWordAction,
-        localizedTitle: addWordAction,
-        icon: 'add_circle',
-      ),
-      // NOTE: This second action icon will only work on Android.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-          type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
-    ]).then((void _) {
-      setState(() {
-        if (widget.shortcut == 'no action set') {
-          widget.shortcut = 'actions ready';
-        }
-      });
-    });
-
-    super.initState();
-  }
-
-  Widget loadMenu({required Widget child}) {
-    if (widget.shortcut == addWordAction) {
-      return AddWordFastScreen();
-    } else if (widget.shortcut == quizAction) {
-      return const QuizMenu();
-    } else {
-      return child;
-    }
-  }
-  // end shortcut actions region ==============================================
-
   @override
   Widget build(BuildContext context) {
-    var screenNow = loadMenu(
-      child: BlocBuilder<FlashCardBloc, FlashcardsState>(
-          builder: (context, state) {
-        var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
-        columnCount = calculateColumnCount(context);
-        var appBar = getAppBar(flashCardCollection);
-        appBarHeight = appBar.preferredSize.height;
-        return Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: appBar,
-            body: AnimationLimiter(
-              child: GridView.count(
-                  mainAxisSpacing: SizeConfig.getMediaHeight(context, p: 0.04),
-                  crossAxisSpacing: calculateCrossSpacing(context),
-                  crossAxisCount: columnCount,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
-                  childAspectRatio: ViewConfig.getCardForm(context),
-                  children:
-                      List.generate(flashCardCollection.length + 1, (index) {
-                    /// ====================================================================[FlashCardCollectionWidget]
-                    // add flashcards
-                    return Transform.scale(
-                      scale: columnCount == 1 ? 0.9 : 1,
-                      child: index == 0
-                          ? AnimationConfiguration.staggeredGrid(
-                              position: index,
-                              duration: widget.cardAppearDuration,
-                              columnCount: columnCount,
-                              child: const SlideAnimation(
-                                child: FadeInAnimation(
-                                  child: AddFlashCardWidget(),
-                                ),
-                              ),
-                            )
-                          : AnimationConfiguration.staggeredGrid(
-                              position: index,
-                              duration: widget.cardAppearDuration,
-                              columnCount: columnCount,
-                              child: SlideAnimation(
-                                child: FadeInAnimation(
-                                  child: FlashCardCollectionWidget(
-                                      flashCardCollection[index - 1],
-                                      updateCallback),
-                                ),
+    widget.portraitPage =
+        BlocBuilder<FlashCardBloc, FlashcardsState>(builder: (context, state) {
+      var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
+      columnCount = calculateColumnCount(context);
+      var appBar = getAppBar(flashCardCollection);
+      appBarHeight = appBar.preferredSize.height;
+      return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: appBar,
+          body: AnimationLimiter(
+            child: GridView.count(
+                mainAxisSpacing: SizeConfig.getMediaHeight(context, p: 0.04),
+                crossAxisSpacing: calculateCrossSpacing(context),
+                crossAxisCount: columnCount,
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
+                childAspectRatio: ViewConfig.getCardForm(context),
+                children:
+                    List.generate(flashCardCollection.length + 1, (index) {
+                  /// ====================================================================[FlashCardCollectionWidget]
+                  // add flashcards
+                  return Transform.scale(
+                    scale: columnCount == 1 ? 0.9 : 1,
+                    child: index == 0
+                        ? AnimationConfiguration.staggeredGrid(
+                            position: index,
+                            duration: widget.cardAppearDuration,
+                            columnCount: columnCount,
+                            child: const SlideAnimation(
+                              child: FadeInAnimation(
+                                child: AddFlashCardWidget(),
                               ),
                             ),
-                    );
-                  })),
-            ),
-            drawer: getDrawer(),
-            bottomNavigationBar: BottomAppBar(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          )
+                        : AnimationConfiguration.staggeredGrid(
+                            position: index,
+                            duration: widget.cardAppearDuration,
+                            columnCount: columnCount,
+                            child: SlideAnimation(
+                              child: FadeInAnimation(
+                                child: FlashCardCollectionWidget(
+                                    flashCardCollection[index - 1],
+                                    updateCallback),
+                              ),
+                            ),
+                          ),
+                  );
+                })),
+          ),
+          drawer: getDrawer(),
+          bottomNavigationBar: BottomAppBar(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                  /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
-                  children: bottomNavigationBarItems()),
-            ));
-      }),
-    );
-    return DesignIdentifier.returnScreen(
-      context: context,
-      portraitScreen: screenNow,
-      landscapeScreen: screenNow,
-      portraitSmallScreen: screenNow,
-      landscapeSmallScreen: screenNow,
-    );
+                /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
+                children: bottomNavigationBarItems()),
+          ));
+    });
+
+    // TODO bind, because other pages not implemented yet
+    bindAllPages(widget.portraitPage);
+    return super.build(context);
   }
 }
