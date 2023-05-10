@@ -14,6 +14,7 @@ import 'package:flashcards_reader/views/flashcards/translate.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,53 +39,19 @@ class WordFormContoller {
   }
 }
 
-class AddWordFastScreen extends StatefulWidget {
+class AddWordFastScreen extends ParentStatefulWidget {
   AddWordFastScreen({super.key});
   ScrollController scrollController = ScrollController();
   WordFormContoller wordFormContoller = WordFormContoller();
   GoogleTranslatorAPIWrapper translator = GoogleTranslatorAPIWrapper();
-  String shortcut = 'no action set';
 
   @override
-  State<AddWordFastScreen> createState() => _AddWordFastScreenState();
+  ParentState<AddWordFastScreen> createState() => _AddWordFastScreenState();
 }
 
-class _AddWordFastScreenState extends State<AddWordFastScreen> {
+class _AddWordFastScreenState extends ParentState<AddWordFastScreen> {
   void callback() {
     setState(() {});
-  }
-
-  // shortcut actions region ==================================================
-  @override
-  void initState() {
-    const QuickActions quickActions = QuickActions();
-    quickActions.initialize((String shortcutType) {
-      setState(() {
-        widget.shortcut = shortcutType;
-      });
-    });
-
-    quickActions.setShortcutItems(<ShortcutItem>[
-      // NOTE: This first action icon will only work on iOS.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-        type: addWordAction,
-        localizedTitle: addWordAction,
-        icon: 'add_circle',
-      ),
-      // NOTE: This second action icon will only work on Android.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-          type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
-    ]).then((void _) {
-      setState(() {
-        if (widget.shortcut == 'no action set') {
-          widget.shortcut = 'actions ready';
-        }
-      });
-    });
-
-    super.initState();
   }
 
   Widget loadMenu({required Widget child}) {
@@ -100,17 +67,17 @@ class _AddWordFastScreenState extends State<AddWordFastScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return loadMenu(
-      child: BlocProvider(
-        create: (_) => FlashCardBloc(),
-        child: AddWordView(
-          scrollController: widget.scrollController,
-          wordFormContoller: widget.wordFormContoller,
-          translator: widget.translator,
-          callback: callback,
-        ),
+    widget.portraitPage = BlocProvider(
+      create: (_) => FlashCardBloc(),
+      child: AddWordView(
+        scrollController: widget.scrollController,
+        wordFormContoller: widget.wordFormContoller,
+        translator: widget.translator,
+        callback: callback,
       ),
     );
+    bindAllPages(widget.portraitPage);
+    return super.build(context);
   }
 }
 

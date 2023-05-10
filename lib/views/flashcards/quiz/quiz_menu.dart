@@ -9,6 +9,7 @@ import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_fc_collection_widget.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,16 +36,15 @@ class _QuizMenuState extends State<QuizMenu> {
 }
 
 // ignore: must_be_immutable
-class QuizMenuView extends StatefulWidget {
+class QuizMenuView extends ParentStatefulWidget {
   QuizMenuView({super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
-  String shortcut = 'no action set';
 
   @override
-  State<QuizMenuView> createState() => _QuizMenuViewState();
+  ParentState<QuizMenuView> createState() => _QuizMenuViewState();
 }
 
-class _QuizMenuViewState extends State<QuizMenuView> {
+class _QuizMenuViewState extends ParentState<QuizMenuView> {
   int columnCount = 2;
   double appBarHeight = 0;
 
@@ -108,34 +108,6 @@ class _QuizMenuViewState extends State<QuizMenuView> {
 
   @override
   void initState() {
-    const QuickActions quickActions = QuickActions();
-    quickActions.initialize((String shortcutType) {
-      setState(() {
-        widget.shortcut = shortcutType;
-      });
-    });
-
-    quickActions.setShortcutItems(<ShortcutItem>[
-      // NOTE: This first action icon will only work on iOS.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-        type: addWordAction,
-        localizedTitle: addWordAction,
-        icon: 'add_circle',
-      ),
-      // NOTE: This second action icon will only work on Android.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-          type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
-    ]).then((void _) {
-      setState(() {
-        if (widget.shortcut == 'no action set') {
-          widget.shortcut = 'actions ready';
-        }
-      });
-    });
-
-    super.initState();
     var flashCardCollection =
         context.read<FlashCardBloc>().state.flashCards.isNotEmpty
             ? context.read<FlashCardBloc>().state.flashCards.first
@@ -163,7 +135,7 @@ class _QuizMenuViewState extends State<QuizMenuView> {
   @override
   Widget build(BuildContext context) {
     // creating bloc builder for flashcards
-    var screenNow = loadMenu(
+    widget.portraitPage = loadMenu(
       child: BlocBuilder<QuizBloc, QuizState>(
         builder: (context, state) {
           columnCount = calculateColumnCount(context);
@@ -273,13 +245,8 @@ class _QuizMenuViewState extends State<QuizMenuView> {
         },
       ),
     );
-    return DesignIdentifier.returnScreen(
-      context: context,
-      portraitScreen: screenNow,
-      landscapeScreen: screenNow,
-      portraitSmallScreen: screenNow,
-      landscapeSmallScreen: screenNow,
-    );
+    bindAllPages(widget.portraitPage);
+    return super.build(context);
   }
 }
 

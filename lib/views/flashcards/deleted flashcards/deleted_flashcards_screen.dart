@@ -6,6 +6,7 @@ import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,16 +31,16 @@ class _DeletedFlashCardScreenState extends State<DeletedFlashCardScreen> {
 }
 
 // ignore: must_be_immutable
-class DeletedFlashCardView extends StatefulWidget {
+class DeletedFlashCardView extends ParentStatefulWidget {
   DeletedFlashCardView({super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
-  String shortcut = 'no action set';
 
   @override
-  State<DeletedFlashCardView> createState() => _DeletedFlashCardViewState();
+  ParentState<DeletedFlashCardView> createState() =>
+      _DeletedFlashCardViewState();
 }
 
-class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
+class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
   int columnCount = 2;
   double appBarHeight = 0;
 
@@ -98,54 +99,10 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
     }
   }
 
-  // shortcut actions region ==================================================
-  @override
-  void initState() {
-    const QuickActions quickActions = QuickActions();
-    quickActions.initialize((String shortcutType) {
-      setState(() {
-        widget.shortcut = shortcutType;
-      });
-    });
-
-    quickActions.setShortcutItems(<ShortcutItem>[
-      // NOTE: This first action icon will only work on iOS.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-        type: addWordAction,
-        localizedTitle: addWordAction,
-        icon: 'add_circle',
-      ),
-      // NOTE: This second action icon will only work on Android.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-          type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
-    ]).then((void _) {
-      setState(() {
-        if (widget.shortcut == 'no action set') {
-          widget.shortcut = 'actions ready';
-        }
-      });
-    });
-
-    super.initState();
-  }
-
-  Widget loadMenu({required Widget child}) {
-    if (widget.shortcut == addWordAction) {
-      return AddWordFastScreen();
-    } else if (widget.shortcut == quizAction) {
-      return const QuizMenu();
-    } else {
-      return child;
-    }
-  }
-  // end shortcut actions region ==============================================
-
   @override
   Widget build(BuildContext context) {
     // creating bloc builder for flashcards
-    return BlocBuilder<FlashCardBloc, FlashcardsState>(
+    widget.portraitPage = BlocBuilder<FlashCardBloc, FlashcardsState>(
       builder: (context, state) {
         var flashCardCollection = state.copyWith(fromTrash: true).flashCards;
         columnCount = calculateColumnCount(context);
@@ -203,5 +160,12 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
         );
       },
     );
+
+    // for now, when 4 desings not implemented, we use only one design
+    bindAllPages(widget.portraitPage);
+
+    /// ===============================================[Select design via context]===============================
+
+    return super.build(context);
   }
 }
