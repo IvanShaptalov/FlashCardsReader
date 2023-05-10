@@ -1,12 +1,16 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcard_collection_widget.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:quick_actions/quick_actions.dart';
 
 class DeletedFlashCardScreen extends StatefulWidget {
   const DeletedFlashCardScreen({super.key});
@@ -29,9 +33,9 @@ class _DeletedFlashCardScreenState extends State<DeletedFlashCardScreen> {
 class DeletedFlashCardView extends StatefulWidget {
   DeletedFlashCardView({super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
-  // List<FlashCardCollection> flashCardCollection =
-  //     FlashCardCollectionProvider.getFlashCards(isDeleted: true);
+  String shortcut = 'no action set';
 
+ 
   @override
   State<DeletedFlashCardView> createState() => _DeletedFlashCardViewState();
 }
@@ -95,6 +99,51 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
       return MenuDrawer(appBarHeight);
     }
   }
+
+  // shortcut actions region ==================================================
+  @override
+  void initState() {
+    const QuickActions quickActions = QuickActions();
+    quickActions.initialize((String shortcutType) {
+      setState(() {
+        widget.shortcut = shortcutType;
+      });
+    });
+
+    quickActions.setShortcutItems(<ShortcutItem>[
+      // NOTE: This first action icon will only work on iOS.
+      // In a real world project keep the same file name for both platforms.
+      const ShortcutItem(
+        type: addWordAction,
+        localizedTitle: addWordAction,
+        icon: 'add_circle',
+      ),
+      // NOTE: This second action icon will only work on Android.
+      // In a real world project keep the same file name for both platforms.
+      const ShortcutItem(
+          type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
+    ]).then((void _) {
+      setState(() {
+        if (widget.shortcut == 'no action set') {
+          widget.shortcut = 'actions ready';
+        }
+      });
+    });
+
+    super.initState();
+  }
+
+  Widget loadMenu({required Widget child}) {
+    if (widget.shortcut == addWordAction) {
+      return AddWordFastScreen();
+    } else if (widget.shortcut == quizAction) {
+      return const QuizMenu();
+    } else {
+      return child;
+    }
+  }
+  // end shortcut actions region ==============================================
+
 
   @override
   Widget build(BuildContext context) {

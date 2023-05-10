@@ -1,16 +1,19 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/main.dart';
+import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_fc_collection_widget.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:quick_actions/quick_actions.dart';
 
 class QuizMenu extends StatefulWidget {
   const QuizMenu({super.key});
@@ -35,6 +38,7 @@ class _QuizMenuState extends State<QuizMenu> {
 class QuizMenuView extends StatefulWidget {
   QuizMenuView({super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
+  String shortcut = 'no action set';
 
   @override
   State<QuizMenuView> createState() => _QuizMenuViewState();
@@ -89,9 +93,49 @@ class _QuizMenuViewState extends State<QuizMenuView> {
       ];
     }
   }
+  // shortcut actions region ==================================================
+
+  Widget loadMenu({required Widget child}) {
+    if (widget.shortcut == addWordAction) {
+      return AddWordFastScreen();
+    } else if (widget.shortcut == quizAction) {
+      return const QuizMenu();
+    } else {
+      return child;
+    }
+  }
+  // end shortcut actions region ==============================================
 
   @override
   void initState() {
+    const QuickActions quickActions = QuickActions();
+    quickActions.initialize((String shortcutType) {
+      setState(() {
+        widget.shortcut = shortcutType;
+      });
+    });
+
+    quickActions.setShortcutItems(<ShortcutItem>[
+      // NOTE: This first action icon will only work on iOS.
+      // In a real world project keep the same file name for both platforms.
+      const ShortcutItem(
+        type: addWordAction,
+        localizedTitle: addWordAction,
+        icon: 'add_circle',
+      ),
+      // NOTE: This second action icon will only work on Android.
+      // In a real world project keep the same file name for both platforms.
+      const ShortcutItem(
+          type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
+    ]).then((void _) {
+      setState(() {
+        if (widget.shortcut == 'no action set') {
+          widget.shortcut = 'actions ready';
+        }
+      });
+    });
+
+    super.initState();
     var flashCardCollection =
         context.read<FlashCardBloc>().state.flashCards.isNotEmpty
             ? context.read<FlashCardBloc>().state.flashCards.first
@@ -119,111 +163,115 @@ class _QuizMenuViewState extends State<QuizMenuView> {
   @override
   Widget build(BuildContext context) {
     // creating bloc builder for flashcards
-    return BlocBuilder<QuizBloc, QuizState>(
-      builder: (context, state) {
-        columnCount = calculateColumnCount(context);
+    return loadMenu(
+      child: BlocBuilder<QuizBloc, QuizState>(
+        builder: (context, state) {
+          columnCount = calculateColumnCount(context);
 
-        var flashCollectionList = context
-            .read<FlashCardBloc>()
-            .state
-            .copyWith(fromTrash: false)
-            .flashCards;
+          var flashCollectionList = context
+              .read<FlashCardBloc>()
+              .state
+              .copyWith(fromTrash: false)
+              .flashCards;
 
-        var appBar = getAppBar();
-        appBarHeight = appBar.preferredSize.height;
-        return Scaffold(
-            bottomNavigationBar: BottomAppBar(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          var appBar = getAppBar();
+          appBarHeight = appBar.preferredSize.height;
+          return Scaffold(
+              bottomNavigationBar: BottomAppBar(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                  /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
-                  children: bottomNavigationBarItems()),
-            ),
-            resizeToAvoidBottomInset: false,
-            appBar: appBar,
-            drawer: getDrawer(),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Center(
-                        child: Padding(
-                      padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-                      child: Text('Select quiz mode',
-                          style: FontConfigs.h1TextStyle),
-                    )),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics()),
-                          scrollDirection: Axis.horizontal,
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  SelectQuizMode(
-                                    mode: QuizMode.all,
-                                  ),
-                                  SelectQuizMode(mode: QuizMode.learned),
-                                  SelectQuizMode(mode: QuizMode.simple),
-                                  SelectQuizMode(mode: QuizMode.hard),
-                                  SelectQuizMode(mode: QuizMode.newest),
-                                  SelectQuizMode(mode: QuizMode.oldest),
-                                  SelectQuizMode(mode: QuizMode.random),
-                                  
-                                ],
-                              ),
-                            ],
-                          )),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Container(
-                    color: Colors.grey.shade300,
-                    child: flashCollectionList.isEmpty
-                        ? const Center(child: Text('Bin is empty'))
-                        : AnimationLimiter(
-                            child: GridView.count(
-                                mainAxisSpacing:
-                                    SizeConfig.getMediaHeight(context, p: 0.04),
-                                crossAxisSpacing:
-                                    calculateCrossSpacing(context),
-                                crossAxisCount: columnCount,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: SizeConfig.getMediaWidth(
-                                        context,
-                                        p: 0.05)),
-                                childAspectRatio:
-                                    ViewConfig.getCardForm(context),
-                                children: List.generate(
-                                    flashCollectionList.length, (index) {
-                                  /// ====================================================================[FlashCardCollectionWidget]
-                                  // add flashcards
-                                  return Transform.scale(
-                                    scale: columnCount == 1 ? 0.9 : 1,
-                                    child: AnimationConfiguration.staggeredGrid(
-                                      position: index,
-                                      duration: widget.cardAppearDuration,
-                                      columnCount: columnCount,
-                                      child: SlideAnimation(
-                                        child: FadeInAnimation(
-                                            child: QuizFlashCollectionWidget(
-                                                flashCollectionList[index])),
-                                      ),
+                    /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
+                    children: bottomNavigationBarItems()),
+              ),
+              resizeToAvoidBottomInset: false,
+              appBar: appBar,
+              drawer: getDrawer(),
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Center(
+                          child: Padding(
+                        padding:
+                            EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+                        child: Text('Select quiz mode',
+                            style: FontConfigs.h1TextStyle),
+                      )),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    SelectQuizMode(
+                                      mode: QuizMode.all,
                                     ),
-                                  );
-                                })),
-                          ),
+                                    SelectQuizMode(mode: QuizMode.learned),
+                                    SelectQuizMode(mode: QuizMode.simple),
+                                    SelectQuizMode(mode: QuizMode.hard),
+                                    SelectQuizMode(mode: QuizMode.newest),
+                                    SelectQuizMode(mode: QuizMode.oldest),
+                                    SelectQuizMode(mode: QuizMode.random),
+                                  ],
+                                ),
+                              ],
+                            )),
+                      ),
+                    ],
                   ),
-                )
-              ],
-            ));
-      },
+                  Expanded(
+                    child: Container(
+                      color: Colors.grey.shade300,
+                      child: flashCollectionList.isEmpty
+                          ? const Center(child: Text('Bin is empty'))
+                          : AnimationLimiter(
+                              child: GridView.count(
+                                  mainAxisSpacing: SizeConfig.getMediaHeight(
+                                      context,
+                                      p: 0.04),
+                                  crossAxisSpacing:
+                                      calculateCrossSpacing(context),
+                                  crossAxisCount: columnCount,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: SizeConfig.getMediaWidth(
+                                          context,
+                                          p: 0.05)),
+                                  childAspectRatio:
+                                      ViewConfig.getCardForm(context),
+                                  children: List.generate(
+                                      flashCollectionList.length, (index) {
+                                    /// ====================================================================[FlashCardCollectionWidget]
+                                    // add flashcards
+                                    return Transform.scale(
+                                      scale: columnCount == 1 ? 0.9 : 1,
+                                      child:
+                                          AnimationConfiguration.staggeredGrid(
+                                        position: index,
+                                        duration: widget.cardAppearDuration,
+                                        columnCount: columnCount,
+                                        child: SlideAnimation(
+                                          child: FadeInAnimation(
+                                              child: QuizFlashCollectionWidget(
+                                                  flashCollectionList[index])),
+                                        ),
+                                      ),
+                                    );
+                                  })),
+                            ),
+                    ),
+                  )
+                ],
+              ));
+        },
+      ),
     );
   }
 }

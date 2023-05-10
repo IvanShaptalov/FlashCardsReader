@@ -4,6 +4,7 @@ import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/translator/api.dart';
+import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
@@ -17,6 +18,7 @@ import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:quick_actions/quick_actions.dart';
 
 class WordFormContoller {
   TextEditingController questionController = TextEditingController();
@@ -41,6 +43,7 @@ class AddWordFastScreen extends StatefulWidget {
   ScrollController scrollController = ScrollController();
   WordFormContoller wordFormContoller = WordFormContoller();
   GoogleTranslatorAPIWrapper translator = GoogleTranslatorAPIWrapper();
+  String shortcut = 'no action set';
 
   @override
   State<AddWordFastScreen> createState() => _AddWordFastScreenState();
@@ -51,15 +54,61 @@ class _AddWordFastScreenState extends State<AddWordFastScreen> {
     setState(() {});
   }
 
+  // shortcut actions region ==================================================
+  @override
+  void initState() {
+    const QuickActions quickActions = QuickActions();
+    quickActions.initialize((String shortcutType) {
+      setState(() {
+        widget.shortcut = shortcutType;
+      });
+    });
+
+    quickActions.setShortcutItems(<ShortcutItem>[
+      // NOTE: This first action icon will only work on iOS.
+      // In a real world project keep the same file name for both platforms.
+      const ShortcutItem(
+        type: addWordAction,
+        localizedTitle: addWordAction,
+        icon: 'add_circle',
+      ),
+      // NOTE: This second action icon will only work on Android.
+      // In a real world project keep the same file name for both platforms.
+      const ShortcutItem(
+          type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
+    ]).then((void _) {
+      setState(() {
+        if (widget.shortcut == 'no action set') {
+          widget.shortcut = 'actions ready';
+        }
+      });
+    });
+
+    super.initState();
+  }
+
+  Widget loadMenu({required Widget child}) {
+    if (widget.shortcut == addWordAction) {
+      return AddWordFastScreen();
+    } else if (widget.shortcut == quizAction) {
+      return const QuizMenu();
+    } else {
+      return child;
+    }
+  }
+  // end shortcut actions region ==============================================
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => FlashCardBloc(),
-      child: AddWordView(
-        scrollController: widget.scrollController,
-        wordFormContoller: widget.wordFormContoller,
-        translator: widget.translator,
-        callback: callback,
+    return loadMenu(
+      child: BlocProvider(
+        create: (_) => FlashCardBloc(),
+        child: AddWordView(
+          scrollController: widget.scrollController,
+          wordFormContoller: widget.wordFormContoller,
+          translator: widget.translator,
+          callback: callback,
+        ),
       ),
     );
   }

@@ -77,7 +77,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   double appBarHeight = 0;
-
+  // shortcut actions region ==================================================
   @override
   void initState() {
     const QuickActions quickActions = QuickActions();
@@ -130,6 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }
   }
+  // end shortcut actions region ==============================================
 
   @override
   Widget build(BuildContext context) {
