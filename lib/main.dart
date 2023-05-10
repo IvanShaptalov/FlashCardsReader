@@ -87,7 +87,7 @@ class _MyHomePageState extends ParentStatefulWidgetState<MyHomePage> {
       title: Text(widget.title),
     );
     appBarHeight = appBar.preferredSize.height;
-    widget.page = Scaffold(
+    widget.portraitPage = Scaffold(
       appBar: appBar,
       body: Center(
           child: Column(
@@ -96,14 +96,11 @@ class _MyHomePageState extends ParentStatefulWidgetState<MyHomePage> {
       drawer: MenuDrawer(appBarHeight),
     );
 
+    // for now, when 4 desings not implemented, we use only one design
+    bindAllPages(widget.portraitPage);
+
     /// ===============================================[Select design via context]===============================
-    var selectedPage = DesignIdentifier.returnScreen(
-        portraitScreen: widget.page,
-        landscapeScreen: widget.page,
-        portraitSmallScreen: widget.page,
-        landscapeSmallScreen: widget.page,
-        context: context);
-    widget.page = selectedPage;
+
     return super.build(context);
   }
 }
