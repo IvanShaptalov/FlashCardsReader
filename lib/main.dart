@@ -5,6 +5,8 @@ import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
+import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:quick_actions/quick_actions.dart';
@@ -66,74 +68,42 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+// ignore: must_be_immutable
+class MyHomePage extends ParentStatefulWidget {
   MyHomePage({super.key, required this.title});
   final String title;
-  String shortcut = 'no action set';
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ParentStatefulWidgetState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends ParentStatefulWidgetState<MyHomePage> {
   double appBarHeight = 0;
-  // shortcut actions region ==================================================
-  @override
-  void initState() {
-    const QuickActions quickActions = QuickActions();
-    quickActions.initialize((String shortcutType) {
-      setState(() {
-        widget.shortcut = shortcutType;
-      });
-    });
-
-    quickActions.setShortcutItems(<ShortcutItem>[
-      // NOTE: This first action icon will only work on iOS.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-        type: addWordAction,
-        localizedTitle: addWordAction,
-        icon: 'add_circle',
-      ),
-      // NOTE: This second action icon will only work on Android.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-          type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
-    ]).then((void _) {
-      setState(() {
-        if (widget.shortcut == 'no action set') {
-          widget.shortcut = 'actions ready';
-        }
-      });
-    });
-
-    super.initState();
-  }
-
-  Widget loadMenu() {
-    if (widget.shortcut == addWordAction) {
-      return AddWordFastScreen();
-    } else if (widget.shortcut == quizAction) {
-      return const QuizMenu();
-    } else {
-      var appBar = AppBar(
-        title: Text(widget.title),
-      );
-      appBarHeight = appBar.preferredSize.height;
-      return Scaffold(
-        appBar: appBar,
-        body: Center(
-            child: Column(
-          children: const [Text('hello world')],
-        )),
-        drawer: MenuDrawer(appBarHeight),
-      );
-    }
-  }
-  // end shortcut actions region ==============================================
 
   @override
   Widget build(BuildContext context) {
-    return loadMenu();
+    /// ===============================================[Create page]===============================
+    var appBar = AppBar(
+      title: Text(widget.title),
+    );
+    appBarHeight = appBar.preferredSize.height;
+    widget.page = Scaffold(
+      appBar: appBar,
+      body: Center(
+          child: Column(
+        children: const [Text('hello world')],
+      )),
+      drawer: MenuDrawer(appBarHeight),
+    );
+
+    /// ===============================================[Select design via context]===============================
+    var selectedPage = DesignIdentifier.returnScreen(
+        portraitScreen: widget.page,
+        landscapeScreen: widget.page,
+        portraitSmallScreen: widget.page,
+        landscapeSmallScreen: widget.page,
+        context: context);
+    widget.page = selectedPage;
+    return super.build(context);
   }
 }

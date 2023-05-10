@@ -6,17 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:quick_actions/quick_actions.dart';
 
 import 'flashcards/quiz/quiz_menu.dart';
-import 'menu/drawer_menu.dart';
 
-class BaseStatelessScreen extends StatelessWidget {
-  final Widget page;
-  const BaseStatelessScreen({required this.page, super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return page;
-  }
-}
 
 class BaseStatefulScreen extends StatefulWidget {
   BaseStatefulScreen({required this.page, super.key});
