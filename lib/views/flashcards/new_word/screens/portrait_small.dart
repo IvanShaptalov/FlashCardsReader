@@ -11,14 +11,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class PortraitSmallNewWord extends BaseScreenNewWord {
-  dynamic widget;
   Function callback;
   Function loadTranslate;
   bool isPressed;
 
-  PortraitSmallNewWord(
-      {required this.widget,
-      required this.isPressed,
+  PortraitSmallNewWord(super.widget,
+      {required this.isPressed,
       required this.callback,
       required this.loadTranslate});
 

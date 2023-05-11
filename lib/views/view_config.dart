@@ -96,22 +96,6 @@ class MyConfigOrientation {
   static bool isLandscape(context) => !isPortrait(context);
 }
 
-class ListOrColumn extends StatelessWidget {
-  final List<Widget> children;
-  const ListOrColumn({required this.children, Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return MyConfigOrientation.isPortrait(context)
-        ? Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: children,
-          )
-        : ListView(
-            children: children,
-          );
-  }
-}
-
 class ConfigQuizView {
   static Color backFromQuizButtonBackgroundColor = Colors.green.shade500;
   static Color backFromQuizIconColor = Colors.white;

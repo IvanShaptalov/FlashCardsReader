@@ -11,187 +11,179 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class PortraitNewWord extends BaseScreenNewWord {
-  dynamic widget;
   Function callback;
   Function loadTranslate;
   bool isPressed;
 
-  PortraitNewWord(
-      {required this.widget,
-      required this.isPressed,
+  PortraitNewWord(super.widget,
+      {required this.isPressed,
       required this.callback,
       required this.loadTranslate});
 
   Widget addWordWidget(BuildContext context) {
-    return Transform.scale(
-      scale: 0.8,
-      child: Container(
-          height: SizeConfig.getMediaHeight(context, p: 0.35),
-          width: SizeConfig.getMediaWidth(context, p: 1),
-          decoration: BoxDecoration(
-            color: Colors.green.shade200,
+    return Container(
+        height: SizeConfig.getMediaHeight(context, p: 0.35),
+        width: SizeConfig.getMediaWidth(context, p: 1),
+        decoration: BoxDecoration(
+          color: Colors.green.shade200,
 
-            // rounded full border
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(
-              color: Colors.grey,
-              width: 1,
-            ),
+          // rounded full border
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+            color: Colors.grey,
+            width: 1,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      onPressed: () {
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      saveCollectionFromWord(
+                          onSubmitted: false,
+                          callback: callback,
+                          context: context,
+                          widget: widget);
+                      BlocProvider.of<TranslatorBloc>(context)
+                          .add(ClearTranslateEvent());
+                    },
+                    icon: const Icon(Icons.add_circle_outlined)),
+                Expanded(
+                  child: BlocProvider(
+                    create: (context) => TranslatorBloc(),
+                    child: TextField(
+                      controller: widget.wordFormContoller.questionController,
+                      decoration: InputDecoration(
+                        labelText: 'Add Word',
+                        labelStyle: FontConfigs.h3TextStyle,
+                      ),
+                      onChanged: (text) {
+                        WordCreatingUIProvider.setQuestion(text);
+                        debugPrintIt('text: $text');
+                        if (text.isEmpty) {
+                          debugPrintIt('onChanged: text is empty - clear');
+                          Future.delayed(const Duration(milliseconds: 300))
+                              .then((value) =>
+                                  BlocProvider.of<TranslatorBloc>(context)
+                                      .add(ClearTranslateEvent()));
+                        } else {
+                          BlocProvider.of<TranslatorBloc>(context).add(
+                              TranslateEvent(
+                                  text: text,
+                                  fromLan: WordCreatingUIProvider
+                                      .tmpFlashCard.questionLanguage,
+                                  toLan: WordCreatingUIProvider
+                                      .tmpFlashCard.answerLanguage));
+                        }
+
+                        // update the word
+                      },
+                      onEditingComplete: () {
+                        debugPrintIt('onEditingComplete');
+                        Future.delayed(const Duration(milliseconds: 300)).then(
+                            (value) => BlocProvider.of<TranslatorBloc>(context)
+                                .add(TranslateEvent(
+                                    text: value,
+                                    fromLan: WordCreatingUIProvider
+                                        .tmpFlashCard.questionLanguage,
+                                    toLan: WordCreatingUIProvider
+                                        .tmpFlashCard.answerLanguage)));
+                      },
+                      onSubmitted: (value) {
                         saveCollectionFromWord(
-                            onSubmitted: false,
+                            onSubmitted: true,
                             callback: callback,
                             context: context,
                             widget: widget);
                         BlocProvider.of<TranslatorBloc>(context)
                             .add(ClearTranslateEvent());
                       },
-                      icon: const Icon(Icons.add_circle_outlined)),
-                  Expanded(
-                    child: BlocProvider(
-                      create: (context) => TranslatorBloc(),
-                      child: TextField(
-                        controller: widget.wordFormContoller.questionController,
-                        decoration: InputDecoration(
-                          labelText: 'Add Word',
-                          labelStyle: FontConfigs.h3TextStyle,
-                        ),
-                        onChanged: (text) {
-                          WordCreatingUIProvider.setQuestion(text);
-                          debugPrintIt('text: $text');
-                          if (text.isEmpty) {
-                            debugPrintIt('onChanged: text is empty - clear');
-                            Future.delayed(const Duration(milliseconds: 300))
-                                .then((value) =>
-                                    BlocProvider.of<TranslatorBloc>(context)
-                                        .add(ClearTranslateEvent()));
-                          } else {
-                            BlocProvider.of<TranslatorBloc>(context).add(
-                                TranslateEvent(
-                                    text: text,
-                                    fromLan: WordCreatingUIProvider
-                                        .tmpFlashCard.questionLanguage,
-                                    toLan: WordCreatingUIProvider
-                                        .tmpFlashCard.answerLanguage));
-                          }
-
-                          // update the word
-                        },
-                        onEditingComplete: () {
-                          debugPrintIt('onEditingComplete');
-                          Future.delayed(const Duration(milliseconds: 300))
-                              .then((value) =>
-                                  BlocProvider.of<TranslatorBloc>(context).add(
-                                      TranslateEvent(
-                                          text: value,
-                                          fromLan: WordCreatingUIProvider
-                                              .tmpFlashCard.questionLanguage,
-                                          toLan: WordCreatingUIProvider
-                                              .tmpFlashCard.answerLanguage)));
-                        },
-                        onSubmitted: (value) {
-                          saveCollectionFromWord(
-                              onSubmitted: true,
-                              callback: callback,
-                              context: context,
-                              widget: widget);
-                          BlocProvider.of<TranslatorBloc>(context)
-                              .add(ClearTranslateEvent());
-                        },
-                      ),
                     ),
                   ),
-                  IconButton(
-                      onPressed: () {
-                        TextToSpeechWrapper.onPressed(
-                            WordCreatingUIProvider.tmpFlashCard.question,
-                            WordCreatingUIProvider
-                                .tmpFlashCard.questionLanguage);
-                      },
-                      icon: const Icon(Icons.volume_up_outlined)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        isPressed = !isPressed;
+                ),
+                IconButton(
+                    onPressed: () {
+                      TextToSpeechWrapper.onPressed(
+                          WordCreatingUIProvider.tmpFlashCard.question,
+                          WordCreatingUIProvider.tmpFlashCard.questionLanguage);
+                    },
+                    icon: const Icon(Icons.volume_up_outlined)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      isPressed = !isPressed;
 
-                        widget.callback();
-                      },
-                      icon: loadTranslate()),
-                  Expanded(
-                    child: BlocListener<TranslatorBloc, TranslatorInitial>(
-                      listener: (context, state) {
+                      widget.callback();
+                    },
+                    icon: loadTranslate()),
+                Expanded(
+                  child: BlocListener<TranslatorBloc, TranslatorInitial>(
+                    listener: (context, state) {
+                      widget.wordFormContoller.answerController.text =
+                          state.result;
+                      WordCreatingUIProvider.setAnswer(state.result);
+                      debugPrintIt(
+                          'answer changed to ${state.result} from translate');
+
+                      if (WordCreatingUIProvider.tmpFlashCard.answer.isEmpty) {
                         widget.wordFormContoller.answerController.text =
                             state.result;
                         WordCreatingUIProvider.setAnswer(state.result);
                         debugPrintIt(
                             'answer changed to ${state.result} from translate');
-
-                        if (WordCreatingUIProvider
-                            .tmpFlashCard.answer.isEmpty) {
-                          widget.wordFormContoller.answerController.text =
-                              state.result;
-                          WordCreatingUIProvider.setAnswer(state.result);
-                          debugPrintIt(
-                              'answer changed to ${state.result} from translate');
-                        }
-                      },
-                      child: TextField(
-                        controller: widget.wordFormContoller.answerController,
-                        decoration: InputDecoration(
-                          labelText: 'Add Translation',
-                          labelStyle: FontConfigs.h3TextStyle,
-                        ),
-                        onChanged: (text) {
-                          WordCreatingUIProvider.setAnswer(text);
-                          debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
-                          debugPrintIt('answer changed to $text');
-                        },
-                        onSubmitted: (value) {
-                          saveCollectionFromWord(
-                              onSubmitted: true,
-                              callback: callback,
-                              context: context,
-                              widget: widget);
-
-                          BlocProvider.of<TranslatorBloc>(context)
-                              .add(ClearTranslateEvent());
-                        },
+                      }
+                    },
+                    child: TextField(
+                      controller: widget.wordFormContoller.answerController,
+                      decoration: InputDecoration(
+                        labelText: 'Add Translation',
+                        labelStyle: FontConfigs.h3TextStyle,
                       ),
+                      onChanged: (text) {
+                        WordCreatingUIProvider.setAnswer(text);
+                        debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
+                        debugPrintIt('answer changed to $text');
+                      },
+                      onSubmitted: (value) {
+                        saveCollectionFromWord(
+                            onSubmitted: true,
+                            callback: callback,
+                            context: context,
+                            widget: widget);
+
+                        BlocProvider.of<TranslatorBloc>(context)
+                            .add(ClearTranslateEvent());
+                      },
                     ),
                   ),
-                  IconButton(
-                      onPressed: () {
-                        TextToSpeechWrapper.onPressed(
-                            WordCreatingUIProvider.tmpFlashCard.answer,
-                            WordCreatingUIProvider.tmpFlashCard.answerLanguage);
-                      },
-                      icon: const Icon(Icons.volume_up_outlined)),
-                ],
-              ),
-              IconButton(
-                  onPressed: () {
-                    widget.callback();
+                ),
+                IconButton(
+                    onPressed: () {
+                      TextToSpeechWrapper.onPressed(
+                          WordCreatingUIProvider.tmpFlashCard.answer,
+                          WordCreatingUIProvider.tmpFlashCard.answerLanguage);
+                    },
+                    icon: const Icon(Icons.volume_up_outlined)),
+              ],
+            ),
+            IconButton(
+                onPressed: () {
+                  widget.callback();
 
-                    WordCreatingUIProvider.clear();
-                    BlocProvider.of<TranslatorBloc>(context)
-                        .add(ClearTranslateEvent());
-                  },
-                  icon: const Icon(Icons.delete_sweep_outlined)),
-            ],
-          )),
-    );
+                  WordCreatingUIProvider.clear();
+                  BlocProvider.of<TranslatorBloc>(context)
+                      .add(ClearTranslateEvent());
+                },
+                icon: const Icon(Icons.delete_sweep_outlined)),
+          ],
+        ));
   }
 
   Widget loadScreen() {
@@ -210,12 +202,15 @@ class PortraitNewWord extends BaseScreenNewWord {
           resizeToAvoidBottomInset: false,
           appBar: appbar,
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              addWordWidget(context),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: addWordWidget(context),
+              ),
               AnimationLimiter(
                 child: SizedBox(
-                  height: SizeConfig.getMediaHeight(context, p: 0.41),
+                  height: SizeConfig.getMediaHeight(context, p: 0.35),
                   width: SizeConfig.getMediaWidth(context, p: 1),
                   child: ListView.builder(
                       controller: widget.scrollController,

@@ -46,6 +46,7 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
           widget.backToListStart();
         },
         child: SizedBox(
+          height:  SizeConfig.getMediaHeight(context, p: 0.5),
           width: SizeConfig.getMediaWidth(context, p: 0.4),
           child: Card(
             shape: ShapeBorder.lerp(
@@ -81,7 +82,7 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
                 ),
                 FlashCardCollectionInfo(
                   widget.flashCardCollection,
-                  
+
                 ),
               ],
             ),

@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BaseScreenNewWord {
+  dynamic widget;
+  BaseScreenNewWord(this.widget);
   double appBarHeight = 0;
   void putSelectedCardToFirstPosition(List<FlashCardCollection> collection) {
     var selected = AddWordCollectionProvider.selectedFc;
@@ -30,9 +32,9 @@ class BaseScreenNewWord {
     return MenuDrawer(appBarHeight);
   }
 
-  void backToStartCallback(dynamic widget) {
+  void backToStartCallback() {
     widget.scrollController.animateTo(
-      0,
+      0.toDouble(),
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );

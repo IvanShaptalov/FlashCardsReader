@@ -71,8 +71,8 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                   color: Colors.grey,
                   thickness: 1,
                 ),
-                const Expanded(
-                    child: ListOrColumn(children: [
+                Expanded(
+                    child: Column(children: const [
                   ListTile(
                     title: Text('Add Word'),
                     subtitle: Text(

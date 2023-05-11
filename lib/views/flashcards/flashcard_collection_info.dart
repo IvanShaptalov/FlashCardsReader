@@ -12,7 +12,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
     return Expanded(
         child: Padding(
       padding: const EdgeInsets.all(8.0),
-      child: ListOrColumn(
+      child: Column(
         children: [
           Row(
             children: [
@@ -75,11 +75,17 @@ class FlashCardCollectionInfo extends StatelessWidget {
               ),
             ],
           ),
-          if (![ScreenDesign.portraitSmall, ScreenDesign.landscapeSmall]
-              .contains(DesignIdentifier.identifyScreenDesign(context)))
+          if (![
+            ScreenDesign.portraitSmall,
+            ScreenDesign.landscapeSmall,
+            ScreenDesign.landscape
+          ].contains(DesignIdentifier.identifyScreenDesign(context)))
             const Divider(),
-          if (![ScreenDesign.portraitSmall, ScreenDesign.landscapeSmall]
-              .contains(DesignIdentifier.identifyScreenDesign(context)))
+          if (![
+            ScreenDesign.portraitSmall,
+            ScreenDesign.landscapeSmall,
+            ScreenDesign.landscape
+          ].contains(DesignIdentifier.identifyScreenDesign(context)))
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

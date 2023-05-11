@@ -11,6 +11,8 @@ import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/base_new_word_screen.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape_small.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/portrait.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/portrait_small.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
@@ -118,40 +120,35 @@ class _AddWordViewState extends State<AddWordView> {
     Widget screen;
     switch (DesignIdentifier.identifyScreenDesign(context)) {
       case ScreenDesign.portrait:
-        screen = PortraitNewWord(
-                widget: widget,
+        screen = PortraitNewWord(widget,
                 isPressed: isPressed,
                 callback: widget.callback,
                 loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.portraitSmall:
-        screen = PortraitSmallNewWord(
-                widget: widget,
+        screen = PortraitSmallNewWord(widget,
                 isPressed: isPressed,
                 callback: widget.callback,
                 loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.landscape:
-        screen = PortraitSmallNewWord(
-                widget: widget,
+        screen = LandscapeNewWord(widget,
                 isPressed: isPressed,
                 callback: widget.callback,
                 loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.landscapeSmall:
-        screen = PortraitSmallNewWord(
-                widget: widget,
+        screen = LandscapeSmallNewWord(widget,
                 isPressed: isPressed,
                 callback: widget.callback,
                 loadTranslate: loadTranslate)
             .loadScreen();
         break;
       default:
-        screen = PortraitNewWord(
-                widget: widget,
+        screen = PortraitNewWord(widget,
                 isPressed: isPressed,
                 callback: widget.callback,
                 loadTranslate: loadTranslate)
