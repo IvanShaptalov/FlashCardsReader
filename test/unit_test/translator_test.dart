@@ -7,7 +7,7 @@ void main() {
   group('Translator api', () {
     test('Initialized', () async {
       try {
-        GoogleTranslatorAPIWrapper api = GoogleTranslatorAPIWrapper();
+        GoogleTranslatorApiWrapper api = GoogleTranslatorApiWrapper();
         expect(api, isNotNull);
       } catch (e) {
         /// If this fails, it means that the api key is not set.
@@ -16,7 +16,7 @@ void main() {
     });
 
     test('test lan not supported translate', () async {
-      GoogleTranslatorAPIWrapper api = GoogleTranslatorAPIWrapper();
+      GoogleTranslatorApiWrapper api = GoogleTranslatorApiWrapper();
       String text = 'Hello';
       TranslateResponse result =
           await api.translate(text, to: 'oao', from: 'en');
@@ -25,7 +25,7 @@ void main() {
     });
 
     test('test lan supported translate', () async {
-      GoogleTranslatorAPIWrapper api = GoogleTranslatorAPIWrapper();
+      GoogleTranslatorApiWrapper api = GoogleTranslatorApiWrapper();
       String text = 'Hello';
 
       TranslateResponse result =
@@ -40,7 +40,7 @@ void main() {
     });
 
     test('test autodetect language', () async {
-      GoogleTranslatorAPIWrapper api = GoogleTranslatorAPIWrapper();
+      GoogleTranslatorApiWrapper api = GoogleTranslatorApiWrapper();
 
       String text = 'День';
       TranslateResponse result = await api.translate(text, to: 'en');

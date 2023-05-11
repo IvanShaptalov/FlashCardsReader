@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class TranslateButton extends StatelessWidget {
   FlashCardCollection flashCardCollection;
   Function callback;
-  static GoogleTranslatorAPIWrapper translator = GoogleTranslatorAPIWrapper();
+  static GoogleTranslatorApiWrapper translator = GoogleTranslatorApiWrapper();
 
   static Future<bool>? translate(
       {required FlashCardCollection flashCardCollection,

@@ -39,7 +39,7 @@ class TranslateResponse {
   String toString() => to;
 }
 
-class GoogleTranslatorAPIWrapper {
+class GoogleTranslatorApiWrapper {
   final GoogleTranslator _translator = GoogleTranslator();
 
   

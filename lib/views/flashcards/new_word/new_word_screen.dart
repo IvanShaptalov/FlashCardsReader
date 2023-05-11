@@ -43,7 +43,7 @@ class AddWordFastScreen extends ParentStatefulWidget {
   AddWordFastScreen({super.key});
   ScrollController scrollController = ScrollController();
   WordFormContoller wordFormContoller = WordFormContoller();
-  GoogleTranslatorAPIWrapper translator = GoogleTranslatorAPIWrapper();
+  GoogleTranslatorApiWrapper translator = GoogleTranslatorApiWrapper();
 
   @override
   ParentState<AddWordFastScreen> createState() => _AddWordFastScreenState();
@@ -92,7 +92,7 @@ class AddWordView extends StatefulWidget {
   Function callback;
   ScrollController scrollController;
   WordFormContoller wordFormContoller;
-  GoogleTranslatorAPIWrapper translator;
+  GoogleTranslatorApiWrapper translator;
 
   @override
   State<AddWordView> createState() => _AddWordViewState();
