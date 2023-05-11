@@ -10,6 +10,7 @@ import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/screens/base_new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/portrait.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/portrait_small.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
@@ -114,26 +115,50 @@ class _AddWordViewState extends State<AddWordView> {
 
   @override
   Widget build(BuildContext context) {
-    var portrait = PortraitNewWord(
-            widget: widget,
-            isPressed: isPressed,
-            callback: widget.callback,
-            loadTranslate: loadTranslate)
-        .loadScreen();
-    var smallPortrait = PortraitSmallNewWord(
-            widget: widget,
-            isPressed: isPressed,
-            callback: widget.callback,
-            loadTranslate: loadTranslate)
-        .loadScreen();
+    Widget screen;
+    switch (DesignIdentifier.identifyScreenDesign(context)) {
+      case ScreenDesign.portrait:
+        screen = PortraitNewWord(
+                widget: widget,
+                isPressed: isPressed,
+                callback: widget.callback,
+                loadTranslate: loadTranslate)
+            .loadScreen();
+        break;
+      case ScreenDesign.portraitSmall:
+        screen = PortraitSmallNewWord(
+                widget: widget,
+                isPressed: isPressed,
+                callback: widget.callback,
+                loadTranslate: loadTranslate)
+            .loadScreen();
+        break;
+      case ScreenDesign.landscape:
+        screen = PortraitSmallNewWord(
+                widget: widget,
+                isPressed: isPressed,
+                callback: widget.callback,
+                loadTranslate: loadTranslate)
+            .loadScreen();
+        break;
+      case ScreenDesign.landscapeSmall:
+        screen = PortraitSmallNewWord(
+                widget: widget,
+                isPressed: isPressed,
+                callback: widget.callback,
+                loadTranslate: loadTranslate)
+            .loadScreen();
+        break;
+      default:
+        screen = PortraitNewWord(
+                widget: widget,
+                isPressed: isPressed,
+                callback: widget.callback,
+                loadTranslate: loadTranslate)
+            .loadScreen();
+    }
 
-    return DesignIdentifier.returnScreen(
-      context: context,
-      portraitScreen: portrait,
-      landscapeScreen: portrait,
-      portraitSmallScreen: smallPortrait,
-      landscapeSmallScreen: portrait,
-    );
+    return screen;
   }
 
   Widget loadTranslate() {
