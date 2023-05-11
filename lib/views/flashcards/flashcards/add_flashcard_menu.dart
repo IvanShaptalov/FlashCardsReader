@@ -68,18 +68,16 @@ class UpdateFlashCardBottomSheet {
 
   late FlashCardCollection flashCardCollection;
 // =================================[SHOWMODAL SHEETS]================
-  showUpdateFlashCardMenu(BuildContext specialContext) async {
+  showUpdateFlashCardMenu(BuildContext context) async {
     showModalBottomSheet(
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
-        context: specialContext,
+        context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (BuildContext context, setState) {
             return FlashCardCreatingWall(
-                specialContext: specialContext,
-                flashCardCollection: flashCardCollection,
-                isEdit: edit);
+                flashCardCollection: flashCardCollection, isEdit: edit);
           });
         });
   }
@@ -88,11 +86,7 @@ class UpdateFlashCardBottomSheet {
 // ignore: must_be_immutable
 class FlashCardCreatingWall extends StatefulWidget {
   FlashCardCreatingWall(
-      {super.key,
-      required this.specialContext,
-      required this.flashCardCollection,
-      this.isEdit = false});
-  BuildContext specialContext;
+      {super.key, required this.flashCardCollection, this.isEdit = false});
   FlashCardCollection flashCardCollection;
   bool isEdit = false;
 
@@ -108,17 +102,16 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
         child: BlocProvider(
             create: (_) => TranslatorBloc(),
             child: FlashCardCreatingWallView(
-                widget.specialContext, widget.flashCardCollection,
+                flashCardCollection: widget.flashCardCollection,
                 isEdit: widget.isEdit)));
   }
 }
 
 // ignore: must_be_immutable
 class FlashCardCreatingWallView extends StatefulWidget {
-  FlashCardCreatingWallView(this.specialContext, this.flashCardCollection,
-      {super.key, this.isEdit = false});
+  FlashCardCreatingWallView(
+      {required this.flashCardCollection, super.key, this.isEdit = false});
   bool isEdit;
-  BuildContext specialContext;
   FlashCardFormController flashCardFormController = FlashCardFormController();
   WordFormContoller wordFormContoller = WordFormContoller();
   FlashCardCollection flashCardCollection;
@@ -643,7 +636,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
   void saveCollectionFromWord({required bool onSubmitted}) {
     updateWord(onSubmitted: onSubmitted);
     if (widget.flashCardCollection.isValid) {
-      widget.specialContext.read<FlashCardBloc>().add(UpdateFlashCardEvent(
+      context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
           flashCardCollection: widget.flashCardCollection));
     } else {
       showValidatorMessage();
@@ -749,9 +742,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
         onTap: () {
           if (widget.flashCardCollection.isValid) {
             debugPrint('=====================add collection');
-            widget.specialContext.read<FlashCardBloc>().add(
-                UpdateFlashCardEvent(
-                    flashCardCollection: widget.flashCardCollection));
+            context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
+                flashCardCollection: widget.flashCardCollection));
             Navigator.pop(context);
             FlashCardCreatingUIProvider.clear();
             widget.isEdit
@@ -815,18 +807,17 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                     .read<TranslatorBloc>()
                                     .add(ClearTranslateEvent()));
                           } else {
-                            widget.specialContext.read<TranslatorBloc>().add(
-                                TranslateEvent(
-                                    text: text,
-                                    fromLan: WordCreatingUIProvider
-                                        .tmpFlashCard.questionLanguage,
-                                    toLan: WordCreatingUIProvider
-                                        .tmpFlashCard.answerLanguage));
+                            context.read<TranslatorBloc>().add(TranslateEvent(
+                                text: text,
+                                fromLan: WordCreatingUIProvider
+                                    .tmpFlashCard.questionLanguage,
+                                toLan: WordCreatingUIProvider
+                                    .tmpFlashCard.answerLanguage));
                           }
                         },
                         onSubmitted: (value) {
                           saveCollectionFromWord(onSubmitted: true);
-                          widget.specialContext
+                          context
                               .read<TranslatorBloc>()
                               .add(ClearTranslateEvent());
                         },
@@ -852,7 +843,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                         setState(() {
                           debugPrintIt('pressed');
                         });
-                        widget.specialContext
+                        context
                             .read<TranslatorBloc>()
                             .add(ClearTranslateEvent());
                       },
