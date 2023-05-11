@@ -75,18 +75,22 @@ class FlashCardCollectionInfo extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.bar_chart_rounded,
-                  size: 16, color: Colors.blueAccent),
-              Text(
-                '${flashCardCollection.learnedPercent()} %',
-                style: FontConfigs.h3TextStyle.copyWith(fontSize: 14),
-              ),
-            ],
-          ),
+          if (![ScreenDesign.portraitSmall, ScreenDesign.landscapeSmall]
+              .contains(DesignIdentifier.identifyScreenDesign(context)))
+            const Divider(),
+          if (![ScreenDesign.portraitSmall, ScreenDesign.landscapeSmall]
+              .contains(DesignIdentifier.identifyScreenDesign(context)))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.bar_chart_rounded,
+                    size: 16, color: Colors.blueAccent),
+                Text(
+                  '${flashCardCollection.learnedPercent()} %',
+                  style: FontConfigs.h3TextStyle.copyWith(fontSize: 14),
+                ),
+              ],
+            ),
         ],
       ),
     ));

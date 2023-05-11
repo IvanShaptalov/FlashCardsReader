@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 
 class FastAddWordFCcWidget extends StatefulWidget {
   const FastAddWordFCcWidget(this.flashCardCollection, this.updateCallback,
-      {required this.backToListStart, super.key});
+      {required this.backToListStart, required this.design, super.key});
   final Function updateCallback;
   final Function backToListStart;
+  final ScreenDesign design;
 
   final FlashCardCollection flashCardCollection;
   @override
@@ -80,6 +81,7 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
                 ),
                 FlashCardCollectionInfo(
                   widget.flashCardCollection,
+                  
                 ),
               ],
             ),

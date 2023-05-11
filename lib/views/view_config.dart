@@ -137,22 +137,22 @@ class ConfigQuizView {
 enum ScreenDesign { portrait, landscape, portraitSmall, landscapeSmall }
 
 class DesignIdentifier {
-  static _identifyScreenDesign(BuildContext context) {
+  static identifyScreenDesign(BuildContext context) {
     if (MyConfigOrientation.isPortrait(context)) {
       if (SizeConfig.getMediaHeight(context) < 600) {
         debugPrintIt('selected portraitSmall');
         return ScreenDesign.portraitSmall;
       } else {
-        debugPrintIt('selected portraitSmall');
+        debugPrintIt('selected portrait');
 
         return ScreenDesign.portrait;
       }
     } else {
       if (SizeConfig.getMediaWidth(context) < 600) {
-        debugPrintIt('selected portraitSmall');
+        debugPrintIt('selected landscape smalll');
         return ScreenDesign.landscapeSmall;
       } else {
-        debugPrintIt('selected portraitSmall');
+        debugPrintIt('selected landscape');
         return ScreenDesign.landscape;
       }
     }
@@ -164,7 +164,7 @@ class DesignIdentifier {
       required Widget portraitSmallScreen,
       required Widget landscapeSmallScreen,
       required BuildContext context}) {
-    switch (_identifyScreenDesign(context)) {
+    switch (identifyScreenDesign(context)) {
       case ScreenDesign.portrait:
         return portraitScreen;
       case ScreenDesign.landscape:
