@@ -86,7 +86,7 @@ class BaseScreenNewWord {
     // set the word
     oldWord = text;
     debugPrintIt('wait for 5 seconds');
-    Future.delayed(const Duration(milliseconds: 300)).then((value) {
+    Future.delayed(const Duration(milliseconds: 100)).then((value) {
       if (oldWord == text) {
         debugPrintIt('user stopped typing');
         BlocProvider.of<TranslatorBloc>(context).add(TranslateEvent(
