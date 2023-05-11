@@ -164,7 +164,7 @@ class _AddWordViewState extends State<AddWordView> {
                           ),
                           onChanged: (text) {
                             WordCreatingUIProvider.setQuestion(text);
-                            print('text: $text');
+                            debugPrintIt('text: $text');
                             if (text.isEmpty) {
                               debugPrintIt('onChanged: text is empty - clear');
                               Future.delayed(const Duration(milliseconds: 300))

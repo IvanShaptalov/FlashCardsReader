@@ -1,10 +1,13 @@
 // import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlashCardCreatingUIProvider {
   static FlashCardCollection creatingFlashCardCollection = flashExample();
@@ -26,6 +29,8 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
   Duration deleteDuration = const Duration(milliseconds: 170);
   @override
   Widget build(BuildContext context) {
+    debugPrintIt(
+        'bloc provider exists in add flash widget ${BlocProvider.of<TranslatorBloc>(context).state.result}');
     return AnimatedOpacity(
       opacity: /* widget.toDelete ? 0 : */ 1,
       duration: deleteDuration,
@@ -67,15 +72,14 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                   thickness: 1,
                 ),
                 const Expanded(
-                    child: ListOrColumn(
-                        children: [
-                      ListTile(
-                        title: Text('Add Word'),
-                        subtitle: Text(
-                          'Add Flashcard',
-                        ),
-                      )
-                    ])),
+                    child: ListOrColumn(children: [
+                  ListTile(
+                    title: Text('Add Word'),
+                    subtitle: Text(
+                      'Add Flashcard',
+                    ),
+                  )
+                ])),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
