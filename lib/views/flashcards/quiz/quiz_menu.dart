@@ -14,7 +14,6 @@ import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:quick_actions/quick_actions.dart';
 
 class QuizMenu extends StatefulWidget {
   const QuizMenu({super.key});

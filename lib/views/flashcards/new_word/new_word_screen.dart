@@ -5,26 +5,15 @@ import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/translator/api.dart';
-import 'package:flashcards_reader/util/constants.dart';
-import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
-import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
-import 'package:flashcards_reader/views/flashcards/new_word/screens/base_new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape_small.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/portrait.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/portrait_small.dart';
-import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
-import 'package:flashcards_reader/views/flashcards/translate.dart';
-import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
-import 'package:flashcards_reader/views/menu/drawer_menu.dart';
-import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class WordFormContoller {
   TextEditingController questionController = TextEditingController();
@@ -159,12 +148,6 @@ class _AddWordViewState extends State<AddWordView> {
   }
 
   Widget loadTranslate() {
-    if (isPressed != oldPress) {
-      oldPress = isPressed;
-      return TranslateButton(
-          flashCardCollection: AddWordCollectionProvider.selectedFc,
-          callback: widget.callback);
-    }
     return const Icon(Icons.translate);
   }
 }

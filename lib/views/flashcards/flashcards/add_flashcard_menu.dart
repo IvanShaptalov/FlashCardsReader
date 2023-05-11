@@ -5,7 +5,6 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/select_language_widget.dart';
-import 'package:flashcards_reader/views/flashcards/translate.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
@@ -122,7 +121,8 @@ class FlashCardCreatingWallView extends StatefulWidget {
 
 class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
   bool _isPressed = false;
-  bool _oldPress = false;
+
+  String oldWord = '';
 
   // =====================================[WALL]==[BUILD]=====================================
   @override
@@ -677,11 +677,6 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
   }
 
   Widget loadTranslate() {
-    if (_isPressed != _oldPress) {
-      _oldPress = _isPressed;
-      return TranslateButton(
-          flashCardCollection: widget.flashCardCollection, callback: callback);
-    }
     return const Icon(Icons.translate);
   }
 
@@ -800,20 +795,28 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                         onChanged: (text) {
                           WordCreatingUIProvider.setQuestion(text);
                           debugPrintIt('text: $text');
-                          if (text.isEmpty) {
-                            debugPrintIt('onChanged: text is empty - clear');
-                            Future.delayed(const Duration(milliseconds: 300))
-                                .then((value) => context
-                                    .read<TranslatorBloc>()
-                                    .add(ClearTranslateEvent()));
-                          } else {
-                            context.read<TranslatorBloc>().add(TranslateEvent(
-                                text: text,
-                                fromLan: WordCreatingUIProvider
-                                    .tmpFlashCard.questionLanguage,
-                                toLan: WordCreatingUIProvider
-                                    .tmpFlashCard.answerLanguage));
-                          }
+                          // set the word
+                          oldWord = text;
+                          debugPrintIt('wait for 5 seconds');
+                          Future.delayed(const Duration(milliseconds: 300))
+                              .then((value) {
+                            if (oldWord == text) {
+                              debugPrintIt('user stopped typing');
+                              BlocProvider.of<TranslatorBloc>(context).add(
+                                  TranslateEvent(
+                                      text: text,
+                                      fromLan: WordCreatingUIProvider
+                                          .tmpFlashCard.questionLanguage,
+                                      toLan: WordCreatingUIProvider
+                                          .tmpFlashCard.answerLanguage));
+                            } else if (oldWord.isEmpty || text.isEmpty) {
+                              debugPrintIt('user cleared the text');
+                              BlocProvider.of<TranslatorBloc>(context)
+                                  .add(ClearTranslateEvent());
+                            } else if (oldWord != text) {
+                              debugPrintIt('user is still typing');
+                            }
+                          });
                         },
                         onSubmitted: (value) {
                           saveCollectionFromWord(onSubmitted: true);

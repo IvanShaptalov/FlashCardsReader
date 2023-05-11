@@ -1,17 +1,13 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
-import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcard_collection_widget.dart';
-import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
-import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:quick_actions/quick_actions.dart';
 
 class DeletedFlashCardScreen extends StatefulWidget {
   const DeletedFlashCardScreen({super.key});

@@ -66,37 +66,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
                             labelStyle: FontConfigs.h3TextStyle,
                           ),
                           onChanged: (text) {
-                            WordCreatingUIProvider.setQuestion(text);
-                            debugPrintIt('text: $text');
-                            if (text.isEmpty) {
-                              debugPrintIt('onChanged: text is empty - clear');
-                              Future.delayed(const Duration(milliseconds: 300))
-                                  .then((value) =>
-                                      BlocProvider.of<TranslatorBloc>(context)
-                                          .add(ClearTranslateEvent()));
-                            } else {
-                              BlocProvider.of<TranslatorBloc>(context).add(
-                                  TranslateEvent(
-                                      text: text,
-                                      fromLan: WordCreatingUIProvider
-                                          .tmpFlashCard.questionLanguage,
-                                      toLan: WordCreatingUIProvider
-                                          .tmpFlashCard.answerLanguage));
-                            }
-
-                            // update the word
-                          },
-                          onEditingComplete: () {
-                            debugPrintIt('onEditingComplete');
-                            Future.delayed(const Duration(milliseconds: 300))
-                                .then((value) =>
-                                    BlocProvider.of<TranslatorBloc>(context)
-                                        .add(TranslateEvent(
-                                            text: value,
-                                            fromLan: WordCreatingUIProvider
-                                                .tmpFlashCard.questionLanguage,
-                                            toLan: WordCreatingUIProvider
-                                                .tmpFlashCard.answerLanguage)));
+                            delayTranslate(text, context);
                           },
                           onSubmitted: (value) {
                             saveCollectionFromWord(
@@ -248,8 +218,9 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
                                           ? AddWordCollectionProvider.selectedFc
                                           : flashCardCollection[index],
                                       widget.callback,
-                                      design: DesignIdentifier.identifyScreenDesign(
-                                          context),
+                                      design:
+                                          DesignIdentifier.identifyScreenDesign(
+                                              context),
                                       backToListStart: backToStartCallback,
                                     ),
                                   )),

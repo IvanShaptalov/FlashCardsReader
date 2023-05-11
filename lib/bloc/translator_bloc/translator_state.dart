@@ -24,7 +24,7 @@ class TranslatorInitial {
   Future<TranslatorInitial> translate(
       String text, String fromLan, String toLan) async {
     result = await _translate(text, fromLan, toLan);
-    print(result);
+    debugPrintIt(result);
     return copyWith(result: result);
   }
 

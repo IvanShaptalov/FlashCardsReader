@@ -1,4 +1,5 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
@@ -10,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BaseScreenNewWord {
+  String oldWord = '';
+
   dynamic widget;
   BaseScreenNewWord(this.widget);
   double appBarHeight = 0;
@@ -75,6 +78,28 @@ class BaseScreenNewWord {
       showValidatorMessage();
     }
     callback();
+  }
+
+  void delayTranslate(String text, BuildContext context) {
+    WordCreatingUIProvider.setQuestion(text);
+    debugPrintIt('text: $text');
+    // set the word
+    oldWord = text;
+    debugPrintIt('wait for 5 seconds');
+    Future.delayed(const Duration(milliseconds: 300)).then((value) {
+      if (oldWord == text) {
+        debugPrintIt('user stopped typing');
+        BlocProvider.of<TranslatorBloc>(context).add(TranslateEvent(
+            text: text,
+            fromLan: WordCreatingUIProvider.tmpFlashCard.questionLanguage,
+            toLan: WordCreatingUIProvider.tmpFlashCard.answerLanguage));
+      } else if (oldWord.isEmpty || text.isEmpty) {
+        debugPrintIt('user cleared the text');
+        BlocProvider.of<TranslatorBloc>(context).add(ClearTranslateEvent());
+      } else if (oldWord != text) {
+        debugPrintIt('user is still typing');
+      }
+    });
   }
 
   void updateWord(
