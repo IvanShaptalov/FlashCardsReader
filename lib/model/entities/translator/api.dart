@@ -42,16 +42,19 @@ class TranslateResponse {
 class GoogleTranslatorApiWrapper {
   final GoogleTranslator _translator = GoogleTranslator();
 
-  
-
   Future<TranslateResponse> translate(String text,
       {String from = "auto", String to = "uk"}) async {
+    if (text.isEmpty) {
+      debugPrintIt("Text is empty");
+      return TranslateResponse(
+          fromLanguage: from, toLanguage: to, from: "", to: "");
+    }
     // validate languages
     if (!isLanguageSupported(from)) {
       return TranslateResponse.trException(
           sourceLanguage: from,
           targetLanguage: to,
-          text: langUnsupported + from,
+          text: "",
           source: text,
           exception: langUnsupported + from);
     }
@@ -59,7 +62,7 @@ class GoogleTranslatorApiWrapper {
       return TranslateResponse.trException(
           sourceLanguage: from,
           targetLanguage: to,
-          text: langUnsupported + to,
+          text: "",
           source: text,
           exception: langUnsupported + to);
     }
@@ -73,7 +76,7 @@ class GoogleTranslatorApiWrapper {
       return TranslateResponse.trException(
           sourceLanguage: from,
           targetLanguage: to,
-          text: checkInternetConnection,
+          text: "",
           source: text,
           exception: checkInternetConnection);
     }

@@ -7,7 +7,7 @@ import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class TranslateButton extends StatelessWidget {
+class TranslateButton extends StatefulWidget {
   FlashCardCollection flashCardCollection;
   Function callback;
   static GoogleTranslatorApiWrapper translator = GoogleTranslatorApiWrapper();
@@ -20,8 +20,8 @@ class TranslateButton extends StatelessWidget {
       if (questionWords.isNotEmpty) {
         TranslateResponse answerWords = await translator.translate(
             questionWords,
-            from: getCode(flashCardCollection.questionLanguage),
-            to: getCode(flashCardCollection.answerLanguage));
+            from: getLangCode(flashCardCollection.questionLanguage),
+            to: getLangCode(flashCardCollection.answerLanguage));
         WordCreatingUIProvider.setAnswer(answerWords.toString());
       } else {
         await Future.delayed(const Duration(milliseconds: 250));
@@ -42,13 +42,20 @@ class TranslateButton extends StatelessWidget {
 
   TranslateButton(
       {required this.callback, required this.flashCardCollection, super.key});
+
+  @override
+  State<TranslateButton> createState() => _TranslateButtonState();
+}
+
+class _TranslateButtonState extends State<TranslateButton> {
   @override
   Widget build(BuildContext context) {
     var translateIcon = const Icon(
       Icons.translate,
     );
-    Future<bool>? result =
-        translate(flashCardCollection: flashCardCollection, callback: callback);
+    Future<bool>? result = TranslateButton.translate(
+        flashCardCollection: widget.flashCardCollection,
+        callback: widget.callback);
     return FutureBuilder<bool>(
         future: result, // a previously-obtained Future<String> or null
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {

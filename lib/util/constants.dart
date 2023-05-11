@@ -174,7 +174,7 @@ final Map<String, String> supportedTtsLangs = {
   "ca": "Catalan",
 };
 
-String getCode(String value) {
+String getLangCode(String value) {
   var code = supportedLangs.keys
       .firstWhere((k) => supportedLangs[k] == value, orElse: () => 'en');
   return code;

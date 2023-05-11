@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/translator/api.dart';
@@ -19,16 +20,16 @@ import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:quick_actions/quick_actions.dart';
 
 class WordFormContoller {
   TextEditingController questionController = TextEditingController();
   TextEditingController answerController = TextEditingController();
 
-  void setUp(FlashCard flashCard) {
+  void setUp(FlashCard flashCard, context) {
     // update controller text
     questionController.text = flashCard.question;
-    answerController.text = flashCard.answer;
+    answerController.text =
+        BlocProvider.of<TranslatorBloc>(context).state.result;
 
     // set cursor to the end of the text
 
@@ -63,19 +64,20 @@ class _AddWordFastScreenState extends ParentState<AddWordFastScreen> {
       return child;
     }
   }
-  // end shortcut actions region ==============================================
 
   @override
   Widget build(BuildContext context) {
     widget.portraitPage = BlocProvider(
-      create: (_) => FlashCardBloc(),
-      child: AddWordView(
-        scrollController: widget.scrollController,
-        wordFormContoller: widget.wordFormContoller,
-        translator: widget.translator,
-        callback: callback,
-      ),
-    );
+        create: (_) => FlashCardBloc(),
+        child: BlocProvider(
+          create: (_) => TranslatorBloc(),
+          child: AddWordView(
+            scrollController: widget.scrollController,
+            wordFormContoller: widget.wordFormContoller,
+            translator: widget.translator,
+            callback: callback,
+          ),
+        ));
     bindAllPages(widget.portraitPage);
     return super.build(context);
   }
@@ -145,28 +147,60 @@ class _AddWordViewState extends State<AddWordView> {
                     IconButton(
                         onPressed: () {
                           saveCollectionFromWord(onSubmitted: false);
+                          BlocProvider.of<TranslatorBloc>(context)
+                              .add(ClearTranslateEvent());
+                          saveCollectionFromWord(onSubmitted: true);
                         },
                         icon: const Icon(Icons.add_circle_outlined)),
                     Expanded(
-                      child: TextField(
-                        controller: widget.wordFormContoller.questionController,
-                        decoration: InputDecoration(
-                          labelText: 'Add Word',
-                          labelStyle: FontConfigs.h3TextStyle,
+                      child: BlocProvider(
+                        create: (context) => TranslatorBloc(),
+                        child: TextField(
+                          controller:
+                              widget.wordFormContoller.questionController,
+                          decoration: InputDecoration(
+                            labelText: 'Add Word',
+                            labelStyle: FontConfigs.h3TextStyle,
+                          ),
+                          onChanged: (text) {
+                            WordCreatingUIProvider.setQuestion(text);
+                            print('text: $text');
+                            if (text.isEmpty) {
+                              debugPrintIt('onChanged: text is empty - clear');
+                              Future.delayed(const Duration(milliseconds: 300))
+                                  .then((value) =>
+                                      BlocProvider.of<TranslatorBloc>(context)
+                                          .add(ClearTranslateEvent()));
+                            } else {
+                              BlocProvider.of<TranslatorBloc>(context).add(
+                                  TranslateEvent(
+                                      text: text,
+                                      fromLan: WordCreatingUIProvider
+                                          .tmpFlashCard.questionLanguage,
+                                      toLan: WordCreatingUIProvider
+                                          .tmpFlashCard.answerLanguage));
+                            }
+
+                            // update the word
+                          },
+                          onEditingComplete: () {
+                            debugPrintIt('onEditingComplete');
+                            Future.delayed(const Duration(milliseconds: 300))
+                                .then((value) =>
+                                    BlocProvider.of<TranslatorBloc>(context)
+                                        .add(TranslateEvent(
+                                            text: value,
+                                            fromLan: WordCreatingUIProvider
+                                                .tmpFlashCard.questionLanguage,
+                                            toLan: WordCreatingUIProvider
+                                                .tmpFlashCard.answerLanguage)));
+                          },
+                          onSubmitted: (value) {
+                            saveCollectionFromWord(onSubmitted: true);
+                            BlocProvider.of<TranslatorBloc>(context)
+                                .add(ClearTranslateEvent());
+                          },
                         ),
-                        onChanged: (text) {
-                          WordCreatingUIProvider.setQuestion(text);
-                          debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
-                          debugPrintIt('question changed to $text');
-                          // translate if needed
-                          TranslateButton.translate(
-                              flashCardCollection:
-                                  AddWordCollectionProvider.selectedFc,
-                              callback: widget.callback);
-                        },
-                        onSubmitted: (value) {
-                          saveCollectionFromWord(onSubmitted: true);
-                        },
                       ),
                     ),
                     IconButton(
@@ -190,20 +224,38 @@ class _AddWordViewState extends State<AddWordView> {
                         },
                         icon: loadTranslate()),
                     Expanded(
-                      child: TextField(
-                        controller: widget.wordFormContoller.answerController,
-                        decoration: InputDecoration(
-                          labelText: 'Add Translation',
-                          labelStyle: FontConfigs.h3TextStyle,
+                      child: BlocListener<TranslatorBloc, TranslatorInitial>(
+                        listener: (context, state) {
+                          widget.wordFormContoller.answerController.text =
+                              state.result;
+                          WordCreatingUIProvider.setAnswer(state.result);
+                          debugPrintIt(
+                              'answer changed to ${state.result} from translate');
+
+                          if (WordCreatingUIProvider
+                              .tmpFlashCard.answer.isEmpty) {
+                            widget.wordFormContoller.answerController.text =
+                                state.result;
+                            WordCreatingUIProvider.setAnswer(state.result);
+                            debugPrintIt(
+                                'answer changed to ${state.result} from translate');
+                          }
+                        },
+                        child: TextField(
+                          controller: widget.wordFormContoller.answerController,
+                          decoration: InputDecoration(
+                            labelText: 'Add Translation',
+                            labelStyle: FontConfigs.h3TextStyle,
+                          ),
+                          onChanged: (text) {
+                            WordCreatingUIProvider.setAnswer(text);
+                            debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
+                            debugPrintIt('answer changed to $text');
+                          },
+                          onSubmitted: (value) {
+                            saveCollectionFromWord(onSubmitted: true);
+                          },
                         ),
-                        onChanged: (text) {
-                          WordCreatingUIProvider.setAnswer(text);
-                          debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
-                          debugPrintIt('answer changed to $text');
-                        },
-                        onSubmitted: (value) {
-                          saveCollectionFromWord(onSubmitted: true);
-                        },
                       ),
                     ),
                     IconButton(
@@ -243,7 +295,8 @@ class _AddWordViewState extends State<AddWordView> {
       putSelectedCardToFirstPosition(flashCardCollection);
       var appbar = getAppBar(flashCardCollection);
       appBarHeight = appbar.preferredSize.height;
-      widget.wordFormContoller.setUp(WordCreatingUIProvider.tmpFlashCard);
+      widget.wordFormContoller
+          .setUp(WordCreatingUIProvider.tmpFlashCard, context);
 
       debugPrintIt(
           'selected collection:  ${AddWordCollectionProvider.selectedFc}');

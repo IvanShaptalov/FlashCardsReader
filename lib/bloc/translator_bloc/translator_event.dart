@@ -10,3 +10,5 @@ class TranslateEvent extends TranslatorEvent {
   TranslateEvent(
       {required this.text, required this.fromLan, required this.toLan});
 }
+
+class ClearTranslateEvent extends TranslatorEvent {}
