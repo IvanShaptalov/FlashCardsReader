@@ -5,6 +5,7 @@ import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/translator/api.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape_small.dart';
@@ -97,11 +98,12 @@ class _AddWordViewState extends State<AddWordView> {
         .copyWith(fromTrash: false)
         .flashCards;
 
-    FlashCardCollection? selected = AddWordCollectionProvider.selectedFc;
+    FlashCardCollection? selected = FlashCardCreatingUIProvider.fc;
     if (collection.isNotEmpty && selected.compareWithoutId(flashExample())) {
       selected = collection.first;
-      AddWordCollectionProvider.selectedFc = selected;
+      FlashCardCreatingUIProvider.fc = selected;
     }
+    
   }
 
   @override

@@ -1,16 +1,6 @@
 import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 
-class AddWordCollectionProvider {
-  static FlashCardCollection selectedFc = flashExample();
-
-  static void clear() {
-    selectedFc = flashExample();
-  }
-}
-
-
-
 class WordCreatingUIProvider {
   static FlashCard _tmpFlashCard = FlashCard.fixture();
   static clear() {

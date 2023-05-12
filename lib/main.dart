@@ -12,9 +12,7 @@ Future<bool> initAsync() async {
   bool dbInit = await DataBase.initAsync();
   debugPrint('db inited: $dbInit');
 
-  // TODO add later
-  // bool quickInit = QuickActionsService.init();
-  // debugPrint('quick actions inited: $quickInit');
+  
   TextToSpeechService.initTtsEngineAsync()
       .then((value) => debugPrint('tts engine inited: $value'));
 
@@ -24,7 +22,7 @@ Future<bool> initAsync() async {
 FlashCardCollection flashExample() {
   final FlashCardCollection testFlashCardCollection = FlashCardCollection(
       uuid.v4().toString(),
-      title: 'Example',
+      title: 'FlashCard Collection',
       flashCardSet: {},
       createdAt: DateTime.now(),
       isDeleted: false,

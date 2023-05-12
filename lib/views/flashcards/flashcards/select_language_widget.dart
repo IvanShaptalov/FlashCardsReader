@@ -1,23 +1,18 @@
-import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/constants.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class SelectLanguageDropdown extends StatefulWidget {
-  SelectLanguageDropdown(
-      {required this.flashCardCollection,
-      required this.langDestination,
-      super.key}) {
+  SelectLanguageDropdown({required this.langDestination, super.key}) {
     // set start value
     if (langDestination == 'from') {
-      startValue = flashCardCollection.questionLanguage;
+      startValue = FlashCardCreatingUIProvider.fc.questionLanguage;
     } else {
-      startValue = flashCardCollection.answerLanguage;
+      startValue = FlashCardCreatingUIProvider.fc.answerLanguage;
     }
   }
-
-  FlashCardCollection flashCardCollection;
 
   /// [landDestination], from or to
   String langDestination;
@@ -50,9 +45,9 @@ class _SelectLanguageDropdownState extends State<SelectLanguageDropdown> {
             setState(() {
               widget.startValue = value!;
               if (widget.langDestination == 'from') {
-                widget.flashCardCollection.questionLanguage = value;
+                FlashCardCreatingUIProvider.fc.questionLanguage = value;
               } else {
-                widget.flashCardCollection.answerLanguage = value;
+                FlashCardCreatingUIProvider.fc.answerLanguage = value;
               }
             });
           },
@@ -67,5 +62,4 @@ class _SelectLanguageDropdownState extends State<SelectLanguageDropdown> {
       ],
     );
   }
-
 }

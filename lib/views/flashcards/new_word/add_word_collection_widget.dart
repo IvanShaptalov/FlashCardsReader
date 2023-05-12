@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/views/flashcards/flashcard_collection_info.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class FastAddWordFCcWidget extends StatefulWidget {
 
 class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
   Color setCardColor() {
-    if (widget.flashCardCollection == AddWordCollectionProvider.selectedFc) {
+    if (widget.flashCardCollection == FlashCardCreatingUIProvider.fc) {
       return CardViewConfig.selectedCardColor;
     }
     return CardViewConfig.defaultCardColor;
@@ -37,9 +38,9 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
       // select items for merge
       child: GestureDetector(
         onTap: () {
-          if (AddWordCollectionProvider.selectedFc !=
+          if (FlashCardCreatingUIProvider.fc !=
               widget.flashCardCollection) {
-            AddWordCollectionProvider.selectedFc = widget.flashCardCollection;
+            FlashCardCreatingUIProvider.fc = widget.flashCardCollection;
           }
 
           widget.updateCallback();

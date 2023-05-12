@@ -1,7 +1,7 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
-import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/select_language_widget.dart';
@@ -53,19 +53,9 @@ class WordFormContoller {
 }
 
 class UpdateFlashCardBottomSheet {
-  UpdateFlashCardBottomSheet(
-      {FlashCardCollection? creatingFlashC, this.edit = false}) {
-    if (creatingFlashC != null) {
-      debugPrintIt('create copy of flashcard collection');
-      flashCardCollection = creatingFlashC.copy();
-    } else {
-      debugPrintIt('create flashFixture');
-      flashCardCollection = flashExample();
-    }
-  }
+  UpdateFlashCardBottomSheet({this.edit = false});
   bool edit;
 
-  late FlashCardCollection flashCardCollection;
 // =================================[SHOWMODAL SHEETS]================
   showUpdateFlashCardMenu(BuildContext context) async {
     showModalBottomSheet(
@@ -75,8 +65,7 @@ class UpdateFlashCardBottomSheet {
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (BuildContext context, setState) {
-            return FlashCardCreatingWall(
-                flashCardCollection: flashCardCollection, isEdit: edit);
+            return FlashCardCreatingWall(isEdit: edit);
           });
         });
   }
@@ -84,9 +73,7 @@ class UpdateFlashCardBottomSheet {
 
 // ignore: must_be_immutable
 class FlashCardCreatingWall extends StatefulWidget {
-  FlashCardCreatingWall(
-      {super.key, required this.flashCardCollection, this.isEdit = false});
-  FlashCardCollection flashCardCollection;
+  FlashCardCreatingWall({super.key, this.isEdit = false});
   bool isEdit = false;
 
   @override
@@ -100,20 +87,16 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
         create: (_) => FlashCardBloc(),
         child: BlocProvider(
             create: (_) => TranslatorBloc(),
-            child: FlashCardCreatingWallView(
-                flashCardCollection: widget.flashCardCollection,
-                isEdit: widget.isEdit)));
+            child: FlashCardCreatingWallView(isEdit: widget.isEdit)));
   }
 }
 
 // ignore: must_be_immutable
 class FlashCardCreatingWallView extends StatefulWidget {
-  FlashCardCreatingWallView(
-      {required this.flashCardCollection, super.key, this.isEdit = false});
+  FlashCardCreatingWallView({super.key, this.isEdit = false});
   bool isEdit;
   FlashCardFormController flashCardFormController = FlashCardFormController();
   WordFormContoller wordFormContoller = WordFormContoller();
-  FlashCardCollection flashCardCollection;
   @override
   State<FlashCardCreatingWallView> createState() =>
       _FlashCardCreatingWallViewState();
@@ -127,7 +110,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
   // =====================================[WALL]==[BUILD]=====================================
   @override
   Widget build(BuildContext context) {
-    widget.flashCardFormController.setUp(widget.flashCardCollection);
+    widget.flashCardFormController.setUp(FlashCardCreatingUIProvider.fc);
     widget.wordFormContoller.setUp(WordCreatingUIProvider.tmpFlashCard);
     return Container(
         decoration: BoxDecoration(
@@ -177,7 +160,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                       labelStyle: FontConfigs.h3TextStyle,
                     ),
                     onChanged: (text) {
-                      widget.flashCardCollection.title = text;
+                      FlashCardCreatingUIProvider.fc.title = text;
                     },
                   ),
                 ),
@@ -193,7 +176,6 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                             style: FontConfigs.h3TextStyle,
                           ),
                           SelectLanguageDropdown(
-                            flashCardCollection: widget.flashCardCollection,
                             langDestination: 'from',
                           ),
                         ],
@@ -205,7 +187,6 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                             style: FontConfigs.h3TextStyle,
                           ),
                           SelectLanguageDropdown(
-                            flashCardCollection: widget.flashCardCollection,
                             langDestination: 'to',
                           ),
                         ],
@@ -226,8 +207,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                       vertical: 32.0,
                       horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
                   child: Column(children: [
-                    for (var flashCard in widget
-                        .flashCardCollection.flashCardSet
+                    for (var flashCard in FlashCardCreatingUIProvider
+                        .fc.flashCardSet
                         .toList()
                         .reversed)
                       Padding(
@@ -540,8 +521,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                               ),
                                               onTap: () {
                                                 setState(() {
-                                                  widget.flashCardCollection
-                                                      .flashCardSet
+                                                  FlashCardCreatingUIProvider
+                                                      .fc.flashCardSet
                                                       .remove(flashCard);
                                                 });
                                               },
@@ -635,34 +616,34 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
 
   void saveCollectionFromWord({required bool onSubmitted}) {
     updateWord(onSubmitted: onSubmitted);
-    if (widget.flashCardCollection.isValid) {
+    if (FlashCardCreatingUIProvider.fc.isValid) {
       context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
-          flashCardCollection: widget.flashCardCollection));
+          flashCardCollection: FlashCardCreatingUIProvider.fc..id = uuid.v4()));
     } else {
       showValidatorMessage();
     }
   }
 
   void showValidatorMessage() {
-    if (widget.flashCardCollection.title.isEmpty) {
+    if (FlashCardCreatingUIProvider.fc.title.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add collection title',
           status: NotificationStatus.info);
 
       debugPrint('title');
-    } else if (widget.flashCardCollection.isEmpty) {
+    } else if (FlashCardCreatingUIProvider.fc.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add at least one flashcard',
           status: NotificationStatus.info);
 
       debugPrint('Add at least one flashcard');
-    } else if (widget.flashCardCollection.answerLanguage.isEmpty) {
+    } else if (FlashCardCreatingUIProvider.fc.answerLanguage.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add question language',
           status: NotificationStatus.info);
 
       debugPrint('Add question language');
-    } else if (widget.flashCardCollection.answerLanguage.isEmpty) {
+    } else if (FlashCardCreatingUIProvider.fc.answerLanguage.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification('Add answerlanguage',
           status: NotificationStatus.info);
 
@@ -688,11 +669,11 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
       debugPrint('add flashcard');
 
       WordCreatingUIProvider.setQuestionLanguage(
-          widget.flashCardCollection.questionLanguage);
+          FlashCardCreatingUIProvider.fc.questionLanguage);
       WordCreatingUIProvider.setAnswerLanguage(
-          widget.flashCardCollection.answerLanguage);
+          FlashCardCreatingUIProvider.fc.answerLanguage);
 
-      widget.flashCardCollection.flashCardSet
+      FlashCardCreatingUIProvider.fc.flashCardSet
           .add(WordCreatingUIProvider.tmpFlashCard);
       WordCreatingUIProvider.clear();
       OverlayNotificationProvider.showOverlayNotification('word added',
@@ -735,10 +716,10 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
           ),
         ),
         onTap: () {
-          if (widget.flashCardCollection.isValid) {
+          if (FlashCardCreatingUIProvider.fc.isValid) {
             debugPrint('=====================add collection');
             context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
-                flashCardCollection: widget.flashCardCollection));
+                flashCardCollection: FlashCardCreatingUIProvider.fc));
             Navigator.pop(context);
             FlashCardCreatingUIProvider.clear();
             widget.isEdit
@@ -802,13 +783,15 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                               .then((value) {
                             if (oldWord == text) {
                               debugPrintIt('user stopped typing');
+                              debugPrintIt(
+                                  'translate: $oldWord to ${FlashCardCreatingUIProvider.fc.answerLanguage}');
                               BlocProvider.of<TranslatorBloc>(context).add(
                                   TranslateEvent(
                                       text: text,
-                                      fromLan: WordCreatingUIProvider
-                                          .tmpFlashCard.questionLanguage,
-                                      toLan: WordCreatingUIProvider
-                                          .tmpFlashCard.answerLanguage));
+                                      fromLan: FlashCardCreatingUIProvider
+                                          .fc.questionLanguage,
+                                      toLan: FlashCardCreatingUIProvider
+                                          .fc.answerLanguage));
                             } else if (oldWord.isEmpty || text.isEmpty) {
                               debugPrintIt('user cleared the text');
                               BlocProvider.of<TranslatorBloc>(context)

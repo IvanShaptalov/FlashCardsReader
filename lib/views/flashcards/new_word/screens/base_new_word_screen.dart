@@ -3,6 +3,7 @@ import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
@@ -17,7 +18,7 @@ class BaseScreenNewWord {
   BaseScreenNewWord(this.widget);
   double appBarHeight = 0;
   void putSelectedCardToFirstPosition(List<FlashCardCollection> collection) {
-    var selected = AddWordCollectionProvider.selectedFc;
+    var selected = FlashCardCreatingUIProvider.fc;
     var index = collection.indexWhere((element) => element == selected);
     if (index != -1) {
       collection.removeAt(index);
@@ -71,9 +72,9 @@ class BaseScreenNewWord {
         callback: callback,
         widget: widget,
         context: context);
-    if (AddWordCollectionProvider.selectedFc.isValid) {
+    if (FlashCardCreatingUIProvider.fc.isValid) {
       context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
-          flashCardCollection: AddWordCollectionProvider.selectedFc));
+          flashCardCollection: FlashCardCreatingUIProvider.fc));
     } else {
       showValidatorMessage();
     }
@@ -87,12 +88,13 @@ class BaseScreenNewWord {
     oldWord = text;
     debugPrintIt('wait for 5 seconds');
     Future.delayed(const Duration(milliseconds: 100)).then((value) {
+      debugPrintIt(FlashCardCreatingUIProvider.fc);
       if (oldWord == text) {
         debugPrintIt('user stopped typing');
         BlocProvider.of<TranslatorBloc>(context).add(TranslateEvent(
             text: text,
-            fromLan: WordCreatingUIProvider.tmpFlashCard.questionLanguage,
-            toLan: WordCreatingUIProvider.tmpFlashCard.answerLanguage));
+            fromLan: FlashCardCreatingUIProvider.fc.questionLanguage,
+            toLan: FlashCardCreatingUIProvider.fc.answerLanguage));
       } else if (oldWord.isEmpty || text.isEmpty) {
         debugPrintIt('user cleared the text');
         BlocProvider.of<TranslatorBloc>(context).add(ClearTranslateEvent());
@@ -114,11 +116,11 @@ class BaseScreenNewWord {
       debugPrint('add flashcard');
 
       WordCreatingUIProvider.setQuestionLanguage(
-          AddWordCollectionProvider.selectedFc.questionLanguage);
+          FlashCardCreatingUIProvider.fc.questionLanguage);
       WordCreatingUIProvider.setAnswerLanguage(
-          AddWordCollectionProvider.selectedFc.answerLanguage);
+          FlashCardCreatingUIProvider.fc.answerLanguage);
 
-      AddWordCollectionProvider.selectedFc.flashCardSet
+      FlashCardCreatingUIProvider.fc.flashCardSet
           .add(WordCreatingUIProvider.tmpFlashCard);
       WordCreatingUIProvider.clear();
       OverlayNotificationProvider.showOverlayNotification('word added',
@@ -141,25 +143,25 @@ class BaseScreenNewWord {
   }
 
   void showValidatorMessage() {
-    if (AddWordCollectionProvider.selectedFc.title.isEmpty) {
+    if (FlashCardCreatingUIProvider.fc.title.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add collection title',
           status: NotificationStatus.info);
 
       debugPrint('title');
-    } else if (AddWordCollectionProvider.selectedFc.isEmpty) {
+    } else if (FlashCardCreatingUIProvider.fc.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add at least one flashcard',
           status: NotificationStatus.info);
 
       debugPrint('Add at least one flashcard');
-    } else if (AddWordCollectionProvider.selectedFc.answerLanguage.isEmpty) {
+    } else if (FlashCardCreatingUIProvider.fc.answerLanguage.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add question language',
           status: NotificationStatus.info);
 
       debugPrint('Add question language');
-    } else if (AddWordCollectionProvider.selectedFc.answerLanguage.isEmpty) {
+    } else if (FlashCardCreatingUIProvider.fc.answerLanguage.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification('Add answerlanguage',
           status: NotificationStatus.info);
 

@@ -10,10 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlashCardCreatingUIProvider {
-  static FlashCardCollection creatingFlashCardCollection = flashExample();
+  static FlashCardCollection fc = flashExample();
 
   static clear() {
-    creatingFlashCardCollection = flashExample();
+    fc = flashExample();
     WordCreatingUIProvider.clear();
   }
 }
@@ -36,10 +36,8 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
       duration: deleteDuration,
       child: GestureDetector(
         onTap: () {
-          UpdateFlashCardBottomSheet(
-                  creatingFlashC:
-                      FlashCardCreatingUIProvider.creatingFlashCardCollection)
-              .showUpdateFlashCardMenu(context);
+          FlashCardCreatingUIProvider.clear();
+          UpdateFlashCardBottomSheet().showUpdateFlashCardMenu(context);
         },
         child: Padding(
           padding: EdgeInsets.symmetric(

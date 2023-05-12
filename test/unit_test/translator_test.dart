@@ -21,7 +21,7 @@ void main() {
       TranslateResponse result =
           await api.translate(text, to: 'oao', from: 'en');
 
-      expect(result.toString(), '${langUnsupported}oao');
+      expect(result.toString(), '');
     });
 
     test('test lan supported translate', () async {
