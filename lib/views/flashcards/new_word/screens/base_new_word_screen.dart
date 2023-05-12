@@ -77,7 +77,8 @@ class BaseScreenNewWord {
                     .contains(DesignIdentifier.identifyScreenDesign(context))
                 ? 0.1
                 : 0.07),
-        width: SizeConfig.getMediaWidth(context, p: [ScreenDesign.landscape, ScreenDesign.landscapeSmall]
+        width: SizeConfig.getMediaWidth(context,
+            p: [ScreenDesign.landscape, ScreenDesign.landscapeSmall]
                     .contains(DesignIdentifier.identifyScreenDesign(context))
                 ? 0.3
                 : 0.6),
@@ -98,9 +99,9 @@ class BaseScreenNewWord {
             SizedBox(
               width: SizeConfig.getMediaWidth(context, p: 0.01),
             ),
-            Text(
+            const Text(
               'clear fields',
-              style: FontConfigs.h2TextStyle,
+              style: FontConfigs.h2TextStyleBlack,
             )
           ],
         ),

@@ -703,7 +703,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
           height: SizeConfig.getMediaHeight(context, p: 0.1),
           width: SizeConfig.getMediaWidth(context, p: 0.8),
           decoration: BoxDecoration(
-            color: Colors.green.shade300,
+            color: ConfigFashAddWordView.menuColor,
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(25), topRight: Radius.circular(25)),
           ),

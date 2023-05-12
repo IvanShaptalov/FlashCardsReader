@@ -20,7 +20,7 @@ class FastAddWordFCcWidget extends StatefulWidget {
 class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
   Color setCardColor() {
     if (widget.flashCardCollection == FlashCardCreatingUIProvider.fc) {
-      return CardViewConfig.selectedCardColor;
+      return ConfigFashAddWordView.selectedCard;
     }
     return CardViewConfig.defaultCardColor;
   }
@@ -38,8 +38,7 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
       // select items for merge
       child: GestureDetector(
         onTap: () {
-          if (FlashCardCreatingUIProvider.fc !=
-              widget.flashCardCollection) {
+          if (FlashCardCreatingUIProvider.fc != widget.flashCardCollection) {
             FlashCardCreatingUIProvider.fc = widget.flashCardCollection;
           }
 
@@ -47,7 +46,7 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
           widget.backToListStart();
         },
         child: SizedBox(
-          height:  SizeConfig.getMediaHeight(context, p: 0.5),
+          height: SizeConfig.getMediaHeight(context, p: 0.5),
           width: SizeConfig.getMediaWidth(context, p: 0.4),
           child: Card(
             shape: ShapeBorder.lerp(
@@ -83,7 +82,6 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
                 ),
                 FlashCardCollectionInfo(
                   widget.flashCardCollection,
-
                 ),
               ],
             ),

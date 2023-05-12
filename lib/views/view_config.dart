@@ -119,7 +119,9 @@ class ConfigQuizView {
 }
 
 class ConfigFashAddWordView {
-  static Color buttonColor = Colors.amber.shade200;
+  static Color buttonColor = Colors.amber.shade50;
+  static Color selectedCard = Colors.green.shade100;
+  static Color menuColor = Colors.green.shade100;
 }
 
 enum ScreenDesign { portrait, landscape, portraitSmall, landscapeSmall }
