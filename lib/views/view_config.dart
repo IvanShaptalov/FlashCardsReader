@@ -118,6 +118,10 @@ class ConfigQuizView {
       TextStyle(fontSize: 16, color: Colors.grey.shade900);
 }
 
+class ConfigFashAddWordView {
+  static Color buttonColor = Colors.amber.shade200;
+}
+
 enum ScreenDesign { portrait, landscape, portraitSmall, landscapeSmall }
 
 class DesignIdentifier {

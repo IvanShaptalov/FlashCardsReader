@@ -8,6 +8,7 @@ import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
+import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -60,6 +61,51 @@ class BaseScreenNewWord {
         },
       ),
     ];
+  }
+
+  Widget clearFieldsButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        widget.callback();
+
+        WordCreatingUIProvider.clear();
+        BlocProvider.of<TranslatorBloc>(context).add(ClearTranslateEvent());
+      },
+      child: Container(
+        height: SizeConfig.getMediaHeight(context,
+            p: [ScreenDesign.landscape, ScreenDesign.landscapeSmall]
+                    .contains(DesignIdentifier.identifyScreenDesign(context))
+                ? 0.1
+                : 0.07),
+        width: SizeConfig.getMediaWidth(context, p: [ScreenDesign.landscape, ScreenDesign.landscapeSmall]
+                    .contains(DesignIdentifier.identifyScreenDesign(context))
+                ? 0.3
+                : 0.6),
+        decoration: BoxDecoration(
+          color: ConfigFashAddWordView.buttonColor,
+
+          // rounded full border
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
+          border: Border.all(
+            color: Colors.grey,
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.delete_sweep_outlined),
+            SizedBox(
+              width: SizeConfig.getMediaWidth(context, p: 0.01),
+            ),
+            Text(
+              'clear fields',
+              style: FontConfigs.h2TextStyle,
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   void saveCollectionFromWord(

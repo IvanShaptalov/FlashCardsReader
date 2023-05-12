@@ -137,15 +137,7 @@ class PortraitNewWord extends BaseScreenNewWord {
                     icon: const Icon(Icons.volume_up_outlined)),
               ],
             ),
-            IconButton(
-                onPressed: () {
-                  widget.callback();
-
-                  WordCreatingUIProvider.clear();
-                  BlocProvider.of<TranslatorBloc>(context)
-                      .add(ClearTranslateEvent());
-                },
-                icon: const Icon(Icons.delete_sweep_outlined)),
+            clearFieldsButton(context)
           ],
         ));
   }
@@ -161,8 +153,7 @@ class PortraitNewWord extends BaseScreenNewWord {
       widget.wordFormContoller
           .setUp(WordCreatingUIProvider.tmpFlashCard, context);
 
-      debugPrintIt(
-          'selected collection:  ${FlashCardCreatingUIProvider.fc}');
+      debugPrintIt('selected collection:  ${FlashCardCreatingUIProvider.fc}');
       return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: appbar,
