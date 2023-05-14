@@ -1,9 +1,11 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/base_new_word_screen.dart';
+import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +21,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
       required this.callback,
       required this.loadTranslate});
 
-  Widget addWordWidget(BuildContext context) {
+  Widget addWordMenuWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Transform.scale(
@@ -37,15 +39,8 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
                 width: 1,
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                // TODO ebatnya tyt ne rabotaet
-                translateListenerWidget(
-                    context: context, isPressed: isPressed, callback: callback),
-                addWordsButton(context: context, callback: callback),
-              ],
-            )),
+            child: addWordMenu(
+                context: context, callback: callback, isPressed: isPressed)),
       ),
     );
   }
@@ -71,7 +66,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    addWordWidget(context),
+                    addWordMenuWidget(context),
                   ],
                 ),
                 Column(

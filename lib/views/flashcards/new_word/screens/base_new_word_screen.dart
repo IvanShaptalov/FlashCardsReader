@@ -75,6 +75,67 @@ class BaseScreenNewWord {
         icon: const Icon(Icons.auto_delete));
   }
 
+  Widget addWordMenu(
+      {required BuildContext context,
+      required bool isPressed,
+      required Function callback}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        addWordEventWidget(
+            context: context, isPressed: isPressed, callback: callback),
+        translateListenerWidget(
+            context: context, isPressed: isPressed, callback: callback),
+        addWordsButton(context: context, callback: callback),
+      ],
+    );
+  }
+
+  Widget addWordEventWidget(
+      {required BuildContext context,
+      required bool isPressed,
+      required Function callback}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        clearFieldButton(context: context),
+        Expanded(
+          child: BlocProvider(
+            create: (context) => TranslatorBloc(),
+            child: TextField(
+              controller: widget.wordFormContoller.questionController,
+              decoration: InputDecoration(
+                labelText: 'Add Word',
+                labelStyle: FontConfigs.h3TextStyle,
+              ),
+              onChanged: (text) {
+                delayTranslate(text, context);
+
+                // update the word
+              },
+              onSubmitted: (value) {
+                saveCollectionFromWord(
+                    onSubmitted: true,
+                    callback: callback,
+                    context: context,
+                    widget: widget);
+                BlocProvider.of<TranslatorBloc>(context)
+                    .add(ClearTranslateEvent());
+              },
+            ),
+          ),
+        ),
+        IconButton(
+            onPressed: () {
+              TextToSpeechWrapper.onPressed(
+                  WordCreatingUIProvider.tmpFlashCard.question,
+                  WordCreatingUIProvider.tmpFlashCard.questionLanguage);
+            },
+            icon: const Icon(Icons.volume_up_outlined)),
+      ],
+    );
+  }
+
   Widget addWordsButton(
       {required BuildContext context, required Function callback}) {
     return GestureDetector(
@@ -102,10 +163,6 @@ class BaseScreenNewWord {
 
           // rounded full border
           borderRadius: const BorderRadius.all(Radius.circular(25)),
-          border: Border.all(
-            color: Colors.grey,
-            width: 1,
-          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -115,7 +172,7 @@ class BaseScreenNewWord {
               width: SizeConfig.getMediaWidth(context, p: 0.01),
             ),
             const Text(
-              'save',
+              'save word',
               style: FontConfigs.h2TextStyleBlack,
             )
           ],

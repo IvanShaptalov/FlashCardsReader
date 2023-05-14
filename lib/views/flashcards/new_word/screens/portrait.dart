@@ -1,11 +1,9 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
-import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/base_new_word_screen.dart';
-import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,51 +33,8 @@ class PortraitNewWord extends BaseScreenNewWord {
             width: 1,
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-               clearFieldButton(context: context),
-                Expanded(
-                  child: BlocProvider(
-                    create: (context) => TranslatorBloc(),
-                    child: TextField(
-                      controller: widget.wordFormContoller.questionController,
-                      decoration: InputDecoration(
-                        labelText: 'Add Word',
-                        labelStyle: FontConfigs.h3TextStyle,
-                      ),
-                      onChanged: (text) {
-                        delayTranslate(text, context);
-                      },
-                      onSubmitted: (value) {
-                        saveCollectionFromWord(
-                            onSubmitted: true,
-                            callback: callback,
-                            context: context,
-                            widget: widget);
-                        BlocProvider.of<TranslatorBloc>(context)
-                            .add(ClearTranslateEvent());
-                      },
-                    ),
-                  ),
-                ),
-                IconButton(
-                    onPressed: () {
-                      TextToSpeechWrapper.onPressed(
-                          WordCreatingUIProvider.tmpFlashCard.question,
-                          WordCreatingUIProvider.tmpFlashCard.questionLanguage);
-                    },
-                    icon: const Icon(Icons.volume_up_outlined)),
-              ],
-            ),
-            translateListenerWidget(
-                context: context, isPressed: isPressed, callback: callback),
-            addWordsButton(context: context, callback: callback),
-          ],
-        ));
+        child: addWordMenu(
+            context: context, callback: callback, isPressed: isPressed));
   }
 
   Widget loadScreen() {
