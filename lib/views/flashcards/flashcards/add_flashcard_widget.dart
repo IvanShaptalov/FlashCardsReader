@@ -82,7 +82,6 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     /// ============================[ADD FLASHCARD MENU OPEN]============================
-                    //? in plans add languages
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.add_circle_outline),

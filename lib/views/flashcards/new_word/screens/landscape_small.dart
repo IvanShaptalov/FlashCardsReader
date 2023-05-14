@@ -27,7 +27,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
             height: SizeConfig.getMediaHeight(context, p: 0.55),
             width: SizeConfig.getMediaWidth(context, p: 0.6),
             decoration: BoxDecoration(
-              color: ConfigFashAddWordView.menuColor,
+              color: ConfigFastAddWordView.menuColor,
 
               // rounded full border
               borderRadius: const BorderRadius.all(Radius.circular(10)),

@@ -20,7 +20,7 @@ class FastAddWordFCcWidget extends StatefulWidget {
 class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
   Color setCardColor() {
     if (widget.flashCardCollection == FlashCardCreatingUIProvider.fc) {
-      return ConfigFashAddWordView.selectedCard;
+      return ConfigFastAddWordView.selectedCard;
     }
     return CardViewConfig.defaultCardColor;
   }

@@ -496,7 +496,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                         .wordButtonWidthPercent),
                                                 decoration: BoxDecoration(
                                                     color: ConfigViewUpdateMenu
-                                                        .buttonColor,
+                                                        .addWordMenuColor,
                                                     border: Border.all(
                                                         color: Colors
                                                             .grey.shade400,
@@ -548,7 +548,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                         .wordButtonWidthPercent),
                                                 decoration: BoxDecoration(
                                                     color: ConfigViewUpdateMenu
-                                                        .buttonColor,
+                                                        .addWordMenuColor,
                                                     border: Border.all(
                                                         color: Colors
                                                             .grey.shade400,
@@ -708,14 +708,14 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
           height: SizeConfig.getMediaHeight(context, p: 0.1),
           width: SizeConfig.getMediaWidth(context, p: 0.8),
           decoration: BoxDecoration(
-            color: ConfigFashAddWordView.menuColor,
+            color: ConfigViewUpdateMenu.addWordMenuColor,
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(25), topRight: Radius.circular(25)),
           ),
           child: const Center(
             child: Text(
               'Save collection',
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              style: FontConfigs.h2TextStyleBlack,
               textAlign: TextAlign.center,
             ),
           ),

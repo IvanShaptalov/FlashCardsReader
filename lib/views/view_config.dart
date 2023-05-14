@@ -84,8 +84,7 @@ class ConfigViewUpdateMenu {
   static Color dividerColor = Colors.grey.shade300;
   static Color dropDownColor = Colors.amber.shade50;
   static Color dropDownColorUndlerline = Colors.green.shade300;
-  static Color buttonColor = Colors.green.shade300;
-  static Color addWordMenuColor = Colors.green.shade100;
+  static Color addWordMenuColor = Colors.green.shade200;
   static Color buttonIconColor = Colors.grey.shade800;
   static double wordButtonWidthPercent = 0.3;
 }
@@ -119,10 +118,10 @@ class ConfigQuizView {
       TextStyle(fontSize: 16, color: Colors.grey.shade900);
 }
 
-class ConfigFashAddWordView {
+class ConfigFastAddWordView {
   static Color buttonColor = Colors.amber.shade50;
   static Color selectedCard = Colors.green.shade100;
-  static Color menuColor = Colors.green.shade100;
+  static Color menuColor = Colors.green.shade200;
 }
 
 enum ScreenDesign { portrait, landscape, portraitSmall, landscapeSmall }

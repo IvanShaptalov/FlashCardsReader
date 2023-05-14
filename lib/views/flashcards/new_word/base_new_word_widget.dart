@@ -168,7 +168,7 @@ class BaseNewWordWidget {
                 ? 0.3
                 : 0.6),
         decoration: BoxDecoration(
-          color: ConfigFashAddWordView.buttonColor,
+          color: ConfigFastAddWordView.buttonColor,
 
           // rounded full border
           borderRadius: const BorderRadius.all(Radius.circular(25)),
