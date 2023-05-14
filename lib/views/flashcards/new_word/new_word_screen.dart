@@ -86,7 +86,6 @@ class AddWordView extends StatefulWidget {
 
 class _AddWordViewState extends State<AddWordView> {
   double appBarHeight = 0;
-  bool isPressed = false;
   bool oldPress = false;
 
   @override
@@ -111,35 +110,30 @@ class _AddWordViewState extends State<AddWordView> {
     switch (DesignIdentifier.identifyScreenDesign(context)) {
       case ScreenDesign.portrait:
         screen = PortraitNewWord(widget,
-                isPressed: isPressed,
                 callback: widget.callback,
                 loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.portraitSmall:
         screen = PortraitSmallNewWord(widget,
-                isPressed: isPressed,
                 callback: widget.callback,
                 loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.landscape:
         screen = LandscapeNewWord(widget,
-                isPressed: isPressed,
                 callback: widget.callback,
                 loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.landscapeSmall:
         screen = LandscapeSmallNewWord(widget,
-                isPressed: isPressed,
                 callback: widget.callback,
                 loadTranslate: loadTranslate)
             .loadScreen();
         break;
       default:
         screen = PortraitNewWord(widget,
-                isPressed: isPressed,
                 callback: widget.callback,
                 loadTranslate: loadTranslate)
             .loadScreen();

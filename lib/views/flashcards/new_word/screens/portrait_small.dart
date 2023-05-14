@@ -4,6 +4,7 @@ import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/base_new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/view_config.dart';
@@ -14,12 +15,9 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 class PortraitSmallNewWord extends BaseScreenNewWord {
   Function callback;
   Function loadTranslate;
-  bool isPressed;
 
   PortraitSmallNewWord(super.widget,
-      {required this.isPressed,
-      required this.callback,
-      required this.loadTranslate});
+      {required this.callback, required this.loadTranslate});
 
   Widget addWordWidget(BuildContext context) {
     return Transform.scale(
@@ -37,8 +35,11 @@ class PortraitSmallNewWord extends BaseScreenNewWord {
               width: 1,
             ),
           ),
-          child: addWordMenu(
-              context: context, callback: callback, isPressed: isPressed)),
+          child: BaseNewWordWidget.addWordMenu(
+              context: context,
+              callback: callback,
+              widget: widget,
+              oldWord: oldWord)),
     );
   }
 

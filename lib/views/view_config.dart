@@ -85,6 +85,7 @@ class ConfigViewUpdateMenu {
   static Color dropDownColor = Colors.amber.shade50;
   static Color dropDownColorUndlerline = Colors.green.shade300;
   static Color buttonColor = Colors.green.shade300;
+  static Color addWordMenuColor = Colors.green.shade100;
   static Color buttonIconColor = Colors.grey.shade800;
   static double wordButtonWidthPercent = 0.3;
 }

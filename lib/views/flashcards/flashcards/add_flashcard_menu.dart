@@ -5,6 +5,7 @@ import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/select_language_widget.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
@@ -137,7 +138,15 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
               ],
             ),
           ),
-          addWordWidget(),
+          Container(
+            height: SizeConfig.getMediaHeight(context, p: 0.3),
+            color: ConfigViewUpdateMenu.addWordMenuColor,
+            child: BaseNewWordWidget.addWordMenu(
+                context: context,
+                callback: callback,
+                widget: widget,
+                oldWord: oldWord),
+          ),
           const Divider(
             color: Colors.grey,
             thickness: 1,
@@ -657,10 +666,6 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
     }
   }
 
-  Widget loadTranslate() {
-    return const Icon(Icons.translate);
-  }
-
   void updateWord({bool onSubmitted = false}) {
     var flash = WordCreatingUIProvider.tmpFlashCard;
     if (onSubmitted && flash.answer.isEmpty && flash.question.isEmpty) {
@@ -833,7 +838,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                             .read<TranslatorBloc>()
                             .add(ClearTranslateEvent());
                       },
-                      icon: loadTranslate()),
+                      icon: const Icon(Icons.translate)),
                   Expanded(
                     child: BlocListener<TranslatorBloc, TranslatorInitial>(
                       listener: (context, state) {
