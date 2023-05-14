@@ -74,7 +74,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
             onPressed: () {
               // if merge mode is not activated
               if (!FlashCardCollectionProvider.isMergeModeStarted) {
-                FlashCardCreatingUIProvider.fc = widget.flashCardCollection;
+                FlashCardProvider.fc = widget.flashCardCollection;
                 UpdateFlashCardBottomSheet(edit: true)
                     .showUpdateFlashCardMenu(context);
               } else {
@@ -159,7 +159,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
       child: GestureDetector(
         onTap: () {
           if (!selectCard()) {
-            FlashCardCreatingUIProvider.fc = widget.flashCardCollection;
+            FlashCardProvider.fc = widget.flashCardCollection;
             FlashCardViewBottomSheet(creatingFlashC: widget.flashCardCollection)
                 .showFlashCardViewMenu(context);
           }

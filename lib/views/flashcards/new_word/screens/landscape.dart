@@ -54,7 +54,7 @@ class LandscapeNewWord extends BaseScreenNewWord {
       widget.wordFormContoller
           .setUp(WordCreatingUIProvider.tmpFlashCard, context);
 
-      debugPrintIt('selected collection:  ${FlashCardCreatingUIProvider.fc}');
+      debugPrintIt('selected collection:  ${FlashCardProvider.fc}');
       return Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: appbar,
@@ -92,7 +92,7 @@ class LandscapeNewWord extends BaseScreenNewWord {
                                     scale: 0.9,
                                     child: FastAddWordFCcWidget(
                                       flashCardCollection.isEmpty
-                                          ? FlashCardCreatingUIProvider.fc
+                                          ? FlashCardProvider.fc
                                           : flashCardCollection[index],
                                       widget.callback,
                                       design:

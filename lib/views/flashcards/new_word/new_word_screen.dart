@@ -96,10 +96,10 @@ class _AddWordViewState extends State<AddWordView> {
         .copyWith(fromTrash: false)
         .flashCards;
 
-    FlashCardCollection? selected = FlashCardCreatingUIProvider.fc;
+    FlashCardCollection? selected = FlashCardProvider.fc;
     if (collection.isNotEmpty && selected.compareWithoutId(flashExample())) {
       selected = collection.first;
-      FlashCardCreatingUIProvider.fc = selected;
+      FlashCardProvider.fc = selected;
     }
     
   }

@@ -3,6 +3,7 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_process.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
@@ -488,7 +489,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                               .onPressed(
                                                                   flashCard
                                                                       .question,
-                                                                  flashCard
+                                                                  FlashCardProvider.fc
                                                                       .questionLanguage);
                                                         },
                                                         icon: const Icon(Icons
@@ -539,7 +540,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                               .onPressed(
                                                                   flashCard
                                                                       .answer,
-                                                                  flashCard
+                                                                  FlashCardProvider.fc
                                                                       .answerLanguage);
                                                         },
                                                         icon: const Icon(Icons

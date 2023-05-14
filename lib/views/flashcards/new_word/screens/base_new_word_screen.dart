@@ -12,7 +12,7 @@ class BaseScreenNewWord {
   BaseScreenNewWord(this.widget);
   double appBarHeight = 0;
   void putSelectedCardToFirstPosition(List<FlashCardCollection> collection) {
-    var selected = FlashCardCreatingUIProvider.fc;
+    var selected = FlashCardProvider.fc;
     var index = collection.indexWhere((element) => element == selected);
     if (index != -1) {
       collection.removeAt(index);

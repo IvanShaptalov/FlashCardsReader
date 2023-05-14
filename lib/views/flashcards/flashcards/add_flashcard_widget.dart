@@ -9,7 +9,7 @@ import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FlashCardCreatingUIProvider {
+class FlashCardProvider {
   static FlashCardCollection fc = flashExample();
 
   static clear() {
@@ -36,7 +36,7 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
       duration: deleteDuration,
       child: GestureDetector(
         onTap: () {
-          FlashCardCreatingUIProvider.clear();
+          FlashCardProvider.clear();
           UpdateFlashCardBottomSheet().showUpdateFlashCardMenu(context);
         },
         child: Padding(
@@ -54,40 +54,45 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                 0.5),
             color: CardViewConfig.defaultCardColor,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: SizeConfig.getMediaHeight(context, p: 0.03),
-                      bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
-                  child: const Text(
-                    'Add flashcard',
-                    style: FontConfigs.cardTitleTextStyle,
-                  ),
-                ),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 1,
-                ),
-                Expanded(
-                    child: Column(children: const [
-                  ListTile(
-                    title: Text('Add Word'),
-                    subtitle: Text(
-                      'Add Flashcard',
-                    ),
-                  )
-                ])),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    /// ============================[ADD FLASHCARD MENU OPEN]============================
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
                     Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(Icons.add_circle_outline),
+                      padding: EdgeInsets.only(
+                          top: SizeConfig.getMediaHeight(context, p: 0.03),
+                          bottom: SizeConfig.getMediaHeight(context, p: 0.01)),
+                      child: const Text(
+                        'Add flashcard',
+                        style: FontConfigs.cardTitleTextStyle,
+                      ),
+                    ),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 1,
                     ),
                   ],
                 ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        /// ============================[ADD FLASHCARD MENU OPEN]============================
+                        Transform.scale(
+                          scale: 3,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.library_add),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox.shrink()
               ],
             ),
           ),

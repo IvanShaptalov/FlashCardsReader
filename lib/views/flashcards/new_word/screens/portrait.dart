@@ -51,7 +51,7 @@ class PortraitNewWord extends BaseScreenNewWord {
       widget.wordFormContoller
           .setUp(WordCreatingUIProvider.tmpFlashCard, context);
 
-      debugPrintIt('selected collection:  ${FlashCardCreatingUIProvider.fc}');
+      debugPrintIt('selected collection:  ${FlashCardProvider.fc}');
       return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: appbar,
@@ -83,7 +83,7 @@ class PortraitNewWord extends BaseScreenNewWord {
                                     padding: const EdgeInsets.all(8.0),
                                     child: FastAddWordFCcWidget(
                                       flashCardCollection.isEmpty
-                                          ? FlashCardCreatingUIProvider.fc
+                                          ? FlashCardProvider.fc
                                           : flashCardCollection[index],
                                       widget.callback,
                                       design:

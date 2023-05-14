@@ -8,9 +8,9 @@ class SelectLanguageDropdown extends StatefulWidget {
   SelectLanguageDropdown({required this.langDestination, super.key}) {
     // set start value
     if (langDestination == 'from') {
-      startValue = FlashCardCreatingUIProvider.fc.questionLanguage;
+      startValue = FlashCardProvider.fc.questionLanguage;
     } else {
-      startValue = FlashCardCreatingUIProvider.fc.answerLanguage;
+      startValue = FlashCardProvider.fc.answerLanguage;
     }
   }
 
@@ -45,9 +45,9 @@ class _SelectLanguageDropdownState extends State<SelectLanguageDropdown> {
             setState(() {
               widget.startValue = value!;
               if (widget.langDestination == 'from') {
-                FlashCardCreatingUIProvider.fc.questionLanguage = value;
+                FlashCardProvider.fc.questionLanguage = value;
               } else {
-                FlashCardCreatingUIProvider.fc.answerLanguage = value;
+                FlashCardProvider.fc.answerLanguage = value;
               }
             });
           },

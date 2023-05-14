@@ -111,7 +111,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
   // =====================================[WALL]==[BUILD]=====================================
   @override
   Widget build(BuildContext context) {
-    widget.flashCardFormController.setUp(FlashCardCreatingUIProvider.fc);
+    widget.flashCardFormController.setUp(FlashCardProvider.fc);
     widget.wordFormContoller.setUp(WordCreatingUIProvider.tmpFlashCard);
     return Container(
         decoration: BoxDecoration(
@@ -169,7 +169,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                       labelStyle: FontConfigs.h3TextStyle,
                     ),
                     onChanged: (text) {
-                      FlashCardCreatingUIProvider.fc.title = text;
+                      FlashCardProvider.fc.title = text;
                     },
                   ),
                 ),
@@ -216,7 +216,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                       vertical: 32.0,
                       horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
                   child: Column(children: [
-                    for (var flashCard in FlashCardCreatingUIProvider
+                    for (var flashCard in FlashCardProvider
                         .fc.flashCardSet
                         .toList()
                         .reversed)
@@ -275,9 +275,9 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                       onPressed: () {
                                                         TextToSpeechWrapper
                                                             .onPressed(
-                                                                flashCard
+                                                                 flashCard
                                                                     .question,
-                                                                flashCard
+                                                                FlashCardProvider.fc
                                                                     .questionLanguage);
                                                       },
                                                       icon: const Icon(Icons
@@ -327,7 +327,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                             .onPressed(
                                                                 flashCard
                                                                     .answer,
-                                                                flashCard
+                                                                FlashCardProvider.fc
                                                                     .answerLanguage);
                                                       },
                                                       icon: const Icon(Icons
@@ -530,7 +530,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                               ),
                                               onTap: () {
                                                 setState(() {
-                                                  FlashCardCreatingUIProvider
+                                                  FlashCardProvider
                                                       .fc.flashCardSet
                                                       .remove(flashCard);
                                                 });
@@ -625,34 +625,34 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
 
   void saveCollectionFromWord({required bool onSubmitted}) {
     updateWord(onSubmitted: onSubmitted);
-    if (FlashCardCreatingUIProvider.fc.isValid) {
+    if (FlashCardProvider.fc.isValid) {
       context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
-          flashCardCollection: FlashCardCreatingUIProvider.fc..id = uuid.v4()));
+          flashCardCollection: FlashCardProvider.fc..id = uuid.v4()));
     } else {
       showValidatorMessage();
     }
   }
 
   void showValidatorMessage() {
-    if (FlashCardCreatingUIProvider.fc.title.isEmpty) {
+    if (FlashCardProvider.fc.title.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add collection title',
           status: NotificationStatus.info);
 
       debugPrint('title');
-    } else if (FlashCardCreatingUIProvider.fc.isEmpty) {
+    } else if (FlashCardProvider.fc.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add at least one flashcard',
           status: NotificationStatus.info);
 
       debugPrint('Add at least one flashcard');
-    } else if (FlashCardCreatingUIProvider.fc.answerLanguage.isEmpty) {
+    } else if (FlashCardProvider.fc.answerLanguage.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add question language',
           status: NotificationStatus.info);
 
       debugPrint('Add question language');
-    } else if (FlashCardCreatingUIProvider.fc.answerLanguage.isEmpty) {
+    } else if (FlashCardProvider.fc.answerLanguage.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification('Add answerlanguage',
           status: NotificationStatus.info);
 
@@ -674,11 +674,11 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
       debugPrint('add flashcard');
 
       WordCreatingUIProvider.setQuestionLanguage(
-          FlashCardCreatingUIProvider.fc.questionLanguage);
+          FlashCardProvider.fc.questionLanguage);
       WordCreatingUIProvider.setAnswerLanguage(
-          FlashCardCreatingUIProvider.fc.answerLanguage);
+          FlashCardProvider.fc.answerLanguage);
 
-      FlashCardCreatingUIProvider.fc.flashCardSet
+      FlashCardProvider.fc.flashCardSet
           .add(WordCreatingUIProvider.tmpFlashCard);
       WordCreatingUIProvider.clear();
       OverlayNotificationProvider.showOverlayNotification('word added',
@@ -721,12 +721,12 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
           ),
         ),
         onTap: () {
-          if (FlashCardCreatingUIProvider.fc.isValid) {
+          if (FlashCardProvider.fc.isValid) {
             debugPrint('=====================add collection');
             context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
-                flashCardCollection: FlashCardCreatingUIProvider.fc));
+                flashCardCollection: FlashCardProvider.fc));
             Navigator.pop(context);
-            FlashCardCreatingUIProvider.clear();
+            FlashCardProvider.clear();
             widget.isEdit
                 ? OverlayNotificationProvider.showOverlayNotification(
                     'Collection edited',
@@ -789,13 +789,13 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                             if (oldWord == text) {
                               debugPrintIt('user stopped typing');
                               debugPrintIt(
-                                  'translate: $oldWord to ${FlashCardCreatingUIProvider.fc.answerLanguage}');
+                                  'translate: $oldWord to ${FlashCardProvider.fc.answerLanguage}');
                               BlocProvider.of<TranslatorBloc>(context).add(
                                   TranslateEvent(
                                       text: text,
-                                      fromLan: FlashCardCreatingUIProvider
+                                      fromLan: FlashCardProvider
                                           .fc.questionLanguage,
-                                      toLan: FlashCardCreatingUIProvider
+                                      toLan: FlashCardProvider
                                           .fc.answerLanguage));
                             } else if (oldWord.isEmpty || text.isEmpty) {
                               debugPrintIt('user cleared the text');

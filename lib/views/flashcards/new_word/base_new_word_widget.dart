@@ -90,7 +90,7 @@ class BaseNewWordWidget {
             onPressed: () {
               TextToSpeechWrapper.onPressed(
                   WordCreatingUIProvider.tmpFlashCard.answer,
-                  WordCreatingUIProvider.tmpFlashCard.answerLanguage);
+                  FlashCardProvider.fc.answerLanguage);
             },
             icon: const Icon(Icons.volume_up_outlined)),
       ],
@@ -136,7 +136,7 @@ class BaseNewWordWidget {
             onPressed: () {
               TextToSpeechWrapper.onPressed(
                   WordCreatingUIProvider.tmpFlashCard.question,
-                  WordCreatingUIProvider.tmpFlashCard.questionLanguage);
+                  FlashCardProvider.fc.questionLanguage);
             },
             icon: const Icon(Icons.volume_up_outlined)),
       ],
@@ -200,13 +200,13 @@ class BaseNewWordWidget {
     oldWord = text;
     debugPrintIt('wait for 5 seconds');
     Future.delayed(const Duration(milliseconds: 100)).then((value) {
-      debugPrintIt(FlashCardCreatingUIProvider.fc);
+      debugPrintIt(FlashCardProvider.fc);
       if (oldWord == text) {
         debugPrintIt('user stopped typing');
         BlocProvider.of<TranslatorBloc>(context).add(TranslateEvent(
             text: text,
-            fromLan: FlashCardCreatingUIProvider.fc.questionLanguage,
-            toLan: FlashCardCreatingUIProvider.fc.answerLanguage));
+            fromLan: FlashCardProvider.fc.questionLanguage,
+            toLan: FlashCardProvider.fc.answerLanguage));
       } else if (oldWord.isEmpty || text.isEmpty) {
         debugPrintIt('user cleared the text');
         BlocProvider.of<TranslatorBloc>(context).add(ClearTranslateEvent());
@@ -226,9 +226,9 @@ class BaseNewWordWidget {
         callback: callback,
         widget: widget,
         context: context);
-    if (FlashCardCreatingUIProvider.fc.isValid) {
+    if (FlashCardProvider.fc.isValid) {
       context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
-          flashCardCollection: FlashCardCreatingUIProvider.fc));
+          flashCardCollection: FlashCardProvider.fc));
     } else {
       showValidatorMessage();
     }
@@ -236,25 +236,25 @@ class BaseNewWordWidget {
   }
 
   static void showValidatorMessage() {
-    if (FlashCardCreatingUIProvider.fc.title.isEmpty) {
+    if (FlashCardProvider.fc.title.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add collection title',
           status: NotificationStatus.info);
 
       debugPrint('title');
-    } else if (FlashCardCreatingUIProvider.fc.isEmpty) {
+    } else if (FlashCardProvider.fc.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add at least one flashcard',
           status: NotificationStatus.info);
 
       debugPrint('Add at least one flashcard');
-    } else if (FlashCardCreatingUIProvider.fc.answerLanguage.isEmpty) {
+    } else if (FlashCardProvider.fc.answerLanguage.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
           'Add question language',
           status: NotificationStatus.info);
 
       debugPrint('Add question language');
-    } else if (FlashCardCreatingUIProvider.fc.answerLanguage.isEmpty) {
+    } else if (FlashCardProvider.fc.answerLanguage.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification('Add answerlanguage',
           status: NotificationStatus.info);
 
@@ -280,11 +280,11 @@ class BaseNewWordWidget {
       debugPrint('add flashcard');
 
       WordCreatingUIProvider.setQuestionLanguage(
-          FlashCardCreatingUIProvider.fc.questionLanguage);
+          FlashCardProvider.fc.questionLanguage);
       WordCreatingUIProvider.setAnswerLanguage(
-          FlashCardCreatingUIProvider.fc.answerLanguage);
+          FlashCardProvider.fc.answerLanguage);
 
-      FlashCardCreatingUIProvider.fc.flashCardSet
+      FlashCardProvider.fc.flashCardSet
           .add(WordCreatingUIProvider.tmpFlashCard);
       WordCreatingUIProvider.clear();
       OverlayNotificationProvider.showOverlayNotification('word added',
