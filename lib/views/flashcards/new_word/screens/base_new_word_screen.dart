@@ -6,6 +6,7 @@ import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
+import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
@@ -63,12 +64,26 @@ class BaseScreenNewWord {
     ];
   }
 
-  Widget clearFieldsButton(BuildContext context) {
+  Widget clearFieldButton({required BuildContext context}) {
+    return IconButton(
+        onPressed: () {
+          widget.callback();
+
+          WordCreatingUIProvider.clear();
+          BlocProvider.of<TranslatorBloc>(context).add(ClearTranslateEvent());
+        },
+        icon: const Icon(Icons.auto_delete));
+  }
+
+  Widget addWordsButton(
+      {required BuildContext context, required Function callback}) {
     return GestureDetector(
       onTap: () {
-        widget.callback();
-
-        WordCreatingUIProvider.clear();
+        saveCollectionFromWord(
+            onSubmitted: false,
+            callback: callback,
+            context: context,
+            widget: widget);
         BlocProvider.of<TranslatorBloc>(context).add(ClearTranslateEvent());
       },
       child: Container(
@@ -95,12 +110,12 @@ class BaseScreenNewWord {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.delete_sweep_outlined),
+            const Icon(Icons.add_circle_outline_outlined),
             SizedBox(
               width: SizeConfig.getMediaWidth(context, p: 0.01),
             ),
             const Text(
-              'clear fields',
+              'save',
               style: FontConfigs.h2TextStyleBlack,
             )
           ],
@@ -126,6 +141,77 @@ class BaseScreenNewWord {
       showValidatorMessage();
     }
     callback();
+  }
+
+  Widget translateListenerWidget(
+      {required BuildContext context,
+      required Function callback,
+      required bool isPressed}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        IconButton(
+            onPressed: () {
+              isPressed = !isPressed;
+
+              widget.callback();
+            },
+            icon: const Icon(Icons.translate)),
+        Expanded(
+          child: BlocListener<TranslatorBloc, TranslatorInitial>(
+            listener: (context, state) {
+              if (WordCreatingUIProvider.tmpFlashCard.answer.isEmpty) {
+                widget.wordFormContoller.answerController.text = state.result;
+                WordCreatingUIProvider.setAnswer(state.result);
+                debugPrintIt(
+                    'answer changed to ${state.result} from translate');
+              } else if (state.source !=
+                      WordCreatingUIProvider.tmpFlashCard.question &&
+                  WordCreatingUIProvider.tmpFlashCard.answer.isNotEmpty) {
+                debugPrintIt(
+                    'translation and source not equal, translate again');
+                delayTranslate(
+                    WordCreatingUIProvider.tmpFlashCard.question, context);
+              } else {
+                widget.wordFormContoller.answerController.text = state.result;
+                WordCreatingUIProvider.setAnswer(state.result);
+                debugPrintIt(
+                    'answer changed to ${state.result} from translate');
+              }
+            },
+            child: TextField(
+              controller: widget.wordFormContoller.answerController,
+              decoration: InputDecoration(
+                labelText: 'Add Translation',
+                labelStyle: FontConfigs.h3TextStyle,
+              ),
+              onChanged: (text) {
+                WordCreatingUIProvider.setAnswer(text);
+                debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
+                debugPrintIt('answer changed to $text');
+              },
+              onSubmitted: (value) {
+                saveCollectionFromWord(
+                    onSubmitted: true,
+                    callback: callback,
+                    context: context,
+                    widget: widget);
+
+                BlocProvider.of<TranslatorBloc>(context)
+                    .add(ClearTranslateEvent());
+              },
+            ),
+          ),
+        ),
+        IconButton(
+            onPressed: () {
+              TextToSpeechWrapper.onPressed(
+                  WordCreatingUIProvider.tmpFlashCard.answer,
+                  WordCreatingUIProvider.tmpFlashCard.answerLanguage);
+            },
+            icon: const Icon(Icons.volume_up_outlined)),
+      ],
+    );
   }
 
   void delayTranslate(String text, BuildContext context) {

@@ -43,17 +43,7 @@ class PortraitSmallNewWord extends BaseScreenNewWord {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  IconButton(
-                      onPressed: () {
-                        saveCollectionFromWord(
-                            onSubmitted: false,
-                            callback: callback,
-                            context: context,
-                            widget: widget);
-                        BlocProvider.of<TranslatorBloc>(context)
-                            .add(ClearTranslateEvent());
-                      },
-                      icon: const Icon(Icons.add_circle_outlined)),
+                  clearFieldButton(context: context),
                   Expanded(
                     child: BlocProvider(
                       create: (context) => TranslatorBloc(),
@@ -88,68 +78,9 @@ class PortraitSmallNewWord extends BaseScreenNewWord {
                       icon: const Icon(Icons.volume_up_outlined)),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        isPressed = !isPressed;
-
-                        widget.callback();
-                      },
-                      icon: loadTranslate()),
-                  Expanded(
-                    child: BlocListener<TranslatorBloc, TranslatorInitial>(
-                      listener: (context, state) {
-                        widget.wordFormContoller.answerController.text =
-                            state.result;
-                        WordCreatingUIProvider.setAnswer(state.result);
-                        debugPrintIt(
-                            'answer changed to ${state.result} from translate');
-
-                        if (WordCreatingUIProvider
-                            .tmpFlashCard.answer.isEmpty) {
-                          widget.wordFormContoller.answerController.text =
-                              state.result;
-                          WordCreatingUIProvider.setAnswer(state.result);
-                          debugPrintIt(
-                              'answer changed to ${state.result} from translate');
-                        }
-                      },
-                      child: TextField(
-                        controller: widget.wordFormContoller.answerController,
-                        decoration: InputDecoration(
-                          labelText: 'Add Translation',
-                          labelStyle: FontConfigs.h3TextStyle,
-                        ),
-                        onChanged: (text) {
-                          WordCreatingUIProvider.setAnswer(text);
-                          debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
-                          debugPrintIt('answer changed to $text');
-                        },
-                        onSubmitted: (value) {
-                          saveCollectionFromWord(
-                              onSubmitted: true,
-                              callback: callback,
-                              context: context,
-                              widget: widget);
-
-                          BlocProvider.of<TranslatorBloc>(context)
-                              .add(ClearTranslateEvent());
-                        },
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        TextToSpeechWrapper.onPressed(
-                            WordCreatingUIProvider.tmpFlashCard.answer,
-                            WordCreatingUIProvider.tmpFlashCard.answerLanguage);
-                      },
-                      icon: const Icon(Icons.volume_up_outlined)),
-                ],
-              ),
-              clearFieldsButton(context)
+              translateListenerWidget(
+                  context: context, isPressed: isPressed, callback: callback),
+              addWordsButton(context: context, callback: callback),
             ],
           )),
     );

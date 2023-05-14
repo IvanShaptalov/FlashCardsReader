@@ -8,7 +8,7 @@ part 'translator_event.dart';
 part 'translator_state.dart';
 
 class TranslatorBloc extends Bloc<TranslatorEvent, TranslatorInitial> {
-  TranslatorBloc() : super(TranslatorInitial(result: '')) {
+  TranslatorBloc() : super(TranslatorInitial(result: '', source: '')) {
     on<TranslateEvent>((event, emit) async {
       emit(await state.translate(event.text, event.fromLan, event.toLan));
     });
