@@ -1,7 +1,5 @@
 // import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
-import 'package:flashcards_reader/main.dart';
-import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
@@ -9,14 +7,6 @@ import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FlashCardProvider {
-  static FlashCardCollection fc = flashExample();
-
-  static clear() {
-    fc = flashExample();
-    WordCreatingUIProvider.clear();
-  }
-}
 
 class AddFlashCardWidget extends StatefulWidget {
   const AddFlashCardWidget({super.key});

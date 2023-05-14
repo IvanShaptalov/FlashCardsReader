@@ -1,4 +1,5 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/enums.dart';
 
 class WordCreatingUIProvider {
   static FlashCard _tmpFlashCard = FlashCard.fixture();
@@ -24,3 +25,25 @@ class WordCreatingUIProvider {
     _tmpFlashCard.answer = answer;
   }
 }
+
+class FlashCardProvider {
+  static FlashCardCollection fc = flashExample();
+
+  static clear() {
+    fc = flashExample();
+    WordCreatingUIProvider.clear();
+  }
+}
+
+FlashCardCollection flashExample() {
+  final FlashCardCollection testFlashCardCollection = FlashCardCollection(
+      uuid.v4().toString(),
+      title: 'FlashCard Collection',
+      flashCardSet: {},
+      createdAt: DateTime.now(),
+      isDeleted: false,
+      questionLanguage: 'English',
+      answerLanguage: 'Ukrainian');
+  return testFlashCardCollection;
+}
+

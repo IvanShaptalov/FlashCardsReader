@@ -1,6 +1,4 @@
-import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
-import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,17 +17,7 @@ Future<bool> initAsync() async {
   return dbInit /* && quickInit */;
 }
 
-FlashCardCollection flashExample() {
-  final FlashCardCollection testFlashCardCollection = FlashCardCollection(
-      uuid.v4().toString(),
-      title: 'FlashCard Collection',
-      flashCardSet: {},
-      createdAt: DateTime.now(),
-      isDeleted: false,
-      questionLanguage: 'English',
-      answerLanguage: 'Ukrainian');
-  return testFlashCardCollection;
-}
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
