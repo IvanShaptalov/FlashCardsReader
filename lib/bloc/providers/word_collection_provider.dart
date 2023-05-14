@@ -1,4 +1,3 @@
-import 'package:flashcards_reader/main.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 
 class WordCreatingUIProvider {
