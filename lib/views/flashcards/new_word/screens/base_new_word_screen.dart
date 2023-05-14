@@ -160,16 +160,16 @@ class BaseScreenNewWord {
         Expanded(
           child: BlocListener<TranslatorBloc, TranslatorInitial>(
             listener: (context, state) {
-              if (WordCreatingUIProvider.tmpFlashCard.answer.isEmpty) {
-                widget.wordFormContoller.answerController.text = state.result;
-                WordCreatingUIProvider.setAnswer(state.result);
-                debugPrintIt(
-                    'answer changed to ${state.result} from translate');
-              } else if (state.source !=
-                      WordCreatingUIProvider.tmpFlashCard.question &&
-                  WordCreatingUIProvider.tmpFlashCard.answer.isNotEmpty) {
+              if (WordCreatingUIProvider.tmpFlashCard.question.isEmpty) {
+                debugPrintIt('empty question');
+                WordCreatingUIProvider.setAnswer('');
+                WordCreatingUIProvider.setQuestion('');
+              }
+              if (state.source !=
+                  WordCreatingUIProvider.tmpFlashCard.question) {
                 debugPrintIt(
                     'translation and source not equal, translate again');
+
                 delayTranslate(
                     WordCreatingUIProvider.tmpFlashCard.question, context);
               } else {
