@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:hive/hive.dart';
 part 'flashcards_model.g.dart';
 
@@ -244,5 +245,27 @@ class FlashCardCollection {
     return other.title == title &&
         answerLanguage == other.answerLanguage &&
         questionLanguage == other.questionLanguage;
+  }
+
+  void switchLanguages() {
+    final String tmp = questionLanguage;
+    questionLanguage = answerLanguage;
+    answerLanguage = tmp;
+    if (flashCardSet.isNotEmpty) {
+      for (var f in flashCardSet) {
+        debugPrintIt('switch languages for flashcard: $f ...');
+
+        final String tmpLang = f.questionLanguage;
+        f.questionLanguage = f.answerLanguage;
+        f.answerLanguage = tmpLang;
+
+        final String tmpWord = f.question;
+        f.question = f.answer;
+        f.answer = tmpWord;
+
+        debugPrintIt('switched languages for flashcard: $f');
+      }
+    }
+    debugPrintIt(flashCardSet);
   }
 }

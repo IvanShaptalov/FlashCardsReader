@@ -64,7 +64,6 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        
       );
       expect(flash1 == flash2, false);
     });
@@ -77,7 +76,6 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
@@ -87,7 +85,6 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        
       );
       expect(flash1 == flash2, true);
     });
@@ -100,7 +97,6 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
@@ -110,7 +106,6 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        
       );
       expect(flash1 == flash2, true);
     });
@@ -123,7 +118,6 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        
       );
       FlashCard flash2 = FlashCard(
         questionLanguage: 'English',
@@ -133,9 +127,49 @@ void main() {
         lastTested: DateTime.now(),
         correctAnswers: 0,
         wrongAnswers: 0,
-        
       );
       expect(flash1 == flash2, false);
     });
+  });
+
+  test('test switch languages', () async {
+    FlashCard flash1 = FlashCard(
+      questionLanguage: 'English',
+      answerLanguage: 'German',
+      question: 'Hallo',
+      answer: 'Hello',
+      lastTested: DateTime.now(),
+      correctAnswers: 0,
+      wrongAnswers: 0,
+    );
+    FlashCard flash2 = FlashCard(
+      questionLanguage: 'English',
+      answerLanguage: 'NotGerman',
+      question: 'Hello',
+      answer: 'Hallo',
+      lastTested: DateTime.now(),
+      correctAnswers: 0,
+      wrongAnswers: 0,
+    );
+    FlashCardCollection collection = FlashCardCollection('12',
+        title: 'test',
+        flashCardSet: {flash1, flash2},
+        createdAt: DateTime.now(),
+        questionLanguage: 'English',
+        answerLanguage: 'German');
+
+    collection.switchLanguages();
+
+    expect(collection.questionLanguage, 'German');
+
+    expect(collection.answerLanguage, 'English');
+
+    expect(collection.flashCardSet.first.questionLanguage, 'German');
+
+    expect(collection.flashCardSet.first.answerLanguage, 'English');
+
+    expect(collection.flashCardSet.last.questionLanguage, 'NotGerman');
+
+    expect(collection.flashCardSet.last.answerLanguage, 'English');
   });
 }

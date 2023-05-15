@@ -1,5 +1,5 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
-import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/bloc/providers/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';

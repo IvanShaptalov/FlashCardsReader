@@ -29,6 +29,10 @@ class WordCreatingUIProvider {
 class FlashCardProvider {
   static FlashCardCollection fc = flashExample();
 
+  static void switchLanguages() {
+    fc.switchLanguages();
+  }
+
   static clear() {
     fc = flashExample();
     WordCreatingUIProvider.clear();
@@ -46,4 +50,3 @@ FlashCardCollection flashExample() {
       answerLanguage: 'Ukrainian');
   return testFlashCardCollection;
 }
-
