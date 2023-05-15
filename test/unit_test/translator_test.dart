@@ -31,7 +31,7 @@ void main() {
       TranslateResponse result =
           await api.translate(text, to: 'uk', from: 'en');
 
-      bool internet = await InternetChecker.hasConnection();
+      bool internet = await InternetConnectionChecker.connected();
       if (internet) {
         expect(result.toString(), 'Привіт');
       } else {
@@ -45,7 +45,7 @@ void main() {
       String text = 'День';
       TranslateResponse result = await api.translate(text, to: 'en');
 
-      bool internet = await InternetChecker.hasConnection();
+      bool internet = await InternetConnectionChecker.connected();
       if (internet) {
         expect(result.toString(), 'Day');
       } else {

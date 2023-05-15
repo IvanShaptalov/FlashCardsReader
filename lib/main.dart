@@ -1,4 +1,6 @@
 import 'package:flashcards_reader/model/entities/tts/core.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +12,14 @@ Future<bool> initAsync() async {
   bool dbInit = await DataBase.initAsync();
   debugPrint('db inited: $dbInit');
 
-  
   TextToSpeechService.initTtsEngineAsync()
       .then((value) => debugPrint('tts engine inited: $value'));
 
+  // start checking internet connection
+  debugPrintIt('start checking internet connection');
+  InternetConnectionChecker.startChecking();
   return dbInit /* && quickInit */;
 }
-
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
