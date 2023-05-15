@@ -7,7 +7,7 @@ import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
-import 'package:flashcards_reader/views/flashcards/quiz/quiz_fc_collection_widget.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/flashcard_widget.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';

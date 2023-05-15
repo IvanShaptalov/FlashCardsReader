@@ -94,7 +94,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
                                           : flashCardCollection[index],
                                       widget.callback,
                                       design:
-                                          DesignIdentifier.identifyScreenDesign(
+                                          ScreenIdentifier.indentify(
                                               context),
                                       backToListStart: backToStartCallback,
                                     ),

@@ -107,7 +107,7 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
                           /// ====================================================================[FlashCardCollectionWidget]
                           // add flashcards
                           return Transform.scale(
-                            scale: columnCount == 1 ? 0.9 : 1,
+                            scale: 0.9,
                             child: AnimationConfiguration.staggeredGrid(
                               position: index,
                               duration: widget.cardAppearDuration,
@@ -130,7 +130,7 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
                   children: bottomNavigationBarItems(flashCardCollection)),
             ));
 
-        return DesignIdentifier.returnScreen(
+        return ScreenIdentifier.returnScreen(
           context: context,
           portraitScreen: screenNow,
           landscapeScreen: screenNow,

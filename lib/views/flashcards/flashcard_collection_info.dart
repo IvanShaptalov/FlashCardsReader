@@ -79,13 +79,13 @@ class FlashCardCollectionInfo extends StatelessWidget {
             ScreenDesign.portraitSmall,
             ScreenDesign.landscapeSmall,
             ScreenDesign.landscape
-          ].contains(DesignIdentifier.identifyScreenDesign(context)))
+          ].contains(ScreenIdentifier.indentify(context)))
             const Divider(),
           if (![
             ScreenDesign.portraitSmall,
             ScreenDesign.landscapeSmall,
             ScreenDesign.landscape
-          ].contains(DesignIdentifier.identifyScreenDesign(context)))
+          ].contains(ScreenIdentifier.indentify(context)))
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

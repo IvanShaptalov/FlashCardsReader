@@ -198,7 +198,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
               FlashCardCollectionInfo(widget.flashCardCollection),
               Transform.scale(
                 scale: ScreenDesign.portraitSmall ==
-                        DesignIdentifier.identifyScreenDesign(context)
+                        ScreenIdentifier.indentify(context)
                     ? 0.9
                     : 1.0,
                 child: Row(

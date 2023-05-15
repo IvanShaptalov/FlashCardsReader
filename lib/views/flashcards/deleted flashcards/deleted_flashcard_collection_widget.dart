@@ -35,6 +35,7 @@ class _DeletedFlashCardCollectionWidgetState
                 .add(GetFlashCardsEvent(isDeleted: true));
           },
           icon: const Icon(Icons.restore)),
+      const SizedBox.shrink(),
       IconButton(
           onPressed: () {
             // if merge mode is not activated
@@ -94,7 +95,7 @@ class _DeletedFlashCardCollectionWidgetState
             ),
             FlashCardCollectionInfo(widget.flashCardCollection),
             Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: getCardActions(isTarget, isSelected, context)),
           ],
         ),

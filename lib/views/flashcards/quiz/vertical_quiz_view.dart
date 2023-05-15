@@ -7,7 +7,7 @@ import 'package:flashcards_reader/views/flashcards/quiz/util_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+// TODO vertical quiz view
 class SummaryFlashCardsProvider {
   static Set<FlashCardMock> flashSetMock = {};
 

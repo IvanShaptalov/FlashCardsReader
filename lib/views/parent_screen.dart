@@ -15,7 +15,7 @@ class ParentStatelessWidget extends StatelessWidget {
   ParentStatelessWidget({super.key});
   @override
   Widget build(BuildContext context) {
-    var selectedPage = DesignIdentifier.returnScreen(
+    var selectedPage = ScreenIdentifier.returnScreen(
         portraitScreen: page,
         landscapeScreen: page,
         portraitSmallScreen: page,
@@ -109,7 +109,7 @@ class ParentState<T extends ParentStatefulWidget> extends State<T> {
       return shortCutWrapper();
     }
     debugPrintIt('load all pages');
-    var selectedPage = DesignIdentifier.returnScreen(
+    var selectedPage = ScreenIdentifier.returnScreen(
         portraitScreen: widget.portraitPage,
         landscapeScreen: widget.landscapePage,
         portraitSmallScreen: widget.portraitSmallPage,

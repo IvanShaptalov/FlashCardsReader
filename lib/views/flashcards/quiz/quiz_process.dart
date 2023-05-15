@@ -8,7 +8,7 @@ import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+// TODO process desing
 // ignore: must_be_immutable
 class QuizTrainer extends ParentStatefulWidget {
   QuizTrainer(

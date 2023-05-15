@@ -154,7 +154,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                     child: index == 0
                         ? Transform.scale(
                             scale: ScreenDesign.landscapeSmall ==
-                                    DesignIdentifier.identifyScreenDesign(
+                                    ScreenIdentifier.indentify(
                                         context)
                                 ? 0.85
                                 : 1,
@@ -171,7 +171,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                           )
                         : Transform.scale(
                             scale: ScreenDesign.landscapeSmall ==
-                                    DesignIdentifier.identifyScreenDesign(
+                                    ScreenIdentifier.indentify(
                                         context)
                                 ? 0.85
                                 : 1,

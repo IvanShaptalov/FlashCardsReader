@@ -50,7 +50,7 @@ class ViewConfig {
   }
 
   static double getCardForm(BuildContext context) =>
-      MediaQuery.of(context).orientation == Orientation.portrait ? 0.6 : 1.1;
+      MediaQuery.of(context).orientation == Orientation.portrait ? 0.6 : 1;
 
   static void pushFromQuizProcess(
       {required context, required String fromPage}) {
@@ -150,8 +150,8 @@ class ConfigFastAddWordView {
 
 enum ScreenDesign { portrait, landscape, portraitSmall, landscapeSmall }
 
-class DesignIdentifier {
-  static ScreenDesign identifyScreenDesign(BuildContext context) {
+class ScreenIdentifier {
+  static ScreenDesign indentify(BuildContext context) {
     if (MyConfigOrientation.isPortrait(context)) {
       if (SizeConfig.getMediaHeight(context) < 600) {
         debugPrintIt('selected portraitSmall');
@@ -178,7 +178,7 @@ class DesignIdentifier {
       required Widget portraitSmallScreen,
       required Widget landscapeSmallScreen,
       required BuildContext context}) {
-    switch (identifyScreenDesign(context)) {
+    switch (indentify(context)) {
       case ScreenDesign.portrait:
         return portraitScreen;
       case ScreenDesign.landscape:

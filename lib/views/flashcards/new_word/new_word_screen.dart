@@ -106,7 +106,7 @@ class _AddWordViewState extends State<AddWordView> {
   @override
   Widget build(BuildContext context) {
     Widget screen;
-    switch (DesignIdentifier.identifyScreenDesign(context)) {
+    switch (ScreenIdentifier.indentify(context)) {
       case ScreenDesign.portrait:
         screen = PortraitNewWord(widget,
                 callback: widget.callback,

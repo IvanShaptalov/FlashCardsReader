@@ -11,7 +11,7 @@ import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+// TODO design the bottom sheet
 class FlashCardFormController {
   TextEditingController titleController = TextEditingController();
   TextEditingController questionLanguageController = TextEditingController();
