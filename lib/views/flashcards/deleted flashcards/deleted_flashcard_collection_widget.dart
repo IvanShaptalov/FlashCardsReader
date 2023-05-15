@@ -34,7 +34,18 @@ class _DeletedFlashCardCollectionWidgetState
                 .read<FlashCardBloc>()
                 .add(GetFlashCardsEvent(isDeleted: true));
           },
-          icon: const Icon(Icons.restore_from_trash))
+          icon: const Icon(Icons.restore)),
+      IconButton(
+          onPressed: () {
+            // if merge mode is not activated
+            context.read<FlashCardBloc>().add(DeletePermanentlyEvent(
+                flashCardCollection: widget.flashCardCollection));
+
+            context
+                .read<FlashCardBloc>()
+                .add(GetFlashCardsEvent(isDeleted: true));
+          },
+          icon: const Icon(Icons.delete_forever))
     ];
   }
 

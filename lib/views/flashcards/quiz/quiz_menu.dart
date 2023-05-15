@@ -202,7 +202,15 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
                     child: Container(
                       color: Colors.grey.shade300,
                       child: flashCollectionList.isEmpty
-                          ? const Center(child: Text('Bin is empty'))
+                          ? Center(
+                              child: Center(
+                                  child: Image.asset(
+                              'assets/images/empty.png',
+                              fit: BoxFit.fitHeight,
+                              height:
+                                  SizeConfig.getMediaHeight(context, p: 0.6),
+                              width: SizeConfig.getMediaWidth(context, p: 0.6),
+                            )))
                           : AnimationLimiter(
                               child: GridView.count(
                                   mainAxisSpacing: SizeConfig.getMediaHeight(

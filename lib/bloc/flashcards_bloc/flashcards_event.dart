@@ -29,6 +29,8 @@ class RestoreFromTrashEvent extends FlashCardsEvent {
   RestoreFromTrashEvent({required this.flashCardCollection});
 }
 
+
+
 class MergeFlashCardsEvent extends FlashCardsEvent {
   final List<FlashCardCollection> flashCardsToMerge;
   final FlashCardCollection targetFlashCard;

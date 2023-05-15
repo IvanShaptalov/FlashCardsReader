@@ -16,6 +16,8 @@ class FlashCardBloc extends Bloc<FlashCardsEvent, FlashcardsState> {
     on<RestoreFromTrashEvent>((event, emit) => restoreFromTrash(event, emit));
 
     on<UpdateFlashCardEvent>((event, emit) => addEdit(event, emit));
+
+    on<DeletePermanentlyEvent>((event, emit) => deleteFromTrash(event, emit));
   }
 
   /// realisation of the event, event trigger emit
@@ -26,6 +28,11 @@ class FlashCardBloc extends Bloc<FlashCardsEvent, FlashcardsState> {
   deleteAllTrash(DeleteAllTrashPermanentlyEvent event,
       Emitter<FlashcardsState> emit) async {
     emit(await state.deleteFromTrashAllAsync());
+  }
+
+  deleteFromTrash(
+      DeletePermanentlyEvent event, Emitter<FlashcardsState> emit) async {
+    emit(await state.deletePermanently(event.flashCardCollection));
   }
 
   restoreFromTrash(
