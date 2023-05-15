@@ -33,9 +33,9 @@ class ViewColumnCalculator {
     if (screenWidth > 1000) {
       return SizeConfig.getMediaWidth(context) / 20;
     } else if (screenWidth > 600) {
-      return 40;
+      return 20;
     } else if (screenWidth >= 380) {
-      return 25;
+      return 15;
     }
     return 15;
   }

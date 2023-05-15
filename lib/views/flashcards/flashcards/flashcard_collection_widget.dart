@@ -153,8 +153,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
         !isTarget;
     return Padding(
       padding: EdgeInsets.symmetric(
-          vertical: SizeConfig.getMediaHeight(context, p: 0.01),
-          horizontal: SizeConfig.getMediaWidth(context, p: 0.01)),
+          vertical: SizeConfig.getMediaHeight(context, p: 0.01)),
       // select items for merge
       child: GestureDetector(
         onTap: () {
@@ -182,7 +181,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
                     EdgeInsets.all(SizeConfig.getMediaHeight(context, p: 0.02)),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.getMediaWidth(context, p: 0.02)),
+                      horizontal: SizeConfig.getMediaWidth(context, p: 0.01)),
                   child: Center(
                     child: Text(
                       widget.flashCardCollection.title,
@@ -197,9 +196,15 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
                 thickness: 1,
               ),
               FlashCardCollectionInfo(widget.flashCardCollection),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: getCardActions(isTarget, isSelected)),
+              Transform.scale(
+                scale: ScreenDesign.portraitSmall ==
+                        DesignIdentifier.identifyScreenDesign(context)
+                    ? 0.9
+                    : 1.0,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: getCardActions(isTarget, isSelected)),
+              ),
             ],
           ),
         ),
