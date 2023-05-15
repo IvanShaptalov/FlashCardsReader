@@ -172,6 +172,32 @@ class ScreenIdentifier {
     }
   }
 
+  /// isPortraitRelative is true if the screen is portrait or portraitSmall
+  static bool isPortraitRelative(BuildContext context) {
+    return isPortraitSmall(context) || isPortrait(context);
+  }
+
+  /// isLandscapeRelative is true if the screen is landscape or landscapeSmall
+  static bool isLandscapeRelative(BuildContext context) {
+    return isLandscapeSmall(context) || isLandscape(context);
+  }
+
+  static bool isPortraitSmall(BuildContext context) {
+    return indentify(context) == ScreenDesign.portraitSmall;
+  }
+
+  static bool isLandscapeSmall(BuildContext context) {
+    return indentify(context) == ScreenDesign.landscapeSmall;
+  }
+
+  static bool isPortrait(BuildContext context) {
+    return indentify(context) == ScreenDesign.portrait;
+  }
+
+  static bool isLandscape(BuildContext context) {
+    return indentify(context) == ScreenDesign.landscape;
+  }
+
   static Widget returnScreen(
       {required Widget portraitScreen,
       required Widget landscapeScreen,

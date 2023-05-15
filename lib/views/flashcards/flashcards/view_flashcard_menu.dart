@@ -412,7 +412,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       child: Container(
                                         height: SizeConfig.getMediaHeight(
                                             context,
-                                            p: 0.06),
+                                            p: [
+                                              ScreenDesign.landscape,
+                                              ScreenDesign.landscapeSmall
+                                            ].contains(
+                                                    ScreenIdentifier.indentify(
+                                                        context))
+                                                ? 0.15
+                                                : 0.06),
                                         width: SizeConfig.getMediaWidth(context,
                                             p: 0.6),
                                         decoration: BoxDecoration(
@@ -464,11 +471,16 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                             alignment: Alignment.center,
                             child: SizedBox(
                               width: SizeConfig.getMediaWidth(context, p: 0.89),
-                              height: SizeConfig.getMediaHeight(context,
-                                  p: ScreenIdentifier.indentify(context) ==
-                                          ScreenDesign.portraitSmall
-                                      ? 0.3
-                                      : 0.25),
+                              height: ScreenIdentifier.isLandscapeRelative(
+                                      context)
+                                  // rules for landscape
+                                  ? SizeConfig.getMediaHeight(context, p: 0.5)
+                                  // rules for portrait
+                                  : SizeConfig.getMediaHeight(context,
+                                      p: ScreenIdentifier.isPortraitSmall(
+                                              context)
+                                          ? 0.3
+                                          : 0.25),
                               child: Container(
                                   margin:
                                       const EdgeInsets.symmetric(vertical: 4),
