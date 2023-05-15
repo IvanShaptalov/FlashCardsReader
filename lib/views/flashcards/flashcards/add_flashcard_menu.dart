@@ -104,11 +104,9 @@ class FlashCardCreatingWallView extends StatefulWidget {
 }
 
 class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
-  bool _isPressed = false;
-
   String oldWord = '';
 
-  // =====================================[WALL]==[BUILD]=====================================
+  /// =====================================[WALL]==[BUILD]=====================================
   @override
   Widget build(BuildContext context) {
     widget.flashCardFormController.setUp(FlashCardProvider.fc);
@@ -126,44 +124,59 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                 p: ScreenIdentifier.isPortrait(context) ? 0.85 : 0.95)
 
             /// [landscape mode]
-            : SizeConfig.getMediaHeight(context, p: 0.95),
+            : SizeConfig.getMediaHeight(context, p: 0.8),
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: SizeConfig.getMediaHeight(context, p: 0.01)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.arrow_drop_down),
-                Text(
-                  widget.isEdit
-                      ? 'Drag to cancel editing'
-                      : 'Drag to cancel adding',
-                  style: FontConfigs.h2TextStyle,
-                ),
-                const Icon(Icons.arrow_drop_down),
-              ],
+          if (ScreenIdentifier.isPortraitRelative(context))
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: SizeConfig.getMediaHeight(context, p: 0.01)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.arrow_drop_down),
+                  Text(
+                    'Drag to cancel action',
+                    style: FontConfigs.h2TextStyle,
+                  ),
+                  const Icon(Icons.arrow_drop_down),
+                ],
+              ),
             ),
-          ),
-          Container(
-            /// [portrait mode]
-            height: ScreenIdentifier.isPortraitRelative(context)
-                ? SizeConfig.getMediaHeight(context,
-                    p: ScreenIdentifier.isPortrait(context) ? 0.3 : 0.4)
+          ScreenIdentifier.isPortraitRelative(context)
+              ? Container(
+                  /// [portrait mode]
+                  height: SizeConfig.getMediaHeight(context,
+                      p: ScreenIdentifier.isPortrait(context) ? 0.3 : 0.4),
 
-                /// [landscape mode]
-                : SizeConfig.getMediaHeight(context, p: 0.5),
-            color: ConfigViewUpdateMenu.addWordMenuColor,
-            child: BaseNewWordWidget.addWordMenu(
-                context: context,
-                callback: callback,
-                widget: widget,
-                oldWord: oldWord),
-          ),
-          const Divider(
-            color: Colors.grey,
-            thickness: 1,
-          ),
+                  width: SizeConfig.getMediaWidth(context, p: 1),
+
+                  color: ConfigViewUpdateMenu.addWordMenuColor,
+                  child: BaseNewWordWidget.addWordMenu(
+                      context: context,
+                      callback: callback,
+                      widget: widget,
+                      oldWord: oldWord),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.rotate_right),
+                      SizedBox(
+                          width: SizeConfig.getMediaWidth(context, p: 0.02)),
+                      Text(
+                        'rotate screen to add words',
+                        style: FontConfigs.h2TextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+          if (ScreenIdentifier.isPortraitRelative(context))
+            const Divider(
+              color: Colors.grey,
+              thickness: 1,
+            ),
           Expanded(
               child: SingleChildScrollView(
                   child: Column(
@@ -193,10 +206,11 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                     children: [
                       Column(
                         children: [
-                          Text(
-                            'source',
-                            style: FontConfigs.h3TextStyle,
-                          ),
+                          if (ScreenIdentifier.isPortraitRelative(context))
+                            Text(
+                              'source',
+                              style: FontConfigs.h3TextStyle,
+                            ),
                           SelectLanguageDropdown(
                             langDestination: 'from',
                           ),
@@ -222,10 +236,11 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                       ),
                       Column(
                         children: [
-                          Text(
-                            'translation',
-                            style: FontConfigs.h3TextStyle,
-                          ),
+                          if (ScreenIdentifier.isPortraitRelative(context))
+                            Text(
+                              'translation',
+                              style: FontConfigs.h3TextStyle,
+                            ),
                           SelectLanguageDropdown(
                             langDestination: 'to',
                           ),
@@ -265,7 +280,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                     :
 
                                     /// [landscape mode]
-                                    SizeConfig.getMediaHeight(context, p: 0.5),
+                                    SizeConfig.getMediaHeight(context, p: 0.7),
                             width: SizeConfig.getMediaWidth(context, p: 0.89),
                             child: Container(
                                 decoration: BoxDecoration(
@@ -531,10 +546,17 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                           children: [
                                             GestureDetector(
                                               child: Container(
-                                                height:
-                                                    SizeConfig.getMediaHeight(
-                                                        context,
-                                                        p: 0.05),
+                                                height: SizeConfig.getMediaHeight(
+                                                    context,
+
+                                                    /// [landscape mode]
+                                                    p: ScreenIdentifier
+                                                            .isPortraitRelative(
+                                                                context)
+                                                        ? 0.05
+
+                                                        /// [portrait mode]
+                                                        : 0.14),
                                                 width: SizeConfig.getMediaWidth(
                                                     context,
                                                     p: ConfigViewUpdateMenu
@@ -583,10 +605,17 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                             ),
                                             GestureDetector(
                                               child: Container(
-                                                height:
-                                                    SizeConfig.getMediaHeight(
-                                                        context,
-                                                        p: 0.05),
+                                                height: SizeConfig.getMediaHeight(
+                                                    context,
+
+                                                    /// [landscape mode]
+                                                    p: ScreenIdentifier
+                                                            .isPortraitRelative(
+                                                                context)
+                                                        ? 0.05
+
+                                                        /// [portrait mode]
+                                                        : 0.14),
                                                 width: SizeConfig.getMediaWidth(
                                                     context,
                                                     p: ConfigViewUpdateMenu
@@ -650,32 +679,23 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                   ]),
                 ),
               ]))),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Container(
-              color: Colors.transparent,
-              height: SizeConfig.getMediaHeight(context, p: 0.08),
-              width: SizeConfig.getMediaWidth(context, p: 1),
-              child: Center(
-                child: addCollectionButton(),
+          if (ScreenIdentifier.isPortraitRelative(context))
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Container(
+                color: Colors.transparent,
+                height: SizeConfig.getMediaHeight(context, p: 0.08),
+                width: SizeConfig.getMediaWidth(context, p: 1),
+                child: Center(
+                  child: addCollectionButton(),
+                ),
               ),
             ),
-          ),
         ]));
   }
 
   void callback() {
     setState(() {});
-  }
-
-  void saveCollectionFromWord({required bool onSubmitted}) {
-    updateWord(onSubmitted: onSubmitted);
-    if (FlashCardProvider.fc.isValid) {
-      context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
-          flashCardCollection: FlashCardProvider.fc..id = uuid.v4()));
-    } else {
-      showValidatorMessage();
-    }
   }
 
   void showValidatorMessage() {
@@ -692,8 +712,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
 
       debugPrint('Add at least one flashcard');
     } else if (FlashCardProvider.fc.answerLanguage.isEmpty) {
-      OverlayNotificationProvider.showOverlayNotification(
-          'source language',
+      OverlayNotificationProvider.showOverlayNotification('source language',
           status: NotificationStatus.info);
 
       debugPrint('Add question language');
@@ -708,41 +727,6 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
           status: NotificationStatus.info);
 
       debugPrint('flash not valid');
-    }
-  }
-
-  void updateWord({bool onSubmitted = false}) {
-    var flash = WordCreatingUIProvider.tmpFlashCard;
-    if (onSubmitted && flash.answer.isEmpty && flash.question.isEmpty) {
-      debugPrintIt('on submitted and word empty, do nothing');
-    } else if (WordCreatingUIProvider.tmpFlashCard.isValid) {
-      debugPrint('add flashcard');
-
-      WordCreatingUIProvider.setQuestionLanguage(
-          FlashCardProvider.fc.questionLanguage);
-      WordCreatingUIProvider.setAnswerLanguage(
-          FlashCardProvider.fc.answerLanguage);
-
-      FlashCardProvider.fc.flashCardSet
-          .add(WordCreatingUIProvider.tmpFlashCard);
-      WordCreatingUIProvider.clear();
-      OverlayNotificationProvider.showOverlayNotification('word added',
-          status: NotificationStatus.success);
-
-      setState(() {});
-    } else {
-      if (WordCreatingUIProvider.tmpFlashCard.question.isEmpty) {
-        OverlayNotificationProvider.showOverlayNotification('add word',
-            status: NotificationStatus.info);
-      } else if (WordCreatingUIProvider.tmpFlashCard.answer.isEmpty) {
-        OverlayNotificationProvider.showOverlayNotification(
-            'tap translate button',
-            status: NotificationStatus.info);
-      } else {
-        // ====================[save whole collection]
-      }
-
-      debugPrint('not valid');
     }
   }
 
@@ -784,150 +768,6 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
           }
         },
       ),
-    );
-  }
-
-  Widget addWordWidget() {
-    return Transform.scale(
-      scale: 0.9,
-      child: Container(
-          height: SizeConfig.getMediaHeight(context, p: 0.17),
-          width: SizeConfig.getMediaWidth(context, p: 1),
-          decoration: BoxDecoration(
-            color: Colors.green.shade200,
-
-            // rounded full border
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(
-              color: Colors.grey,
-              width: 1,
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        saveCollectionFromWord(onSubmitted: false);
-                      },
-                      icon: const Icon(Icons.add_circle_outlined)),
-                  Expanded(
-                    child: BlocProvider(
-                      create: (context) => TranslatorBloc(),
-                      child: TextField(
-                        controller: widget.wordFormContoller.questionController,
-                        decoration: InputDecoration(
-                          labelText: 'Add Word',
-                          labelStyle: FontConfigs.h3TextStyle,
-                        ),
-                        onChanged: (text) {
-                          WordCreatingUIProvider.setQuestion(text);
-                          debugPrintIt('text: $text');
-                          // set the word
-                          oldWord = text;
-                          debugPrintIt('wait for 5 seconds');
-                          Future.delayed(const Duration(milliseconds: 100))
-                              .then((value) {
-                            if (oldWord == text) {
-                              debugPrintIt('user stopped typing');
-                              debugPrintIt(
-                                  'translate: $oldWord to ${FlashCardProvider.fc.answerLanguage}');
-                              BlocProvider.of<TranslatorBloc>(context).add(
-                                  TranslateEvent(
-                                      text: text,
-                                      fromLan:
-                                          FlashCardProvider.fc.questionLanguage,
-                                      toLan:
-                                          FlashCardProvider.fc.answerLanguage));
-                            } else if (oldWord.isEmpty || text.isEmpty) {
-                              debugPrintIt('user cleared the text');
-                              BlocProvider.of<TranslatorBloc>(context)
-                                  .add(ClearTranslateEvent());
-                            } else if (oldWord != text) {
-                              debugPrintIt('user is still typing');
-                            }
-                          });
-                        },
-                        onSubmitted: (value) {
-                          saveCollectionFromWord(onSubmitted: true);
-                          context
-                              .read<TranslatorBloc>()
-                              .add(ClearTranslateEvent());
-                        },
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          WordCreatingUIProvider.clear();
-                        });
-                      },
-                      icon: const Icon(Icons.delete_sweep_outlined)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        _isPressed = !_isPressed;
-
-                        setState(() {
-                          debugPrintIt('pressed');
-                        });
-                        context
-                            .read<TranslatorBloc>()
-                            .add(ClearTranslateEvent());
-                      },
-                      icon: const Icon(Icons.translate)),
-                  Expanded(
-                    child: BlocListener<TranslatorBloc, TranslatorInitial>(
-                      listener: (context, state) {
-                        widget.wordFormContoller.answerController.text =
-                            state.result;
-                        WordCreatingUIProvider.setAnswer(state.result);
-                        debugPrintIt(
-                            'answer changed to ${state.result} from translate');
-
-                        if (WordCreatingUIProvider
-                            .tmpFlashCard.answer.isEmpty) {
-                          widget.wordFormContoller.answerController.text =
-                              state.result;
-                          WordCreatingUIProvider.setAnswer(state.result);
-                          debugPrintIt(
-                              'answer changed to ${state.result} from translate');
-                        }
-                      },
-                      child: TextField(
-                        controller: widget.wordFormContoller.answerController,
-                        decoration: InputDecoration(
-                          labelText: 'Add Translation',
-                          labelStyle: FontConfigs.h3TextStyle,
-                        ),
-                        onChanged: (text) {
-                          WordCreatingUIProvider.setAnswer(text);
-                        },
-                        onSubmitted: (value) {
-                          saveCollectionFromWord(onSubmitted: true);
-                        },
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          WordCreatingUIProvider.clear();
-                        });
-                      },
-                      icon: const Icon(Icons.delete_sweep_outlined)),
-                ],
-              )
-            ],
-          )),
     );
   }
 }
