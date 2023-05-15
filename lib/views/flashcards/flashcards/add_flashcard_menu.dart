@@ -11,6 +11,7 @@ import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 // TODO design the bottom sheet
 class FlashCardFormController {
   TextEditingController titleController = TextEditingController();
@@ -118,7 +119,14 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25)),
         ),
-        height: SizeConfig.getMediaHeight(context, p: 0.85),
+
+        /// [portrait mode]
+        height: ScreenIdentifier.isPortraitRelative(context)
+            ? SizeConfig.getMediaHeight(context,
+                p: ScreenIdentifier.isPortrait(context) ? 0.85 : 0.95)
+
+            /// [landscape mode]
+            : SizeConfig.getMediaHeight(context, p: 0.95),
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Padding(
             padding: EdgeInsets.symmetric(
@@ -138,7 +146,13 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
             ),
           ),
           Container(
-            height: SizeConfig.getMediaHeight(context, p: 0.3),
+            /// [portrait mode]
+            height: ScreenIdentifier.isPortraitRelative(context)
+                ? SizeConfig.getMediaHeight(context,
+                    p: ScreenIdentifier.isPortrait(context) ? 0.3 : 0.4)
+
+                /// [landscape mode]
+                : SizeConfig.getMediaHeight(context, p: 0.5),
             color: ConfigViewUpdateMenu.addWordMenuColor,
             child: BaseNewWordWidget.addWordMenu(
                 context: context,
@@ -180,7 +194,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                       Column(
                         children: [
                           Text(
-                            'question language',
+                            'source',
                             style: FontConfigs.h3TextStyle,
                           ),
                           SelectLanguageDropdown(
@@ -209,7 +223,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                       Column(
                         children: [
                           Text(
-                            'answer language',
+                            'translation',
                             style: FontConfigs.h3TextStyle,
                           ),
                           SelectLanguageDropdown(
@@ -240,7 +254,18 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                         child: Align(
                           alignment: Alignment.center,
                           child: SizedBox(
-                            height: SizeConfig.getMediaHeight(context, p: 0.3),
+                            height:
+
+                                /// [portrait mode]
+                                ScreenIdentifier.isPortraitRelative(context)
+                                    ? SizeConfig.getMediaHeight(context,
+                                        p: ScreenIdentifier.isPortrait(context)
+                                            ? 0.3
+                                            : 0.4)
+                                    :
+
+                                    /// [landscape mode]
+                                    SizeConfig.getMediaHeight(context, p: 0.5),
                             width: SizeConfig.getMediaWidth(context, p: 0.89),
                             child: Container(
                                 decoration: BoxDecoration(
@@ -394,60 +419,63 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                   ],
                                                 ),
                                               ),
-                                              RichText(
-                                                textAlign: TextAlign.left,
-                                                overflow: TextOverflow.ellipsis,
-                                                text: TextSpan(
-                                                  style: const TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.grey),
-                                                  children: [
-                                                    WidgetSpan(
-                                                      alignment:
-                                                          PlaceholderAlignment
-                                                              .middle,
-                                                      child: Padding(
+                                              if (!ScreenIdentifier
+                                                  .isPortraitSmall(context))
+                                                RichText(
+                                                  textAlign: TextAlign.left,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  text: TextSpan(
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.grey),
+                                                    children: [
+                                                      WidgetSpan(
+                                                        alignment:
+                                                            PlaceholderAlignment
+                                                                .middle,
+                                                        child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        2.0),
+                                                            child: flashCard.wrongAnswers ==
+                                                                        0 &&
+                                                                    flashCard
+                                                                        .isLearned
+                                                                ? const Icon(
+                                                                    Icons
+                                                                        .check_circle,
+                                                                    size: 16,
+                                                                    color: Colors
+                                                                        .green)
+                                                                : const Icon(
+                                                                    Icons
+                                                                        .cancel_outlined,
+                                                                    size: 16,
+                                                                    color: Colors
+                                                                        .deepPurple)),
+                                                      ),
+                                                      WidgetSpan(
+                                                        alignment:
+                                                            PlaceholderAlignment
+                                                                .middle,
+                                                        child: Padding(
                                                           padding:
                                                               const EdgeInsets
                                                                       .symmetric(
                                                                   horizontal:
                                                                       2.0),
-                                                          child: flashCard.wrongAnswers ==
-                                                                      0 &&
-                                                                  flashCard
-                                                                      .isLearned
-                                                              ? const Icon(
-                                                                  Icons
-                                                                      .check_circle,
-                                                                  size: 16,
-                                                                  color: Colors
-                                                                      .green)
-                                                              : const Icon(
-                                                                  Icons
-                                                                      .cancel_outlined,
-                                                                  size: 16,
-                                                                  color: Colors
-                                                                      .deepPurple)),
-                                                    ),
-                                                    WidgetSpan(
-                                                      alignment:
-                                                          PlaceholderAlignment
-                                                              .middle,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal:
-                                                                    2.0),
-                                                        child: Text(
-                                                            'Wrong: ${flashCard.wrongAnswers}',
-                                                            style: FontConfigs
-                                                                .h2TextStyle),
+                                                          child: Text(
+                                                              'Wrong: ${flashCard.wrongAnswers}',
+                                                              style: FontConfigs
+                                                                  .h2TextStyle),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
                                               RichText(
                                                 textAlign: TextAlign.left,
                                                 overflow: TextOverflow.fade,
@@ -665,7 +693,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
       debugPrint('Add at least one flashcard');
     } else if (FlashCardProvider.fc.answerLanguage.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
-          'Add question language',
+          'source language',
           status: NotificationStatus.info);
 
       debugPrint('Add question language');

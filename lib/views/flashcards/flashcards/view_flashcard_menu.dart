@@ -10,7 +10,6 @@ import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-// TODO desing view menu
 class FlashCardViewBottomSheet {
   FlashCardViewBottomSheet({FlashCardCollection? creatingFlashC}) {
     if (creatingFlashC != null) {
