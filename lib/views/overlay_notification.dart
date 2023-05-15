@@ -1,5 +1,3 @@
-import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 

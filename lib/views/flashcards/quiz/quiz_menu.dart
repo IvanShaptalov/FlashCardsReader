@@ -119,17 +119,7 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
     super.initState();
   }
 
-  int calculateColumnCount(BuildContext context) {
-    double screenWidth = SizeConfig.getMediaWidth(context);
-    if (screenWidth > 1000) {
-      return SizeConfig.getMediaWidth(context) ~/ 200;
-    } else if (screenWidth > 600) {
-      return 3;
-    } else if (screenWidth >= 380) {
-      return 2;
-    }
-    return 1;
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +127,7 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
     widget.page = loadMenu(
       child: BlocBuilder<QuizBloc, QuizState>(
         builder: (context, state) {
-          columnCount = calculateColumnCount(context);
+          columnCount = ViewColumnCalculator.calculateColumnCount(context);
 
           var flashCollectionList = context
               .read<FlashCardBloc>()

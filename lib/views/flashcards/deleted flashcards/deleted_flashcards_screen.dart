@@ -40,29 +40,6 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
   int columnCount = 2;
   double appBarHeight = 0;
 
-  int calculateColumnCount(BuildContext context) {
-    double screenWidth = SizeConfig.getMediaWidth(context);
-    if (screenWidth > 1000) {
-      return SizeConfig.getMediaWidth(context) ~/ 200;
-    } else if (screenWidth > 600) {
-      return 3;
-    } else if (screenWidth >= 380) {
-      return 2;
-    }
-    return 1;
-  }
-
-  double calculateCrossSpacing(BuildContext context) {
-    double screenWidth = SizeConfig.getMediaWidth(context);
-    if (screenWidth > 1000) {
-      return SizeConfig.getMediaWidth(context) / 20;
-    } else if (screenWidth > 600) {
-      return 40;
-    } else if (screenWidth >= 380) {
-      return 25;
-    }
-    return 15;
-  }
 
   List<Widget> bottomNavigationBarItems(
       List<FlashCardCollection> flashCardCollection) {
@@ -101,7 +78,7 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
     widget.portraitPage = BlocBuilder<FlashCardBloc, FlashcardsState>(
       builder: (context, state) {
         var flashCardCollection = state.copyWith(fromTrash: true).flashCards;
-        columnCount = calculateColumnCount(context);
+        columnCount = ViewColumnCalculator.calculateColumnCount(context);
         var appBar = getAppBar(flashCardCollection);
         appBarHeight = appBar.preferredSize.height;
         var screenNow = Scaffold(
@@ -119,7 +96,7 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
                     child: GridView.count(
                         mainAxisSpacing:
                             SizeConfig.getMediaHeight(context, p: 0.04),
-                        crossAxisSpacing: calculateCrossSpacing(context),
+                        crossAxisSpacing: ViewColumnCalculator.calculateCrossSpacing(context),
                         crossAxisCount: columnCount,
                         padding: EdgeInsets.symmetric(
                             horizontal:

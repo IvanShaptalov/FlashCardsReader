@@ -17,6 +17,30 @@ class SizeConfig {
   }
 }
 
+class ViewColumnCalculator {
+  static int calculateColumnCount(BuildContext context) {
+    double screenWidth = SizeConfig.getMediaWidth(context);
+    if (screenWidth > 1000) {
+      return SizeConfig.getMediaWidth(context) ~/ 200;
+    } else if (screenWidth > 600) {
+      return 3;
+    }
+    return 2;
+  }
+
+  static double calculateCrossSpacing(BuildContext context) {
+    double screenWidth = SizeConfig.getMediaWidth(context);
+    if (screenWidth > 1000) {
+      return SizeConfig.getMediaWidth(context) / 20;
+    } else if (screenWidth > 600) {
+      return 40;
+    } else if (screenWidth >= 380) {
+      return 25;
+    }
+    return 15;
+  }
+}
+
 class ViewConfig {
   static const String creatingFormat = 'MMM d, yyyy';
 

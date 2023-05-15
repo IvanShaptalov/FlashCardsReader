@@ -50,29 +50,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
   int columnCount = 2;
   double appBarHeight = 0;
 
-  int calculateColumnCount(BuildContext context) {
-    double screenWidth = SizeConfig.getMediaWidth(context);
-    if (screenWidth > 1000) {
-      return SizeConfig.getMediaWidth(context) ~/ 200;
-    } else if (screenWidth > 600) {
-      return 3;
-    } else if (screenWidth >= 380) {
-      return 2;
-    }
-    return 1;
-  }
-
-  double calculateCrossSpacing(BuildContext context) {
-    double screenWidth = SizeConfig.getMediaWidth(context);
-    if (screenWidth > 1000) {
-      return SizeConfig.getMediaWidth(context) / 20;
-    } else if (screenWidth > 600) {
-      return 40;
-    } else if (screenWidth >= 380) {
-      return 25;
-    }
-    return 15;
-  }
+  
 
   List<Widget> bottomNavigationBarItems() {
     // deactivate merge mode
@@ -85,7 +63,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
       return [
         deactivateMergeIcon(),
         IconButton(
-          icon: const Icon(Icons.merge_type),
+          icon: const Icon(Icons.merge_sharp),
           onPressed: () async {
             await FlashCardCollectionProvider.mergeFlashCardsCollectionAsync(
                 FlashCardCollectionProvider.flashcardsToMerge,
@@ -156,7 +134,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
     widget.portraitPage =
         BlocBuilder<FlashCardBloc, FlashcardsState>(builder: (context, state) {
       var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
-      columnCount = calculateColumnCount(context);
+      columnCount = ViewColumnCalculator.calculateColumnCount(context);
       var appBar = getAppBar(flashCardCollection);
       appBarHeight = appBar.preferredSize.height;
       return Scaffold(
@@ -165,7 +143,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
           body: AnimationLimiter(
             child: GridView.count(
                 mainAxisSpacing: SizeConfig.getMediaHeight(context, p: 0.04),
-                crossAxisSpacing: calculateCrossSpacing(context),
+                crossAxisSpacing: ViewColumnCalculator.calculateCrossSpacing(context),
                 crossAxisCount: columnCount,
                 padding: EdgeInsets.symmetric(
                     horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
