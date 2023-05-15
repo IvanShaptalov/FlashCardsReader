@@ -188,6 +188,24 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                           ),
                         ],
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                FlashCardProvider.fc.switchLanguages();
+                              });
+                              BlocProvider.of<TranslatorBloc>(context).add(
+                                  TranslateEvent(
+                                      text: WordCreatingUIProvider
+                                          .tmpFlashCard.question,
+                                      fromLan:
+                                          FlashCardProvider.fc.questionLanguage,
+                                      toLan:
+                                          FlashCardProvider.fc.answerLanguage));
+                            },
+                            icon: const Icon(Icons.swap_horiz_rounded)),
+                      ),
                       Column(
                         children: [
                           Text(
@@ -215,10 +233,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                       vertical: 32.0,
                       horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
                   child: Column(children: [
-                    for (var flashCard in FlashCardProvider
-                        .fc.flashCardSet
-                        .toList()
-                        .reversed)
+                    for (var flashCard
+                        in FlashCardProvider.fc.flashCardSet.toList().reversed)
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Align(
@@ -274,9 +290,10 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                       onPressed: () {
                                                         TextToSpeechWrapper
                                                             .onPressed(
-                                                                 flashCard
+                                                                flashCard
                                                                     .question,
-                                                                FlashCardProvider.fc
+                                                                FlashCardProvider
+                                                                    .fc
                                                                     .questionLanguage);
                                                       },
                                                       icon: const Icon(Icons
@@ -326,7 +343,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                             .onPressed(
                                                                 flashCard
                                                                     .answer,
-                                                                FlashCardProvider.fc
+                                                                FlashCardProvider
+                                                                    .fc
                                                                     .answerLanguage);
                                                       },
                                                       icon: const Icon(Icons
@@ -792,10 +810,10 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                               BlocProvider.of<TranslatorBloc>(context).add(
                                   TranslateEvent(
                                       text: text,
-                                      fromLan: FlashCardProvider
-                                          .fc.questionLanguage,
-                                      toLan: FlashCardProvider
-                                          .fc.answerLanguage));
+                                      fromLan:
+                                          FlashCardProvider.fc.questionLanguage,
+                                      toLan:
+                                          FlashCardProvider.fc.answerLanguage));
                             } else if (oldWord.isEmpty || text.isEmpty) {
                               debugPrintIt('user cleared the text');
                               BlocProvider.of<TranslatorBloc>(context)
