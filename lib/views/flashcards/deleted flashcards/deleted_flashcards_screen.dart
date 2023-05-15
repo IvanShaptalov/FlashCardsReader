@@ -112,7 +112,7 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
                     child: Image.asset(
                     'assets/images/empty.png',
                     fit: BoxFit.fitHeight,
-                    height: SizeConfig.getMediaHeight(context, p: 0.6),
+                    height: SizeConfig.getMediaHeight(context, p: 1),
                     width: SizeConfig.getMediaWidth(context, p: 0.6),
                   ))
                 : AnimationLimiter(

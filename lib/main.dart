@@ -64,7 +64,7 @@ class _MyHomePageState extends ParentState<MyHomePage> {
   double appBarHeight = 0;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, {Widget? page}) {
     /// ===============================================[Create page]===============================
     var appBar = AppBar(
       title: Text(widget.title),

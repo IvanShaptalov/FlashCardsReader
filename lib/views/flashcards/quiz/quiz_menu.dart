@@ -134,7 +134,7 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
   @override
   Widget build(BuildContext context) {
     // creating bloc builder for flashcards
-    widget.portraitPage = loadMenu(
+    widget.page = loadMenu(
       child: BlocBuilder<QuizBloc, QuizState>(
         builder: (context, state) {
           columnCount = calculateColumnCount(context);
@@ -148,13 +148,14 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
           var appBar = getAppBar();
           appBarHeight = appBar.preferredSize.height;
           return Scaffold(
-              bottomNavigationBar: BottomAppBar(
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              bottomNavigationBar: MyConfigOrientation.isPortrait(context)
+                  ? BottomAppBar(
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                    /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
-                    children: bottomNavigationBarItems()),
-              ),
+                          /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
+                          children: bottomNavigationBarItems()))
+                  : null,
               resizeToAvoidBottomInset: false,
               appBar: appBar,
               drawer: getDrawer(),
@@ -164,13 +165,14 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Center(
-                          child: Padding(
-                        padding:
-                            EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-                        child: Text('Select quiz mode',
-                            style: FontConfigs.h1TextStyle),
-                      )),
+                      if (MyConfigOrientation.isPortrait(context))
+                        const Center(
+                            child: Padding(
+                          padding:
+                              EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0),
+                          child: Text('Select quiz mode',
+                              style: FontConfigs.h1TextStyle),
+                        )),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SingleChildScrollView(
@@ -181,16 +183,21 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    SelectQuizMode(
+                                  children: [
+                                    if (MyConfigOrientation.isLandscape(
+                                        context))
+                                      const Text('Select quiz mode',
+                                          style: FontConfigs.h1TextStyle),
+                                    const SelectQuizMode(
                                       mode: QuizMode.all,
                                     ),
-                                    SelectQuizMode(mode: QuizMode.learned),
-                                    SelectQuizMode(mode: QuizMode.simple),
-                                    SelectQuizMode(mode: QuizMode.hard),
-                                    SelectQuizMode(mode: QuizMode.newest),
-                                    SelectQuizMode(mode: QuizMode.oldest),
-                                    SelectQuizMode(mode: QuizMode.random),
+                                    const SelectQuizMode(
+                                        mode: QuizMode.learned),
+                                    const SelectQuizMode(mode: QuizMode.simple),
+                                    const SelectQuizMode(mode: QuizMode.hard),
+                                    const SelectQuizMode(mode: QuizMode.newest),
+                                    const SelectQuizMode(mode: QuizMode.oldest),
+                                    const SelectQuizMode(mode: QuizMode.random),
                                   ],
                                 ),
                               ],
@@ -222,7 +229,7 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: SizeConfig.getMediaWidth(
                                           context,
-                                          p: 0.05)),
+                                          p: 0.02)),
                                   childAspectRatio:
                                       ViewConfig.getCardForm(context),
                                   children: List.generate(
@@ -230,7 +237,7 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
                                     /// ====================================================================[FlashCardCollectionWidget]
                                     // add flashcards
                                     return Transform.scale(
-                                      scale: columnCount == 1 ? 0.9 : 1,
+                                      scale: 0.95,
                                       child:
                                           AnimationConfiguration.staggeredGrid(
                                         position: index,
@@ -252,7 +259,6 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
         },
       ),
     );
-    bindAllPages(widget.portraitPage);
     return super.build(context);
   }
 }
