@@ -39,7 +39,7 @@ class OverlayNotificationProvider {
         ),
         slideDismissDirection: DismissDirection.up,
         background: Colors.blueGrey,
-        duration: const Duration(milliseconds: 2));
+        duration: const Duration(seconds: 2));
   }
 
   static void backOnline() {
@@ -50,6 +50,6 @@ class OverlayNotificationProvider {
         ),
         slideDismissDirection: DismissDirection.up,
         background: Colors.green,
-        duration: const Duration(milliseconds: 2));
+        duration: const Duration(seconds: 2));
   }
 }

@@ -105,7 +105,7 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
                   .flashCardsCollection
                   .title),
             ),
-            body: VerticalQuiz(
+            body:  VerticalQuiz(
               fromPage: widget.fromPage,
             ));
       },
