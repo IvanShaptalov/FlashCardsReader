@@ -97,7 +97,7 @@ List<Widget> loadListItems(BuildContext context) {
       padding: EdgeInsets.all(SizeConfig.getMediaHeight(context, p: 0.01)),
       child: Container(
           height: SizeConfig.getMediaHeight(context,
-              p: ScreenIdentifier.isLandscapeRelative(context) ? 0.15 : 0.08),
+              p: ScreenIdentifier.isLandscapeRelative(context) ? 0.15 : 0.1),
           width: SizeConfig.getMediaWidth(context, p: 0.6),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
@@ -160,7 +160,7 @@ Widget loadEndQuiz(BuildContext context, String fromPage) {
         child: GestureDetector(
           child: Container(
             width: SizeConfig.getMediaWidth(context,
-                p: ScreenIdentifier.isLandscapeRelative(context) ? 0.35 : 0.5),
+                p: ScreenIdentifier.isLandscapeRelative(context) ? 0.35 : 0.6),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
                 color: ConfigQuizView.backFromQuizButtonBackgroundColor),

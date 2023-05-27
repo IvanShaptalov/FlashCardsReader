@@ -101,7 +101,6 @@ class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: ConfigQuizView.cardQuizColor,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
@@ -112,17 +111,17 @@ class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
             ),
           ],
         ),
-        child: SizedBox(
-          height: SizeConfig.getMediaHeight(context, p: 0.6),
-          width: SizeConfig.getMediaWidth(context, p: 0.8),
-          child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              first,
-              Transform.scale(
-                scale: 1,
-                child: IconButton(
+        child: Card(
+          shadowColor: Colors.black.withOpacity(0.2),
+          child: SizedBox(
+            height: SizeConfig.getMediaHeight(context, p: 0.55),
+            width: SizeConfig.getMediaWidth(context, p: 0.8),
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                first,
+                IconButton(
                     onPressed: () {
                       SwapWordsProvider.swapIt();
                       setState(() {});
@@ -131,10 +130,10 @@ class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
                       Icons.swap_vert_rounded,
                       color: ConfigFlashcardView.quizIconColor,
                     )),
-              ),
-              second
-            ],
-          )),
+                second
+              ],
+            )),
+          ),
         ),
       ),
     );
