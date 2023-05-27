@@ -1,5 +1,8 @@
+import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SummaryFlashCardsProvider {
   static Set<FlashCardMock> flashSetMock = {};
@@ -189,4 +192,14 @@ Widget loadEndQuiz(BuildContext context, String fromPage) {
       )
     ],
   );
+}
+
+void addWordToResult(bool answer, BuildContext context) {
+  FlashCard? flash =
+      BlocProvider.of<QuizBloc>(context).state.quizModel.currentFCard;
+  if (flash != null) {
+    FlashCardMock mock = FlashCardMock(
+        question: flash.question, answer: flash.answer, isCorrect: answer);
+    SummaryFlashCardsProvider.flashSetMock.add(mock);
+  }
 }

@@ -2,12 +2,14 @@ import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/horizontal_quiz_view.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz_view.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 // TODO process desing
 // ignore: must_be_immutable
 class QuizTrainer extends ParentStatefulWidget {
@@ -105,9 +107,11 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
                   .flashCardsCollection
                   .title),
             ),
-            body:  VerticalQuiz(
-              fromPage: widget.fromPage,
-            ));
+            body: ScreenIdentifier.isPortraitRelative(context)
+                ? VerticalQuiz(
+                    fromPage: widget.fromPage,
+                  )
+                : HorizontalQuiz(fromPage: widget.fromPage));
       },
     );
   }

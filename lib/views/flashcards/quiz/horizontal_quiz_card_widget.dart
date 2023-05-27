@@ -1,27 +1,32 @@
 import 'dart:ui';
 
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
-import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/util_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
-class QuizFlashCard extends StatefulWidget {
+class HorizontalQuizFlashCard extends StatefulWidget {
   final BuildContext quizContext;
   bool empty;
-  QuizFlashCard({this.empty = false, required this.quizContext, super.key});
-  String swipeRight = 'Swipe right\nif you know';
-  String swipeLeft = 'Swipe left\nif you don\'t';
+  HorizontalQuizFlashCard(
+      {this.empty = false, required this.quizContext, super.key});
+  String swipeRight = 'Swipe righn if you know';
+  String swipeLeft = 'Swipe left if you don\'t';
   @override
-  State<QuizFlashCard> createState() => _QuizFlashCardState();
+  State<HorizontalQuizFlashCard> createState() =>
+      _HorizontalQuizFlashCardState();
 }
 
-class _QuizFlashCardState extends State<QuizFlashCard> {
+class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
   @override
   Widget build(BuildContext context) {
     // if landscape mode
+    if (ScreenIdentifier.isLandscapeRelative(context)) {
+      widget.swipeRight = 'Swipe up if you know';
+      widget.swipeLeft = 'Swipe down if you don\'t';
+    }
 
     var currentFcard = BlocProvider.of<QuizBloc>(widget.quizContext)
         .state
@@ -30,11 +35,9 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
     var firstText = SwapWordsProvider.swap
         ? currentFcard?.answer ?? widget.swipeRight
         : currentFcard?.question ?? widget.swipeLeft;
-    var firstLanguage = SwapWordsProvider.swap
-        ? currentFcard?.answerLanguage ?? 'en'
-        : currentFcard?.questionLanguage ?? 'en';
+
     var first = Container(
-      height: SizeConfig.getMediaHeight(context, p: 0.3),
+      height: SizeConfig.getMediaHeight(context, p: 0.2),
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: widget.empty
@@ -49,18 +52,6 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                       style: FontConfigs.cardQuestionTextStyle,
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(
-                      height: SizeConfig.getMediaHeight(context, p: 0.05),
-                    ),
-                    Transform.scale(
-                      scale: 1.2,
-                      child: IconButton(
-                          onPressed: () {
-                            TextToSpeechWrapper.onPressed(
-                                firstText, firstLanguage);
-                          },
-                          icon: const Icon(Icons.volume_up_outlined)),
-                    ),
                   ],
                 ),
               ),
@@ -70,10 +61,6 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
         ? currentFcard?.question ?? widget.swipeLeft
         : currentFcard?.answer ?? widget.swipeRight;
 
-    var secondLanguage = SwapWordsProvider.swap
-        ? currentFcard?.questionLanguage ?? 'en'
-        : currentFcard?.answerLanguage ?? 'en';
-
     var second = GestureDetector(
       onTap: () {
         setState(() {
@@ -82,7 +69,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
       },
       child: Container(
         color: Colors.transparent,
-        height: SizeConfig.getMediaHeight(context, p: 0.3),
+        height: SizeConfig.getMediaHeight(context, p: 0.2),
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -93,18 +80,6 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Transform.scale(
-                          scale: 1.2,
-                          child: IconButton(
-                              onPressed: () {
-                                TextToSpeechWrapper.onPressed(
-                                    secondText, secondLanguage);
-                              },
-                              icon: const Icon(Icons.volume_up_outlined)),
-                        ),
-                        SizedBox(
-                          height: SizeConfig.getMediaHeight(context, p: 0.05),
-                        ),
                         ImageFiltered(
                           imageFilter: BlurProvider.blurred
                               ? ImageFilter.blur(sigmaX: 5, sigmaY: 5)
@@ -124,18 +99,21 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
     );
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Card(
-        color: ConfigQuizView.cardQuizColor,
-        shape: ShapeBorder.lerp(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+      child: Container(
+        decoration: BoxDecoration(
+          color: ConfigQuizView.cardQuizColor,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3), // changes position of shadow
             ),
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            0.5),
+          ],
+        ),
         child: SizedBox(
-          height: SizeConfig.getMediaHeight(context, p: 0.7),
+          height: SizeConfig.getMediaHeight(context, p: 0.6),
           width: SizeConfig.getMediaWidth(context, p: 0.8),
           child: Center(
               child: Column(
