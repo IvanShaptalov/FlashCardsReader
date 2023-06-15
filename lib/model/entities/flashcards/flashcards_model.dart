@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 part 'flashcards_model.g.dart';
 
@@ -108,6 +111,29 @@ class FlashCard {
             // check if the words and languages are the same but reversed
             fullReverseEqualCheck(other));
     return slowCheck;
+  }
+
+  //TODO test json
+  String toJson() => jsonEncode({
+        'questionLanguage': questionLanguage,
+        'answerLanguage': answerLanguage,
+        'question': question,
+        'answer': answer,
+        'lastTested': lastTested.toIso8601String(),
+        'correctAnswers': correctAnswers,
+        'wrongAnswers': wrongAnswers,
+      });
+
+  static FlashCard fromJson(String jsonString) {
+    Map<String, dynamic> json = jsonDecode(jsonString);
+    return FlashCard(
+        questionLanguage: json['questionLanguage'],
+        answerLanguage: json['answerLanguage'],
+        question: json['question'],
+        answer: json['answer'],
+        lastTested: DateTime.parse(json['lastTested']),
+        correctAnswers: json['correctAnswers'],
+        wrongAnswers: json['wrongAnswers']);
   }
 }
 
@@ -237,7 +263,7 @@ class FlashCardCollection {
     return other is FlashCardCollection &&
         other.id == id &&
         other.title == title &&
-        flashCardSet == other.flashCardSet;
+        setEquals(flashCardSet, other.flashCardSet);
   }
 
   /// returns true if the words are the same
@@ -267,5 +293,28 @@ class FlashCardCollection {
       }
     }
     debugPrintIt(flashCardSet);
+  }
+
+  String toJson() {
+    return jsonEncode({
+      'id': id,
+      'title': title,
+      'flashCardSet': flashCardSet.map((e) => e.toJson()).toList(),
+      'createdAt': createdAt.toIso8601String(),
+      'isDeleted': isDeleted,
+      'questionLanguage': questionLanguage,
+      'answerLanguage': answerLanguage,
+    });
+  }
+
+  static FlashCardCollection fromJson(String jsonString) {
+    Map<String, dynamic> json = jsonDecode(jsonString);
+    return FlashCardCollection(json['id'],
+        title: json['title'],
+        flashCardSet: Set.from(json['flashCardSet']),
+        createdAt: DateTime.parse(json['createdAt']),
+        isDeleted: json['isDeleted'],
+        questionLanguage: json['questionLanguage'],
+        answerLanguage: json['answerLanguage']);
   }
 }
