@@ -7,7 +7,9 @@ void main() {
   group('Json test', () {
     test('test to/from json', () async {
       FlashCardCollection collection = flashExample();
-      collection.flashCardSet.add(FlashCard.fixture());
+      collection.flashCardSet.add(FlashCard.fixture()
+        ..answer = 'відповідь'
+        ..question = 'question');
 
       String cJson = collection.toJson();
 
@@ -19,7 +21,9 @@ void main() {
 
     test('json sharing flashcards', () async {
       List<FlashCardCollection> collection = [flashExample()];
-      collection.first.flashCardSet.add(FlashCard.fixture());
+      collection.first.flashCardSet.add(FlashCard.fixture()
+        ..answer = 'відповідь'
+        ..question = 'question');
 
       JsonShare share = JsonShare();
       share.collections = collection;
@@ -32,6 +36,31 @@ void main() {
       List<FlashCardCollection> newCollection = share.import();
 
       expect(newCollection, collection);
+    });
+  });
+
+  group('Text test', () {
+    test('Text sharing flashcards', () async {
+      List<FlashCardCollection> collection = [flashExample()];
+      collection.first.flashCardSet.add(FlashCard.fixture()
+        ..answer = 'відповідь'
+        ..question = 'question');
+
+      TextShare share = TextShare();
+      share.collections = collection;
+
+      String result = share.export();
+      print(result);
+      expect(result, isNotEmpty);
+
+      share.textEntity = result;
+      List<FlashCardCollection> newCollection = share.import();
+
+      // manual sharing can t be same by id because some fields are not shared,
+      // point is to check if collections are same by content
+      expect(newCollection.length, collection.length);
+      expect(newCollection.first.flashCardSet.length,
+          collection.first.flashCardSet.length);
     });
   });
 }
