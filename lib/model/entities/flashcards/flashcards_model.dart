@@ -113,7 +113,6 @@ class FlashCard {
     return slowCheck;
   }
 
-  //TODO test json
   String toJson() => jsonEncode({
         'questionLanguage': questionLanguage,
         'answerLanguage': answerLanguage,
@@ -309,9 +308,12 @@ class FlashCardCollection {
 
   static FlashCardCollection fromJson(String jsonString) {
     Map<String, dynamic> json = jsonDecode(jsonString);
+    var flashCardSet = Set.from(json['flashCardSet'])
+        .map((e) => FlashCard.fromJson(e))
+        .toSet();
     return FlashCardCollection(json['id'],
         title: json['title'],
-        flashCardSet: Set.from(json['flashCardSet']),
+        flashCardSet: flashCardSet,
         createdAt: DateTime.parse(json['createdAt']),
         isDeleted: json['isDeleted'],
         questionLanguage: json['questionLanguage'],

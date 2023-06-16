@@ -72,9 +72,9 @@ class _MyHomePageState extends ParentState<MyHomePage> {
     appBarHeight = appBar.preferredSize.height;
     widget.portraitPage = Scaffold(
       appBar: appBar,
-      body: Center(
+      body: const Center(
           child: Column(
-        children: const [Text('hello world')],
+        children: [Text('hello world')],
       )),
       drawer: MenuDrawer(appBarHeight),
     );
