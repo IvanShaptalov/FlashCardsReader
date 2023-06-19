@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  external_path: ^1.0.3
   cupertino_icons: ^1.0.2
   watcher: ^1.0.2
   path_provider: ^2.0.14
@@ -26,6 +26,7 @@ dependencies:
   overlay_support: ^2.1.0
   intl: ^0.18.1
   quick_actions: ^1.0.2
+  pick_or_save: ^2.2.4
   integration_test:
     sdk: flutter
 

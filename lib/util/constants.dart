@@ -203,6 +203,10 @@ const double pitch = 1.0;
 const double rate = 0.4;
 const double volume = 1.0;
 
-
 const String quizAction = 'quiz';
 const String addWordAction = 'add word';
+
+const String txtExt = '.txt';
+const String jsonExt = '.js';
+
+const List<String> allowedExtensions = [txtExt, jsonExt];

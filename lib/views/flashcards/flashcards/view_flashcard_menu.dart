@@ -1,5 +1,7 @@
+import 'package:flashcards_reader/bloc/providers/sharing_provider.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
@@ -370,6 +372,58 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                     alignment: Alignment.center,
                                     child: GestureDetector(
                                       onTap: () {
+                                        // TODO export here
+                                        SharingProvider.selectPathThenSave(
+                                            context,
+                                            [FlashCardProvider.fc],
+                                            jsonExt);
+                                      },
+                                      child: Container(
+                                        height: SizeConfig.getMediaHeight(
+                                            context,
+                                            p: [
+                                              ScreenDesign.landscape,
+                                              ScreenDesign.landscapeSmall
+                                            ].contains(
+                                                    ScreenIdentifier.indentify(
+                                                        context))
+                                                ? 0.15
+                                                : 0.06),
+                                        width: SizeConfig.getMediaWidth(context,
+                                            p: 0.6),
+                                        decoration: BoxDecoration(
+                                            color: Colors.green.shade200,
+                                            border: Border.all(
+                                                color: Colors.grey, width: 1),
+                                            borderRadius:
+                                                BorderRadius.circular(25)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.share,
+                                              color: ConfigFlashcardView
+                                                  .quizIconColor,
+                                            ),
+                                            const Text(
+                                              'Export FlashCards',
+                                              style:
+                                                  FontConfigs.h2TextStyleBlack,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const Divider(
+                                    color: Colors.grey,
+                                    thickness: 1,
+                                  ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: GestureDetector(
+                                      onTap: () {
                                         if (widget
                                             .flashCardCollection.isLearned) {
                                           MyRouter.pushPage(
@@ -445,7 +499,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         ),
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ))),

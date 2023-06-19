@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/model/IO/local_manager.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/internet_checker.dart';
@@ -9,6 +10,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'database/core/core.dart';
 
 Future<bool> initAsync() async {
+  bool ioInit = await LocalManager.initAsync();
   bool dbInit = await DataBase.initAsync();
   debugPrint('db inited: $dbInit');
 
@@ -18,7 +20,7 @@ Future<bool> initAsync() async {
   // start checking internet connection
   debugPrintIt('start checking internet connection');
   InternetConnectionChecker.startChecking();
-  return dbInit /* && quickInit */;
+  return dbInit && ioInit;
 }
 
 Future<void> main() async {

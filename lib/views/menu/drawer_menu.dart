@@ -96,7 +96,7 @@ class MenuDrawer extends StatelessWidget {
             leading: const Icon(Icons.import_export),
             title: const Text('Import flashcards'),
             onTap: () {
-              MyRouter.pushPageReplacement(context, ImportPage());
+              MyRouter.pushPageReplacement(context, SharingPage());
             },
           ),
           ListTile(
