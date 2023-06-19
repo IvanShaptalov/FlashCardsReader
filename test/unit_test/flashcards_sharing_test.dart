@@ -1,6 +1,7 @@
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/IO/sharing_flashcards.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -50,7 +51,7 @@ void main() {
       share.collections = collection;
 
       String result = share.export();
-      print(result);
+      debugPrintIt(result);
       expect(result, isNotEmpty);
 
       share.textEntity = result;

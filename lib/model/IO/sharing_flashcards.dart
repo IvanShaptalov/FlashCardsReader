@@ -1,7 +1,5 @@
 /// SHARING is the process of exporting and importing flashcards
 import 'dart:convert';
-
-import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
@@ -83,8 +81,7 @@ class TextShare extends BaseShare {
     ///
     /// title;questionLanguage:answerLanguage
     /// and so on
-    print('\n wtff \n');
-    print('$separator wtf $separator');
+    
     StringBuffer sb = StringBuffer();
 
     sb.write(fCC.title);
