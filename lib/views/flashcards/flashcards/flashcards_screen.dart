@@ -1,6 +1,8 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/bloc/providers/sharing_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
+import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
@@ -68,8 +70,21 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                 FlashCardCollectionProvider.targetFlashCard!);
             FlashCardCollectionProvider.deactivateMergeMode();
             OverlayNotificationProvider.showOverlayNotification(
-                'merged succesfully',
+                'merge succesfully',
                 status: NotificationStatus.success);
+            updateCallback();
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.import_export),
+          onPressed: () async {
+            SharingProvider.selectPathThenSave(
+                context,
+                List.castFrom(FlashCardCollectionProvider.flashcardsToMerge)
+                  ..add(FlashCardCollectionProvider.targetFlashCard!),
+                jsonExt);
+            FlashCardCollectionProvider.deactivateMergeMode();
+
             updateCallback();
           },
         ),
@@ -108,11 +123,10 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
   IconButton deactivateMergeIcon() {
     return IconButton(
         onPressed: () {
-          OverlayNotificationProvider.showOverlayNotification(
-              'merge mode deactivated',
+          OverlayNotificationProvider.showOverlayNotification('deactivated',
               status: NotificationStatus.info);
 
-          debugPrint('merge mode deactivated');
+          debugPrint('deactivated');
           FlashCardCollectionProvider.deactivateMergeMode();
           updateCallback();
         },
@@ -154,8 +168,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                     child: index == 0
                         ? Transform.scale(
                             scale: ScreenDesign.landscapeSmall ==
-                                    ScreenIdentifier.indentify(
-                                        context)
+                                    ScreenIdentifier.indentify(context)
                                 ? 0.85
                                 : 1,
                             child: AnimationConfiguration.staggeredGrid(
@@ -171,8 +184,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                           )
                         : Transform.scale(
                             scale: ScreenDesign.landscapeSmall ==
-                                    ScreenIdentifier.indentify(
-                                        context)
+                                    ScreenIdentifier.indentify(context)
                                 ? 0.85
                                 : 1,
                             child: AnimationConfiguration.staggeredGrid(

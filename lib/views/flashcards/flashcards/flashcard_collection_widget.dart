@@ -42,10 +42,10 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
       // cancel merge mode
       return IconButton(
           onPressed: () {
-            debugPrint('merge mode deactivated');
+            debugPrint('deactivated');
             FlashCardCollectionProvider.deactivateMergeMode();
             OverlayNotificationProvider.showOverlayNotification(
-                'merge mode deactivated',
+                'deactivated',
                 status: NotificationStatus.info);
 
             widget.updateCallback();
@@ -89,18 +89,18 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
         IconButton(
             // activate merge mode
             onPressed: () {
-              debugPrint('merge mode activated');
+              debugPrint('select flashcards');
 
               FlashCardCollectionProvider.activateMergeMode(
                   widget.flashCardCollection);
               OverlayNotificationProvider.showOverlayNotification(
-                  'merge mode activated',
+                  'select flashcards',
                   status: NotificationStatus.info);
 
               widget.updateCallback();
             },
             // cancel merge mode
-            icon: const Icon(Icons.merge_sharp)),
+            icon: const Icon(Icons.circle_outlined)),
 
         IconButton(
             onPressed: () async {
