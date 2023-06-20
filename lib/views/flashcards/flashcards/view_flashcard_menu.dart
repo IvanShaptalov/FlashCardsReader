@@ -5,6 +5,7 @@ import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
+import 'package:flashcards_reader/views/flashcards/sharing/extension_dialog.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_process.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
@@ -373,10 +374,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                     child: GestureDetector(
                                       onTap: () {
                                         // TODO export here
-                                        SharingProvider.selectPathThenSave(
-                                            context,
-                                            [FlashCardProvider.fc],
-                                            jsonExt);
+                                        ExtensionDialog.showExportDialog(context);
+                                        
                                       },
                                       child: Container(
                                         height: SizeConfig.getMediaHeight(
@@ -402,7 +401,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Icon(
-                                              Icons.share,
+                                              Icons.import_export,
                                               color: ConfigFlashcardView
                                                   .quizIconColor,
                                             ),

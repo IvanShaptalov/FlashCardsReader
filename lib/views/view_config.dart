@@ -148,6 +148,11 @@ class ConfigFastAddWordView {
   static Color menuColor = Colors.green.shade200;
 }
 
+class ConfigExtensionDialog {
+  static LinearGradient dialogGradient =
+      LinearGradient(colors: [Colors.green.shade100, Colors.green.shade200]);
+}
+
 enum ScreenDesign { portrait, landscape, portraitSmall, landscapeSmall }
 
 class ScreenIdentifier {

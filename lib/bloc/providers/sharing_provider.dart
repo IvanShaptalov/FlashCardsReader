@@ -34,11 +34,11 @@ class SharingProvider {
         break;
 
       /// ================[Save text collection tmp]
-      case txtExt:
-        JsonShare jsonShare = JsonShare();
-        jsonShare.collections = collections;
-        data = jsonShare.export();
-        fileName = 'ExportedFlashcardsText=${uuid.v4()}$txtExt';
+      case textExt:
+        TextShare textShare = TextShare();
+        textShare.collections = collections;
+        data = textShare.export();
+        fileName = 'ExportedFlashcardsText=${uuid.v4()}$textExt';
         filePath =
             LocalManager.joinPaths([LocalManager.appDirectoryPath!, fileName]);
 
@@ -57,8 +57,7 @@ class SharingProvider {
       saveFiles: [SaveFileInfo(filePath: filePath, fileName: fileName)],
     ));
     if (result == null || result.isEmpty) {
-      OverlayNotificationProvider.showOverlayNotification(
-          '$fileName not exported',
+      OverlayNotificationProvider.showOverlayNotification('cancelled',
           status: NotificationStatus.info);
       return false;
     } else {
@@ -119,7 +118,7 @@ class SharingProvider {
                 status: NotificationStatus.success);
             return collections;
           }
-        case txtExt:
+        case textExt:
 
           /// [import text collections]
 

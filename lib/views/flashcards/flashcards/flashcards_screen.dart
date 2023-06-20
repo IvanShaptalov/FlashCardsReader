@@ -1,12 +1,11 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/flashcard_merge_provider.dart';
-import 'package:flashcards_reader/bloc/providers/sharing_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
-import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
+import 'package:flashcards_reader/views/flashcards/sharing/extension_dialog.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
@@ -77,15 +76,8 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
         ),
         IconButton(
           icon: const Icon(Icons.import_export),
-          onPressed: () async {
-            SharingProvider.selectPathThenSave(
-                context,
-                List.castFrom(FlashCardCollectionProvider.flashcardsToMerge)
-                  ..add(FlashCardCollectionProvider.targetFlashCard!),
-                jsonExt);
-            FlashCardCollectionProvider.deactivateMergeMode();
-
-            updateCallback();
+          onPressed: () {
+            ExtensionDialog.showBulkExportDialog(context, updateCallback);
           },
         ),
       ];

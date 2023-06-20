@@ -206,7 +206,7 @@ const double volume = 1.0;
 const String quizAction = 'quiz';
 const String addWordAction = 'add word';
 
-const String txtExt = '.txt';
+const String textExt = '.txt';
 const String jsonExt = '.js';
 
-const List<String> allowedExtensions = [txtExt, jsonExt];
+const List<String> allowedExtensions = [textExt, jsonExt];
