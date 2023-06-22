@@ -107,8 +107,14 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                         ),
                         ImageFiltered(
                           imageFilter: BlurProvider.blurred
-                              ? ImageFilter.blur(sigmaX: 5, sigmaY: 5)
-                              : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                              ? ImageFilter.blur(
+                                  sigmaX: 5,
+                                  sigmaY: 5,
+                                  tileMode: TileMode.decal)
+                              : ImageFilter.blur(
+                                  sigmaX: 0,
+                                  sigmaY: 0,
+                                  tileMode: TileMode.decal),
                           child: Text(
                             secondText,
                             style: FontConfigs.cardQuestionTextStyle,
