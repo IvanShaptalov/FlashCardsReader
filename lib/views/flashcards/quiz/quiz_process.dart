@@ -30,16 +30,14 @@ class QuizTrainer extends ParentStatefulWidget {
 class _QuizTrainerState extends ParentState<QuizTrainer> {
   @override
   Widget build(BuildContext context) {
-    widget.portraitPage = BlocProvider(
+    bindPage(BlocProvider(
       create: (_) => QuizBloc(),
       child: QuizTrainerView(
           numberOfFlashCards: widget.numberOfFlashCards,
           mode: widget.mode,
           fCollection: widget.fCollection,
           fromPage: widget.fromPage),
-    );
-
-    bindAllPages(widget.portraitPage);
+    ));
 
     return super.build(context);
   }

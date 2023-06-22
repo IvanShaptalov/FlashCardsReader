@@ -47,7 +47,7 @@ class _SharingPageViewState extends ParentState<SharingPageView> {
         title: Text(widget.title),
       );
       appBarHeight = appBar.preferredSize.height;
-      widget.portraitPage = Scaffold(
+      bindPage(Scaffold(
         appBar: appBar,
         body: Center(
             child: Column(
@@ -128,10 +128,7 @@ class _SharingPageViewState extends ParentState<SharingPageView> {
           ],
         )),
         drawer: MenuDrawer(appBarHeight),
-      );
-
-      // for now, when 4 desings not implemented, we use only one design
-      bindAllPages(widget.portraitPage);
+      ));
 
       /// ===============================================[Select design via context]===============================
 

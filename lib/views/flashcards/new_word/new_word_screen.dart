@@ -85,7 +85,7 @@ class _AddWordFastScreenState extends ParentState<AddWordFastScreen> {
 
   @override
   Widget build(BuildContext context) {
-    widget.portraitPage = BlocProvider(
+    bindPage(BlocProvider(
         create: (_) => FlashCardBloc(),
         child: BlocProvider(
           create: (_) => TranslatorBloc(),
@@ -95,8 +95,7 @@ class _AddWordFastScreenState extends ParentState<AddWordFastScreen> {
             translator: widget.translator,
             callback: callback,
           ),
-        ));
-    bindAllPages(widget.portraitPage);
+        )));
     return super.build(context);
   }
 }
@@ -135,7 +134,6 @@ class _AddWordViewState extends State<AddWordView> {
       selected = collection.first;
       FlashCardProvider.fc = selected;
     }
-    
   }
 
   @override
@@ -144,32 +142,27 @@ class _AddWordViewState extends State<AddWordView> {
     switch (ScreenIdentifier.indentify(context)) {
       case ScreenDesign.portrait:
         screen = PortraitNewWord(widget,
-                callback: widget.callback,
-                loadTranslate: loadTranslate)
+                callback: widget.callback, loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.portraitSmall:
         screen = PortraitSmallNewWord(widget,
-                callback: widget.callback,
-                loadTranslate: loadTranslate)
+                callback: widget.callback, loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.landscape:
         screen = LandscapeNewWord(widget,
-                callback: widget.callback,
-                loadTranslate: loadTranslate)
+                callback: widget.callback, loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.landscapeSmall:
         screen = LandscapeSmallNewWord(widget,
-                callback: widget.callback,
-                loadTranslate: loadTranslate)
+                callback: widget.callback, loadTranslate: loadTranslate)
             .loadScreen();
         break;
       default:
         screen = PortraitNewWord(widget,
-                callback: widget.callback,
-                loadTranslate: loadTranslate)
+                callback: widget.callback, loadTranslate: loadTranslate)
             .loadScreen();
     }
 

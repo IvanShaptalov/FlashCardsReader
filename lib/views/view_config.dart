@@ -159,19 +159,19 @@ class ScreenIdentifier {
   static ScreenDesign indentify(BuildContext context) {
     if (MyConfigOrientation.isPortrait(context)) {
       if (SizeConfig.getMediaHeight(context) < 600) {
-        debugPrintIt('selected portraitSmall');
+        debugPrintIt('identifed portrait small for element');
         return ScreenDesign.portraitSmall;
       } else {
-        debugPrintIt('selected portrait');
+        debugPrintIt('identifed portrait for element');
 
         return ScreenDesign.portrait;
       }
     } else {
       if (SizeConfig.getMediaWidth(context) < 600) {
-        debugPrintIt('selected landscape smalll');
+        debugPrintIt('identifed landscape small for element');
         return ScreenDesign.landscapeSmall;
       } else {
-        debugPrintIt('selected landscape');
+        debugPrintIt('identifed landscape for element');
         return ScreenDesign.landscape;
       }
     }

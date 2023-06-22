@@ -75,7 +75,6 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
   int columnCount = 2;
   double appBarHeight = 0;
 
-
   List<Widget> bottomNavigationBarItems(
       List<FlashCardCollection> flashCardCollection) {
     return [
@@ -110,7 +109,7 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
   @override
   Widget build(BuildContext context) {
     // creating bloc builder for flashcards
-    widget.portraitPage = BlocBuilder<FlashCardBloc, FlashcardsState>(
+    bindPage(BlocBuilder<FlashCardBloc, FlashcardsState>(
       builder: (context, state) {
         var flashCardCollection = state.copyWith(fromTrash: true).flashCards;
         columnCount = ViewColumnCalculator.calculateColumnCount(context);
@@ -131,7 +130,8 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
                     child: GridView.count(
                         mainAxisSpacing:
                             SizeConfig.getMediaHeight(context, p: 0.04),
-                        crossAxisSpacing: ViewColumnCalculator.calculateCrossSpacing(context),
+                        crossAxisSpacing:
+                            ViewColumnCalculator.calculateCrossSpacing(context),
                         crossAxisCount: columnCount,
                         padding: EdgeInsets.symmetric(
                             horizontal:
@@ -173,10 +173,7 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
           landscapeSmallScreen: screenNow,
         );
       },
-    );
-
-    // for now, when 4 desings not implemented, we use only one design
-    bindAllPages(widget.portraitPage);
+    ));
 
     /// ===============================================[Select design via context]===============================
 
