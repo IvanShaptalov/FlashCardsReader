@@ -1,35 +1,26 @@
-import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/model/IO/local_manager.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
-import 'package:flashcards_reader/quick_actions.dart';
-import 'package:flashcards_reader/util/constants.dart';
-import 'package:flashcards_reader/util/enums.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:quick_actions/quick_actions.dart';
 
 import 'database/core/core.dart';
 
 Future<bool> initAsync() async {
+  bool ioInit = await LocalManager.initAsync();
   bool dbInit = await DataBase.initAsync();
   debugPrint('db inited: $dbInit');
 
   TextToSpeechService.initTtsEngineAsync()
       .then((value) => debugPrint('tts engine inited: $value'));
 
-  return dbInit /* && quickInit */;
-}
-
-FlashCardCollection flashExample() {
-  final FlashCardCollection testFlashCardCollection = FlashCardCollection(
-      uuid.v4().toString(),
-      title: 'Example',
-      flashCardSet: {},
-      createdAt: DateTime.now(),
-      isDeleted: false,
-      questionLanguage: 'English',
-      answerLanguage: 'Ukrainian');
-  return testFlashCardCollection;
+  // start checking internet connection
+  debugPrintIt('start checking internet connection');
+  InternetConnectionChecker.startChecking();
+  return dbInit && ioInit;
 }
 
 Future<void> main() async {
@@ -62,63 +53,39 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+// ignore: must_be_immutable
+class MyHomePage extends ParentStatefulWidget {
+  MyHomePage({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ParentState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends ParentState<MyHomePage> {
   double appBarHeight = 0;
 
   @override
-  void initState() {
-    QuickActions quickActions = const QuickActions();
-
-    quickActions.initialize((String shortcutType) {
-      setState(() {
-        ShortcutsProvider.shortcut = shortcutType;
-      });
-    });
-
-    quickActions.setShortcutItems(<ShortcutItem>[
-      // NOTE: This first action icon will only work on iOS.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-        type: addWordAction,
-        localizedTitle: addWordAction,
-        icon: 'add_circle',
-      ),
-      // NOTE: This second action icon will only work on Android.
-      // In a real world project keep the same file name for both platforms.
-      const ShortcutItem(
-          type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
-    ]).then((void _) {
-      if (ShortcutsProvider.shortcut == 'no action set') {
-        setState(() {
-          ShortcutsProvider.shortcut = 'actions ready';
-        });
-      }
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, {Widget? page}) {
+    /// ===============================================[Create page]===============================
     var appBar = AppBar(
       title: Text(widget.title),
     );
     appBarHeight = appBar.preferredSize.height;
-    return ShortcutsProvider.wrapper(
-        child: Scaffold(
+    widget.portraitPage = Scaffold(
       appBar: appBar,
-      body: Center(
+      body: const Center(
           child: Column(
-        children: const [Text('hello world')],
+        children: [Text('hello world')],
       )),
       drawer: MenuDrawer(appBarHeight),
-    ));
+    );
+
+    // for now, when 4 desings not implemented, we use only one design
+    bindAllPages(widget.portraitPage);
+
+    /// ===============================================[Select design via context]===============================
+
+    return super.build(context);
   }
 }

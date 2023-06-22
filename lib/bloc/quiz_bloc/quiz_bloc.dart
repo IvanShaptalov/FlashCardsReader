@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:flashcards_reader/main.dart';
+import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/flashcards/quiz_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz_view.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/quiz_summary.dart';
 
 part 'quiz_event.dart';
 part 'quiz_state.dart';

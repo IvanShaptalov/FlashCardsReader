@@ -1,19 +1,12 @@
 // import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
-import 'package:flashcards_reader/main.dart';
-import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
-import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
+import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FlashCardCreatingUIProvider {
-  static FlashCardCollection creatingFlashCardCollection = flashExample();
-
-  static clear() {
-    creatingFlashCardCollection = flashExample();
-    WordCreatingUIProvider.clear();
-  }
-}
 
 class AddFlashCardWidget extends StatefulWidget {
   const AddFlashCardWidget({super.key});
@@ -26,15 +19,15 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
   Duration deleteDuration = const Duration(milliseconds: 170);
   @override
   Widget build(BuildContext context) {
+    debugPrintIt(
+        'bloc provider exists in add flash widget ${BlocProvider.of<TranslatorBloc>(context).state.result}');
     return AnimatedOpacity(
       opacity: /* widget.toDelete ? 0 : */ 1,
       duration: deleteDuration,
       child: GestureDetector(
         onTap: () {
-          UpdateFlashCardBottomSheet(
-                  creatingFlashC:
-                      FlashCardCreatingUIProvider.creatingFlashCardCollection)
-              .showUpdateFlashCardMenu(context);
+          FlashCardProvider.clear();
+          UpdateFlashCardBottomSheet().showUpdateFlashCardMenu(context);
         },
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -51,42 +44,45 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                 0.5),
             color: CardViewConfig.defaultCardColor,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: SizeConfig.getMediaHeight(context, p: 0.03),
-                      bottom: SizeConfig.getMediaHeight(context, p: 0.02)),
-                  child: const Text(
-                    'Add flashcard',
-                    style: FontConfigs.cardTitleTextStyle,
-                  ),
-                ),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 1,
-                ),
-                const Expanded(
-                    child: ListOrColumn(
-                        children: [
-                      ListTile(
-                        title: Text('Add Word'),
-                        subtitle: Text(
-                          'Add Flashcard',
-                        ),
-                      )
-                    ])),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    /// ============================[ADD FLASHCARD MENU OPEN]============================
-                    //? in plans add languages
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
                     Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(Icons.add_circle_outline),
+                      padding: EdgeInsets.only(
+                          top: SizeConfig.getMediaHeight(context, p: 0.03),
+                          bottom: SizeConfig.getMediaHeight(context, p: 0.01)),
+                      child: const Text(
+                        'Add flashcard',
+                        style: FontConfigs.cardTitleTextStyle,
+                      ),
+                    ),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 1,
                     ),
                   ],
                 ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        /// ============================[ADD FLASHCARD MENU OPEN]============================
+                        Transform.scale(
+                          scale: 3,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.library_add),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox.shrink()
               ],
             ),
           ),

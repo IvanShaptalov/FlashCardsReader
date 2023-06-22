@@ -1,14 +1,15 @@
+import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/views/flashcards/flashcard_collection_info.dart';
-import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 
 class FastAddWordFCcWidget extends StatefulWidget {
   const FastAddWordFCcWidget(this.flashCardCollection, this.updateCallback,
-      {required this.backToListStart, super.key});
+      {required this.backToListStart, required this.design, super.key});
   final Function updateCallback;
   final Function backToListStart;
+  final ScreenDesign design;
 
   final FlashCardCollection flashCardCollection;
   @override
@@ -17,8 +18,8 @@ class FastAddWordFCcWidget extends StatefulWidget {
 
 class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
   Color setCardColor() {
-    if (widget.flashCardCollection == AddWordCollectionProvider.selectedFc) {
-      return CardViewConfig.selectedCardColor;
+    if (widget.flashCardCollection == FlashCardProvider.fc) {
+      return ConfigFastAddWordView.selectedCard;
     }
     return CardViewConfig.defaultCardColor;
   }
@@ -36,15 +37,15 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
       // select items for merge
       child: GestureDetector(
         onTap: () {
-          if (AddWordCollectionProvider.selectedFc !=
-              widget.flashCardCollection) {
-            AddWordCollectionProvider.selectedFc = widget.flashCardCollection;
+          if (FlashCardProvider.fc != widget.flashCardCollection) {
+            FlashCardProvider.fc = widget.flashCardCollection;
           }
 
           widget.updateCallback();
           widget.backToListStart();
         },
         child: SizedBox(
+          height: SizeConfig.getMediaHeight(context, p: 0.5),
           width: SizeConfig.getMediaWidth(context, p: 0.4),
           child: Card(
             shape: ShapeBorder.lerp(

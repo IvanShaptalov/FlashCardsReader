@@ -1,10 +1,11 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
-import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/bloc/providers/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/quick_actions.dart';
 import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcard_collection_widget.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,43 +62,19 @@ class _DeletedFlashCardScreenState extends State<DeletedFlashCardScreen> {
 }
 
 // ignore: must_be_immutable
-class DeletedFlashCardView extends StatefulWidget {
+class DeletedFlashCardView extends ParentStatefulWidget {
   DeletedFlashCardView({super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
-  // List<FlashCardCollection> flashCardCollection =
-  //     FlashCardCollectionProvider.getFlashCards(isDeleted: true);
 
   @override
-  State<DeletedFlashCardView> createState() => _DeletedFlashCardViewState();
+  ParentState<DeletedFlashCardView> createState() =>
+      _DeletedFlashCardViewState();
 }
 
-class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
+class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
   int columnCount = 2;
   double appBarHeight = 0;
 
-  int calculateColumnCount(BuildContext context) {
-    double screenWidth = SizeConfig.getMediaWidth(context);
-    if (screenWidth > 1000) {
-      return SizeConfig.getMediaWidth(context) ~/ 200;
-    } else if (screenWidth > 600) {
-      return 3;
-    } else if (screenWidth >= 380) {
-      return 2;
-    }
-    return 1;
-  }
-
-  double calculateCrossSpacing(BuildContext context) {
-    double screenWidth = SizeConfig.getMediaWidth(context);
-    if (screenWidth > 1000) {
-      return SizeConfig.getMediaWidth(context) / 20;
-    } else if (screenWidth > 600) {
-      return 40;
-    } else if (screenWidth >= 380) {
-      return 25;
-    }
-    return 15;
-  }
 
   List<Widget> bottomNavigationBarItems(
       List<FlashCardCollection> flashCardCollection) {
@@ -133,23 +110,28 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
   @override
   Widget build(BuildContext context) {
     // creating bloc builder for flashcards
-    return BlocBuilder<FlashCardBloc, FlashcardsState>(
+    widget.portraitPage = BlocBuilder<FlashCardBloc, FlashcardsState>(
       builder: (context, state) {
         var flashCardCollection = state.copyWith(fromTrash: true).flashCards;
-
-        columnCount = calculateColumnCount(context);
+        columnCount = ViewColumnCalculator.calculateColumnCount(context);
         var appBar = getAppBar(flashCardCollection);
         appBarHeight = appBar.preferredSize.height;
-        return Scaffold(
+        var screenNow = Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: appBar,
             body: flashCardCollection.isEmpty
-                ? const Center(child: Text('Bin is empty'))
+                ? Center(
+                    child: Image.asset(
+                    'assets/images/empty.png',
+                    fit: BoxFit.fitHeight,
+                    height: SizeConfig.getMediaHeight(context, p: 1),
+                    width: SizeConfig.getMediaWidth(context, p: 0.6),
+                  ))
                 : AnimationLimiter(
                     child: GridView.count(
                         mainAxisSpacing:
                             SizeConfig.getMediaHeight(context, p: 0.04),
-                        crossAxisSpacing: calculateCrossSpacing(context),
+                        crossAxisSpacing: ViewColumnCalculator.calculateCrossSpacing(context),
                         crossAxisCount: columnCount,
                         padding: EdgeInsets.symmetric(
                             horizontal:
@@ -160,7 +142,7 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
                           /// ====================================================================[FlashCardCollectionWidget]
                           // add flashcards
                           return Transform.scale(
-                            scale: columnCount == 1 ? 0.9 : 1,
+                            scale: 0.9,
                             child: AnimationConfiguration.staggeredGrid(
                               position: index,
                               duration: widget.cardAppearDuration,
@@ -182,7 +164,22 @@ class _DeletedFlashCardViewState extends State<DeletedFlashCardView> {
                   /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
                   children: bottomNavigationBarItems(flashCardCollection)),
             ));
+
+        return ScreenIdentifier.returnScreen(
+          context: context,
+          portraitScreen: screenNow,
+          landscapeScreen: screenNow,
+          portraitSmallScreen: screenNow,
+          landscapeSmallScreen: screenNow,
+        );
       },
     );
+
+    // for now, when 4 desings not implemented, we use only one design
+    bindAllPages(widget.portraitPage);
+
+    /// ===============================================[Select design via context]===============================
+
+    return super.build(context);
   }
 }

@@ -22,10 +22,34 @@ class OverlayNotificationProvider {
   static void showOverlayNotification(String message,
       {NotificationStatus status = NotificationStatus.info}) {
     showSimpleNotification(
-      Text(message, style: const TextStyle(fontSize: 20),),
-      slideDismissDirection : DismissDirection.up,
-      background: _setColor(status),
-      duration: const Duration(milliseconds: 800)
-    );
+        Text(
+          message,
+          style: const TextStyle(fontSize: 20),
+        ),
+        slideDismissDirection: DismissDirection.up,
+        background: _setColor(status),
+        duration: const Duration(milliseconds: 800));
+  }
+
+  static void showInternetError() {
+    showSimpleNotification(
+        const Text(
+          'No internet connection',
+          style: TextStyle(fontSize: 20),
+        ),
+        slideDismissDirection: DismissDirection.up,
+        background: Colors.blueGrey,
+        duration: const Duration(seconds: 2));
+  }
+
+  static void backOnline() {
+    showSimpleNotification(
+        const Text(
+          'Back online',
+          style: TextStyle(fontSize: 20),
+        ),
+        slideDismissDirection: DismissDirection.up,
+        background: Colors.green,
+        duration: const Duration(seconds: 2));
   }
 }

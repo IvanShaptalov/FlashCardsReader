@@ -1,17 +1,16 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
-import 'package:flashcards_reader/main.dart';
+import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
-import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/select_language_widget.dart';
-import 'package:flashcards_reader/views/flashcards/translate.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
-import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_provider.dart';
+import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// TODO design the bottom sheet
 class FlashCardFormController {
   TextEditingController titleController = TextEditingController();
   TextEditingController questionLanguageController = TextEditingController();
@@ -53,30 +52,19 @@ class WordFormContoller {
 }
 
 class UpdateFlashCardBottomSheet {
-  UpdateFlashCardBottomSheet(
-      {FlashCardCollection? creatingFlashC, this.edit = false}) {
-    if (creatingFlashC != null) {
-      debugPrintIt('create copy of flashcard collection');
-      flashCardCollection = creatingFlashC.copy();
-    } else {
-      debugPrintIt('create flashFixture');
-      flashCardCollection = flashExample();
-    }
-  }
+  UpdateFlashCardBottomSheet({this.edit = false});
   bool edit;
 
-  late FlashCardCollection flashCardCollection;
 // =================================[SHOWMODAL SHEETS]================
-  showUpdateFlashCardMenu(BuildContext specialContext) async {
+  showUpdateFlashCardMenu(BuildContext context) async {
     showModalBottomSheet(
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
-        context: specialContext,
+        context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (BuildContext context, setState) {
-            return FlashCardCreatingWall(specialContext, flashCardCollection,
-                isEdit: edit);
+            return FlashCardCreatingWall(isEdit: edit);
           });
         });
   }
@@ -84,254 +72,42 @@ class UpdateFlashCardBottomSheet {
 
 // ignore: must_be_immutable
 class FlashCardCreatingWall extends StatefulWidget {
-  FlashCardCreatingWall(this.specialContext, this.flashCardCollection,
-      {super.key, this.isEdit = false});
-  bool isEdit;
-  BuildContext specialContext;
-  FlashCardFormController flashCardFormController = FlashCardFormController();
-  WordFormContoller wordFormContoller = WordFormContoller();
-  FlashCardCollection flashCardCollection;
+  FlashCardCreatingWall({super.key, this.isEdit = false});
+  bool isEdit = false;
+
   @override
   State<FlashCardCreatingWall> createState() => _FlashCardCreatingWallState();
 }
 
 class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
-  bool _isPressed = false;
-  bool _oldPress = false;
-
-  void callback() {
-    setState(() {});
-  }
-
-  void saveCollectionFromWord({required bool onSubmitted}) {
-    updateWord(onSubmitted: onSubmitted);
-    if (widget.flashCardCollection.isValid) {
-      widget.specialContext.read<FlashCardBloc>().add(UpdateFlashCardEvent(
-          flashCardCollection: widget.flashCardCollection));
-    } else {
-      showValidatorMessage();
-    }
-  }
-
-  void showValidatorMessage() {
-    if (widget.flashCardCollection.title.isEmpty) {
-      OverlayNotificationProvider.showOverlayNotification(
-          'Add collection title',
-          status: NotificationStatus.info);
-
-      debugPrint('title');
-    } else if (widget.flashCardCollection.isEmpty) {
-      OverlayNotificationProvider.showOverlayNotification(
-          'Add at least one flashcard',
-          status: NotificationStatus.info);
-
-      debugPrint('Add at least one flashcard');
-    } else if (widget.flashCardCollection.answerLanguage.isEmpty) {
-      OverlayNotificationProvider.showOverlayNotification(
-          'Add question language',
-          status: NotificationStatus.info);
-
-      debugPrint('Add question language');
-    } else if (widget.flashCardCollection.answerLanguage.isEmpty) {
-      OverlayNotificationProvider.showOverlayNotification('Add answerlanguage',
-          status: NotificationStatus.info);
-
-      debugPrint('Add answerlanguage');
-    } else {
-      OverlayNotificationProvider.showOverlayNotification(
-          'Your collection not valid',
-          status: NotificationStatus.info);
-
-      debugPrint('flash not valid');
-    }
-  }
-
-  Widget loadTranslate() {
-    if (_isPressed != _oldPress) {
-      _oldPress = _isPressed;
-      return TranslateButton(
-          flashCardCollection: widget.flashCardCollection, callback: callback);
-    }
-    return const Icon(Icons.translate);
-  }
-
-  void updateWord({bool onSubmitted = false}) {
-    var flash = WordCreatingUIProvider.tmpFlashCard;
-    if (onSubmitted && flash.answer.isEmpty && flash.question.isEmpty) {
-      debugPrintIt('on submitted and word empty, do nothing');
-    } else if (WordCreatingUIProvider.tmpFlashCard.isValid) {
-      debugPrint('add flashcard');
-
-      WordCreatingUIProvider.setQuestionLanguage(
-          widget.flashCardCollection.questionLanguage);
-      WordCreatingUIProvider.setAnswerLanguage(
-          widget.flashCardCollection.answerLanguage);
-
-      widget.flashCardCollection.flashCardSet
-          .add(WordCreatingUIProvider.tmpFlashCard);
-      WordCreatingUIProvider.clear();
-      OverlayNotificationProvider.showOverlayNotification('word added',
-          status: NotificationStatus.success);
-
-      setState(() {});
-    } else {
-      if (WordCreatingUIProvider.tmpFlashCard.question.isEmpty) {
-        OverlayNotificationProvider.showOverlayNotification('add word',
-            status: NotificationStatus.info);
-      } else if (WordCreatingUIProvider.tmpFlashCard.answer.isEmpty) {
-        OverlayNotificationProvider.showOverlayNotification(
-            'tap translate button',
-            status: NotificationStatus.info);
-      } else {
-        // ====================[save whole collection]
-      }
-
-      debugPrint('not valid');
-    }
-  }
-
-  Widget addCollectionButton() {
-    return Center(
-      child: GestureDetector(
-        child: Container(
-          height: SizeConfig.getMediaHeight(context, p: 0.1),
-          width: SizeConfig.getMediaWidth(context, p: 0.8),
-          decoration: BoxDecoration(
-            color: Colors.green.shade300,
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-          ),
-          child: const Center(
-            child: Text(
-              'Save collection',
-              style: TextStyle(fontSize: 20, color: Colors.white),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-        onTap: () {
-          if (widget.flashCardCollection.isValid) {
-            debugPrint('=====================add collection');
-            widget.specialContext.read<FlashCardBloc>().add(
-                UpdateFlashCardEvent(
-                    flashCardCollection: widget.flashCardCollection));
-            Navigator.pop(context);
-            FlashCardCreatingUIProvider.clear();
-            widget.isEdit
-                ? OverlayNotificationProvider.showOverlayNotification(
-                    'Collection edited',
-                    status: NotificationStatus.info)
-                : OverlayNotificationProvider.showOverlayNotification(
-                    'Collection added',
-                    status: NotificationStatus.success);
-          } else {
-            showValidatorMessage();
-          }
-        },
-      ),
-    );
-  }
-
-  Widget addWordWidget() {
-    return Transform.scale(
-      scale: 0.9,
-      child: Container(
-          height: SizeConfig.getMediaHeight(context, p: 0.17),
-          width: SizeConfig.getMediaWidth(context, p: 1),
-          decoration: BoxDecoration(
-            color: Colors.green.shade200,
-
-            // rounded full border
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(
-              color: Colors.grey,
-              width: 1,
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        saveCollectionFromWord(onSubmitted: false);
-                      },
-                      icon: const Icon(Icons.add_circle_outlined)),
-                  Expanded(
-                    child: TextField(
-                      controller: widget.wordFormContoller.questionController,
-                      decoration: InputDecoration(
-                        labelText: 'Add Word',
-                        labelStyle: FontConfigs.h3TextStyle,
-                      ),
-                      onChanged: (text) {
-                        WordCreatingUIProvider.setQuestion(text);
-                        TranslateButton.translate(
-                            flashCardCollection:
-                                AddWordCollectionProvider.selectedFc,
-                            callback: callback);
-                      },
-                      onSubmitted: (value) {
-                        saveCollectionFromWord(onSubmitted: true);
-                      },
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          WordCreatingUIProvider.clear();
-                        });
-                      },
-                      icon: const Icon(Icons.delete_sweep_outlined)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        _isPressed = !_isPressed;
-
-                        setState(() {
-                          debugPrintIt('pressed');
-                        });
-                      },
-                      icon: loadTranslate()),
-                  Expanded(
-                    child: TextField(
-                      controller: widget.wordFormContoller.answerController,
-                      decoration: InputDecoration(
-                        labelText: 'Add Translation',
-                        labelStyle: FontConfigs.h3TextStyle,
-                      ),
-                      onChanged: (text) {
-                        WordCreatingUIProvider.setAnswer(text);
-                      },
-                      onSubmitted: (value) {
-                        saveCollectionFromWord(onSubmitted: true);
-                      },
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          WordCreatingUIProvider.clear();
-                        });
-                      },
-                      icon: const Icon(Icons.delete_sweep_outlined)),
-                ],
-              )
-            ],
-          )),
-    );
-  }
-
-// =====================================[WALL]==[BUILD]=====================================
   @override
   Widget build(BuildContext context) {
-    widget.flashCardFormController.setUp(widget.flashCardCollection);
+    return BlocProvider(
+        create: (_) => FlashCardBloc(),
+        child: BlocProvider(
+            create: (_) => TranslatorBloc(),
+            child: FlashCardCreatingWallView(isEdit: widget.isEdit)));
+  }
+}
+
+// ignore: must_be_immutable
+class FlashCardCreatingWallView extends StatefulWidget {
+  FlashCardCreatingWallView({super.key, this.isEdit = false});
+  bool isEdit;
+  FlashCardFormController flashCardFormController = FlashCardFormController();
+  WordFormContoller wordFormContoller = WordFormContoller();
+  @override
+  State<FlashCardCreatingWallView> createState() =>
+      _FlashCardCreatingWallViewState();
+}
+
+class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
+  String oldWord = '';
+
+  /// =====================================[WALL]==[BUILD]=====================================
+  @override
+  Widget build(BuildContext context) {
+    widget.flashCardFormController.setUp(FlashCardProvider.fc);
     widget.wordFormContoller.setUp(WordCreatingUIProvider.tmpFlashCard);
     return Container(
         decoration: BoxDecoration(
@@ -339,30 +115,66 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25)),
         ),
-        height: SizeConfig.getMediaHeight(context, p: 0.85),
+
+        /// [portrait mode]
+        height: ScreenIdentifier.isPortraitRelative(context)
+            ? SizeConfig.getMediaHeight(context,
+                p: ScreenIdentifier.isPortrait(context) ? 0.85 : 0.95)
+
+            /// [landscape mode]
+            : SizeConfig.getMediaHeight(context, p: 0.8),
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: SizeConfig.getMediaHeight(context, p: 0.01)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.arrow_drop_down),
-                Text(
-                  widget.isEdit
-                      ? 'Drag to cancel editing'
-                      : 'Drag to cancel adding',
-                  style: FontConfigs.h2TextStyle,
-                ),
-                const Icon(Icons.arrow_drop_down),
-              ],
+          if (ScreenIdentifier.isPortraitRelative(context))
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: SizeConfig.getMediaHeight(context, p: 0.01)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.arrow_drop_down),
+                  Text(
+                    'Drag to cancel action',
+                    style: FontConfigs.h2TextStyle,
+                  ),
+                  const Icon(Icons.arrow_drop_down),
+                ],
+              ),
             ),
-          ),
-          addWordWidget(),
-          const Divider(
-            color: Colors.grey,
-            thickness: 1,
-          ),
+          ScreenIdentifier.isPortraitRelative(context)
+              ? Container(
+                  /// [portrait mode]
+                  height: SizeConfig.getMediaHeight(context,
+                      p: ScreenIdentifier.isPortrait(context) ? 0.3 : 0.4),
+
+                  width: SizeConfig.getMediaWidth(context, p: 1),
+
+                  color: ConfigViewUpdateMenu.addWordMenuColor,
+                  child: BaseNewWordWidget.addWordMenu(
+                      context: context,
+                      callback: callback,
+                      widget: widget,
+                      oldWord: oldWord),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.rotate_right),
+                      SizedBox(
+                          width: SizeConfig.getMediaWidth(context, p: 0.02)),
+                      Text(
+                        'rotate screen to add words',
+                        style: FontConfigs.h2TextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+          if (ScreenIdentifier.isPortraitRelative(context))
+            const Divider(
+              color: Colors.grey,
+              thickness: 1,
+            ),
           Expanded(
               child: SingleChildScrollView(
                   child: Column(
@@ -381,7 +193,7 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                       labelStyle: FontConfigs.h3TextStyle,
                     ),
                     onChanged: (text) {
-                      widget.flashCardCollection.title = text;
+                      FlashCardProvider.fc.title = text;
                     },
                   ),
                 ),
@@ -392,24 +204,42 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                     children: [
                       Column(
                         children: [
-                          Text(
-                            'question language',
-                            style: FontConfigs.h3TextStyle,
-                          ),
+                          if (ScreenIdentifier.isPortraitRelative(context))
+                            Text(
+                              'source',
+                              style: FontConfigs.h3TextStyle,
+                            ),
                           SelectLanguageDropdown(
-                            flashCardCollection: widget.flashCardCollection,
                             langDestination: 'from',
                           ),
                         ],
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                FlashCardProvider.fc.switchLanguages();
+                              });
+                              BlocProvider.of<TranslatorBloc>(context).add(
+                                  TranslateEvent(
+                                      text: WordCreatingUIProvider
+                                          .tmpFlashCard.question,
+                                      fromLan:
+                                          FlashCardProvider.fc.questionLanguage,
+                                      toLan:
+                                          FlashCardProvider.fc.answerLanguage));
+                            },
+                            icon: const Icon(Icons.swap_horiz_rounded)),
+                      ),
                       Column(
                         children: [
-                          Text(
-                            'answer language',
-                            style: FontConfigs.h3TextStyle,
-                          ),
+                          if (ScreenIdentifier.isPortraitRelative(context))
+                            Text(
+                              'translation',
+                              style: FontConfigs.h3TextStyle,
+                            ),
                           SelectLanguageDropdown(
-                            flashCardCollection: widget.flashCardCollection,
                             langDestination: 'to',
                           ),
                         ],
@@ -430,16 +260,25 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                       vertical: 32.0,
                       horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
                   child: Column(children: [
-                    for (var flashCard in widget
-                        .flashCardCollection.flashCardSet
-                        .toList()
-                        .reversed)
+                    for (var flashCard
+                        in FlashCardProvider.fc.flashCardSet.toList().reversed)
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Align(
                           alignment: Alignment.center,
                           child: SizedBox(
-                            height: SizeConfig.getMediaHeight(context, p: 0.3),
+                            height:
+
+                                /// [portrait mode]
+                                ScreenIdentifier.isPortraitRelative(context)
+                                    ? SizeConfig.getMediaHeight(context,
+                                        p: ScreenIdentifier.isPortrait(context)
+                                            ? 0.3
+                                            : 0.4)
+                                    :
+
+                                    /// [landscape mode]
+                                    SizeConfig.getMediaHeight(context, p: 0.7),
                             width: SizeConfig.getMediaWidth(context, p: 0.89),
                             child: Container(
                                 decoration: BoxDecoration(
@@ -491,7 +330,8 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                                             .onPressed(
                                                                 flashCard
                                                                     .question,
-                                                                flashCard
+                                                                FlashCardProvider
+                                                                    .fc
                                                                     .questionLanguage);
                                                       },
                                                       icon: const Icon(Icons
@@ -541,7 +381,8 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                                             .onPressed(
                                                                 flashCard
                                                                     .answer,
-                                                                flashCard
+                                                                FlashCardProvider
+                                                                    .fc
                                                                     .answerLanguage);
                                                       },
                                                       icon: const Icon(Icons
@@ -591,60 +432,63 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                                   ],
                                                 ),
                                               ),
-                                              RichText(
-                                                textAlign: TextAlign.left,
-                                                overflow: TextOverflow.ellipsis,
-                                                text: TextSpan(
-                                                  style: const TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.grey),
-                                                  children: [
-                                                    WidgetSpan(
-                                                      alignment:
-                                                          PlaceholderAlignment
-                                                              .middle,
-                                                      child: Padding(
+                                              if (!ScreenIdentifier
+                                                  .isPortraitSmall(context))
+                                                RichText(
+                                                  textAlign: TextAlign.left,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  text: TextSpan(
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.grey),
+                                                    children: [
+                                                      WidgetSpan(
+                                                        alignment:
+                                                            PlaceholderAlignment
+                                                                .middle,
+                                                        child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        2.0),
+                                                            child: flashCard.wrongAnswers ==
+                                                                        0 &&
+                                                                    flashCard
+                                                                        .isLearned
+                                                                ? const Icon(
+                                                                    Icons
+                                                                        .check_circle,
+                                                                    size: 16,
+                                                                    color: Colors
+                                                                        .green)
+                                                                : const Icon(
+                                                                    Icons
+                                                                        .cancel_outlined,
+                                                                    size: 16,
+                                                                    color: Colors
+                                                                        .deepPurple)),
+                                                      ),
+                                                      WidgetSpan(
+                                                        alignment:
+                                                            PlaceholderAlignment
+                                                                .middle,
+                                                        child: Padding(
                                                           padding:
                                                               const EdgeInsets
                                                                       .symmetric(
                                                                   horizontal:
                                                                       2.0),
-                                                          child: flashCard.wrongAnswers ==
-                                                                      0 &&
-                                                                  flashCard
-                                                                      .isLearned
-                                                              ? const Icon(
-                                                                  Icons
-                                                                      .check_circle,
-                                                                  size: 16,
-                                                                  color: Colors
-                                                                      .green)
-                                                              : const Icon(
-                                                                  Icons
-                                                                      .cancel_outlined,
-                                                                  size: 16,
-                                                                  color: Colors
-                                                                      .deepPurple)),
-                                                    ),
-                                                    WidgetSpan(
-                                                      alignment:
-                                                          PlaceholderAlignment
-                                                              .middle,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal:
-                                                                    2.0),
-                                                        child: Text(
-                                                            'Wrong: ${flashCard.wrongAnswers}',
-                                                            style: FontConfigs
-                                                                .h2TextStyle),
+                                                          child: Text(
+                                                              'Wrong: ${flashCard.wrongAnswers}',
+                                                              style: FontConfigs
+                                                                  .h2TextStyle),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
                                               RichText(
                                                 textAlign: TextAlign.left,
                                                 overflow: TextOverflow.fade,
@@ -700,17 +544,24 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                           children: [
                                             GestureDetector(
                                               child: Container(
-                                                height:
-                                                    SizeConfig.getMediaHeight(
-                                                        context,
-                                                        p: 0.05),
+                                                height: SizeConfig.getMediaHeight(
+                                                    context,
+
+                                                    /// [landscape mode]
+                                                    p: ScreenIdentifier
+                                                            .isPortraitRelative(
+                                                                context)
+                                                        ? 0.05
+
+                                                        /// [portrait mode]
+                                                        : 0.14),
                                                 width: SizeConfig.getMediaWidth(
                                                     context,
                                                     p: ConfigViewUpdateMenu
                                                         .wordButtonWidthPercent),
                                                 decoration: BoxDecoration(
                                                     color: ConfigViewUpdateMenu
-                                                        .buttonColor,
+                                                        .addWordMenuColor,
                                                     border: Border.all(
                                                         color: Colors
                                                             .grey.shade400,
@@ -744,25 +595,32 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                                               ),
                                               onTap: () {
                                                 setState(() {
-                                                  widget.flashCardCollection
-                                                      .flashCardSet
+                                                  FlashCardProvider
+                                                      .fc.flashCardSet
                                                       .remove(flashCard);
                                                 });
                                               },
                                             ),
                                             GestureDetector(
                                               child: Container(
-                                                height:
-                                                    SizeConfig.getMediaHeight(
-                                                        context,
-                                                        p: 0.05),
+                                                height: SizeConfig.getMediaHeight(
+                                                    context,
+
+                                                    /// [landscape mode]
+                                                    p: ScreenIdentifier
+                                                            .isPortraitRelative(
+                                                                context)
+                                                        ? 0.05
+
+                                                        /// [portrait mode]
+                                                        : 0.14),
                                                 width: SizeConfig.getMediaWidth(
                                                     context,
                                                     p: ConfigViewUpdateMenu
                                                         .wordButtonWidthPercent),
                                                 decoration: BoxDecoration(
                                                     color: ConfigViewUpdateMenu
-                                                        .buttonColor,
+                                                        .addWordMenuColor,
                                                     border: Border.all(
                                                         color: Colors
                                                             .grey.shade400,
@@ -819,17 +677,95 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
                   ]),
                 ),
               ]))),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Container(
-              color: Colors.transparent,
-              height: SizeConfig.getMediaHeight(context, p: 0.08),
-              width: SizeConfig.getMediaWidth(context, p: 1),
-              child: Center(
-                child: addCollectionButton(),
+          if (ScreenIdentifier.isPortraitRelative(context))
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Container(
+                color: Colors.transparent,
+                height: SizeConfig.getMediaHeight(context, p: 0.08),
+                width: SizeConfig.getMediaWidth(context, p: 1),
+                child: Center(
+                  child: addCollectionButton(),
+                ),
               ),
             ),
-          ),
         ]));
+  }
+
+  void callback() {
+    setState(() {});
+  }
+
+  void showValidatorMessage() {
+    if (FlashCardProvider.fc.title.isEmpty) {
+      OverlayNotificationProvider.showOverlayNotification(
+          'Add collection title',
+          status: NotificationStatus.info);
+
+      debugPrint('title');
+    } else if (FlashCardProvider.fc.isEmpty) {
+      OverlayNotificationProvider.showOverlayNotification(
+          'Add at least one flashcard',
+          status: NotificationStatus.info);
+
+      debugPrint('Add at least one flashcard');
+    } else if (FlashCardProvider.fc.answerLanguage.isEmpty) {
+      OverlayNotificationProvider.showOverlayNotification('source language',
+          status: NotificationStatus.info);
+
+      debugPrint('Add question language');
+    } else if (FlashCardProvider.fc.answerLanguage.isEmpty) {
+      OverlayNotificationProvider.showOverlayNotification('Add answerlanguage',
+          status: NotificationStatus.info);
+
+      debugPrint('Add answerlanguage');
+    } else {
+      OverlayNotificationProvider.showOverlayNotification(
+          'Your collection not valid',
+          status: NotificationStatus.info);
+
+      debugPrint('flash not valid');
+    }
+  }
+
+  Widget addCollectionButton() {
+    return Center(
+      child: GestureDetector(
+        child: Container(
+          height: SizeConfig.getMediaHeight(context, p: 0.1),
+          width: SizeConfig.getMediaWidth(context, p: 0.8),
+          decoration: BoxDecoration(
+            color: ConfigViewUpdateMenu.addWordMenuColor,
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+          ),
+          child: const Center(
+            child: Text(
+              'Save collection',
+              style: FontConfigs.h2TextStyleBlack,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+        onTap: () {
+          if (FlashCardProvider.fc.isValid) {
+            debugPrint('=====================add collection');
+            context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
+                flashCardCollection: FlashCardProvider.fc));
+            Navigator.pop(context);
+            FlashCardProvider.clear();
+            widget.isEdit
+                ? OverlayNotificationProvider.showOverlayNotification(
+                    'Collection edited',
+                    status: NotificationStatus.info)
+                : OverlayNotificationProvider.showOverlayNotification(
+                    'Collection added',
+                    status: NotificationStatus.success);
+          } else {
+            showValidatorMessage();
+          }
+        },
+      ),
+    );
   }
 }

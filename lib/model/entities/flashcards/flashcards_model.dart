@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 part 'flashcards_model.g.dart';
 
@@ -107,6 +111,28 @@ class FlashCard {
             // check if the words and languages are the same but reversed
             fullReverseEqualCheck(other));
     return slowCheck;
+  }
+
+  String toJson() => jsonEncode({
+        'questionLanguage': questionLanguage,
+        'answerLanguage': answerLanguage,
+        'question': question,
+        'answer': answer,
+        'lastTested': lastTested.toIso8601String(),
+        'correctAnswers': correctAnswers,
+        'wrongAnswers': wrongAnswers,
+      });
+
+  static FlashCard fromJson(String jsonString) {
+    Map<String, dynamic> json = jsonDecode(jsonString);
+    return FlashCard(
+        questionLanguage: json['questionLanguage'],
+        answerLanguage: json['answerLanguage'],
+        question: json['question'],
+        answer: json['answer'],
+        lastTested: DateTime.parse(json['lastTested']),
+        correctAnswers: json['correctAnswers'],
+        wrongAnswers: json['wrongAnswers']);
   }
 }
 
@@ -236,7 +262,7 @@ class FlashCardCollection {
     return other is FlashCardCollection &&
         other.id == id &&
         other.title == title &&
-        flashCardSet == other.flashCardSet;
+        setEquals(flashCardSet, other.flashCardSet);
   }
 
   /// returns true if the words are the same
@@ -244,5 +270,53 @@ class FlashCardCollection {
     return other.title == title &&
         answerLanguage == other.answerLanguage &&
         questionLanguage == other.questionLanguage;
+  }
+
+  void switchLanguages() {
+    final String tmp = questionLanguage;
+    questionLanguage = answerLanguage;
+    answerLanguage = tmp;
+    if (flashCardSet.isNotEmpty) {
+      for (var f in flashCardSet) {
+        debugPrintIt('switch languages for flashcard: $f ...');
+
+        final String tmpLang = f.questionLanguage;
+        f.questionLanguage = f.answerLanguage;
+        f.answerLanguage = tmpLang;
+
+        final String tmpWord = f.question;
+        f.question = f.answer;
+        f.answer = tmpWord;
+
+        debugPrintIt('switched languages for flashcard: $f');
+      }
+    }
+    debugPrintIt(flashCardSet);
+  }
+
+  String toJson() {
+    return jsonEncode({
+      'id': id,
+      'title': title,
+      'flashCardSet': flashCardSet.map((e) => e.toJson()).toList(),
+      'createdAt': createdAt.toIso8601String(),
+      'isDeleted': isDeleted,
+      'questionLanguage': questionLanguage,
+      'answerLanguage': answerLanguage,
+    });
+  }
+
+  static FlashCardCollection fromJson(String jsonString) {
+    Map<String, dynamic> json = jsonDecode(jsonString);
+    var flashCardSet = Set.from(json['flashCardSet'])
+        .map((e) => FlashCard.fromJson(e))
+        .toSet();
+    return FlashCardCollection(json['id'],
+        title: json['title'],
+        flashCardSet: flashCardSet,
+        createdAt: DateTime.parse(json['createdAt']),
+        isDeleted: json['isDeleted'],
+        questionLanguage: json['questionLanguage'],
+        answerLanguage: json['answerLanguage']);
   }
 }

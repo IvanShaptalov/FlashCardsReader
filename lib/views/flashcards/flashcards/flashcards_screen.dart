@@ -1,13 +1,16 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
-import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/bloc/providers/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/quick_actions.dart';
 import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
+import 'package:flashcards_reader/views/flashcards/sharing/extension_dialog.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,51 +61,30 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => FlashCardBloc(),
-      child: ShortcutsProvider.wrapper(child: FlashCardView()),
+      child: BlocProvider(
+        create: (_) => TranslatorBloc(),
+        child: FlashCardView(),
+      ),
     );
   }
 }
 
 // ignore: must_be_immutable
-class FlashCardView extends StatefulWidget {
+class FlashCardView extends ParentStatefulWidget {
   FlashCardView({super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
 
   @override
-  State<FlashCardView> createState() => _FlashCardViewState();
+  ParentState<FlashCardView> createState() => _FlashCardViewState();
 }
 
-class _FlashCardViewState extends State<FlashCardView> {
+class _FlashCardViewState extends ParentState<FlashCardView> {
   void updateCallback() {
     setState(() {});
   }
 
   int columnCount = 2;
   double appBarHeight = 0;
-
-  int calculateColumnCount(BuildContext context) {
-    double screenWidth = SizeConfig.getMediaWidth(context);
-    if (screenWidth > 1000) {
-      return SizeConfig.getMediaWidth(context) ~/ 200;
-    } else if (screenWidth > 600) {
-      return 3;
-    } else if (screenWidth >= 380) {
-      return 2;
-    }
-    return 1;
-  }
-
-  double calculateCrossSpacing(BuildContext context) {
-    double screenWidth = SizeConfig.getMediaWidth(context);
-    if (screenWidth > 1000) {
-      return SizeConfig.getMediaWidth(context) / 20;
-    } else if (screenWidth > 600) {
-      return 40;
-    } else if (screenWidth >= 380) {
-      return 25;
-    }
-    return 15;
-  }
 
   List<Widget> bottomNavigationBarItems() {
     // deactivate merge mode
@@ -115,16 +97,22 @@ class _FlashCardViewState extends State<FlashCardView> {
       return [
         deactivateMergeIcon(),
         IconButton(
-          icon: const Icon(Icons.merge_type),
+          icon: const Icon(Icons.merge_sharp),
           onPressed: () async {
             await FlashCardCollectionProvider.mergeFlashCardsCollectionAsync(
                 FlashCardCollectionProvider.flashcardsToMerge,
                 FlashCardCollectionProvider.targetFlashCard!);
             FlashCardCollectionProvider.deactivateMergeMode();
             OverlayNotificationProvider.showOverlayNotification(
-                'merged succesfully',
+                'merge succesfully',
                 status: NotificationStatus.success);
             updateCallback();
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.import_export),
+          onPressed: () {
+            ExtensionDialog.showBulkExportDialog(context, updateCallback);
           },
         ),
       ];
@@ -162,11 +150,10 @@ class _FlashCardViewState extends State<FlashCardView> {
   IconButton deactivateMergeIcon() {
     return IconButton(
         onPressed: () {
-          OverlayNotificationProvider.showOverlayNotification(
-              'merge mode deactivated',
+          OverlayNotificationProvider.showOverlayNotification('deactivated',
               status: NotificationStatus.info);
 
-          debugPrint('merge mode deactivated');
+          debugPrint('deactivated');
           FlashCardCollectionProvider.deactivateMergeMode();
           updateCallback();
         },
@@ -183,10 +170,10 @@ class _FlashCardViewState extends State<FlashCardView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FlashCardBloc, FlashcardsState>(
-        builder: (context, state) {
+    widget.page =
+        BlocBuilder<FlashCardBloc, FlashcardsState>(builder: (context, state) {
       var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
-      columnCount = calculateColumnCount(context);
+      columnCount = ViewColumnCalculator.calculateColumnCount(context);
       var appBar = getAppBar(flashCardCollection);
       appBarHeight = appBar.preferredSize.height;
       return Scaffold(
@@ -195,37 +182,48 @@ class _FlashCardViewState extends State<FlashCardView> {
           body: AnimationLimiter(
             child: GridView.count(
                 mainAxisSpacing: SizeConfig.getMediaHeight(context, p: 0.04),
-                crossAxisSpacing: calculateCrossSpacing(context),
+                crossAxisSpacing:
+                    ViewColumnCalculator.calculateCrossSpacing(context),
                 crossAxisCount: columnCount,
-                padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
                 childAspectRatio: ViewConfig.getCardForm(context),
                 children:
                     List.generate(flashCardCollection.length + 1, (index) {
                   /// ====================================================================[FlashCardCollectionWidget]
                   // add flashcards
                   return Transform.scale(
-                    scale: columnCount == 1 ? 0.9 : 1,
+                    scale: 1,
                     child: index == 0
-                        ? AnimationConfiguration.staggeredGrid(
-                            position: index,
-                            duration: widget.cardAppearDuration,
-                            columnCount: columnCount,
-                            child: const SlideAnimation(
-                              child: FadeInAnimation(
-                                child: AddFlashCardWidget(),
+                        ? Transform.scale(
+                            scale: ScreenDesign.landscapeSmall ==
+                                    ScreenIdentifier.indentify(context)
+                                ? 0.85
+                                : 1,
+                            child: AnimationConfiguration.staggeredGrid(
+                              position: index,
+                              duration: widget.cardAppearDuration,
+                              columnCount: columnCount,
+                              child: const SlideAnimation(
+                                child: FadeInAnimation(
+                                  child: AddFlashCardWidget(),
+                                ),
                               ),
                             ),
                           )
-                        : AnimationConfiguration.staggeredGrid(
-                            position: index,
-                            duration: widget.cardAppearDuration,
-                            columnCount: columnCount,
-                            child: SlideAnimation(
-                              child: FadeInAnimation(
-                                child: FlashCardCollectionWidget(
-                                    flashCardCollection[index - 1],
-                                    updateCallback),
+                        : Transform.scale(
+                            scale: ScreenDesign.landscapeSmall ==
+                                    ScreenIdentifier.indentify(context)
+                                ? 0.85
+                                : 1,
+                            child: AnimationConfiguration.staggeredGrid(
+                              position: index,
+                              duration: widget.cardAppearDuration,
+                              columnCount: columnCount,
+                              child: SlideAnimation(
+                                child: FadeInAnimation(
+                                  child: FlashCardCollectionWidget(
+                                      flashCardCollection[index - 1],
+                                      updateCallback),
+                                ),
                               ),
                             ),
                           ),
@@ -241,5 +239,7 @@ class _FlashCardViewState extends State<FlashCardView> {
                 children: bottomNavigationBarItems()),
           ));
     });
+
+    return super.build(context);
   }
 }

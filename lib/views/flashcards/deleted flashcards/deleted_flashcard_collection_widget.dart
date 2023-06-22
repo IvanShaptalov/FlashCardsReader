@@ -1,6 +1,6 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
-import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/bloc/providers/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/views/flashcards/flashcard_collection_info.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,19 @@ class _DeletedFlashCardCollectionWidgetState
                 .read<FlashCardBloc>()
                 .add(GetFlashCardsEvent(isDeleted: true));
           },
-          icon: const Icon(Icons.restore_from_trash))
+          icon: const Icon(Icons.restore)),
+      const SizedBox.shrink(),
+      IconButton(
+          onPressed: () {
+            // if merge mode is not activated
+            context.read<FlashCardBloc>().add(DeletePermanentlyEvent(
+                flashCardCollection: widget.flashCardCollection));
+
+            context
+                .read<FlashCardBloc>()
+                .add(GetFlashCardsEvent(isDeleted: true));
+          },
+          icon: const Icon(Icons.delete_forever))
     ];
   }
 
@@ -83,7 +95,7 @@ class _DeletedFlashCardCollectionWidgetState
             ),
             FlashCardCollectionInfo(widget.flashCardCollection),
             Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: getCardActions(isTarget, isSelected, context)),
           ],
         ),

@@ -21,6 +21,8 @@ class QuizFlashCard extends StatefulWidget {
 class _QuizFlashCardState extends State<QuizFlashCard> {
   @override
   Widget build(BuildContext context) {
+    // if landscape mode
+
     var currentFcard = BlocProvider.of<QuizBloc>(widget.quizContext)
         .state
         .quizModel
@@ -71,6 +73,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
     var secondLanguage = SwapWordsProvider.swap
         ? currentFcard?.questionLanguage ?? 'en'
         : currentFcard?.answerLanguage ?? 'en';
+
     var second = GestureDetector(
       onTap: () {
         setState(() {

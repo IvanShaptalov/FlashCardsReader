@@ -1,8 +1,9 @@
-import 'package:flashcards_reader/main.dart';
+import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
+import 'package:flashcards_reader/views/flashcards/sharing/extension_dialog.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_process.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
@@ -131,10 +132,16 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                     .descriptionIconColor,
                                               ),
                                             ),
-                                            const Text(
+                                            Text(
                                               'Flashcard Title : ',
                                               textAlign: TextAlign.start,
-                                              style: FontConfigs.h1TextStyle,
+                                              style: [
+                                                ScreenDesign.landscapeSmall,
+                                                ScreenDesign.portraitSmall
+                                              ].contains(ScreenIdentifier
+                                                      .indentify(context))
+                                                  ? FontConfigs.h2TextStyleBlack
+                                                  : FontConfigs.h1TextStyle,
                                               maxLines: 1,
                                             ),
                                           ],
@@ -188,10 +195,16 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                     .descriptionIconColor,
                                               ),
                                             ),
-                                            const Text(
-                                              'Question Language : ',
+                                            Text(
+                                              'Source : ',
                                               textAlign: TextAlign.start,
-                                              style: FontConfigs.h1TextStyle,
+                                              style: [
+                                                ScreenDesign.landscapeSmall,
+                                                ScreenDesign.portraitSmall
+                                              ].contains(ScreenIdentifier
+                                                      .indentify(context))
+                                                  ? FontConfigs.h2TextStyleBlack
+                                                  : FontConfigs.h1TextStyle,
                                               maxLines: 1,
                                             ),
                                           ],
@@ -226,10 +239,16 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                     .descriptionIconColor,
                                               ),
                                             ),
-                                            const Text(
-                                              'Answer Language : ',
+                                            Text(
+                                              'Translation : ',
                                               textAlign: TextAlign.start,
-                                              style: FontConfigs.h1TextStyle,
+                                              style: [
+                                                ScreenDesign.landscapeSmall,
+                                                ScreenDesign.portraitSmall
+                                              ].contains(ScreenIdentifier
+                                                      .indentify(context))
+                                                  ? FontConfigs.h2TextStyleBlack
+                                                  : FontConfigs.h1TextStyle,
                                               maxLines: 1,
                                             ),
                                           ],
@@ -268,10 +287,16 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                     .descriptionIconColor,
                                               ),
                                             ),
-                                            const Text(
+                                            Text(
                                               'Created : ',
                                               textAlign: TextAlign.start,
-                                              style: FontConfigs.h1TextStyle,
+                                              style: [
+                                                ScreenDesign.landscapeSmall,
+                                                ScreenDesign.portraitSmall
+                                              ].contains(ScreenIdentifier
+                                                      .indentify(context))
+                                                  ? FontConfigs.h2TextStyleBlack
+                                                  : FontConfigs.h1TextStyle,
                                               maxLines: 1,
                                             ),
                                           ],
@@ -310,10 +335,16 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                     .descriptionIconColor,
                                               ),
                                             ),
-                                            const Text(
+                                            Text(
                                               'Flashcards : ',
                                               textAlign: TextAlign.start,
-                                              style: FontConfigs.h1TextStyle,
+                                              style: [
+                                                ScreenDesign.landscapeSmall,
+                                                ScreenDesign.portraitSmall
+                                              ].contains(ScreenIdentifier
+                                                      .indentify(context))
+                                                  ? FontConfigs.h2TextStyleBlack
+                                                  : FontConfigs.h1TextStyle,
                                               maxLines: 1,
                                             ),
                                           ],
@@ -330,6 +361,56 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           ),
                                         ),
                                       ],
+                                    ),
+                                  ),
+                                  const Divider(
+                                    color: Colors.grey,
+                                    thickness: 1,
+                                  ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        /// ===================================[Export]===========
+                                        ExtensionDialog.showExportDialog(
+                                            context);
+                                      },
+                                      child: Container(
+                                        height: SizeConfig.getMediaHeight(
+                                            context,
+                                            p: [
+                                              ScreenDesign.landscape,
+                                              ScreenDesign.landscapeSmall
+                                            ].contains(
+                                                    ScreenIdentifier.indentify(
+                                                        context))
+                                                ? 0.15
+                                                : 0.06),
+                                        width: SizeConfig.getMediaWidth(context,
+                                            p: 0.6),
+                                        decoration: BoxDecoration(
+                                            color: Colors.green.shade200,
+                                            border: Border.all(
+                                                color: Colors.grey, width: 1),
+                                            borderRadius:
+                                                BorderRadius.circular(25)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.import_export,
+                                              color: ConfigFlashcardView
+                                                  .quizIconColor,
+                                            ),
+                                            const Text(
+                                              'Export FlashCards',
+                                              style:
+                                                  FontConfigs.h2TextStyleBlack,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   const Divider(
@@ -381,7 +462,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       child: Container(
                                         height: SizeConfig.getMediaHeight(
                                             context,
-                                            p: 0.06),
+                                            p: [
+                                              ScreenDesign.landscape,
+                                              ScreenDesign.landscapeSmall
+                                            ].contains(
+                                                    ScreenIdentifier.indentify(
+                                                        context))
+                                                ? 0.15
+                                                : 0.06),
                                         width: SizeConfig.getMediaWidth(context,
                                             p: 0.6),
                                         decoration: BoxDecoration(
@@ -408,7 +496,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         ),
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ))),
@@ -432,9 +520,17 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                           child: Align(
                             alignment: Alignment.center,
                             child: SizedBox(
-                              height:
-                                  SizeConfig.getMediaHeight(context, p: 0.2),
                               width: SizeConfig.getMediaWidth(context, p: 0.89),
+                              height: ScreenIdentifier.isLandscapeRelative(
+                                      context)
+                                  // rules for landscape
+                                  ? SizeConfig.getMediaHeight(context, p: 0.5)
+                                  // rules for portrait
+                                  : SizeConfig.getMediaHeight(context,
+                                      p: ScreenIdentifier.isPortraitSmall(
+                                              context)
+                                          ? 0.3
+                                          : 0.25),
                               child: Container(
                                   margin:
                                       const EdgeInsets.symmetric(vertical: 4),
@@ -488,7 +584,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                               .onPressed(
                                                                   flashCard
                                                                       .question,
-                                                                  flashCard
+                                                                  FlashCardProvider
+                                                                      .fc
                                                                       .questionLanguage);
                                                         },
                                                         icon: const Icon(Icons
@@ -539,7 +636,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                               .onPressed(
                                                                   flashCard
                                                                       .answer,
-                                                                  flashCard
+                                                                  FlashCardProvider
+                                                                      .fc
                                                                       .answerLanguage);
                                                         },
                                                         icon: const Icon(Icons
@@ -643,48 +741,52 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                   ],
                                                 ),
                                               ),
-                                              RichText(
-                                                textAlign: TextAlign.left,
-                                                overflow: TextOverflow.fade,
-                                                text: TextSpan(
-                                                  style:
-                                                      FontConfigs.h2TextStyle,
-                                                  children: [
-                                                    WidgetSpan(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal:
-                                                                    2.0),
-                                                        child: Icon(
-                                                            flashCard.isLearned
-                                                                ? Icons
-                                                                    .check_circle
-                                                                : Icons
-                                                                    .cancel_outlined,
-                                                            size: 16,
-                                                            color: flashCard
-                                                                    .isLearned
-                                                                ? Colors.green
-                                                                : Colors
-                                                                    .deepPurple),
+                                              if (ScreenIdentifier.indentify(
+                                                      context) !=
+                                                  ScreenDesign.portraitSmall)
+                                                RichText(
+                                                  textAlign: TextAlign.left,
+                                                  overflow: TextOverflow.fade,
+                                                  text: TextSpan(
+                                                    style:
+                                                        FontConfigs.h2TextStyle,
+                                                    children: [
+                                                      WidgetSpan(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      2.0),
+                                                          child: Icon(
+                                                              flashCard
+                                                                      .isLearned
+                                                                  ? Icons
+                                                                      .check_circle
+                                                                  : Icons
+                                                                      .cancel_outlined,
+                                                              size: 16,
+                                                              color: flashCard
+                                                                      .isLearned
+                                                                  ? Colors.green
+                                                                  : Colors
+                                                                      .deepPurple),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    TextSpan(
-                                                        text:
-                                                            flashCard.isLearned
-                                                                ? 'Learned'
-                                                                : 'Unlearned',
-                                                        style: FontConfigs
-                                                            .h2TextStyle),
-                                                  ],
+                                                      TextSpan(
+                                                          text: flashCard
+                                                                  .isLearned
+                                                              ? 'Learned'
+                                                              : 'Unlearned',
+                                                          style: FontConfigs
+                                                              .h2TextStyle),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
                                             ],
                                           ),
                                         ],
-                                      )
+                                      ),
                                     ],
                                   )),
                             ),

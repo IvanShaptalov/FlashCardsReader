@@ -1,6 +1,7 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
-import 'package:flashcards_reader/bloc/merge_provider/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/bloc/providers/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/views/flashcards/flashcard_collection_info.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/view_flashcard_menu.dart';
@@ -41,10 +42,10 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
       // cancel merge mode
       return IconButton(
           onPressed: () {
-            debugPrint('merge mode deactivated');
+            debugPrint('deactivated');
             FlashCardCollectionProvider.deactivateMergeMode();
             OverlayNotificationProvider.showOverlayNotification(
-                'merge mode deactivated',
+                'deactivated',
                 status: NotificationStatus.info);
 
             widget.updateCallback();
@@ -73,8 +74,8 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
             onPressed: () {
               // if merge mode is not activated
               if (!FlashCardCollectionProvider.isMergeModeStarted) {
-                UpdateFlashCardBottomSheet(
-                        creatingFlashC: widget.flashCardCollection, edit: true)
+                FlashCardProvider.fc = widget.flashCardCollection;
+                UpdateFlashCardBottomSheet(edit: true)
                     .showUpdateFlashCardMenu(context);
               } else {
                 OverlayNotificationProvider.showOverlayNotification(
@@ -88,18 +89,18 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
         IconButton(
             // activate merge mode
             onPressed: () {
-              debugPrint('merge mode activated');
+              debugPrint('select flashcards');
 
               FlashCardCollectionProvider.activateMergeMode(
                   widget.flashCardCollection);
               OverlayNotificationProvider.showOverlayNotification(
-                  'merge mode activated',
+                  'select flashcards',
                   status: NotificationStatus.info);
 
               widget.updateCallback();
             },
             // cancel merge mode
-            icon: const Icon(Icons.merge_sharp)),
+            icon: const Icon(Icons.circle_outlined)),
 
         IconButton(
             onPressed: () async {
@@ -152,12 +153,12 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
         !isTarget;
     return Padding(
       padding: EdgeInsets.symmetric(
-          vertical: SizeConfig.getMediaHeight(context, p: 0.01),
-          horizontal: SizeConfig.getMediaWidth(context, p: 0.01)),
+          vertical: SizeConfig.getMediaHeight(context, p: 0.01)),
       // select items for merge
       child: GestureDetector(
         onTap: () {
           if (!selectCard()) {
+            FlashCardProvider.fc = widget.flashCardCollection;
             FlashCardViewBottomSheet(creatingFlashC: widget.flashCardCollection)
                 .showFlashCardViewMenu(context);
           }
@@ -180,7 +181,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
                     EdgeInsets.all(SizeConfig.getMediaHeight(context, p: 0.02)),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.getMediaWidth(context, p: 0.02)),
+                      horizontal: SizeConfig.getMediaWidth(context, p: 0.01)),
                   child: Center(
                     child: Text(
                       widget.flashCardCollection.title,
@@ -195,9 +196,15 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
                 thickness: 1,
               ),
               FlashCardCollectionInfo(widget.flashCardCollection),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: getCardActions(isTarget, isSelected)),
+              Transform.scale(
+                scale: ScreenDesign.portraitSmall ==
+                        ScreenIdentifier.indentify(context)
+                    ? 0.9
+                    : 1.0,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: getCardActions(isTarget, isSelected)),
+              ),
             ],
           ),
         ),

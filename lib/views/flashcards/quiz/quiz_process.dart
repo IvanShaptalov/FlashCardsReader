@@ -2,14 +2,17 @@ import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/horizontal_quiz_view.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz_view.dart';
 import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class QuizTrainer extends StatefulWidget {
-  const QuizTrainer(
+// ignore: must_be_immutable
+class QuizTrainer extends ParentStatefulWidget {
+  QuizTrainer(
       {required this.numberOfFlashCards,
       required this.mode,
       required this.fCollection,
@@ -21,13 +24,13 @@ class QuizTrainer extends StatefulWidget {
   final String fromPage;
 
   @override
-  State<QuizTrainer> createState() => _QuizTrainerState();
+  ParentState<QuizTrainer> createState() => _QuizTrainerState();
 }
 
-class _QuizTrainerState extends State<QuizTrainer> {
+class _QuizTrainerState extends ParentState<QuizTrainer> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    widget.portraitPage = BlocProvider(
       create: (_) => QuizBloc(),
       child: QuizTrainerView(
           numberOfFlashCards: widget.numberOfFlashCards,
@@ -35,6 +38,10 @@ class _QuizTrainerState extends State<QuizTrainer> {
           fCollection: widget.fCollection,
           fromPage: widget.fromPage),
     );
+
+    bindAllPages(widget.portraitPage);
+
+    return super.build(context);
   }
 }
 
@@ -99,9 +106,11 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
                   .flashCardsCollection
                   .title),
             ),
-            body: VerticalQuiz(
-              fromPage: widget.fromPage,
-            ));
+            body: ScreenIdentifier.isPortraitRelative(context)
+                ? VerticalQuiz(
+                    fromPage: widget.fromPage,
+                  )
+                : HorizontalQuiz(fromPage: widget.fromPage));
       },
     );
   }

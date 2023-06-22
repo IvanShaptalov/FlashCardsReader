@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
@@ -13,6 +14,30 @@ class SizeConfig {
   /// width of the screen p - percentage of the screen width
   static double getMediaWidth(context, {double p = 1.0}) {
     return MediaQuery.of(context).size.width * p;
+  }
+}
+
+class ViewColumnCalculator {
+  static int calculateColumnCount(BuildContext context) {
+    double screenWidth = SizeConfig.getMediaWidth(context);
+    if (screenWidth > 1000) {
+      return SizeConfig.getMediaWidth(context) ~/ 200;
+    } else if (screenWidth > 600) {
+      return 3;
+    }
+    return 2;
+  }
+
+  static double calculateCrossSpacing(BuildContext context) {
+    double screenWidth = SizeConfig.getMediaWidth(context);
+    if (screenWidth > 1000) {
+      return SizeConfig.getMediaWidth(context) / 20;
+    } else if (screenWidth > 600) {
+      return 20;
+    } else if (screenWidth >= 380) {
+      return 15;
+    }
+    return 15;
   }
 }
 
@@ -83,7 +108,7 @@ class ConfigViewUpdateMenu {
   static Color dividerColor = Colors.grey.shade300;
   static Color dropDownColor = Colors.amber.shade50;
   static Color dropDownColorUndlerline = Colors.green.shade300;
-  static Color buttonColor = Colors.green.shade300;
+  static Color addWordMenuColor = Colors.green.shade200;
   static Color buttonIconColor = Colors.grey.shade800;
   static double wordButtonWidthPercent = 0.3;
 }
@@ -93,22 +118,6 @@ class MyConfigOrientation {
       MediaQuery.of(context).orientation == Orientation.portrait;
 
   static bool isLandscape(context) => !isPortrait(context);
-}
-
-class ListOrColumn extends StatelessWidget {
-  final List<Widget> children;
-  const ListOrColumn({required this.children, Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return MyConfigOrientation.isPortrait(context)
-        ? Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: children,
-          )
-        : ListView(
-            children: children,
-          );
-  }
 }
 
 class ConfigQuizView {
@@ -131,4 +140,86 @@ class ConfigQuizView {
       const TextStyle(fontSize: 18, color: Colors.black);
   static TextStyle quizWordSummaryTextStyle =
       TextStyle(fontSize: 16, color: Colors.grey.shade900);
+}
+
+class ConfigFastAddWordView {
+  static Color buttonColor = Colors.amber.shade50;
+  static Color selectedCard = Colors.green.shade100;
+  static Color menuColor = Colors.green.shade200;
+}
+
+class ConfigExtensionDialog {
+  static LinearGradient dialogGradient =
+      LinearGradient(colors: [Colors.green.shade100, Colors.green.shade200]);
+}
+
+enum ScreenDesign { portrait, landscape, portraitSmall, landscapeSmall }
+
+class ScreenIdentifier {
+  static ScreenDesign indentify(BuildContext context) {
+    if (MyConfigOrientation.isPortrait(context)) {
+      if (SizeConfig.getMediaHeight(context) < 600) {
+        debugPrintIt('selected portraitSmall');
+        return ScreenDesign.portraitSmall;
+      } else {
+        debugPrintIt('selected portrait');
+
+        return ScreenDesign.portrait;
+      }
+    } else {
+      if (SizeConfig.getMediaWidth(context) < 600) {
+        debugPrintIt('selected landscape smalll');
+        return ScreenDesign.landscapeSmall;
+      } else {
+        debugPrintIt('selected landscape');
+        return ScreenDesign.landscape;
+      }
+    }
+  }
+
+  /// isPortraitRelative is true if the screen is portrait or portraitSmall
+  static bool isPortraitRelative(BuildContext context) {
+    return isPortraitSmall(context) || isPortrait(context);
+  }
+
+  /// isLandscapeRelative is true if the screen is landscape or landscapeSmall
+  static bool isLandscapeRelative(BuildContext context) {
+    return isLandscapeSmall(context) || isLandscape(context);
+  }
+
+  static bool isPortraitSmall(BuildContext context) {
+    return indentify(context) == ScreenDesign.portraitSmall;
+  }
+
+  static bool isLandscapeSmall(BuildContext context) {
+    return indentify(context) == ScreenDesign.landscapeSmall;
+  }
+
+  static bool isPortrait(BuildContext context) {
+    return indentify(context) == ScreenDesign.portrait;
+  }
+
+  static bool isLandscape(BuildContext context) {
+    return indentify(context) == ScreenDesign.landscape;
+  }
+
+  static Widget returnScreen(
+      {required Widget portraitScreen,
+      required Widget landscapeScreen,
+      required Widget portraitSmallScreen,
+      required Widget landscapeSmallScreen,
+      required BuildContext context}) {
+    switch (indentify(context)) {
+      case ScreenDesign.portrait:
+        return portraitScreen;
+      case ScreenDesign.landscape:
+        return landscapeScreen;
+      case ScreenDesign.portraitSmall:
+        return portraitSmallScreen;
+      case ScreenDesign.landscapeSmall:
+        return landscapeSmallScreen;
+      default:
+        return portraitScreen;
+    }
+  }
 }

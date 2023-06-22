@@ -174,7 +174,7 @@ final Map<String, String> supportedTtsLangs = {
   "ca": "Catalan",
 };
 
-String getCode(String value) {
+String getLangCode(String value) {
   var code = supportedLangs.keys
       .firstWhere((k) => supportedLangs[k] == value, orElse: () => 'en');
   return code;
@@ -203,6 +203,10 @@ const double pitch = 1.0;
 const double rate = 0.4;
 const double volume = 1.0;
 
-
 const String quizAction = 'quiz';
 const String addWordAction = 'add word';
+
+const String textExt = '.txt';
+const String jsonExt = '.js';
+
+const List<String> allowedExtensions = [textExt, jsonExt];

@@ -11,7 +11,7 @@ class TextToSpeechWrapper {
 
   static void onPressed(text, language) async {
     if (text.isNotEmpty) {
-      if (await InternetChecker.hasConnection()) {
+      if (await InternetConnectionChecker.connected()) {
         if (text.length <= ttsMaxLength) {
           await TextToSpeechService.speak(text, language);
         } else {
