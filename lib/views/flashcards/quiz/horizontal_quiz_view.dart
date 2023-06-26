@@ -3,7 +3,7 @@ import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/horizontal_quiz_card_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_summary.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/util_provider.dart';
-import 'package:flashcards_reader/views/view_config.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

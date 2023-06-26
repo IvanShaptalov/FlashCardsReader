@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/util_provider.dart';
-import 'package:flashcards_reader/views/view_config.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -12,7 +12,7 @@ import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape_sm
 import 'package:flashcards_reader/views/flashcards/new_word/screens/portrait.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/portrait_small.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
-import 'package:flashcards_reader/views/view_config.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quick_actions/quick_actions.dart';

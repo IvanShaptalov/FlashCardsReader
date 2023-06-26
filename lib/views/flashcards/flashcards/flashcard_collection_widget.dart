@@ -6,7 +6,7 @@ import 'package:flashcards_reader/views/flashcards/flashcard_collection_info.dar
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/view_flashcard_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
-import 'package:flashcards_reader/views/view_config.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -7,7 +7,7 @@ import 'package:flashcards_reader/views/flashcards/sharing/extension_dialog.dart
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_process.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
-import 'package:flashcards_reader/views/view_config.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
