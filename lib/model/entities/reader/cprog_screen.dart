@@ -1,34 +1,34 @@
 import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/reader/open_book.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
-import 'package:flashcards_reader/views/reader/openbook.dart';
-import 'package:flashcards_reader/views/config/view_config.dart';
 
+class CProgScreen extends StatefulWidget {
+  const CProgScreen({super.key});
 
-class UnixScreen extends StatefulWidget {
   @override
-  _UnixScreenState createState() => _UnixScreenState();
+  CProgScreenState createState() => CProgScreenState();
 }
 
-class _UnixScreenState extends State<UnixScreen> {
-  final String url = "https://samwitadhikary.github.io/jsons/unix.json";
+class CProgScreenState extends State<CProgScreen> {
+  final String url = 'https://samwitadhikary.github.io/jsons/c.json';
   List? data;
 
   @override
   void initState() {
     super.initState();
-    fetchUnix();
+    fetchCprog();
   }
 
-  fetchUnix() async {
+  fetchCprog() async {
     var response = await http.get(Uri.parse(url));
     if (!mounted) return;
     setState(() {
       var convertJson = json.decode(response.body);
-      data = convertJson['unix'];
+      data = convertJson['cprog'];
     });
   }
 
@@ -38,41 +38,43 @@ class _UnixScreenState extends State<UnixScreen> {
       child: data != null
           ? ListView.builder(
               shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemCount: data!.length,
               itemBuilder: (BuildContext context, int index) {
-                final myAlgo = data![index];
+                final myCprog = data![index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => OpenBook(
-                                  myAlgo['id'],
-                                  myAlgo['name'],
-                                  myAlgo['author'],
-                                  myAlgo['tagline'],
-                                  myAlgo['url'],
-                                  myAlgo['image'],
-                                  myAlgo['desc'],
-                                )));
+                                myCprog['id'],
+                                myCprog['name'],
+                                myCprog['author'],
+                                myCprog['tagline'],
+                                myCprog['url'],
+                                myCprog['image'],
+                                myCprog['desc'])));
                   },
                   child: Container(
+                    height: 150,
+                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white),
                     child: Row(
                       children: [
                         Hero(
-                          tag: myAlgo['id'],
+                          tag: myCprog['id'],
                           child: Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width * 0.23,
-                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                    myAlgo['image'],
-                                  ),
-                                  fit: BoxFit.fill,
-                                ),
+                                    image: CachedNetworkImageProvider(
+                                        myCprog['image']),
+                                    fit: BoxFit.fill),
                                 borderRadius: BorderRadius.circular(5)),
                           ),
                         ),
@@ -82,37 +84,33 @@ class _UnixScreenState extends State<UnixScreen> {
                             Container(
                               color: Colors.white,
                               width: MediaQuery.of(context).size.width * 0.65,
-                              margin: EdgeInsets.fromLTRB(0, 10, 10, 5),
+                              margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                               child: Text(
-                                myAlgo['name'],
-                                style: TextStyle(
+                                myCprog['name'],
+                                style: const TextStyle(
                                   fontSize: 15.5,
                                 ),
                               ),
                             ),
                             Container(
-                              height: MediaQuery.of(context).size.height * 0.06,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.06,
                               width: MediaQuery.of(context).size.width * 0.67,
-                              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                              margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                               child: Text(
-                                myAlgo['author'],
-                                style: TextStyle(fontSize: 12),
+                                myCprog['author'],
+                                style: const TextStyle(fontSize: 12),
                               ),
                             )
                           ],
                         )
                       ],
                     ),
-                    height: 150,
-                    margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white),
                   ),
                 );
               },
             )
-          : Center(
+          : const Center(
               child: SpinKitWave(
                 color: Palette.cardBlue,
               ),

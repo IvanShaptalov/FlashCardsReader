@@ -9,18 +9,20 @@ import 'package:flashcards_reader/views/config/view_config.dart';
 
 
 class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({super.key});
+
   @override
-  _BottomNavBarState createState() => _BottomNavBarState();
+  BottomNavBarState createState() => BottomNavBarState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
+class BottomNavBarState extends State<BottomNavBar> {
   int pageIndex = 0;
-  final HomePage homePage = HomePage();
-  final Search search = Search();
-  final Info info = Info();
-  final Downloads downloads = Downloads();
+  final HomePage homePage = const HomePage();
+  final Search search = const Search();
+  final Info info = const Info();
+  final Downloads downloads = const Downloads();
 
-  Widget _showPage = HomePage();
+  Widget _showPage = const HomePage();
 
   Widget _pageChooser(int page) {
     switch (page) {
@@ -33,12 +35,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
       case 3:
         return info;
       default:
-        return new Container(
-          child: Center(
-            child: Text(
-              'No Page To Show',
-              style: TextStyle(fontSize: 30),
-            ),
+        return const Center(
+          child: Text(
+            'No Page To Show',
+            style: TextStyle(fontSize: 30),
           ),
         );
     }
@@ -50,7 +50,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       bottomNavigationBar: CurvedNavigationBar(
         index: pageIndex,
         height: 55.0,
-        items: <Widget>[
+        items: const <Widget>[
           Icon(Icons.home, size: 30),
           Icon(Icons.search, size: 30),
           Icon(
@@ -63,7 +63,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         buttonBackgroundColor: Colors.white,
         backgroundColor: Palette.scaffold,
         animationCurve: Curves.easeInOut,
-        animationDuration: Duration(milliseconds: 300),
+        animationDuration: const Duration(milliseconds: 300),
         onTap: (int tapped) {
           setState(() {
             _showPage = _pageChooser(tapped);

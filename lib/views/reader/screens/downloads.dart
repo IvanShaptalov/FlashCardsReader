@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:flashcards_reader/views/reader/downloadpdf.dart';
-import 'package:flashcards_reader/views/reader/sidemenu.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/reader/download_pdf.dart';
+import 'package:flashcards_reader/views/reader/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 
@@ -9,11 +10,13 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io' as io;
 
 class Downloads extends StatefulWidget {
+  const Downloads({super.key});
+
   @override
-  _DownloadsState createState() => _DownloadsState();
+  DownloadsState createState() => DownloadsState();
 }
 
-class _DownloadsState extends State<Downloads> {
+class DownloadsState extends State<Downloads> {
   String? directory;
   List file = [];
 
@@ -25,7 +28,7 @@ class _DownloadsState extends State<Downloads> {
 
   _listofFiles() async {
     directory = (await getExternalStorageDirectory())!.path;
-    print(directory);
+    debugPrintIt(directory);
     setState(() {
       file = io.Directory(directory!).listSync();
       // print(file);
@@ -39,11 +42,11 @@ class _DownloadsState extends State<Downloads> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
+      drawer: const Drawer(
         child: SideMenu(),
       ),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Downloads',
           style: TextStyle(
               color: Palette.darkblue,
@@ -51,96 +54,94 @@ class _DownloadsState extends State<Downloads> {
               fontWeight: FontWeight.bold),
         ),
         backgroundColor: Palette.scaffold,
-        iconTheme: IconThemeData(color: Palette.darkblue),
+        iconTheme: const IconThemeData(color: Palette.darkblue),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: file.length,
-                itemBuilder: (BuildContext context, int index) {
-                  String path = file[index].path;
-                  String pathDir = path
-                      .replaceAll(
-                          "/storage/emulated/0/Android/data/com.samwit.reader_1/files/",
-                          "")
-                      .replaceAll(".pdf", "");
-                  return Dismissible(
-                    key: UniqueKey(),
-                    onDismissed: (DismissDirection direction) {
-                      deleteFile(File(path));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("$pathDir deleted")));
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: file.length,
+              itemBuilder: (BuildContext context, int index) {
+                String path = file[index].path;
+                String pathDir = path
+                    .replaceAll(
+                        "/storage/emulated/0/Android/data/com.samwit.reader_1/files/",
+                        "")
+                    .replaceAll(".pdf", "");
+                return Dismissible(
+                  key: UniqueKey(),
+                  onDismissed: (DismissDirection direction) {
+                    deleteFile(File(path));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("$pathDir deleted")));
+                  },
+                  background: Container(
+                    color: Colors.red,
+                    child: const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Delete",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.left,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  secondaryBackground: Container(
+                    color: Colors.red,
+                    child: const Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Delete",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  DownloadPDF(path, pathDir)));
                     },
-                    background: Container(
-                      color: Colors.red,
-                      child: Align(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              "Delete",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700),
-                              textAlign: TextAlign.left,
-                            )
-                          ],
-                        ),
-                        alignment: Alignment.centerLeft,
-                      ),
+                    child: ListTile(
+                      title: Text(pathDir),
                     ),
-                    secondaryBackground: Container(
-                      color: Colors.red,
-                      child: Align(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              "Delete",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            )
-                          ],
-                        ),
-                        alignment: Alignment.centerRight,
-                      ),
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    DownloadPDF(path, pathDir)));
-                      },
-                      child: ListTile(
-                        title: Text(pathDir),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            )
-          ],
-        ),
+                  ),
+                );
+              },
+            ),
+          )
+        ],
       ),
     );
   }

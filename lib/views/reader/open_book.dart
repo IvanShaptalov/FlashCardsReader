@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
-import 'package:flashcards_reader/views/reader/viewpdf.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/reader/view_pdf.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
@@ -17,15 +18,16 @@ class OpenBook extends StatefulWidget {
   final String url;
   final String image;
   final String desc;
-  OpenBook(this.id, this.name, this.author, this.tagline, this.url, this.image,
-      this.desc);
+  const OpenBook(this.id, this.name, this.author, this.tagline, this.url,
+      this.image, this.desc,
+      {super.key});
 
   @override
-  _OpenBookState createState() =>
-      _OpenBookState(id, name, author, tagline, url, image, desc);
+  OpenBookState createState() =>
+      OpenBookState(id, name, author, tagline, url, image, desc);
 }
 
-class _OpenBookState extends State<OpenBook> {
+class OpenBookState extends State<OpenBook> {
   final int id;
   final String name;
   final String author;
@@ -33,7 +35,7 @@ class _OpenBookState extends State<OpenBook> {
   final String url;
   final String image;
   final String desc;
-  _OpenBookState(this.id, this.name, this.author, this.tagline, this.url,
+  OpenBookState(this.id, this.name, this.author, this.tagline, this.url,
       this.image, this.desc);
 
   bool downloading = false;
@@ -51,17 +53,17 @@ class _OpenBookState extends State<OpenBook> {
             onReceiveProgress: (rec, total) {
           setState(() {
             downloading = true;
-            progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
+            progressString = "${((rec / total) * 100).toStringAsFixed(0)}%";
           });
         });
       } catch (e) {
-        print(e);
+        debugPrintIt(e);
       }
       setState(() {
         downloading = false;
         progressString = "Completed";
       });
-      print('Completed');
+      debugPrintIt('Completed');
     }
   }
 
@@ -71,7 +73,7 @@ class _OpenBookState extends State<OpenBook> {
       appBar: AppBar(
         title: Text(
           name,
-          style: TextStyle(
+          style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 21,
               color: Palette.darkblue),
@@ -79,17 +81,16 @@ class _OpenBookState extends State<OpenBook> {
         actions: [
           downloading == false
               ? IconButton(
-                  icon: Icon(MdiIcons.download),
+                  icon: const Icon(MdiIcons.download),
                   onPressed: () {
                     downloadFile();
                   },
-                  
                 )
-              : Offstage()
+              : const Offstage()
         ],
         backgroundColor: Palette.scaffold,
         elevation: 0,
-        iconTheme: IconThemeData(color: Palette.darkblue),
+        iconTheme: const IconThemeData(color: Palette.darkblue),
       ),
       body: Stack(children: [
         Container(
@@ -109,7 +110,7 @@ class _OpenBookState extends State<OpenBook> {
               Hero(
                 tag: id,
                 child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 45, 0, 0),
+                  margin: const EdgeInsets.fromLTRB(0, 45, 0, 0),
                   height: 340,
                   width: 250,
                   decoration: BoxDecoration(
@@ -118,31 +119,31 @@ class _OpenBookState extends State<OpenBook> {
                           fit: BoxFit.fill)),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Text(
                   name,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 // color: Colors.red,
-                padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                 child: Text(
                   tagline,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontStyle: FontStyle.italic,
                     fontSize: 15,
@@ -155,84 +156,82 @@ class _OpenBookState extends State<OpenBook> {
         SlidingUpPanel(
           minHeight: 80,
           backdropEnabled: true,
-          panel: Container(
-            child: Column(
-              children: [
-                Container(
-                  height: 20,
-                  // color: Colors.red,
-                  margin: EdgeInsets.only(top: 10),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 15,
-                        color: Colors.grey,
-                        height: 5,
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Container(
-                        height: 5,
-                        color: Colors.grey,
-                        width: 30,
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    'Description :',
-                    style: TextStyle(fontSize: 22, color: Palette.darkblue),
-                  ),
-                  padding: EdgeInsets.fromLTRB(20, 0, 0, 35),
-                ),
-                Container(
-                  height: 270,
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: ListView(physics: BouncingScrollPhysics(), children: [
-                    Text(
-                      desc,
-                      style: TextStyle(fontSize: 15),
-                      textAlign: TextAlign.justify,
+          panel: Column(
+            children: [
+              Container(
+                height: 20,
+                // color: Colors.red,
+                margin: const EdgeInsets.only(top: 10),
+                child: Column(
+                  children: [
+                    Container(
+                      width: 15,
+                      color: Colors.grey,
+                      height: 5,
                     ),
-                  ]),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    Container(
+                      height: 5,
+                      color: Colors.grey,
+                      width: 30,
+                    )
+                  ],
                 ),
-                SizedBox(
-                  height: 30,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.fromLTRB(20, 0, 0, 35),
+                child: const Text(
+                  'Description :',
+                  style: TextStyle(fontSize: 22, color: Palette.darkblue),
                 ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                      padding: MaterialStateProperty.all(EdgeInsets.all(20)),
-                      backgroundColor:
-                          MaterialStateProperty.all(Palette.lightblue),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)))),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ViewPDF(name, url)));
-                  },
-                  child: Text(
-                    "Read Book",
-                    style: TextStyle(fontSize: 21, color: Colors.white),
+              ),
+              Container(
+                height: 270,
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: ListView(physics: const BouncingScrollPhysics(), children: [
+                  Text(
+                    desc,
+                    style: const TextStyle(fontSize: 15),
+                    textAlign: TextAlign.justify,
                   ),
-                  // padding: EdgeInsets.all(20),
-                  // color: Palette.lightblue,
-                  // shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(20)),
-                )
-              ],
-            ),
+                ]),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+                    backgroundColor:
+                        MaterialStateProperty.all(Palette.lightblue),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)))),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ViewPDF(name, url)));
+                },
+                child: const Text(
+                  "Read Book",
+                  style: TextStyle(fontSize: 21, color: Colors.white),
+                ),
+                // padding: EdgeInsets.all(20),
+                // color: Palette.lightblue,
+                // shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(20)),
+              )
+            ],
           ),
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         ),
         downloading
             ? Container(
-                decoration: BoxDecoration(color: Colors.black54),
+                decoration: const BoxDecoration(color: Colors.black54),
                 child: Center(
                   child: Container(
                     height: 200,
@@ -243,10 +242,10 @@ class _OpenBookState extends State<OpenBook> {
                     child: Center(
                       child: Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 50,
                           ),
-                          Container(
+                          const SizedBox(
                             height: 70,
                             child: Center(
                               child: CircularProgressIndicator(
@@ -254,15 +253,15 @@ class _OpenBookState extends State<OpenBook> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
-                          Container(
+                          SizedBox(
                             height: 30,
                             child: Center(
                               child: Text(
                                 'Downloading File $progressString',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
                                 ),
@@ -275,7 +274,7 @@ class _OpenBookState extends State<OpenBook> {
                   ),
                 ),
               )
-            : Offstage()
+            : const Offstage()
       ]),
     );
   }

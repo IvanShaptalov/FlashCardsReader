@@ -8,16 +8,16 @@ import 'package:flashcards_reader/views/config/view_config.dart';
 class ViewPDF extends StatefulWidget {
   final String name;
   final String url;
-  ViewPDF(this.name, this.url);
+  const ViewPDF(this.name, this.url, {super.key});
 
   @override
-  _ViewPDFState createState() => _ViewPDFState(name, url);
+  ViewPDFState createState() => ViewPDFState(name, url);
 }
 
-class _ViewPDFState extends State<ViewPDF> {
+class ViewPDFState extends State<ViewPDF> {
   final String name;
   final String url;
-  _ViewPDFState(this.name, this.url);
+  ViewPDFState(this.name, this.url);
 
   final Completer<PDFViewController> _pdfViewController =
       Completer<PDFViewController>();
@@ -30,14 +30,14 @@ class _ViewPDFState extends State<ViewPDF> {
       appBar: AppBar(
         title: Text(
           name,
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 21,
               fontWeight: FontWeight.bold,
               color: Palette.darkblue),
         ),
         backgroundColor: Palette.scaffold,
         elevation: 0,
-        iconTheme: IconThemeData(color: Palette.darkblue),
+        iconTheme: const IconThemeData(color: Palette.darkblue),
         actions: <Widget>[
           StreamBuilder<String>(
             stream: _pageCountController.stream,
@@ -45,14 +45,14 @@ class _ViewPDFState extends State<ViewPDF> {
               if (snapshot.hasData) {
                 return Center(
                   child: Container(
-                    margin: EdgeInsets.fromLTRB(10, 10, 16, 10),
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
+                    margin: const EdgeInsets.fromLTRB(10, 10, 16, 10),
+                    padding: const EdgeInsets.all(8),
+                    decoration: const BoxDecoration(
                         // color: Colors.red
                         ),
                     child: Text(
                       snapshot.data!,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Palette.darkblue,
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
@@ -60,7 +60,7 @@ class _ViewPDFState extends State<ViewPDF> {
                   ),
                 );
               }
-              return SizedBox();
+              return const SizedBox();
             },
           )
         ],
@@ -81,7 +81,7 @@ class _ViewPDFState extends State<ViewPDF> {
         preventLinkNavigation: true,
       ).cachedFromUrl(url,
           placeholder: (progress) => Center(
-                child: Container(
+                child: SizedBox(
                     height: 100,
                     width: 100,
                     child: /* LiquidCircularProgressIndicator(
@@ -103,7 +103,7 @@ class _ViewPDFState extends State<ViewPDF> {
                    */
                         Text('$progress')),
               ),
-          errorWidget: (error) => Center(
+          errorWidget: (error) => const Center(
                 child: Text('Loading Error....\nCheck Internet Connection'),
               )),
       floatingActionButton: FutureBuilder<PDFViewController>(
@@ -117,13 +117,6 @@ class _ViewPDFState extends State<ViewPDF> {
               children: <Widget>[
                 FloatingActionButton(
                   heroTag: '-',
-                  child: const Text(
-                    '<',
-                    style: TextStyle(
-                        color: Palette.darkblue,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  ),
                   backgroundColor: Colors.white,
                   hoverColor: Palette.darkblue,
                   onPressed: () async {
@@ -134,16 +127,16 @@ class _ViewPDFState extends State<ViewPDF> {
                       await pdfController.setPage(currentPage);
                     }
                   },
-                ),
-                FloatingActionButton(
-                  heroTag: '+',
                   child: const Text(
-                    '>',
+                    '<',
                     style: TextStyle(
                         color: Palette.darkblue,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
+                ),
+                FloatingActionButton(
+                  heroTag: '+',
                   backgroundColor: Colors.white,
                   onPressed: () async {
                     final PDFViewController pdfController = snapshot.data!;
@@ -155,6 +148,13 @@ class _ViewPDFState extends State<ViewPDF> {
                       await pdfController.setPage(currentPage);
                     }
                   },
+                  child: const Text(
+                    '>',
+                    style: TextStyle(
+                        color: Palette.darkblue,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             );

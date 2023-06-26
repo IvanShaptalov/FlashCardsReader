@@ -8,29 +8,29 @@ import 'package:flashcards_reader/views/reader/open_book.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 
 
-class ReactScreen extends StatefulWidget {
-  const ReactScreen({super.key});
+class UnixScreen extends StatefulWidget {
+  const UnixScreen({super.key});
 
   @override
-  ReactScreenState createState() => ReactScreenState();
+  UnixScreenState createState() => UnixScreenState();
 }
 
-class ReactScreenState extends State<ReactScreen>{
-  final String url = "https://samwitadhikary.github.io/jsons/react.json";
+class UnixScreenState extends State<UnixScreen> {
+  final String url = "https://samwitadhikary.github.io/jsons/unix.json";
   List? data;
 
   @override
   void initState() {
     super.initState();
-    fetchReact();
+    fetchUnix();
   }
 
-  fetchReact() async {
+  fetchUnix() async {
     var response = await http.get(Uri.parse(url));
     if (!mounted) return;
     setState(() {
       var convertJson = json.decode(response.body);
-      data = convertJson['react'];
+      data = convertJson['unix'];
     });
   }
 

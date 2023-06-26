@@ -2,31 +2,34 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:flashcards_reader/model/entities/reader/algo_screen.dart';
 import 'package:flashcards_reader/model/entities/reader/app_dev_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/cppScreen.dart';
-import 'package:flashcards_reader/model/entities/reader/cprogScreen.dart';
-import 'package:flashcards_reader/model/entities/reader/dsaiScreen.dart';
+import 'package:flashcards_reader/model/entities/reader/cpp_screen.dart';
+import 'package:flashcards_reader/model/entities/reader/cprog_screen.dart';
+import 'package:flashcards_reader/model/entities/reader/dsai_screen.dart';
 import 'package:flashcards_reader/model/entities/reader/hacking.dart';
-import 'package:flashcards_reader/model/entities/reader/javaScreen.dart';
-import 'package:flashcards_reader/model/entities/reader/jsScript.dart';
-import 'package:flashcards_reader/model/entities/reader/linuxScreen.dart';
-import 'package:flashcards_reader/model/entities/reader/machineScreen.dart';
+import 'package:flashcards_reader/model/entities/reader/java_screen.dart';
+import 'package:flashcards_reader/model/entities/reader/js_script.dart';
+import 'package:flashcards_reader/model/entities/reader/linux_screen.dart';
+import 'package:flashcards_reader/model/entities/reader/machine_screen.dart';
 import 'package:flashcards_reader/model/entities/reader/networking.dart';
-import 'package:flashcards_reader/model/entities/reader/otherScreen.dart';
-import 'package:flashcards_reader/model/entities/reader/pythonScreen.dart';
+import 'package:flashcards_reader/model/entities/reader/other_screen.dart';
+import 'package:flashcards_reader/model/entities/reader/python_screen.dart';
 import 'package:flashcards_reader/model/entities/reader/react.dart';
-import 'package:flashcards_reader/model/entities/reader/unixScreen.dart';
-import 'package:flashcards_reader/model/entities/reader/webdevScreen.dart';
+import 'package:flashcards_reader/model/entities/reader/unix_screen.dart';
+import 'package:flashcards_reader/model/entities/reader/web_dev_screen.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/reader/offline.dart';
-import 'package:flashcards_reader/views/reader/sidemenu.dart';
+import 'package:flashcards_reader/views/reader/side_menu.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   bool connection = true;
   Connectivity? connectivity;
 
@@ -38,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     connectivity = Connectivity();
     subscription =
         connectivity!.onConnectivityChanged.listen((ConnectivityResult result) {
-      print(result);
+      debugPrintIt(result);
       if (result == ConnectivityResult.mobile ||
           result == ConnectivityResult.wifi) {
         setState(() {
@@ -55,115 +58,113 @@ class _HomePageState extends State<HomePage> {
   }
 
   final _kTabs = <Tab>[
-    Tab(
+    const Tab(
       text: 'Algorithms',
     ),
-    Tab(
+    const Tab(
       text: 'Python',
     ),
-    Tab(
+    const Tab(
       text: 'C++',
     ),
-    Tab(
+    const Tab(
       text: 'C',
     ),
-    Tab(
+    const Tab(
       text: 'Web Development',
     ),
-    Tab(
+    const Tab(
       text: 'Data Science & AI',
     ),
-    Tab(
+    const Tab(
       text: 'Linux',
     ),
-    Tab(
+    const Tab(
       text: 'App Development',
     ),
-    Tab(
+    const Tab(
       text: 'Java',
     ),
-    Tab(
+    const Tab(
       text: 'JavaScript',
     ),
-    Tab(
+    const Tab(
       text: 'Machine Learning',
     ),
-    Tab(
+    const Tab(
       text: 'Unix',
     ),
-    Tab(
+    const Tab(
       text: 'Networking',
     ),
-    Tab(
+    const Tab(
       text: 'React',
     ),
-    Tab(
+    const Tab(
       text: 'Hacking',
     ),
-    Tab(
+    const Tab(
       text: 'Others',
     ),
   ];
 
   final _kTabPages = <Widget>[
-    AlgoScreen(),
-    PythonScreen(),
-    CppScreen(),
-    CProgScreen(),
-    WebScreen(),
-    DsaiScreen(),
-    LinuxScreen(),
-    AppDevScreen(),
-    JavaScreen(),
-    JavaScriptScreen(),
-    MachineLearningScreen(),
-    UnixScreen(),
-    NetworkingScreen(),
-    ReactScreen(),
-    HackingScreen(),
-    OtherScreen(),
+    const AlgoScreen(),
+    const PythonScreen(),
+    const CppScreen(),
+    const CProgScreen(),
+    const WebScreen(),
+    const DsaiScreen(),
+    const LinuxScreen(),
+    const AppDevScreen(),
+    const JavaScreen(),
+    const JavaScriptScreen(),
+    const MachineLearningScreen(),
+    const UnixScreen(),
+    const NetworkingScreen(),
+    const ReactScreen(),
+    const HackingScreen(),
+    const OtherScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: DefaultTabController(
-        length: _kTabs.length,
-        child: Scaffold(
-          drawer: Drawer(
-            child: SideMenu(),
-          ),
-          appBar: AppBar(
-            elevation: 0,
-            backgroundColor: Palette.scaffold,
-            title: Text(
-              'Note It',
-              style: TextStyle(
-                  color: Palette.darkblue,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -0.6),
-            ),
-            iconTheme: IconThemeData(color: Palette.darkblue),
-            bottom: TabBar(
-              indicatorColor: Palette.darkblue,
-              indicatorWeight: 2.5,
-              isScrollable: true,
-              physics: BouncingScrollPhysics(),
-              labelColor: Palette.darkblue,
-              labelStyle: TextStyle(fontSize: 18),
-              tabs: _kTabs,
-            ),
-          ),
-          body: connection
-              ? Center(
-                  child: Offline(),
-                )
-              : TabBarView(
-                  physics: BouncingScrollPhysics(),
-                  children: _kTabPages,
-                ),
+    return DefaultTabController(
+      length: _kTabs.length,
+      child: Scaffold(
+        drawer: const Drawer(
+          child: SideMenu(),
         ),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Palette.scaffold,
+          title: const Text(
+            'Note It',
+            style: TextStyle(
+                color: Palette.darkblue,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                letterSpacing: -0.6),
+          ),
+          iconTheme: const IconThemeData(color: Palette.darkblue),
+          bottom: TabBar(
+            indicatorColor: Palette.darkblue,
+            indicatorWeight: 2.5,
+            isScrollable: true,
+            physics: const BouncingScrollPhysics(),
+            labelColor: Palette.darkblue,
+            labelStyle: const TextStyle(fontSize: 18),
+            tabs: _kTabs,
+          ),
+        ),
+        body: connection
+            ? const Center(
+                child: Offline(),
+              )
+            : TabBarView(
+                physics: const BouncingScrollPhysics(),
+                children: _kTabPages,
+              ),
       ),
     );
   }

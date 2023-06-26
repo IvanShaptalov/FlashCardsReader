@@ -3,34 +3,34 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:http/http.dart' as http;
 import 'package:flashcards_reader/views/reader/open_book.dart';
+import 'package:http/http.dart' as http;
 import 'package:flashcards_reader/views/config/view_config.dart';
 
 
-class ReactScreen extends StatefulWidget {
-  const ReactScreen({super.key});
+class LinuxScreen extends StatefulWidget {
+  const LinuxScreen({super.key});
 
   @override
-  ReactScreenState createState() => ReactScreenState();
+  LinuxScreenState createState() => LinuxScreenState();
 }
 
-class ReactScreenState extends State<ReactScreen>{
-  final String url = "https://samwitadhikary.github.io/jsons/react.json";
+class LinuxScreenState extends State<LinuxScreen>{
+  final String url = 'https://samwitadhikary.github.io/jsons/linux.json';
   List? data;
 
   @override
   void initState() {
     super.initState();
-    fetchReact();
+    fetchLinux();
   }
 
-  fetchReact() async {
+  fetchLinux() async {
     var response = await http.get(Uri.parse(url));
     if (!mounted) return;
     setState(() {
       var convertJson = json.decode(response.body);
-      data = convertJson['react'];
+      data = convertJson['linux'];
     });
   }
 
@@ -43,21 +43,20 @@ class ReactScreenState extends State<ReactScreen>{
               physics: const BouncingScrollPhysics(),
               itemCount: data!.length,
               itemBuilder: (BuildContext context, int index) {
-                final myAlgo = data![index];
+                final myLinux = data![index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => OpenBook(
-                                  myAlgo['id'],
-                                  myAlgo['name'],
-                                  myAlgo['author'],
-                                  myAlgo['tagline'],
-                                  myAlgo['url'],
-                                  myAlgo['image'],
-                                  myAlgo['desc'],
-                                )));
+                                myLinux['id'],
+                                myLinux['name'],
+                                myLinux['author'],
+                                myLinux['tagline'],
+                                myLinux['url'],
+                                myLinux['image'],
+                                myLinux['desc'])));
                   },
                   child: Container(
                     height: 150,
@@ -68,18 +67,16 @@ class ReactScreenState extends State<ReactScreen>{
                     child: Row(
                       children: [
                         Hero(
-                          tag: myAlgo['id'],
+                          tag: myLinux['id'],
                           child: Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width * 0.23,
                             margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                    myAlgo['image'],
-                                  ),
-                                  fit: BoxFit.fill,
-                                ),
+                                    image: CachedNetworkImageProvider(
+                                        myLinux['image']),
+                                    fit: BoxFit.fill),
                                 borderRadius: BorderRadius.circular(5)),
                           ),
                         ),
@@ -91,18 +88,19 @@ class ReactScreenState extends State<ReactScreen>{
                               width: MediaQuery.of(context).size.width * 0.65,
                               margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                               child: Text(
-                                myAlgo['name'],
+                                myLinux['name'],
                                 style: const TextStyle(
                                   fontSize: 15.5,
                                 ),
                               ),
                             ),
                             Container(
-                              height: MediaQuery.of(context).size.height * 0.06,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.06,
                               width: MediaQuery.of(context).size.width * 0.67,
                               margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                               child: Text(
-                                myAlgo['author'],
+                                myLinux['author'],
                                 style: const TextStyle(fontSize: 12),
                               ),
                             )

@@ -3,16 +3,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flashcards_reader/views/reader/openbook.dart';
+import 'package:flashcards_reader/views/reader/open_book.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 
-
 class NetworkingScreen extends StatefulWidget {
+  const NetworkingScreen({super.key});
+
   @override
-  _NetworkingScreenState createState() => _NetworkingScreenState();
+  NetworkingScreenState createState() => NetworkingScreenState();
 }
 
-class _NetworkingScreenState extends State<NetworkingScreen>{
+class NetworkingScreenState extends State<NetworkingScreen> {
   final String url = "https://samwitadhikary.github.io/jsons/networking.json";
   List? data;
 
@@ -37,7 +38,7 @@ class _NetworkingScreenState extends State<NetworkingScreen>{
       child: data != null
           ? ListView.builder(
               shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemCount: data!.length,
               itemBuilder: (BuildContext context, int index) {
                 final myAlgo = data![index];
@@ -57,6 +58,11 @@ class _NetworkingScreenState extends State<NetworkingScreen>{
                                 )));
                   },
                   child: Container(
+                    height: 150,
+                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white),
                     child: Row(
                       children: [
                         Hero(
@@ -64,7 +70,7 @@ class _NetworkingScreenState extends State<NetworkingScreen>{
                           child: Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width * 0.23,
-                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: CachedNetworkImageProvider(
@@ -81,10 +87,10 @@ class _NetworkingScreenState extends State<NetworkingScreen>{
                             Container(
                               color: Colors.white,
                               width: MediaQuery.of(context).size.width * 0.65,
-                              margin: EdgeInsets.fromLTRB(0, 10, 10, 5),
+                              margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                               child: Text(
                                 myAlgo['name'],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 15.5,
                                 ),
                               ),
@@ -92,26 +98,21 @@ class _NetworkingScreenState extends State<NetworkingScreen>{
                             Container(
                               height: MediaQuery.of(context).size.height * 0.06,
                               width: MediaQuery.of(context).size.width * 0.67,
-                              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                              margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                               child: Text(
                                 myAlgo['author'],
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                               ),
                             )
                           ],
                         )
                       ],
                     ),
-                    height: 150,
-                    margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white),
                   ),
                 );
               },
             )
-          : Center(
+          : const Center(
               child: SpinKitWave(
                 color: Palette.cardBlue,
               ),

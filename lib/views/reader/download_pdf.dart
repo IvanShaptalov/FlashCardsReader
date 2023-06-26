@@ -8,16 +8,16 @@ import 'package:flashcards_reader/views/config/view_config.dart';
 class DownloadPDF extends StatefulWidget {
   final path;
   final pathdir;
-  DownloadPDF(this.path, this.pathdir);
+  const DownloadPDF(this.path, this.pathdir, {super.key});
 
   @override
-  _DownloadPDFState createState() => _DownloadPDFState(path, pathdir);
+  DownloadPDFState createState() => DownloadPDFState(path, pathdir);
 }
 
-class _DownloadPDFState extends State<DownloadPDF> {
+class DownloadPDFState extends State<DownloadPDF> {
   final path;
   final pathdir;
-  _DownloadPDFState(this.path, this.pathdir);
+  DownloadPDFState(this.path, this.pathdir);
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +31,14 @@ class _DownloadPDFState extends State<DownloadPDF> {
       appBar: AppBar(
         title: Text(
           pathdir,
-          style: TextStyle(
+          style: const TextStyle(
             color: Palette.darkblue,
             fontSize: 21,
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Palette.scaffold,
-        iconTheme: IconThemeData(color: Palette.darkblue),
+        iconTheme: const IconThemeData(color: Palette.darkblue),
         actions: <Widget>[
           StreamBuilder<String>(
             stream: _pageCountController.stream,
@@ -46,14 +46,14 @@ class _DownloadPDFState extends State<DownloadPDF> {
               if (snapshot.hasData) {
                 return Center(
                   child: Container(
-                    margin: EdgeInsets.fromLTRB(10, 10, 16, 10),
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
+                    margin: const EdgeInsets.fromLTRB(10, 10, 16, 10),
+                    padding: const EdgeInsets.all(8),
+                    decoration: const BoxDecoration(
                         // color: Colors.red
                         ),
                     child: Text(
                       snapshot.data!,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Palette.darkblue,
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
@@ -61,7 +61,7 @@ class _DownloadPDFState extends State<DownloadPDF> {
                   ),
                 );
               }
-              return SizedBox();
+              return const SizedBox();
             },
           )
         ],
@@ -93,13 +93,6 @@ class _DownloadPDFState extends State<DownloadPDF> {
               children: <Widget>[
                 FloatingActionButton(
                   heroTag: '-',
-                  child: const Text(
-                    '<',
-                    style: TextStyle(
-                        color: Palette.darkblue,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  ),
                   backgroundColor: Colors.white,
                   hoverColor: Palette.darkblue,
                   onPressed: () async {
@@ -110,16 +103,16 @@ class _DownloadPDFState extends State<DownloadPDF> {
                       await pdfController.setPage(currentPage);
                     }
                   },
-                ),
-                FloatingActionButton(
-                  heroTag: '+',
                   child: const Text(
-                    '>',
+                    '<',
                     style: TextStyle(
                         color: Palette.darkblue,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
+                ),
+                FloatingActionButton(
+                  heroTag: '+',
                   backgroundColor: Colors.white,
                   onPressed: () async {
                     final PDFViewController pdfController = snapshot.data!;
@@ -131,6 +124,13 @@ class _DownloadPDFState extends State<DownloadPDF> {
                       await pdfController.setPage(currentPage);
                     }
                   },
+                  child: const Text(
+                    '>',
+                    style: TextStyle(
+                        color: Palette.darkblue,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             );

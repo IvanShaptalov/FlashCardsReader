@@ -3,34 +3,34 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:http/http.dart' as http;
 import 'package:flashcards_reader/views/reader/open_book.dart';
+import 'package:http/http.dart' as http;
 import 'package:flashcards_reader/views/config/view_config.dart';
 
 
-class ReactScreen extends StatefulWidget {
-  const ReactScreen({super.key});
+class WebScreen extends StatefulWidget {
+  const WebScreen({super.key});
 
   @override
-  ReactScreenState createState() => ReactScreenState();
+  WebScreenState createState() => WebScreenState();
 }
 
-class ReactScreenState extends State<ReactScreen>{
-  final String url = "https://samwitadhikary.github.io/jsons/react.json";
+class WebScreenState extends State<WebScreen> {
+  final String url = 'https://samwitadhikary.github.io/jsons/webdev.json';
   List? data;
 
   @override
   void initState() {
     super.initState();
-    fetchReact();
+    fetchWeb();
   }
 
-  fetchReact() async {
+  fetchWeb() async {
     var response = await http.get(Uri.parse(url));
     if (!mounted) return;
     setState(() {
       var convertJson = json.decode(response.body);
-      data = convertJson['react'];
+      data = convertJson['webdev'];
     });
   }
 
@@ -43,21 +43,20 @@ class ReactScreenState extends State<ReactScreen>{
               physics: const BouncingScrollPhysics(),
               itemCount: data!.length,
               itemBuilder: (BuildContext context, int index) {
-                final myAlgo = data![index];
+                final myWeb = data![index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => OpenBook(
-                                  myAlgo['id'],
-                                  myAlgo['name'],
-                                  myAlgo['author'],
-                                  myAlgo['tagline'],
-                                  myAlgo['url'],
-                                  myAlgo['image'],
-                                  myAlgo['desc'],
-                                )));
+                                myWeb['id'],
+                                myWeb['name'],
+                                myWeb['author'],
+                                myWeb['tagline'],
+                                myWeb['url'],
+                                myWeb['image'],
+                                myWeb['desc'])));
                   },
                   child: Container(
                     height: 150,
@@ -68,18 +67,16 @@ class ReactScreenState extends State<ReactScreen>{
                     child: Row(
                       children: [
                         Hero(
-                          tag: myAlgo['id'],
+                          tag: myWeb['id'],
                           child: Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width * 0.23,
                             margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                    myAlgo['image'],
-                                  ),
-                                  fit: BoxFit.fill,
-                                ),
+                                    image: CachedNetworkImageProvider(
+                                        myWeb['image']),
+                                    fit: BoxFit.fill),
                                 borderRadius: BorderRadius.circular(5)),
                           ),
                         ),
@@ -91,18 +88,19 @@ class ReactScreenState extends State<ReactScreen>{
                               width: MediaQuery.of(context).size.width * 0.65,
                               margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                               child: Text(
-                                myAlgo['name'],
+                                myWeb['name'],
                                 style: const TextStyle(
                                   fontSize: 15.5,
                                 ),
                               ),
                             ),
                             Container(
-                              height: MediaQuery.of(context).size.height * 0.06,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.06,
                               width: MediaQuery.of(context).size.width * 0.67,
                               margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                               child: Text(
-                                myAlgo['author'],
+                                myWeb['author'],
                                 style: const TextStyle(fontSize: 12),
                               ),
                             )
@@ -116,9 +114,8 @@ class ReactScreenState extends State<ReactScreen>{
             )
           : const Center(
               child: SpinKitWave(
-                color: Palette.cardBlue,
-              ),
-            ),
+              color: Palette.cardBlue,
+            )),
     );
   }
 }

@@ -23,7 +23,7 @@ class SideMenuState extends State<SideMenu> {
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.15,
-              padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+              padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
               child: const Text(
                 'Hello Programmers!!!',
                 style: TextStyle(
@@ -36,77 +36,77 @@ class SideMenuState extends State<SideMenu> {
             ),
             const Divider(),
             ListTile(
-              title: Text(
+              title: const Text(
                 'GitHub',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              contentPadding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-              trailing: Icon(MdiIcons.github),
+              contentPadding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+              trailing: const Icon(MdiIcons.github),
               onTap: () async {
                 const url = 'https://github.com/SamwitAdhikary';
-                if (await canLaunch(url)) {
-                  await launch(url);
+                if (await canLaunchUrl(Uri.parse(url))) {
+                  await launchUrl(Uri.parse(url));
                 } else {
                   throw 'Could not launch $url';
                 }
               },
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              title: Text(
+              title: const Text(
                 'Terms And Condition',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              contentPadding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-              trailing: Icon(MdiIcons.pen),
+              contentPadding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+              trailing: const Icon(MdiIcons.pen),
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Terms(),
+                      builder: (context) => const Terms(),
                     ));
               },
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              title: Text(
+              title: const Text(
                 'Privacy Policy',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              contentPadding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-              trailing: Icon(MdiIcons.note),
+              contentPadding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+              trailing: const Icon(MdiIcons.note),
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Privacy(),
+                      builder: (context) => const Privacy(),
                     ));
               },
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              title: Text(
+              title: const Text(
                 'Share This App',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              contentPadding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-              trailing: Icon(Icons.share),
+              contentPadding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+              trailing: const Icon(Icons.share),
               onTap: () => Share.share(
                   'Hey check out this awesome app. \n bit.ly/NoteItBookApps'),
             ),
-            Divider(),
+            const Divider(),
           ],
         ));
   }

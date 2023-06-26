@@ -1,21 +1,22 @@
-
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flashcards_reader/views/reader/openbook.dart';
-import 'package:flashcards_reader/views/reader/sidemenu.dart';
+import 'package:flashcards_reader/views/reader/open_book.dart';
+import 'package:flashcards_reader/views/reader/side_menu.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 
 import 'package:http/http.dart' as http;
 
 class Search extends StatefulWidget {
+  const Search({super.key});
+
   @override
-  _SearchState createState() => _SearchState();
+  SearchState createState() => SearchState();
 }
 
-class _SearchState extends State<Search> {
+class SearchState extends State<Search> {
   List? books;
   List? displayforbook;
   final String url = 'https://samwitadhikary.github.io/jsons/book.json';
@@ -39,11 +40,11 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer(
+        drawer: const Drawer(
           child: SideMenu(),
         ),
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Explore',
             style: TextStyle(
                 color: Palette.darkblue,
@@ -51,12 +52,12 @@ class _SearchState extends State<Search> {
                 fontSize: 23),
           ),
           backgroundColor: Palette.scaffold,
-          iconTheme: IconThemeData(color: Palette.darkblue),
+          iconTheme: const IconThemeData(color: Palette.darkblue),
         ),
         body: Column(
           children: <Widget>[
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   contentPadding: EdgeInsets.all(10.0),
                   hintText: 'Search for title or author'),
               onChanged: (string) {
@@ -73,13 +74,13 @@ class _SearchState extends State<Search> {
                 });
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Expanded(
               child: books != null
                   ? ListView.builder(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       itemCount: displayforbook!.length,
                       itemBuilder: (BuildContext context, int index) {
                         var mybook = displayforbook![index];
@@ -98,15 +99,20 @@ class _SearchState extends State<Search> {
                                         mybook['desc'])));
                           },
                           child: Container(
+                            height: 150,
+                            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white),
                             child: Row(
                               children: [
                                 Hero(
                                   tag: mybook['id'],
                                   child: Container(
                                     height: MediaQuery.of(context).size.height,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.25,
-                                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
+                                    margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
                                             image: CachedNetworkImageProvider(
@@ -122,10 +128,10 @@ class _SearchState extends State<Search> {
                                       color: Colors.white,
                                       width: MediaQuery.of(context).size.width *
                                           0.65,
-                                      margin: EdgeInsets.fromLTRB(0, 10, 10, 5),
+                                      margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                                       child: Text(
                                         mybook['name'],
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 15.5,
                                         ),
                                       ),
@@ -136,26 +142,21 @@ class _SearchState extends State<Search> {
                                               0.06,
                                       width: MediaQuery.of(context).size.width *
                                           0.67,
-                                      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                                       child: Text(
                                         mybook['author'],
-                                        style: TextStyle(fontSize: 12),
+                                        style: const TextStyle(fontSize: 12),
                                       ),
                                     )
                                   ],
                                 )
                               ],
                             ),
-                            height: 150,
-                            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white),
                           ),
                         );
                       },
                     )
-                  : Center(
+                  : const Center(
                       child: SpinKitWave(
                         color: Palette.cardBlue,
                       ),
