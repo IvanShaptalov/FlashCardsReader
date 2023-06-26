@@ -4,7 +4,6 @@ import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 // import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 
-
 class ViewPDF extends StatefulWidget {
   final String name;
   final String url;
@@ -30,10 +29,7 @@ class ViewPDFState extends State<ViewPDF> {
       appBar: AppBar(
         title: Text(
           name,
-          style: const TextStyle(
-              fontSize: 21,
-              fontWeight: FontWeight.bold,
-              color: Palette.darkblue),
+          style: FontConfigs.pageNameTextStyle,
         ),
         backgroundColor: Palette.scaffold,
         elevation: 0,

@@ -4,7 +4,7 @@ import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/horizontal_quiz_view.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz_view.dart';
-import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +69,7 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
       MediaQuery.of(context).orientation == Orientation.portrait ? 0.65 : 1;
 
   Widget getDrawer() {
-    return MenuDrawer(appBarHeight);
+    return SideMenu(appBarHeight);
   }
 
   @override
@@ -97,12 +97,15 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
                         fromPage: widget.fromPage, context: context);
                   },
                   icon: const Icon(Icons.arrow_back)),
-              title: Text(context
-                  .read<QuizBloc>()
-                  .state
-                  .quizModel
-                  .flashCardsCollection
-                  .title),
+              title: Text(
+                context
+                    .read<QuizBloc>()
+                    .state
+                    .quizModel
+                    .flashCardsCollection
+                    .title,
+                style: FontConfigs.pageNameTextStyle,
+              ),
             ),
             body: ScreenIdentifier.isPortraitRelative(context)
                 ? VerticalQuiz(

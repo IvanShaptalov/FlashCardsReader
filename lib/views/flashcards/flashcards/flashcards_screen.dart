@@ -8,7 +8,7 @@ import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widg
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/flashcards/sharing/extension_dialog.dart';
-import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
@@ -138,11 +138,17 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
   AppBar getAppBar(flashCardCollection) {
     if (FlashCardCollectionProvider.isMergeModeStarted) {
       return AppBar(
-        title: const Text('Merge mode is on'),
+        title: const Text(
+          'Merge mode is on',
+          style: FontConfigs.pageNameTextStyle,
+        ),
       );
     } else {
       return AppBar(
-        title: Text('Flashcards: ${flashCardCollection.length}'),
+        title: Text(
+          'Flashcards: ${flashCardCollection.length}',
+          style: FontConfigs.pageNameTextStyle,
+        ),
       );
     }
   }
@@ -164,7 +170,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
     if (FlashCardCollectionProvider.isMergeModeStarted) {
       return null;
     } else {
-      return MenuDrawer(appBarHeight);
+      return SideMenu(appBarHeight);
     }
   }
 

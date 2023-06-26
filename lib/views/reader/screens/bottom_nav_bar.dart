@@ -1,12 +1,8 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flashcards_reader/views/reader/screens/homepage.dart';
 import 'package:flashcards_reader/views/reader/screens/info.dart';
 import 'package:flashcards_reader/views/reader/screens/search.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcards_reader/views/reader/screens/downloads.dart';
-
-import 'package:flashcards_reader/views/config/view_config.dart';
-
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -32,8 +28,6 @@ class BottomNavBarState extends State<BottomNavBar> {
         return search;
       case 2:
         return downloads;
-      case 3:
-        return info;
       default:
         return const Center(
           child: Text(
@@ -47,28 +41,30 @@ class BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        index: pageIndex,
-        height: 55.0,
-        items: const <Widget>[
-          Icon(Icons.home, size: 30),
-          Icon(Icons.search, size: 30),
-          Icon(
-            Icons.download_sharp,
-            size: 30,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-          Icon(Icons.info_outline, size: 30),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.download_sharp),
+            label: 'Downloads',
+          ),
         ],
-        color: Colors.white,
-        buttonBackgroundColor: Colors.white,
-        backgroundColor: Palette.scaffold,
-        animationCurve: Curves.easeInOut,
-        animationDuration: const Duration(milliseconds: 300),
+        currentIndex: pageIndex,
         onTap: (int tapped) {
+          pageIndex = tapped;
+
           setState(() {
             _showPage = _pageChooser(tapped);
           });
         },
+        selectedItemColor: Colors.amber[800],
         // letIndexChange: (index) => true,
       ),
       body: Container(

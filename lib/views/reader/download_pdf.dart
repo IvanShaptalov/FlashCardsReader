@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 
-
 class DownloadPDF extends StatefulWidget {
   final path;
   final pathdir;
@@ -31,11 +30,7 @@ class DownloadPDFState extends State<DownloadPDF> {
       appBar: AppBar(
         title: Text(
           pathdir,
-          style: const TextStyle(
-            color: Palette.darkblue,
-            fontSize: 21,
-            fontWeight: FontWeight.bold,
-          ),
+          style: FontConfigs.pageNameTextStyle,
         ),
         backgroundColor: Palette.scaffold,
         iconTheme: const IconThemeData(color: Palette.darkblue),

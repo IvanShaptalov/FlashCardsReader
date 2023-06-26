@@ -7,10 +7,10 @@ import 'package:flashcards_reader/views/flashcards/sharing/import_page.dart';
 import 'package:flashcards_reader/views/reader/screens/splash.dart';
 import 'package:flutter/material.dart';
 
-class MenuDrawer extends StatelessWidget {
+class SideMenu extends StatelessWidget {
   final double appBarHeight;
 
-  const MenuDrawer(this.appBarHeight, {super.key});
+  const SideMenu(this.appBarHeight, {super.key});
 
   @override
   Widget build(BuildContext context) {

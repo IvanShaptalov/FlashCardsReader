@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/reader/download_pdf.dart';
-import 'package:flashcards_reader/views/reader/side_menu.dart';
+import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 
@@ -41,21 +41,19 @@ class DownloadsState extends State<Downloads> {
 
   @override
   Widget build(BuildContext context) {
+    var appBar = AppBar(
+      title: const Text(
+        'Downloads',
+        style: FontConfigs.pageNameTextStyle,
+      ),
+      backgroundColor: Palette.scaffold,
+      iconTheme: const IconThemeData(color: Palette.darkblue),
+    );
     return Scaffold(
-      drawer: const Drawer(
-        child: SideMenu(),
+      drawer: Drawer(
+        child: SideMenu(appBar.preferredSize.height),
       ),
-      appBar: AppBar(
-        title: const Text(
-          'Downloads',
-          style: TextStyle(
-              color: Palette.darkblue,
-              fontSize: 23,
-              fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Palette.scaffold,
-        iconTheme: const IconThemeData(color: Palette.darkblue),
-      ),
+      appBar: appBar,
       body: Column(
         children: [
           Expanded(

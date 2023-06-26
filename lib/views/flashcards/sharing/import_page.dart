@@ -3,7 +3,7 @@ import 'package:flashcards_reader/bloc/providers/sharing_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/sharing/import_examples.dart';
-import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +44,10 @@ class _SharingPageViewState extends ParentState<SharingPageView> {
     return BlocBuilder<FlashCardBloc, FlashcardsState>(
         builder: (context, state) {
       var appBar = AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: FontConfigs.pageNameTextStyle,
+        ),
       );
       appBarHeight = appBar.preferredSize.height;
       bindPage(Scaffold(
@@ -127,7 +130,7 @@ class _SharingPageViewState extends ParentState<SharingPageView> {
             ),
           ],
         )),
-        drawer: MenuDrawer(appBarHeight),
+        drawer: SideMenu(appBarHeight),
       ));
 
       /// ===============================================[Select design via context]===============================

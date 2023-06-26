@@ -73,10 +73,7 @@ class OpenBookState extends State<OpenBook> {
       appBar: AppBar(
         title: Text(
           name,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 21,
-              color: Palette.darkblue),
+          style: FontConfigs.pageNameTextStyle,
         ),
         actions: [
           downloading == false
@@ -191,7 +188,8 @@ class OpenBookState extends State<OpenBook> {
               Container(
                 height: 270,
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: ListView(physics: const BouncingScrollPhysics(), children: [
+                child:
+                    ListView(physics: const BouncingScrollPhysics(), children: [
                   Text(
                     desc,
                     style: const TextStyle(fontSize: 15),
@@ -204,7 +202,8 @@ class OpenBookState extends State<OpenBook> {
               ),
               ElevatedButton(
                 style: ButtonStyle(
-                    padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+                    padding:
+                        MaterialStateProperty.all(const EdgeInsets.all(20)),
                     backgroundColor:
                         MaterialStateProperty.all(Palette.lightblue),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(

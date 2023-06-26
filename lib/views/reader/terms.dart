@@ -19,11 +19,7 @@ class TermsState extends State<Terms> {
       appBar: AppBar(
         title: const Text(
           'Terms And Condition',
-          style: TextStyle(
-            fontSize: 23,
-            color: Palette.darkblue,
-            fontWeight: FontWeight.bold,
-          ),
+          style: FontConfigs.pageNameTextStyle,
         ),
         backgroundColor: Palette.scaffold,
         iconTheme: const IconThemeData(

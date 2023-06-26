@@ -9,7 +9,7 @@ import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/flashcard_widget.dart';
-import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
@@ -86,12 +86,15 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
 
   AppBar getAppBar() {
     return AppBar(
-      title: const Text('Take a quiz'),
+      title: const Text(
+        'Take a quiz',
+        style: FontConfigs.pageNameTextStyle,
+      ),
     );
   }
 
   Widget getDrawer() {
-    return MenuDrawer(appBarHeight);
+    return SideMenu(appBarHeight);
   }
 
   double calculateCrossSpacing(BuildContext context) {
@@ -152,8 +155,6 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
 
     super.initState();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,9 @@
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/router.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
-import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flutter/material.dart';
 
 class BaseScreenNewWord {
@@ -22,12 +23,15 @@ class BaseScreenNewWord {
 
   AppBar getAppBar(flashCardCollection) {
     return AppBar(
-      title: const Text('Add word'),
+      title: const Text(
+        'Add word',
+        style: FontConfigs.pageNameTextStyle,
+      ),
     );
   }
 
   Widget? getDrawer() {
-    return MenuDrawer(appBarHeight);
+    return SideMenu(appBarHeight);
   }
 
   void backToStartCallback() {

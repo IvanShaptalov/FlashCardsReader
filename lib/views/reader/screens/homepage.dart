@@ -18,8 +18,8 @@ import 'package:flashcards_reader/model/entities/reader/unix_screen.dart';
 import 'package:flashcards_reader/model/entities/reader/web_dev_screen.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/reader/offline.dart';
-import 'package:flashcards_reader/views/reader/side_menu.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -129,34 +129,30 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var appbar = AppBar(
+      elevation: 0,
+      title: const Text(
+        'Reading',
+        style: FontConfigs.pageNameTextStyle,
+      ),
+      iconTheme: const IconThemeData(color: Palette.darkblue),
+      bottom: TabBar(
+        indicatorColor: Palette.darkblue,
+        indicatorWeight: 2.5,
+        isScrollable: true,
+        physics: const BouncingScrollPhysics(),
+        labelColor: Palette.darkblue,
+        labelStyle: const TextStyle(fontSize: 18),
+        tabs: _kTabs,
+      ),
+    );
     return DefaultTabController(
       length: _kTabs.length,
       child: Scaffold(
-        drawer: const Drawer(
-          child: SideMenu(),
+        drawer: Drawer(
+          child: SideMenu(appbar.preferredSize.height),
         ),
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Palette.scaffold,
-          title: const Text(
-            'Note It',
-            style: TextStyle(
-                color: Palette.darkblue,
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                letterSpacing: -0.6),
-          ),
-          iconTheme: const IconThemeData(color: Palette.darkblue),
-          bottom: TabBar(
-            indicatorColor: Palette.darkblue,
-            indicatorWeight: 2.5,
-            isScrollable: true,
-            physics: const BouncingScrollPhysics(),
-            labelColor: Palette.darkblue,
-            labelStyle: const TextStyle(fontSize: 18),
-            tabs: _kTabs,
-          ),
-        ),
+        appBar: appbar,
         body: connection
             ? const Center(
                 child: Offline(),

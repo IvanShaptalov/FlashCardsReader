@@ -1,8 +1,8 @@
+import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/reader/privacy.dart';
 import 'package:flashcards_reader/views/reader/terms.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:flashcards_reader/views/reader/side_menu.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 
 import 'package:share/share.dart';
@@ -18,21 +18,19 @@ class Info extends StatefulWidget {
 class InfoState extends State<Info> {
   @override
   Widget build(BuildContext context) {
+    var appbar = AppBar(
+      backgroundColor: Palette.scaffold,
+      iconTheme: const IconThemeData(color: Palette.darkblue),
+      title: const Text(
+        'Info',
+        style: FontConfigs.pageNameTextStyle,
+      ),
+    );
     return Scaffold(
-      drawer: const Drawer(
-        child: SideMenu(),
+      drawer: Drawer(
+        child: SideMenu(appbar.preferredSize.height),
       ),
-      appBar: AppBar(
-        backgroundColor: Palette.scaffold,
-        iconTheme: const IconThemeData(color: Palette.darkblue),
-        title: const Text(
-          'Info',
-          style: TextStyle(
-              fontSize: 23,
-              color: Palette.darkblue,
-              fontWeight: FontWeight.bold),
-        ),
-      ),
+      appBar: appbar,
       body: Container(
         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
         height: MediaQuery.of(context).size.height,
@@ -74,8 +72,8 @@ class InfoState extends State<Info> {
                 size: 30,
               ),
               onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const Terms()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Terms()));
               },
             ),
             const Divider(),

@@ -4,7 +4,7 @@ import 'package:flashcards_reader/bloc/providers/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/quick_actions.dart';
 import 'package:flashcards_reader/util/constants.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcard_collection_widget.dart';
-import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +94,10 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
 
   AppBar getAppBar(List<FlashCardCollection> flashCardCollection) {
     return AppBar(
-      title: Text('Deleted flashcards: ${flashCardCollection.length}'),
+      title: Text(
+        'Deleted flashcards: ${flashCardCollection.length}',
+        style: FontConfigs.pageNameTextStyle,
+      ),
     );
   }
 
@@ -102,7 +105,7 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
     if (FlashCardCollectionProvider.isMergeModeStarted) {
       return null;
     } else {
-      return MenuDrawer(appBarHeight);
+      return SideMenu(appBarHeight);
     }
   }
 

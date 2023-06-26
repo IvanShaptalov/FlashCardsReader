@@ -2,7 +2,8 @@ import 'package:flashcards_reader/model/IO/local_manager.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/internet_checker.dart';
-import 'package:flashcards_reader/views/menu/drawer_menu.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -69,7 +70,10 @@ class _MyHomePageState extends ParentState<MyHomePage> {
   Widget build(BuildContext context, {Widget? page}) {
     /// ===============================================[Create page]===============================
     var appBar = AppBar(
-      title: Text(widget.title),
+      title: Text(
+        widget.title,
+        style: FontConfigs.pageNameTextStyle,
+      ),
     );
     appBarHeight = appBar.preferredSize.height;
 
@@ -79,7 +83,7 @@ class _MyHomePageState extends ParentState<MyHomePage> {
           child: Column(
         children: [Text('hello world')],
       )),
-      drawer: MenuDrawer(appBarHeight),
+      drawer: SideMenu(appBarHeight),
     ));
 
     /// ===============================================[Select design via context]===============================

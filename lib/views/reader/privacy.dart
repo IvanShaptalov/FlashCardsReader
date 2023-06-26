@@ -17,10 +17,7 @@ class PrivacyState extends State<Privacy> {
         backgroundColor: Palette.scaffold,
         title: const Text(
           'Privacy Policy',
-          style: TextStyle(
-              fontSize: 23,
-              color: Palette.darkblue,
-              fontWeight: FontWeight.bold),
+          style: FontConfigs.pageNameTextStyle,
         ),
         iconTheme: const IconThemeData(color: Palette.darkblue),
       ),

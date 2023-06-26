@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flashcards_reader/views/reader/open_book.dart';
-import 'package:flashcards_reader/views/reader/side_menu.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 
 import 'package:http/http.dart' as http;
@@ -39,21 +39,19 @@ class SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
+    var appbar = AppBar(
+      title: const Text(
+        'Explore',
+        style: FontConfigs.pageNameTextStyle,
+      ),
+      backgroundColor: Palette.scaffold,
+      iconTheme: const IconThemeData(color: Palette.darkblue),
+    );
     return Scaffold(
-        drawer: const Drawer(
-          child: SideMenu(),
+        drawer: Drawer(
+          child: SideMenu(appbar.preferredSize.height),
         ),
-        appBar: AppBar(
-          title: const Text(
-            'Explore',
-            style: TextStyle(
-                color: Palette.darkblue,
-                fontWeight: FontWeight.bold,
-                fontSize: 23),
-          ),
-          backgroundColor: Palette.scaffold,
-          iconTheme: const IconThemeData(color: Palette.darkblue),
-        ),
+        appBar: appbar,
         body: Column(
           children: <Widget>[
             TextField(
@@ -112,7 +110,8 @@ class SearchState extends State<Search> {
                                     height: MediaQuery.of(context).size.height,
                                     width: MediaQuery.of(context).size.width *
                                         0.25,
-                                    margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                    margin: const EdgeInsets.fromLTRB(
+                                        10, 10, 10, 10),
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
                                             image: CachedNetworkImageProvider(
@@ -128,7 +127,8 @@ class SearchState extends State<Search> {
                                       color: Colors.white,
                                       width: MediaQuery.of(context).size.width *
                                           0.65,
-                                      margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
+                                      margin: const EdgeInsets.fromLTRB(
+                                          0, 10, 10, 5),
                                       child: Text(
                                         mybook['name'],
                                         style: const TextStyle(
@@ -142,7 +142,8 @@ class SearchState extends State<Search> {
                                               0.06,
                                       width: MediaQuery.of(context).size.width *
                                           0.67,
-                                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                      margin: const EdgeInsets.fromLTRB(
+                                          0, 0, 0, 10),
                                       child: Text(
                                         mybook['author'],
                                         style: const TextStyle(fontSize: 12),
