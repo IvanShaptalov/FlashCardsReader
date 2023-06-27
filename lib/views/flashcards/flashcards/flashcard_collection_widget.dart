@@ -44,8 +44,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
           onPressed: () {
             debugPrint('deactivated');
             FlashCardCollectionProvider.deactivateMergeMode();
-            OverlayNotificationProvider.showOverlayNotification(
-                'deactivated',
+            OverlayNotificationProvider.showOverlayNotification('deactivated',
                 status: NotificationStatus.info);
 
             widget.updateCallback();
@@ -76,7 +75,7 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
               if (!FlashCardCollectionProvider.isMergeModeStarted) {
                 FlashCardProvider.fc = widget.flashCardCollection;
                 UpdateFlashCardBottomSheet(edit: true)
-                    .showUpdateFlashCardMenu(context);
+                    .showUpdateFlashCardMenu(context, widget.updateCallback);
               } else {
                 OverlayNotificationProvider.showOverlayNotification(
                     'merge mode is activated, cannot edit',

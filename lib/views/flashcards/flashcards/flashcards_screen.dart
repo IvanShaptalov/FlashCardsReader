@@ -193,9 +193,9 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                               position: index,
                               duration: widget.cardAppearDuration,
                               columnCount: columnCount,
-                              child: const SlideAnimation(
+                              child: SlideAnimation(
                                 child: FadeInAnimation(
-                                  child: AddFlashCardWidget(),
+                                  child: AddFlashCardWidget(updateCallbackCrunch: updateCallback),
                                 ),
                               ),
                             ),

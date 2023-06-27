@@ -48,7 +48,7 @@ class HomePageState extends State<HomePage> {
 
   final _kTabs = <Tab>[
     const Tab(
-      text: Reading.title,
+      text: 'Reading',
       icon: Reading.icon,
     ),
     const Tab(

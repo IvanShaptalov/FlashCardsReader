@@ -56,7 +56,8 @@ class UpdateFlashCardBottomSheet {
   bool edit;
 
 // =================================[SHOWMODAL SHEETS]================
-  showUpdateFlashCardMenu(BuildContext context) async {
+  showUpdateFlashCardMenu(
+      BuildContext context, Function updateCallbackCrunch) async {
     showModalBottomSheet(
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
@@ -64,7 +65,8 @@ class UpdateFlashCardBottomSheet {
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (BuildContext context, setState) {
-            return FlashCardCreatingWall(isEdit: edit);
+            return FlashCardCreatingWall(
+                isEdit: edit, updateCallbackCrunch: updateCallbackCrunch);
           });
         });
   }
@@ -72,8 +74,10 @@ class UpdateFlashCardBottomSheet {
 
 // ignore: must_be_immutable
 class FlashCardCreatingWall extends StatefulWidget {
-  FlashCardCreatingWall({super.key, this.isEdit = false});
+  FlashCardCreatingWall(
+      {super.key, this.isEdit = false, required this.updateCallbackCrunch});
   bool isEdit = false;
+  final Function updateCallbackCrunch;
 
   @override
   State<FlashCardCreatingWall> createState() => _FlashCardCreatingWallState();
@@ -86,13 +90,17 @@ class _FlashCardCreatingWallState extends State<FlashCardCreatingWall> {
         create: (_) => FlashCardBloc(),
         child: BlocProvider(
             create: (_) => TranslatorBloc(),
-            child: FlashCardCreatingWallView(isEdit: widget.isEdit)));
+            child: FlashCardCreatingWallView(
+                isEdit: widget.isEdit,
+                updateCallbackCrunch: widget.updateCallbackCrunch)));
   }
 }
 
 // ignore: must_be_immutable
 class FlashCardCreatingWallView extends StatefulWidget {
-  FlashCardCreatingWallView({super.key, this.isEdit = false});
+  FlashCardCreatingWallView(
+      {super.key, this.isEdit = false, required this.updateCallbackCrunch});
+  final Function updateCallbackCrunch;
   bool isEdit;
   FlashCardFormController flashCardFormController = FlashCardFormController();
   WordFormContoller wordFormContoller = WordFormContoller();
@@ -764,6 +772,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
           } else {
             showValidatorMessage();
           }
+          widget.updateCallbackCrunch();
         },
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
+import 'package:flashcards_reader/views/menu/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.grey.shade700),
           scaffoldBackgroundColor: Colors.grey.shade200,
         ),
-        home: const FlashCardScreen(),
+        home: const BottomNavBar(),
       ),
     );
   }

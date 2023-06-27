@@ -9,8 +9,8 @@ import 'package:http/http.dart' as http;
 
 class Reading extends StatefulWidget {
   const Reading({super.key});
-  static const icon = Icon(Icons.book);
-  static const String title = 'Reading';
+  static const icon = Icon(Icons.book_sharp);
+  static const String title = 'Books';
 
   @override
   ReadingState createState() => ReadingState();
