@@ -1,21 +1,10 @@
 import 'dart:async';
 import 'package:connectivity/connectivity.dart';
-import 'package:flashcards_reader/model/entities/reader/algo_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/app_dev_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/cpp_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/cprog_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/dsai_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/hacking.dart';
-import 'package:flashcards_reader/model/entities/reader/java_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/js_script.dart';
-import 'package:flashcards_reader/model/entities/reader/linux_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/machine_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/networking.dart';
-import 'package:flashcards_reader/model/entities/reader/other_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/python_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/react.dart';
-import 'package:flashcards_reader/model/entities/reader/unix_screen.dart';
-import 'package:flashcards_reader/model/entities/reader/web_dev_screen.dart';
+import 'package:flashcards_reader/model/entities/reader/reading.dart';
+import 'package:flashcards_reader/model/entities/reader/favourites.dart';
+import 'package:flashcards_reader/model/entities/reader/to_read.dart';
+import 'package:flashcards_reader/model/entities/reader/all_books.dart';
+import 'package:flashcards_reader/model/entities/reader/authors.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
@@ -59,72 +48,33 @@ class HomePageState extends State<HomePage> {
 
   final _kTabs = <Tab>[
     const Tab(
-      text: 'Algorithms',
+      text: Reading.title,
+      icon: Reading.icon,
     ),
     const Tab(
-      text: 'Python',
+      text: AllBooks.title,
+      icon: AllBooks.icon,
     ),
     const Tab(
-      text: 'C++',
+      text: Favourites.title,
+      icon: Favourites.icon,
     ),
     const Tab(
-      text: 'C',
+      text: ToRead.title,
+      icon: ToRead.icon,
     ),
     const Tab(
-      text: 'Web Development',
-    ),
-    const Tab(
-      text: 'Data Science & AI',
-    ),
-    const Tab(
-      text: 'Linux',
-    ),
-    const Tab(
-      text: 'App Development',
-    ),
-    const Tab(
-      text: 'Java',
-    ),
-    const Tab(
-      text: 'JavaScript',
-    ),
-    const Tab(
-      text: 'Machine Learning',
-    ),
-    const Tab(
-      text: 'Unix',
-    ),
-    const Tab(
-      text: 'Networking',
-    ),
-    const Tab(
-      text: 'React',
-    ),
-    const Tab(
-      text: 'Hacking',
-    ),
-    const Tab(
-      text: 'Others',
+      text: Authors.title,
+      icon: Authors.icon,
     ),
   ];
 
   final _kTabPages = <Widget>[
-    const AlgoScreen(),
-    const PythonScreen(),
-    const CppScreen(),
-    const CProgScreen(),
-    const WebScreen(),
-    const DsaiScreen(),
-    const LinuxScreen(),
-    const AppDevScreen(),
-    const JavaScreen(),
-    const JavaScriptScreen(),
-    const MachineLearningScreen(),
-    const UnixScreen(),
-    const NetworkingScreen(),
-    const ReactScreen(),
-    const HackingScreen(),
-    const OtherScreen(),
+    const Reading(),
+    const AllBooks(),
+    const Favourites(),
+    const ToRead(),
+    const Authors(),
   ];
 
   @override

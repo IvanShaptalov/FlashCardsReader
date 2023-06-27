@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/reader/open_book.dart';
@@ -7,29 +6,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
-class CppScreen extends StatefulWidget {
-  const CppScreen({super.key});
+class ToRead extends StatefulWidget {
+  const ToRead({super.key});
+  static const icon = Icon(Icons.history);
+  static const String title = 'To Read';
 
   @override
-  CppScreenState createState() => CppScreenState();
+  ToReadState createState() => ToReadState();
 }
 
-class CppScreenState extends State<CppScreen>{
-  final String url = 'https://samwitadhikary.github.io/jsons/cpp.json';
+class ToReadState extends State<ToRead> {
+  final String url = 'https://samwitadhikary.github.io/jsons/c.json';
   List? data;
 
   @override
   void initState() {
     super.initState();
-    fetchCpp();
+    fetchCprog();
   }
 
-  fetchCpp() async {
+  fetchCprog() async {
     var response = await http.get(Uri.parse(url));
     if (!mounted) return;
     setState(() {
       var convertJson = json.decode(response.body);
-      data = convertJson['cpp'];
+      data = convertJson['cprog'];
     });
   }
 
@@ -42,20 +43,20 @@ class CppScreenState extends State<CppScreen>{
               physics: const BouncingScrollPhysics(),
               itemCount: data!.length,
               itemBuilder: (BuildContext context, int index) {
-                final mycpp = data![index];
+                final myCprog = data![index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => OpenBook(
-                                mycpp['id'],
-                                mycpp['name'],
-                                mycpp['author'],
-                                mycpp['tagline'],
-                                mycpp['url'],
-                                mycpp['image'],
-                                mycpp['desc'])));
+                                myCprog['id'],
+                                myCprog['name'],
+                                myCprog['author'],
+                                myCprog['tagline'],
+                                myCprog['url'],
+                                myCprog['image'],
+                                myCprog['desc'])));
                   },
                   child: Container(
                     height: 150,
@@ -66,7 +67,7 @@ class CppScreenState extends State<CppScreen>{
                     child: Row(
                       children: [
                         Hero(
-                          tag: mycpp['id'],
+                          tag: myCprog['id'],
                           child: Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width * 0.23,
@@ -74,7 +75,7 @@ class CppScreenState extends State<CppScreen>{
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image: CachedNetworkImageProvider(
-                                        mycpp['image']),
+                                        myCprog['image']),
                                     fit: BoxFit.fill),
                                 borderRadius: BorderRadius.circular(5)),
                           ),
@@ -87,19 +88,18 @@ class CppScreenState extends State<CppScreen>{
                               width: MediaQuery.of(context).size.width * 0.65,
                               margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                               child: Text(
-                                mycpp['name'],
+                                myCprog['name'],
                                 style: const TextStyle(
                                   fontSize: 15.5,
                                 ),
                               ),
                             ),
                             Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.06,
+                              height: MediaQuery.of(context).size.height * 0.06,
                               width: MediaQuery.of(context).size.width * 0.67,
                               margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                               child: Text(
-                                mycpp['author'],
+                                myCprog['author'],
                                 style: const TextStyle(fontSize: 12),
                               ),
                             )

@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/model/entities/reader/reading.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
@@ -40,39 +41,11 @@ class SideMenu extends StatelessWidget {
             color: Colors.grey[700],
           ),
           ListTile(
-            leading: const Icon(Icons.book),
-            title: const Text('Reading'),
+            leading: Reading.icon,
+            title: const Text(Reading.title),
             onTap: () {
-              MyRouter.pushPageReplacement(context, const SplashScreen());
+              MyRouter.pushPageReplacement(context, const ReadingMainScreen());
             },
-          ),
-          ListTile(
-            leading: const Icon(Icons.star),
-            title: const Text('Favorites'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.history),
-            title: const Text('To Read'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.library_books_rounded),
-            title: const Text('All Books'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text('Authors'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.recycling),
-            title: const Text('Recycle Bin'),
-            onTap: () {},
-          ),
-          Divider(
-            color: Colors.grey[700],
           ),
           ListTile(
             leading: const Icon(Icons.web_stories_outlined),

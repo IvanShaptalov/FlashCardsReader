@@ -1,34 +1,37 @@
 import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flashcards_reader/views/config/view_config.dart';
-import 'package:flashcards_reader/views/reader/open_book.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flashcards_reader/views/reader/open_book.dart';
 import 'package:http/http.dart' as http;
+import 'package:flashcards_reader/views/config/view_config.dart';
 
-class CProgScreen extends StatefulWidget {
-  const CProgScreen({super.key});
+class Authors extends StatefulWidget {
+  const Authors({super.key});
+  static const icon = Icon(Icons.person);
+  static const String title = 'Authors';
 
   @override
-  CProgScreenState createState() => CProgScreenState();
+  AuthorsState createState() => AuthorsState();
 }
 
-class CProgScreenState extends State<CProgScreen> {
-  final String url = 'https://samwitadhikary.github.io/jsons/c.json';
+class AuthorsState extends State<Authors> {
+  final String url = 'https://samwitadhikary.github.io/jsons/webdev.json';
   List? data;
 
   @override
   void initState() {
     super.initState();
-    fetchCprog();
+    fetchWeb();
   }
 
-  fetchCprog() async {
+  fetchWeb() async {
     var response = await http.get(Uri.parse(url));
     if (!mounted) return;
     setState(() {
       var convertJson = json.decode(response.body);
-      data = convertJson['cprog'];
+      data = convertJson['webdev'];
     });
   }
 
@@ -41,20 +44,20 @@ class CProgScreenState extends State<CProgScreen> {
               physics: const BouncingScrollPhysics(),
               itemCount: data!.length,
               itemBuilder: (BuildContext context, int index) {
-                final myCprog = data![index];
+                final myWeb = data![index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => OpenBook(
-                                myCprog['id'],
-                                myCprog['name'],
-                                myCprog['author'],
-                                myCprog['tagline'],
-                                myCprog['url'],
-                                myCprog['image'],
-                                myCprog['desc'])));
+                                myWeb['id'],
+                                myWeb['name'],
+                                myWeb['author'],
+                                myWeb['tagline'],
+                                myWeb['url'],
+                                myWeb['image'],
+                                myWeb['desc'])));
                   },
                   child: Container(
                     height: 150,
@@ -65,7 +68,7 @@ class CProgScreenState extends State<CProgScreen> {
                     child: Row(
                       children: [
                         Hero(
-                          tag: myCprog['id'],
+                          tag: myWeb['id'],
                           child: Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width * 0.23,
@@ -73,7 +76,7 @@ class CProgScreenState extends State<CProgScreen> {
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image: CachedNetworkImageProvider(
-                                        myCprog['image']),
+                                        myWeb['image']),
                                     fit: BoxFit.fill),
                                 borderRadius: BorderRadius.circular(5)),
                           ),
@@ -86,19 +89,18 @@ class CProgScreenState extends State<CProgScreen> {
                               width: MediaQuery.of(context).size.width * 0.65,
                               margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                               child: Text(
-                                myCprog['name'],
+                                myWeb['name'],
                                 style: const TextStyle(
                                   fontSize: 15.5,
                                 ),
                               ),
                             ),
                             Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.06,
+                              height: MediaQuery.of(context).size.height * 0.06,
                               width: MediaQuery.of(context).size.width * 0.67,
                               margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                               child: Text(
-                                myCprog['author'],
+                                myWeb['author'],
                                 style: const TextStyle(fontSize: 12),
                               ),
                             )
@@ -112,9 +114,8 @@ class CProgScreenState extends State<CProgScreen> {
             )
           : const Center(
               child: SpinKitWave(
-                color: Palette.cardBlue,
-              ),
-            ),
+              color: Palette.cardBlue,
+            )),
     );
   }
 }

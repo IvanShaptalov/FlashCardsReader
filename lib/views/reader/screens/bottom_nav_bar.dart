@@ -1,8 +1,9 @@
+import 'package:flashcards_reader/model/entities/reader/reading.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/reader/screens/homepage.dart';
-import 'package:flashcards_reader/views/reader/screens/info.dart';
 import 'package:flashcards_reader/views/reader/screens/search.dart';
 import 'package:flutter/material.dart';
-import 'package:flashcards_reader/views/reader/screens/downloads.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -14,9 +15,9 @@ class BottomNavBar extends StatefulWidget {
 class BottomNavBarState extends State<BottomNavBar> {
   int pageIndex = 0;
   final HomePage homePage = const HomePage();
-  final Search search = const Search();
-  final Info info = const Info();
-  final Downloads downloads = const Downloads();
+  // final Search search = const Search();
+  final QuizMenu quiz = const QuizMenu();
+  final FlashCardScreen flashcards = const FlashCardScreen();
 
   Widget _showPage = const HomePage();
 
@@ -25,9 +26,10 @@ class BottomNavBarState extends State<BottomNavBar> {
       case 0:
         return homePage;
       case 1:
-        return search;
+        // return search;
+        return quiz;
       case 2:
-        return downloads;
+        return flashcards;
       default:
         return const Center(
           child: Text(
@@ -44,16 +46,16 @@ class BottomNavBarState extends State<BottomNavBar> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Reading.icon,
+            label: Reading.title,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.quiz),
+            label: 'Quiz',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.download_sharp),
-            label: 'Downloads',
+            icon: Icon(Icons.web_stories_outlined),
+            label: 'FlashCards',
           ),
         ],
         currentIndex: pageIndex,

@@ -7,14 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
-class AlgoScreen extends StatefulWidget {
-  const AlgoScreen({super.key});
+class Reading extends StatefulWidget {
+  const Reading({super.key});
+  static const icon = Icon(Icons.book);
+  static const String title = 'Reading';
 
   @override
-  AlgoScreenState createState() => AlgoScreenState();
+  ReadingState createState() => ReadingState();
 }
 
-class AlgoScreenState extends State<AlgoScreen>{
+class ReadingState extends State<Reading> {
   final String url = 'https://samwitadhikary.github.io/jsons/algods.json';
   List? data;
 

@@ -1,14 +1,14 @@
 import 'package:flashcards_reader/views/reader/screens/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class ReadingMainScreen extends StatefulWidget {
+  const ReadingMainScreen({super.key});
 
   @override
-  SplashScreenState createState() => SplashScreenState();
+  ReadingMainScreenState createState() => ReadingMainScreenState();
 }
 
-class SplashScreenState extends State<SplashScreen> {
+class ReadingMainScreenState extends State<ReadingMainScreen> {
   @override
   Widget build(BuildContext context) {
     return const BottomNavBar();
