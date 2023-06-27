@@ -110,6 +110,7 @@ class LandscapeNewWord extends BaseScreenNewWord {
           ),
         ),
         drawer: getDrawer(),
+        bottomNavigationBar: null,
       );
     });
   }

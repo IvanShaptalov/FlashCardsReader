@@ -52,50 +52,49 @@ class PortraitSmallNewWord extends BaseScreenNewWord {
 
       debugPrintIt('selected collection:  ${FlashCardProvider.fc}');
       return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: appbar,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              addWordWidget(context),
-              AnimationLimiter(
-                child: SizedBox(
-                  height: SizeConfig.getMediaHeight(context, p: 0.41),
-                  width: SizeConfig.getMediaWidth(context, p: 1),
-                  child: ListView.builder(
-                      controller: widget.scrollController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: flashCardCollection.isEmpty
-                          ? 1
-                          : flashCardCollection.length,
-                      itemBuilder: (context, index) {
-                        return AnimationConfiguration.staggeredList(
-                          position: index,
-                          duration: widget.cardAppearDuration,
-                          child: SlideAnimation(
-                            verticalOffset: 50.0,
-                            child: FadeInAnimation(
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: FastAddWordFCcWidget(
-                                      flashCardCollection.isEmpty
-                                          ? FlashCardProvider.fc
-                                          : flashCardCollection[index],
-                                      widget.callback,
-                                      design:
-                                          ScreenIdentifier.indentify(
-                                              context),
-                                      backToListStart: backToStartCallback,
-                                    ))),
-                          ),
-                        );
-                      }),
-                ),
+        resizeToAvoidBottomInset: false,
+        appBar: appbar,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            addWordWidget(context),
+            AnimationLimiter(
+              child: SizedBox(
+                height: SizeConfig.getMediaHeight(context, p: 0.41),
+                width: SizeConfig.getMediaWidth(context, p: 1),
+                child: ListView.builder(
+                    controller: widget.scrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: flashCardCollection.isEmpty
+                        ? 1
+                        : flashCardCollection.length,
+                    itemBuilder: (context, index) {
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: widget.cardAppearDuration,
+                        child: SlideAnimation(
+                          verticalOffset: 50.0,
+                          child: FadeInAnimation(
+                              child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: FastAddWordFCcWidget(
+                                    flashCardCollection.isEmpty
+                                        ? FlashCardProvider.fc
+                                        : flashCardCollection[index],
+                                    widget.callback,
+                                    design: ScreenIdentifier.indentify(context),
+                                    backToListStart: backToStartCallback,
+                                  ))),
+                        ),
+                      );
+                    }),
               ),
-            ],
-          ),
-          drawer: getDrawer(),
-          );
+            ),
+          ],
+        ),
+        drawer: getDrawer(),
+        bottomNavigationBar: null,
+      );
     });
   }
 }

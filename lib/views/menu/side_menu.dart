@@ -51,7 +51,7 @@ class SideMenu extends StatelessWidget {
             title: const Text('Flashcards'),
             onTap: () {
               BottomNavBar.setPageIndex(BottomNavPages.flashcards);
-              MyRouter.pushPageReplacement(context, const BottomNavBar());
+              MyRouter.pushPageReplacement(context, BottomNavBar());
             },
           ),
           ListTile(
@@ -59,7 +59,7 @@ class SideMenu extends StatelessWidget {
             title: const Text('Take a Quiz'),
             onTap: () {
               BottomNavBar.setPageIndex(BottomNavPages.quiz);
-              MyRouter.pushPageReplacement(context, const BottomNavBar());
+              MyRouter.pushPageReplacement(context, BottomNavBar());
             },
           ),
           ListTile(

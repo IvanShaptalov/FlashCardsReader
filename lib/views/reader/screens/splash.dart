@@ -12,6 +12,6 @@ class ReadingMainScreenState extends State<ReadingMainScreen> {
   @override
   Widget build(BuildContext context) {
     BottomNavBar.setPageIndex(BottomNavPages.homePage);
-    return const BottomNavBar();
+    return BottomNavBar();
   }
 }

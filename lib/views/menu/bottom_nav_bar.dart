@@ -3,6 +3,7 @@ import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/reading.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/reader/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,11 +14,12 @@ enum BottomNavPages {
   flashcards,
 }
 
-class BottomNavBar extends StatefulWidget {
+// ignore: must_be_immutable
+class BottomNavBar extends ParentStatefulWidget {
   static const homePageIndex = 0;
   static const quizPageIndex = 1;
   static const flashCardsPageIndex = 2;
-  const BottomNavBar({super.key});
+  BottomNavBar({super.key});
 
   static int basePageIndex = 0;
 
@@ -39,16 +41,17 @@ class BottomNavBar extends StatefulWidget {
   BottomNavBarState createState() => BottomNavBarState();
 }
 
-class BottomNavBarState extends State<BottomNavBar> {
+class BottomNavBarState extends ParentState<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    widget.page = BlocProvider(
       create: (_) => FlashCardBloc(),
       child: BlocProvider(
         create: (_) => TranslatorBloc(),
         child: const BottomNavBarView(),
       ),
     );
+    return super.build(context);
   }
 }
 

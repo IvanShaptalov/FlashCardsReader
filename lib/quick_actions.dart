@@ -17,7 +17,7 @@ class ShortcutsProvider {
     } else if (shortcut == quizAction) {
       shortcut = 'no action set';
       BottomNavBar.setPageIndex(BottomNavPages.quiz);
-      return const BottomNavBar();
+      return BottomNavBar();
     } else {
       return child;
     }

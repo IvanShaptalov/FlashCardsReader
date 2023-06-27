@@ -94,6 +94,7 @@ class PortraitNewWord extends BaseScreenNewWord {
           ],
         ),
         drawer: getDrawer(),
+        bottomNavigationBar: null,
       );
     });
   }

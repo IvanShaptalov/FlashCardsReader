@@ -24,7 +24,7 @@ class ViewConfig {
         ? BottomNavPages.flashcards
         : BottomNavPages.quiz);
 
-    MyRouter.pushPageReplacement(context, const BottomNavBar());
+    MyRouter.pushPageReplacement(context, BottomNavBar());
   }
 }
 
