@@ -1,7 +1,6 @@
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
-import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
-import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
+import 'package:flashcards_reader/views/menu/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -21,8 +20,11 @@ class ViewConfig {
 
   static void pushFromQuizProcess(
       {required context, required String fromPage}) {
-    MyRouter.pushPageReplacement(context,
-        fromPage == 'collection' ? const FlashCardScreen() : const QuizMenu());
+    BottomNavBar.setPageIndex(fromPage == 'collection'
+        ? BottomNavPages.flashcards
+        : BottomNavPages.quiz);
+
+    MyRouter.pushPageReplacement(context, const BottomNavBar());
   }
 }
 

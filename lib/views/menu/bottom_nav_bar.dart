@@ -1,13 +1,16 @@
+import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/reading.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/reader/screens/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum BottomNavPages {
   homePage,
   quiz,
-  flashCards,
+  flashcards,
 }
 
 class BottomNavBar extends StatefulWidget {
@@ -26,7 +29,7 @@ class BottomNavBar extends StatefulWidget {
       case BottomNavPages.quiz:
         basePageIndex = quizPageIndex;
         break;
-      case BottomNavPages.flashCards:
+      case BottomNavPages.flashcards:
         basePageIndex = flashCardsPageIndex;
         break;
     }
@@ -37,6 +40,26 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class BottomNavBarState extends State<BottomNavBar> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => FlashCardBloc(),
+      child: BlocProvider(
+        create: (_) => TranslatorBloc(),
+        child: const BottomNavBarView(),
+      ),
+    );
+  }
+}
+
+class BottomNavBarView extends StatefulWidget {
+  const BottomNavBarView({super.key});
+
+  @override
+  BottomNavBarStateView createState() => BottomNavBarStateView();
+}
+
+class BottomNavBarStateView extends State<BottomNavBarView> {
   final HomePage homePage = const HomePage();
   // final Search search = const Search();
   final QuizMenu quiz = const QuizMenu();
@@ -72,36 +95,39 @@ class BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Reading.icon,
-            label: Reading.title,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.quiz),
-            label: 'Quiz',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.web_stories_outlined),
-            label: 'FlashCards',
-          ),
-        ],
-        currentIndex: BottomNavBar.basePageIndex,
-        onTap: (int tapped) {
-          BottomNavBar.basePageIndex = tapped;
+    return BlocBuilder<FlashCardBloc, FlashcardsState>(
+        builder: (context, state) {
+      return Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Reading.icon,
+              label: Reading.title,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.quiz),
+              label: 'Quiz',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.web_stories_outlined),
+              label: 'FlashCards',
+            ),
+          ],
+          currentIndex: BottomNavBar.basePageIndex,
+          onTap: (int tapped) {
+            BottomNavBar.basePageIndex = tapped;
 
-          setState(() {
-            _showPage = _pageChooser(tapped);
-          });
-        },
-        selectedItemColor: Colors.amber[800],
-        // letIndexChange: (index) => true,
-      ),
-      body: Container(
-        child: _showPage,
-      ),
-    );
+            setState(() {
+              _showPage = _pageChooser(tapped);
+            });
+          },
+          selectedItemColor: Colors.amber[800],
+          // letIndexChange: (index) => true,
+        ),
+        body: Container(
+          child: _showPage,
+        ),
+      );
+    });
   }
 }

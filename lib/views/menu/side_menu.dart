@@ -50,7 +50,7 @@ class SideMenu extends StatelessWidget {
             leading: const Icon(Icons.web_stories_outlined),
             title: const Text('Flashcards'),
             onTap: () {
-              BottomNavBar.setPageIndex(BottomNavPages.flashCards);
+              BottomNavBar.setPageIndex(BottomNavPages.flashcards);
               MyRouter.pushPageReplacement(context, const BottomNavBar());
             },
           ),
