@@ -1,19 +1,15 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
-import 'package:flashcards_reader/model/entities/reader/reading.dart';
 import 'package:flashcards_reader/quick_actions.dart';
 import 'package:flashcards_reader/util/constants.dart';
-import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
-import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/flashcards/sharing/extension_dialog.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
-import 'package:flashcards_reader/views/reader/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -120,22 +116,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
       ];
     } else {
       // dont show merge button or deactivate merge mode
-      return [
-        IconButton(
-          icon: Reading.icon,
-          onPressed: () {
-            MyRouter.pushPageReplacement(context, const ReadingMainScreen());
-          },
-        ),
-
-        /// show merge button if merge mode is available
-        IconButton(
-          icon: const Icon(Icons.quiz),
-          onPressed: () {
-            MyRouter.pushPageReplacement(context, const QuizMenu());
-          },
-        ),
-      ];
+      return [];
     }
   }
 

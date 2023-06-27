@@ -109,26 +109,6 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
     return 15;
   }
 
-  List<Widget> bottomNavigationBarItems() {
-    // deactivate merge mode
-    {
-      // dont show merge button or deactivate merge mode
-      return [
-        IconButton(
-          icon: const Icon(Icons.book),
-          onPressed: () {},
-        ),
-
-        /// show merge button if merge mode is available
-        IconButton(
-          icon: const Icon(Icons.web_stories_outlined),
-          onPressed: () {
-            MyRouter.pushPageReplacement(context, const FlashCardScreen());
-          },
-        ),
-      ];
-    }
-  }
   // shortcut actions region ==================================================
 
   Widget loadMenu({required Widget child}) {
@@ -173,14 +153,6 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
           var appBar = getAppBar();
           appBarHeight = appBar.preferredSize.height;
           return Scaffold(
-              bottomNavigationBar: MyConfigOrientation.isPortrait(context)
-                  ? BottomAppBar(
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                          /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
-                          children: bottomNavigationBarItems()))
-                  : null,
               resizeToAvoidBottomInset: false,
               appBar: appBar,
               drawer: getDrawer(),

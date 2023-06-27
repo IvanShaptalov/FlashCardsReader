@@ -2,7 +2,6 @@ import 'package:flashcards_reader/model/entities/reader/reading.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/reader/screens/homepage.dart';
-import 'package:flashcards_reader/views/reader/screens/search.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatefulWidget {
