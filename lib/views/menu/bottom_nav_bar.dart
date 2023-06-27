@@ -4,15 +4,39 @@ import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/reader/screens/homepage.dart';
 import 'package:flutter/material.dart';
 
+enum BottomNavPages {
+  homePage,
+  quiz,
+  flashCards,
+}
+
 class BottomNavBar extends StatefulWidget {
+  static const homePageIndex = 0;
+  static const quizPageIndex = 1;
+  static const flashCardsPageIndex = 2;
   const BottomNavBar({super.key});
+
+  static int basePageIndex = 0;
+
+  static void setPageIndex(BottomNavPages page) {
+    switch (page) {
+      case BottomNavPages.homePage:
+        basePageIndex = homePageIndex;
+        break;
+      case BottomNavPages.quiz:
+        basePageIndex = quizPageIndex;
+        break;
+      case BottomNavPages.flashCards:
+        basePageIndex = flashCardsPageIndex;
+        break;
+    }
+  }
 
   @override
   BottomNavBarState createState() => BottomNavBarState();
 }
 
 class BottomNavBarState extends State<BottomNavBar> {
-  int pageIndex = 0;
   final HomePage homePage = const HomePage();
   // final Search search = const Search();
   final QuizMenu quiz = const QuizMenu();
@@ -20,14 +44,21 @@ class BottomNavBarState extends State<BottomNavBar> {
 
   Widget _showPage = const HomePage();
 
+  @override
+  void initState() {
+    setState(() {
+      _showPage = _pageChooser(BottomNavBar.basePageIndex);
+    });
+    super.initState();
+  }
+
   Widget _pageChooser(int page) {
     switch (page) {
-      case 0:
+      case BottomNavBar.homePageIndex:
         return homePage;
-      case 1:
-        // return search;
+      case BottomNavBar.quizPageIndex:
         return quiz;
-      case 2:
+      case BottomNavBar.flashCardsPageIndex:
         return flashcards;
       default:
         return const Center(
@@ -57,9 +88,9 @@ class BottomNavBarState extends State<BottomNavBar> {
             label: 'FlashCards',
           ),
         ],
-        currentIndex: pageIndex,
+        currentIndex: BottomNavBar.basePageIndex,
         onTap: (int tapped) {
-          pageIndex = tapped;
+          BottomNavBar.basePageIndex = tapped;
 
           setState(() {
             _showPage = _pageChooser(tapped);

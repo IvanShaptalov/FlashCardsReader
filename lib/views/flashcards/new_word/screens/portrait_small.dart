@@ -95,13 +95,7 @@ class PortraitSmallNewWord extends BaseScreenNewWord {
             ],
           ),
           drawer: getDrawer(),
-          bottomNavigationBar: BottomAppBar(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
-                children: bottomNavigationBarItems(context, widget)),
-          ));
+          );
     });
   }
 }

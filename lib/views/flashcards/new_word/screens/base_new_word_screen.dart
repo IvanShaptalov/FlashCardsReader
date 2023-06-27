@@ -1,8 +1,6 @@
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
-import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
-import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flutter/material.dart';
 
@@ -40,23 +38,5 @@ class BaseScreenNewWord {
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
-  }
-
-  List<Widget> bottomNavigationBarItems(BuildContext context, dynamic widget) {
-    // dont show merge button or deactivate merge mode
-    return [
-      IconButton(
-        icon: const Icon(Icons.book),
-        onPressed: () {},
-      ),
-
-      /// show merge button if merge mode is available
-      IconButton(
-        icon: const Icon(Icons.quiz),
-        onPressed: () {
-          MyRouter.pushPageReplacement(context, const QuizMenu());
-        },
-      ),
-    ];
   }
 }

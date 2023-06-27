@@ -14,9 +14,7 @@ class PortraitNewWord extends BaseScreenNewWord {
   Function loadTranslate;
 
   PortraitNewWord(super.widget,
-      {
-      required this.callback,
-      required this.loadTranslate});
+      {required this.callback, required this.loadTranslate});
 
   Widget addWordWidget(BuildContext context) {
     return Container(
@@ -52,59 +50,51 @@ class PortraitNewWord extends BaseScreenNewWord {
 
       debugPrintIt('selected collection:  ${FlashCardProvider.fc}');
       return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: appbar,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: addWordWidget(context),
+        resizeToAvoidBottomInset: false,
+        appBar: appbar,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: addWordWidget(context),
+            ),
+            AnimationLimiter(
+              child: SizedBox(
+                height: SizeConfig.getMediaHeight(context, p: 0.35),
+                width: SizeConfig.getMediaWidth(context, p: 1),
+                child: ListView.builder(
+                    controller: widget.scrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: flashCardCollection.isEmpty
+                        ? 1
+                        : flashCardCollection.length,
+                    itemBuilder: (context, index) {
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: widget.cardAppearDuration,
+                        child: SlideAnimation(
+                          verticalOffset: 50.0,
+                          child: FadeInAnimation(
+                              child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: FastAddWordFCcWidget(
+                                    flashCardCollection.isEmpty
+                                        ? FlashCardProvider.fc
+                                        : flashCardCollection[index],
+                                    widget.callback,
+                                    design: ScreenIdentifier.indentify(context),
+                                    backToListStart: backToStartCallback,
+                                  ))),
+                        ),
+                      );
+                    }),
               ),
-              AnimationLimiter(
-                child: SizedBox(
-                  height: SizeConfig.getMediaHeight(context, p: 0.35),
-                  width: SizeConfig.getMediaWidth(context, p: 1),
-                  child: ListView.builder(
-                      controller: widget.scrollController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: flashCardCollection.isEmpty
-                          ? 1
-                          : flashCardCollection.length,
-                      itemBuilder: (context, index) {
-                        return AnimationConfiguration.staggeredList(
-                          position: index,
-                          duration: widget.cardAppearDuration,
-                          child: SlideAnimation(
-                            verticalOffset: 50.0,
-                            child: FadeInAnimation(
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: FastAddWordFCcWidget(
-                                      flashCardCollection.isEmpty
-                                          ? FlashCardProvider.fc
-                                          : flashCardCollection[index],
-                                      widget.callback,
-                                      design:
-                                          ScreenIdentifier.indentify(
-                                              context),
-                                      backToListStart: backToStartCallback,
-                                    ))),
-                          ),
-                        );
-                      }),
-                ),
-              ),
-            ],
-          ),
-          drawer: getDrawer(),
-          bottomNavigationBar: BottomAppBar(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
-                children: bottomNavigationBarItems(context, widget)),
-          ));
+            ),
+          ],
+        ),
+        drawer: getDrawer(),
+      );
     });
   }
 }

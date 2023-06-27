@@ -55,68 +55,60 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
 
       debugPrintIt('selected collection:  ${FlashCardProvider.fc}');
       return Scaffold(
-          resizeToAvoidBottomInset: true,
-          appBar: appbar,
-          body: SingleChildScrollView(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    addWordMenuWidget(context),
-                  ],
-                ),
-                Column(
-                  children: [
-                    AnimationLimiter(
-                      child: SizedBox(
-                        height: SizeConfig.getMediaHeight(context, p: 0.57),
-                        width: SizeConfig.getMediaWidth(context, p: 0.35),
-                        child: ListView.builder(
-                            controller: widget.scrollController,
-                            scrollDirection: Axis.vertical,
-                            itemCount: flashCardCollection.isEmpty
-                                ? 1
-                                : flashCardCollection.length,
-                            itemBuilder: (context, index) {
-                              return AnimationConfiguration.staggeredList(
-                                position: index,
-                                duration: widget.cardAppearDuration,
-                                child: SlideAnimation(
-                                  verticalOffset: 50.0,
-                                  child: FadeInAnimation(
-                                      child: Transform.scale(
-                                    scale: 0.9,
-                                    child: FastAddWordFCcWidget(
-                                      flashCardCollection.isEmpty
-                                          ? FlashCardProvider.fc
-                                          : flashCardCollection[index],
-                                      widget.callback,
-                                      design:
-                                          ScreenIdentifier.indentify(
-                                              context),
-                                      backToListStart: backToStartCallback,
-                                    ),
-                                  )),
-                                ),
-                              );
-                            }),
-                      ),
+        resizeToAvoidBottomInset: true,
+        appBar: appbar,
+        body: SingleChildScrollView(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  addWordMenuWidget(context),
+                ],
+              ),
+              Column(
+                children: [
+                  AnimationLimiter(
+                    child: SizedBox(
+                      height: SizeConfig.getMediaHeight(context, p: 0.57),
+                      width: SizeConfig.getMediaWidth(context, p: 0.35),
+                      child: ListView.builder(
+                          controller: widget.scrollController,
+                          scrollDirection: Axis.vertical,
+                          itemCount: flashCardCollection.isEmpty
+                              ? 1
+                              : flashCardCollection.length,
+                          itemBuilder: (context, index) {
+                            return AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: widget.cardAppearDuration,
+                              child: SlideAnimation(
+                                verticalOffset: 50.0,
+                                child: FadeInAnimation(
+                                    child: Transform.scale(
+                                  scale: 0.9,
+                                  child: FastAddWordFCcWidget(
+                                    flashCardCollection.isEmpty
+                                        ? FlashCardProvider.fc
+                                        : flashCardCollection[index],
+                                    widget.callback,
+                                    design: ScreenIdentifier.indentify(context),
+                                    backToListStart: backToStartCallback,
+                                  ),
+                                )),
+                              ),
+                            );
+                          }),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          drawer: getDrawer(),
-          bottomNavigationBar: BottomAppBar(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
-                children: bottomNavigationBarItems(context, widget)),
-          ));
+        ),
+        drawer: getDrawer(),
+      );
     });
   }
 }
