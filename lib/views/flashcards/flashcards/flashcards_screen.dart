@@ -160,11 +160,11 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext upperContext) {
     widget.page =
-        BlocBuilder<FlashCardBloc, FlashcardsState>(builder: (context, state) {
+        BlocBuilder<FlashCardBloc, FlashcardsState>(builder: (builderContext, state) {
       var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
-      columnCount = ViewColumnCalculator.calculateColumnCount(context);
+      columnCount = ViewColumnCalculator.calculateColumnCount(builderContext);
       var appBar = getAppBar(flashCardCollection);
       appBarHeight = appBar.preferredSize.height;
       return Scaffold(
@@ -172,11 +172,11 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
           appBar: appBar,
           body: AnimationLimiter(
             child: GridView.count(
-                mainAxisSpacing: SizeConfig.getMediaHeight(context, p: 0.04),
+                mainAxisSpacing: SizeConfig.getMediaHeight(builderContext, p: 0.04),
                 crossAxisSpacing:
-                    ViewColumnCalculator.calculateCrossSpacing(context),
+                    ViewColumnCalculator.calculateCrossSpacing(builderContext),
                 crossAxisCount: columnCount,
-                childAspectRatio: ViewConfig.getCardForm(context),
+                childAspectRatio: ViewConfig.getCardForm(builderContext),
                 children:
                     List.generate(flashCardCollection.length + 1, (index) {
                   /// ====================================================================[FlashCardCollectionWidget]
@@ -186,7 +186,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                     child: index == 0
                         ? Transform.scale(
                             scale: ScreenDesign.landscapeSmall ==
-                                    ScreenIdentifier.indentify(context)
+                                    ScreenIdentifier.indentify(builderContext)
                                 ? 0.85
                                 : 1,
                             child: AnimationConfiguration.staggeredGrid(
@@ -202,7 +202,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                           )
                         : Transform.scale(
                             scale: ScreenDesign.landscapeSmall ==
-                                    ScreenIdentifier.indentify(context)
+                                    ScreenIdentifier.indentify(builderContext)
                                 ? 0.85
                                 : 1,
                             child: AnimationConfiguration.staggeredGrid(
@@ -231,6 +231,6 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
           ));
     });
 
-    return super.build(context);
+    return super.build(upperContext);
   }
 }
