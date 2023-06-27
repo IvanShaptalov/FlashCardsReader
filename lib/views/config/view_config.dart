@@ -30,8 +30,8 @@ class ViewConfig {
 
 class FontConfigs {
   static const TextStyle pageNameTextStyle = TextStyle(
-      color: Palette.darkblue,
-      fontSize: 25,
+      color: Palette.scaffold,
+      fontSize: 24,
       fontWeight: FontWeight.bold,
       letterSpacing: -0.6);
   static const TextStyle h1TextStyle =

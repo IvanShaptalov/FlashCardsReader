@@ -1,14 +1,10 @@
-import 'dart:async';
-import 'package:connectivity/connectivity.dart';
 import 'package:flashcards_reader/model/entities/reader/reading.dart';
 import 'package:flashcards_reader/model/entities/reader/favourites.dart';
 import 'package:flashcards_reader/model/entities/reader/to_read.dart';
 import 'package:flashcards_reader/model/entities/reader/all_books.dart';
 import 'package:flashcards_reader/model/entities/reader/authors.dart';
-import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
-import 'package:flashcards_reader/views/reader/offline.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,33 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  bool connection = true;
-  Connectivity? connectivity;
-
-  StreamSubscription<ConnectivityResult>? subscription;
-
-  @override
-  void initState() {
-    super.initState();
-    connectivity = Connectivity();
-    subscription =
-        connectivity!.onConnectivityChanged.listen((ConnectivityResult result) {
-      debugPrintIt(result);
-      if (result == ConnectivityResult.mobile ||
-          result == ConnectivityResult.wifi) {
-        setState(() {
-          connection = false;
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    subscription!.cancel();
-    super.dispose();
-  }
-
   final _kTabs = <Tab>[
     const Tab(
       text: 'Reading',
@@ -85,7 +54,6 @@ class HomePageState extends State<HomePage> {
         'Reading',
         style: FontConfigs.pageNameTextStyle,
       ),
-      iconTheme: const IconThemeData(color: Palette.darkblue),
       bottom: TabBar(
         indicatorColor: Palette.darkblue,
         indicatorWeight: 2.5,
@@ -103,14 +71,10 @@ class HomePageState extends State<HomePage> {
           child: SideMenu(appbar.preferredSize.height),
         ),
         appBar: appbar,
-        body: connection
-            ? const Center(
-                child: Offline(),
-              )
-            : TabBarView(
-                physics: const BouncingScrollPhysics(),
-                children: _kTabPages,
-              ),
+        body: TabBarView(
+          physics: const BouncingScrollPhysics(),
+          children: _kTabPages,
+        ),
       ),
     );
   }

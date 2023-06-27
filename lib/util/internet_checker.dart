@@ -4,16 +4,21 @@ import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 
 class InternetConnectionChecker {
+  static bool isConnected = true;
+
   static Future<bool> connected() async {
     try {
       final response = await InternetAddress.lookup('www.kindacode.com');
       if (response.isNotEmpty) {
+        isConnected = true;
         return true;
       }
     } on SocketException catch (e) {
       debugPrintIt(e.toString());
+      isConnected = false;
       return false;
     }
+    isConnected = false;
     return false;
   }
 
@@ -27,7 +32,7 @@ class InternetConnectionChecker {
       if (await InternetConnectionChecker.connected() && connectionIsLost) {
         debugPrintIt('internet connection is back');
         OverlayNotificationProvider.backOnline();
-
+        isConnected = true;
         connectionIsLost = false;
       }
       // send once notification about internet connection lost
@@ -35,6 +40,7 @@ class InternetConnectionChecker {
           connectionIsLost == false) {
         debugPrintIt('no internet connection');
         OverlayNotificationProvider.showInternetError();
+        isConnected = false;
         connectionIsLost = true;
       }
     }
