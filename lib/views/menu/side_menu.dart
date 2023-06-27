@@ -1,10 +1,11 @@
 import 'package:flashcards_reader/model/entities/reader/reading.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcards_screen.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
+import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/flashcards/sharing/import_page.dart';
-import 'package:flashcards_reader/views/menu/bottom_nav_bar.dart';
-import 'package:flashcards_reader/views/reader/screens/splash.dart';
+import 'package:flashcards_reader/views/reader/screens/homepage.dart';
 import 'package:flutter/material.dart';
 
 class SideMenu extends StatelessWidget {
@@ -43,23 +44,21 @@ class SideMenu extends StatelessWidget {
             leading: Reading.icon,
             title: const Text(Reading.title),
             onTap: () {
-              MyRouter.pushPageReplacement(context, const ReadingMainScreen());
+              MyRouter.pushPageReplacement(context, ReadingHomePage());
             },
           ),
           ListTile(
             leading: const Icon(Icons.web_stories_outlined),
             title: const Text('Flashcards'),
             onTap: () {
-              BottomNavBar.setPageIndex(BottomNavPages.flashcards);
-              MyRouter.pushPageReplacement(context, BottomNavBar());
+              MyRouter.pushPageReplacement(context, const FlashCardScreen());
             },
           ),
           ListTile(
             leading: const Icon(Icons.quiz),
             title: const Text('Take a Quiz'),
             onTap: () {
-              BottomNavBar.setPageIndex(BottomNavPages.quiz);
-              MyRouter.pushPageReplacement(context, BottomNavBar());
+              MyRouter.pushPageReplacement(context, const QuizMenu());
             },
           ),
           ListTile(

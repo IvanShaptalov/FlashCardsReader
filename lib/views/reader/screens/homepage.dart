@@ -5,16 +5,18 @@ import 'package:flashcards_reader/model/entities/reader/all_books.dart';
 import 'package:flashcards_reader/model/entities/reader/authors.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+// ignore: must_be_immutable
+class ReadingHomePage extends ParentStatefulWidget {
+  ReadingHomePage({super.key});
 
   @override
   HomePageState createState() => HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends ParentState<ReadingHomePage> {
   final _kTabs = <Tab>[
     const Tab(
       text: 'Reading',
@@ -64,7 +66,7 @@ class HomePageState extends State<HomePage> {
         tabs: _kTabs,
       ),
     );
-    return DefaultTabController(
+    widget.page = DefaultTabController(
       length: _kTabs.length,
       child: Scaffold(
         drawer: Drawer(
@@ -77,5 +79,6 @@ class HomePageState extends State<HomePage> {
         ),
       ),
     );
+    return super.build(context);
   }
 }
