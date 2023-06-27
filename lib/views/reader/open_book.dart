@@ -24,6 +24,7 @@ class OpenBook extends StatefulWidget {
 
   @override
   OpenBookState createState() =>
+      // ignore: no_logic_in_create_state
       OpenBookState(id, name, author, tagline, url, image, desc);
 }
 

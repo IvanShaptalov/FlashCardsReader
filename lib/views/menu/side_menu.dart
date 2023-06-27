@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/model/entities/reader/reading.dart';
 import 'package:flashcards_reader/util/router.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
@@ -41,42 +42,43 @@ class SideMenu extends StatelessWidget {
             color: Colors.grey[700],
           ),
           ListTile(
-            leading: Reading.icon,
+            leading: Icon(Icons.book_sharp, size: ConfigMenu.iconSize),
             title: const Text(Reading.title),
             onTap: () {
               MyRouter.pushPageReplacement(context, ReadingHomePage());
             },
           ),
           ListTile(
-            leading: const Icon(Icons.web_stories_outlined),
+            leading:
+                Icon(Icons.web_stories_outlined, size: ConfigMenu.iconSize),
             title: const Text('Flashcards'),
             onTap: () {
               MyRouter.pushPageReplacement(context, const FlashCardScreen());
             },
           ),
           ListTile(
-            leading: const Icon(Icons.quiz),
+            leading: Icon(Icons.quiz, size: ConfigMenu.iconSize),
             title: const Text('Take a Quiz'),
             onTap: () {
               MyRouter.pushPageReplacement(context, const QuizMenu());
             },
           ),
           ListTile(
-            leading: const Icon(Icons.add_circle_outline),
+            leading: Icon(Icons.add_circle_outline, size: ConfigMenu.iconSize),
             title: const Text('Add new word'),
             onTap: () {
               MyRouter.pushPageReplacement(context, AddWordFastScreen());
             },
           ),
           ListTile(
-            leading: const Icon(Icons.import_export),
+            leading: Icon(Icons.import_export, size: ConfigMenu.iconSize),
             title: const Text('Import flashcards'),
             onTap: () {
               MyRouter.pushPageReplacement(context, const SharingPage());
             },
           ),
           ListTile(
-            leading: const Icon(Icons.delete),
+            leading: Icon(Icons.delete, size: ConfigMenu.iconSize),
             title: const Text('Deleted flashcards'),
             onTap: () {
               MyRouter.pushPageReplacement(
@@ -87,12 +89,12 @@ class SideMenu extends StatelessWidget {
             color: Colors.grey[700],
           ),
           ListTile(
-            leading: const Icon(Icons.settings),
+            leading: Icon(Icons.settings, size: ConfigMenu.iconSize),
             title: const Text('Settings and Help'),
             onTap: () {},
           ),
           ListTile(
-            leading: const Icon(Icons.feedback),
+            leading: Icon(Icons.feedback, size: ConfigMenu.iconSize),
             title: const Text('Feedback and Support'),
             onTap: () {},
           ),

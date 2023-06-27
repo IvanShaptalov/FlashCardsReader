@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -5,17 +7,18 @@ import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 
 class DownloadPDF extends StatefulWidget {
-  final path;
-  final pathdir;
+  final String path;
+  final String pathdir;
   const DownloadPDF(this.path, this.pathdir, {super.key});
 
   @override
+  // ignore: no_logic_in_create_state
   DownloadPDFState createState() => DownloadPDFState(path, pathdir);
 }
 
 class DownloadPDFState extends State<DownloadPDF> {
-  final path;
-  final pathdir;
+  final String path;
+  final String pathdir;
   DownloadPDFState(this.path, this.pathdir);
 
   @override

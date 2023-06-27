@@ -87,6 +87,7 @@ class _SharingPageViewState extends ParentState<SharingPageView> {
                         await SharingProvider.importCollections(context);
                     if (collections.isNotEmpty) {
                       for (FlashCardCollection collection in collections) {
+                        // ignore: use_build_context_synchronously
                         BlocProvider.of<FlashCardBloc>(context).add(
                             UpdateFlashCardEvent(
                                 flashCardCollection: collection));

@@ -10,6 +10,7 @@ class ViewPDF extends StatefulWidget {
   const ViewPDF(this.name, this.url, {super.key});
 
   @override
+  // ignore: no_logic_in_create_state
   ViewPDFState createState() => ViewPDFState(name, url);
 }
 

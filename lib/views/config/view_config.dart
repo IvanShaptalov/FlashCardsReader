@@ -128,3 +128,7 @@ class ScreenIdentifier {
     }
   }
 }
+
+class ConfigMenu {
+  static double iconSize = 28;
+}
