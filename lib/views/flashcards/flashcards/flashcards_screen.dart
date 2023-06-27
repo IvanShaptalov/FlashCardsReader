@@ -161,8 +161,8 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
 
   @override
   Widget build(BuildContext upperContext) {
-    widget.page =
-        BlocBuilder<FlashCardBloc, FlashcardsState>(builder: (builderContext, state) {
+    widget.page = BlocBuilder<FlashCardBloc, FlashcardsState>(
+        builder: (builderContext, state) {
       var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
       columnCount = ViewColumnCalculator.calculateColumnCount(builderContext);
       var appBar = getAppBar(flashCardCollection);
@@ -172,7 +172,8 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
           appBar: appBar,
           body: AnimationLimiter(
             child: GridView.count(
-                mainAxisSpacing: SizeConfig.getMediaHeight(builderContext, p: 0.04),
+                mainAxisSpacing:
+                    SizeConfig.getMediaHeight(builderContext, p: 0.04),
                 crossAxisSpacing:
                     ViewColumnCalculator.calculateCrossSpacing(builderContext),
                 crossAxisCount: columnCount,
@@ -181,44 +182,36 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                     List.generate(flashCardCollection.length + 1, (index) {
                   /// ====================================================================[FlashCardCollectionWidget]
                   // add flashcards
-                  return Transform.scale(
-                    scale: 1,
-                    child: index == 0
-                        ? Transform.scale(
-                            scale: ScreenDesign.landscapeSmall ==
-                                    ScreenIdentifier.indentify(builderContext)
-                                ? 0.85
-                                : 1,
-                            child: AnimationConfiguration.staggeredGrid(
-                              position: index,
-                              duration: widget.cardAppearDuration,
-                              columnCount: columnCount,
-                              child: SlideAnimation(
-                                child: FadeInAnimation(
-                                  child: AddFlashCardWidget(updateCallbackCrunch: updateCallback),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Transform.scale(
-                            scale: ScreenDesign.landscapeSmall ==
-                                    ScreenIdentifier.indentify(builderContext)
-                                ? 0.85
-                                : 1,
-                            child: AnimationConfiguration.staggeredGrid(
-                              position: index,
-                              duration: widget.cardAppearDuration,
-                              columnCount: columnCount,
-                              child: SlideAnimation(
-                                child: FadeInAnimation(
-                                  child: FlashCardCollectionWidget(
-                                      flashCardCollection[index - 1],
-                                      updateCallback),
-                                ),
+                  return index == 0
+                      ? Transform.scale(
+                          scale: 0.85,
+                          child: AnimationConfiguration.staggeredGrid(
+                            position: index,
+                            duration: widget.cardAppearDuration,
+                            columnCount: columnCount,
+                            child: SlideAnimation(
+                              child: FadeInAnimation(
+                                child: AddFlashCardWidget(
+                                    updateCallbackCrunch: updateCallback),
                               ),
                             ),
                           ),
-                  );
+                        )
+                      : Transform.scale(
+                          scale: 0.85,
+                          child: AnimationConfiguration.staggeredGrid(
+                            position: index,
+                            duration: widget.cardAppearDuration,
+                            columnCount: columnCount,
+                            child: SlideAnimation(
+                              child: FadeInAnimation(
+                                child: FlashCardCollectionWidget(
+                                    flashCardCollection[index - 1],
+                                    updateCallback),
+                              ),
+                            ),
+                          ),
+                        );
                 })),
           ),
           drawer: getDrawer(),
