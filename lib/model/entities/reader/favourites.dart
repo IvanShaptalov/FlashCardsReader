@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class Favourites extends StatefulWidget {
   const Favourites({super.key});
-  static const icon = Icon(Icons.star);
+  static const icon = Icon(Icons.star_outline);
   static const String title = 'Favourites';
 
   @override

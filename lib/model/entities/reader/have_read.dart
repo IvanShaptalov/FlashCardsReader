@@ -1,26 +1,22 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flashcards_reader/model/entities/reader/favourites.dart';
-import 'package:flashcards_reader/model/entities/reader/have_read.dart';
-import 'package:flashcards_reader/model/entities/reader/to_read.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/reader/open_book.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
-class Reading extends StatefulWidget {
-  const Reading({super.key});
-  static const icon = Icon(Icons.book_sharp);
-  static const String booksTitle = 'Books';
-  static const String tabTitle = 'Reading';
+class HaveRead extends StatefulWidget {
+  const HaveRead({super.key});
+  static const icon = Icon(Icons.library_add_check_outlined);
+  static const String title = 'Have Read';
 
   @override
-  ReadingState createState() => ReadingState();
+  HaveReadState createState() => HaveReadState();
 }
 
-class ReadingState extends State<Reading> {
+class HaveReadState extends State<HaveRead> {
   final String url = 'https://samwitadhikary.github.io/jsons/algods.json';
   List? data;
 
@@ -89,7 +85,7 @@ class ReadingState extends State<Reading> {
                             ),
                           ),
                           Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
                                 color: Colors.white,
@@ -120,15 +116,16 @@ class ReadingState extends State<Reading> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     GestureDetector(
-                                      child: Favourites.icon,
+                                      child: const Icon(Icons.star_outline),
                                       onTap: () {},
                                     ),
                                     GestureDetector(
-                                      child: ToRead.icon,
+                                      child: const Icon(Icons.history_outlined),
                                       onTap: () {},
                                     ),
                                     GestureDetector(
-                                      child: HaveRead.icon,
+                                      child: const Icon(
+                                          Icons.library_add_check_outlined),
                                       onTap: () {},
                                     ),
                                     GestureDetector(

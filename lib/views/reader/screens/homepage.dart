@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/model/entities/reader/have_read.dart';
 import 'package:flashcards_reader/model/entities/reader/reading.dart';
 import 'package:flashcards_reader/model/entities/reader/favourites.dart';
 import 'package:flashcards_reader/model/entities/reader/to_read.dart';
@@ -19,12 +20,8 @@ class ReadingHomePage extends ParentStatefulWidget {
 class HomePageState extends ParentState<ReadingHomePage> {
   final _kTabs = <Tab>[
     const Tab(
-      text: 'Reading',
+      text: Reading.tabTitle,
       icon: Reading.icon,
-    ),
-    const Tab(
-      text: AllBooks.title,
-      icon: AllBooks.icon,
     ),
     const Tab(
       text: Favourites.title,
@@ -35,6 +32,14 @@ class HomePageState extends ParentState<ReadingHomePage> {
       icon: ToRead.icon,
     ),
     const Tab(
+      text: HaveRead.title,
+      icon: HaveRead.icon,
+    ),
+    const Tab(
+      text: AllBooks.title,
+      icon: AllBooks.icon,
+    ),
+    const Tab(
       text: Authors.title,
       icon: Authors.icon,
     ),
@@ -42,9 +47,10 @@ class HomePageState extends ParentState<ReadingHomePage> {
 
   final _kTabPages = <Widget>[
     const Reading(),
-    const AllBooks(),
     const Favourites(),
     const ToRead(),
+    const HaveRead(),
+    const AllBooks(),
     const Authors(),
   ];
 
@@ -53,7 +59,7 @@ class HomePageState extends ParentState<ReadingHomePage> {
     var appbar = AppBar(
       elevation: 0,
       title: const Text(
-        'Reading',
+        Reading.booksTitle,
         style: FontConfigs.pageNameTextStyle,
       ),
       bottom: TabBar(
