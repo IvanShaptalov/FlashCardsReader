@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/views/reader/view_pdf.dart';
+import 'package:flashcards_reader/model/entities/reader/view_pdf.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';

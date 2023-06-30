@@ -1,9 +1,9 @@
-import 'package:flashcards_reader/model/entities/reader/have_read.dart';
-import 'package:flashcards_reader/model/entities/reader/reading.dart';
-import 'package:flashcards_reader/model/entities/reader/favourites.dart';
-import 'package:flashcards_reader/model/entities/reader/to_read.dart';
-import 'package:flashcards_reader/model/entities/reader/all_books.dart';
-import 'package:flashcards_reader/model/entities/reader/authors.dart';
+import 'package:flashcards_reader/views/reader/tabs/have_read.dart';
+import 'package:flashcards_reader/views/reader/tabs/reading.dart';
+import 'package:flashcards_reader/views/reader/tabs/favourites.dart';
+import 'package:flashcards_reader/views/reader/tabs/to_read.dart';
+import 'package:flashcards_reader/views/reader/tabs/all_books.dart';
+import 'package:flashcards_reader/views/reader/tabs/authors.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';

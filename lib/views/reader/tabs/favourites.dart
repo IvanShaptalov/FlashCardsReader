@@ -1,36 +1,37 @@
 import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
-import 'package:flashcards_reader/views/reader/open_book.dart';
+import 'package:flashcards_reader/model/entities/reader/open_book.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
-class ToRead extends StatefulWidget {
-  const ToRead({super.key});
-  static const icon = Icon(Icons.history);
-  static const String title = 'To Read';
+class Favourites extends StatefulWidget {
+  const Favourites({super.key});
+  static const icon = Icon(Icons.star_outline);
+  static const String title = 'Favourites';
 
   @override
-  ToReadState createState() => ToReadState();
+  FavouritesState createState() => FavouritesState();
 }
 
-class ToReadState extends State<ToRead> {
-  final String url = 'https://samwitadhikary.github.io/jsons/c.json';
+class FavouritesState extends State<Favourites> {
+  final String url = 'https://samwitadhikary.github.io/jsons/cpp.json';
   List? data;
 
   @override
   void initState() {
     super.initState();
-    fetchCprog();
+    fetchCpp();
   }
 
-  fetchCprog() async {
+  fetchCpp() async {
     var response = await http.get(Uri.parse(url));
     if (!mounted) return;
     setState(() {
       var convertJson = json.decode(response.body);
-      data = convertJson['cprog'];
+      data = convertJson['cpp'];
     });
   }
 
@@ -43,20 +44,20 @@ class ToReadState extends State<ToRead> {
               physics: const BouncingScrollPhysics(),
               itemCount: data!.length,
               itemBuilder: (BuildContext context, int index) {
-                final myCprog = data![index];
+                final mycpp = data![index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => OpenBook(
-                                myCprog['id'],
-                                myCprog['name'],
-                                myCprog['author'],
-                                myCprog['tagline'],
-                                myCprog['url'],
-                                myCprog['image'],
-                                myCprog['desc'])));
+                                mycpp['id'],
+                                mycpp['name'],
+                                mycpp['author'],
+                                mycpp['tagline'],
+                                mycpp['url'],
+                                mycpp['image'],
+                                mycpp['desc'])));
                   },
                   child: Container(
                     height: 150,
@@ -67,7 +68,7 @@ class ToReadState extends State<ToRead> {
                     child: Row(
                       children: [
                         Hero(
-                          tag: myCprog['id'],
+                          tag: mycpp['id'],
                           child: Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width * 0.23,
@@ -75,7 +76,7 @@ class ToReadState extends State<ToRead> {
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image: CachedNetworkImageProvider(
-                                        myCprog['image']),
+                                        mycpp['image']),
                                     fit: BoxFit.fill),
                                 borderRadius: BorderRadius.circular(5)),
                           ),
@@ -88,7 +89,7 @@ class ToReadState extends State<ToRead> {
                               width: MediaQuery.of(context).size.width * 0.65,
                               margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                               child: Text(
-                                myCprog['name'],
+                                mycpp['name'],
                                 style: const TextStyle(
                                   fontSize: 15.5,
                                 ),
@@ -99,7 +100,7 @@ class ToReadState extends State<ToRead> {
                               width: MediaQuery.of(context).size.width * 0.67,
                               margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                               child: Text(
-                                myCprog['author'],
+                                mycpp['author'],
                                 style: const TextStyle(fontSize: 12),
                               ),
                             )

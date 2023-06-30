@@ -1,4 +1,4 @@
-import 'package:flashcards_reader/model/entities/reader/reading.dart';
+import 'package:flashcards_reader/views/reader/tabs/reading.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcards_screen.dart';

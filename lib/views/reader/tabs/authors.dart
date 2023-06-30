@@ -1,37 +1,37 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flashcards_reader/views/config/view_config.dart';
-import 'package:flashcards_reader/views/reader/open_book.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flashcards_reader/model/entities/reader/open_book.dart';
 import 'package:http/http.dart' as http;
+import 'package:flashcards_reader/views/config/view_config.dart';
 
-class Favourites extends StatefulWidget {
-  const Favourites({super.key});
-  static const icon = Icon(Icons.star_outline);
-  static const String title = 'Favourites';
+class Authors extends StatefulWidget {
+  const Authors({super.key});
+  static const icon = Icon(Icons.person);
+  static const String title = 'Authors';
 
   @override
-  FavouritesState createState() => FavouritesState();
+  AuthorsState createState() => AuthorsState();
 }
 
-class FavouritesState extends State<Favourites> {
-  final String url = 'https://samwitadhikary.github.io/jsons/cpp.json';
+class AuthorsState extends State<Authors> {
+  final String url = 'https://samwitadhikary.github.io/jsons/webdev.json';
   List? data;
 
   @override
   void initState() {
     super.initState();
-    fetchCpp();
+    fetchWeb();
   }
 
-  fetchCpp() async {
+  fetchWeb() async {
     var response = await http.get(Uri.parse(url));
     if (!mounted) return;
     setState(() {
       var convertJson = json.decode(response.body);
-      data = convertJson['cpp'];
+      data = convertJson['webdev'];
     });
   }
 
@@ -44,20 +44,20 @@ class FavouritesState extends State<Favourites> {
               physics: const BouncingScrollPhysics(),
               itemCount: data!.length,
               itemBuilder: (BuildContext context, int index) {
-                final mycpp = data![index];
+                final myWeb = data![index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => OpenBook(
-                                mycpp['id'],
-                                mycpp['name'],
-                                mycpp['author'],
-                                mycpp['tagline'],
-                                mycpp['url'],
-                                mycpp['image'],
-                                mycpp['desc'])));
+                                myWeb['id'],
+                                myWeb['name'],
+                                myWeb['author'],
+                                myWeb['tagline'],
+                                myWeb['url'],
+                                myWeb['image'],
+                                myWeb['desc'])));
                   },
                   child: Container(
                     height: 150,
@@ -68,7 +68,7 @@ class FavouritesState extends State<Favourites> {
                     child: Row(
                       children: [
                         Hero(
-                          tag: mycpp['id'],
+                          tag: myWeb['id'],
                           child: Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width * 0.23,
@@ -76,7 +76,7 @@ class FavouritesState extends State<Favourites> {
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image: CachedNetworkImageProvider(
-                                        mycpp['image']),
+                                        myWeb['image']),
                                     fit: BoxFit.fill),
                                 borderRadius: BorderRadius.circular(5)),
                           ),
@@ -89,7 +89,7 @@ class FavouritesState extends State<Favourites> {
                               width: MediaQuery.of(context).size.width * 0.65,
                               margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                               child: Text(
-                                mycpp['name'],
+                                myWeb['name'],
                                 style: const TextStyle(
                                   fontSize: 15.5,
                                 ),
@@ -100,7 +100,7 @@ class FavouritesState extends State<Favourites> {
                               width: MediaQuery.of(context).size.width * 0.67,
                               margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                               child: Text(
-                                mycpp['author'],
+                                myWeb['author'],
                                 style: const TextStyle(fontSize: 12),
                               ),
                             )
@@ -114,9 +114,8 @@ class FavouritesState extends State<Favourites> {
             )
           : const Center(
               child: SpinKitWave(
-                color: Palette.cardBlue,
-              ),
-            ),
+              color: Palette.cardBlue,
+            )),
     );
   }
 }

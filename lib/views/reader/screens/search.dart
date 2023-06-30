@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flashcards_reader/views/reader/open_book.dart';
+import 'package:flashcards_reader/model/entities/reader/open_book.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 
 import 'package:http/http.dart' as http;
