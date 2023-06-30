@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
+enum DotsMenu { share, trash, edit }
+
 class Reading extends StatefulWidget {
   const Reading({super.key});
   static const icon = Icon(Icons.book_sharp);
@@ -23,6 +25,8 @@ class Reading extends StatefulWidget {
 class ReadingState extends State<Reading> {
   final String url = 'https://samwitadhikary.github.io/jsons/algods.json';
   List? data;
+
+  DotsMenu selectedMenu = DotsMenu.share;
 
   @override
   void initState() {
@@ -131,11 +135,28 @@ class ReadingState extends State<Reading> {
                                       child: HaveRead.icon,
                                       onTap: () {},
                                     ),
-                                    GestureDetector(
-                                      child:
-                                          const Icon(Icons.more_vert_outlined),
-                                      onTap: () {},
-                                    )
+                                    PopupMenuButton<DotsMenu>(
+                                      initialValue: selectedMenu,
+                                      // Callback that sets the selected popup menu item.
+                                      onSelected: (DotsMenu item) {
+                                        setState(() {});
+                                      },
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry<DotsMenu>>[
+                                        const PopupMenuItem<DotsMenu>(
+                                          value: DotsMenu.share,
+                                          child: Text('Share file'),
+                                        ),
+                                        const PopupMenuItem<DotsMenu>(
+                                          value: DotsMenu.trash,
+                                          child: Text('Move to trash'),
+                                        ),
+                                        const PopupMenuItem<DotsMenu>(
+                                          value: DotsMenu.edit,
+                                          child: Text('Edit'),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               )
