@@ -2,7 +2,7 @@ import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/quick_actions.dart';
-import 'package:flashcards_reader/util/constants.dart';
+import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';

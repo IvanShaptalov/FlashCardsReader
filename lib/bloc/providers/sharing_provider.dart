@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flashcards_reader/model/IO/local_manager.dart';
 import 'package:flashcards_reader/model/IO/sharing_flashcards.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
-import 'package:flashcards_reader/util/constants.dart';
+import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/extension_check.dart';

@@ -210,3 +210,37 @@ const String textExt = '.txt';
 const String jsonExt = '.js';
 
 const List<String> allowedExtensions = [textExt, jsonExt];
+
+List<String> allowedBookExtensions = [
+  '.txt',
+  '.epub',
+  '.pdf',
+  '.docx',
+  '.doc',
+  '.odt',
+  '.html',
+  '.htm',
+  '.xhtml',
+  '.fb2',
+  '.prc',
+  '.pdb',
+  '.azw',
+  '.azw3',
+  '.azw4',
+  '.kf8',
+  '.kf7',
+  '.kf6',
+  '.kf5',
+  '.mobi',
+  '.rtf',
+  '.snb',
+  '.tcr',
+  '.txtz',
+  '.cbr',
+  '.cbz',
+  '.cb7',
+  '.cbt',
+  '.cba',
+  '.chm',
+  '.djvu',
+];

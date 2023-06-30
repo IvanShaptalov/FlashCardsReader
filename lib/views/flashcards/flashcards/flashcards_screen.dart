@@ -2,7 +2,7 @@ import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/flashcard_merge_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/quick_actions.dart';
-import 'package:flashcards_reader/util/constants.dart';
+import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/sharing/extension_dialog.dart';

@@ -1,4 +1,5 @@
 import 'package:flashcards_reader/model/IO/local_manager.dart';
+import 'package:flashcards_reader/model/entities/reader/book_scanner.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/internet_checker.dart';
@@ -75,9 +76,16 @@ class _MyHomePageState extends ParentState<MyHomePage> {
 
     bindPage(Scaffold(
       appBar: appBar,
-      body: const Center(
+      body: Center(
           child: Column(
-        children: [Text('hello world')],
+        children: [
+          Text('hello world'),
+          IconButton(
+              onPressed: () {
+                BookScanner.scan();
+              },
+              icon: Icon(Icons.add))
+        ],
       )),
       drawer: SideMenu(appBarHeight),
     ));

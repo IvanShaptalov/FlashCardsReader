@@ -1,4 +1,4 @@
-import 'package:flashcards_reader/util/constants.dart';
+import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';

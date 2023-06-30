@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flashcards_reader/util/constants.dart';
+import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 

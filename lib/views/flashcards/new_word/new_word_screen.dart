@@ -6,7 +6,7 @@ import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/translator/api.dart';
 import 'package:flashcards_reader/quick_actions.dart';
-import 'package:flashcards_reader/util/constants.dart';
+import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape_small.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/portrait.dart';

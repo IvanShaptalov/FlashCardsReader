@@ -1,5 +1,5 @@
 import 'package:flashcards_reader/model/entities/translator/api.dart';
-import 'package:flashcards_reader/util/constants.dart';
+import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flashcards_reader/model/entities/tts/core.dart';
-import 'package:flashcards_reader/util/constants.dart';
+import 'package:flashcards_reader/constants.dart';
 
 import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
