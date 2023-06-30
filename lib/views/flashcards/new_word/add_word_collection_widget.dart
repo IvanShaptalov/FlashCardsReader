@@ -2,13 +2,14 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/views/flashcards/flashcard_collection_info.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flutter/material.dart';
 
 class FastAddWordFCcWidget extends StatefulWidget {
   const FastAddWordFCcWidget(this.flashCardCollection, this.updateCallback,
-      {required this.backToListStart, required this.design, super.key});
+      {required this.backElementToStart, required this.design, super.key});
   final Function updateCallback;
-  final Function backToListStart;
+  final Function backElementToStart;
   final ScreenDesign design;
 
   final FlashCardCollection flashCardCollection;
@@ -42,7 +43,8 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
           }
 
           widget.updateCallback();
-          widget.backToListStart();
+          widget.backElementToStart();
+          OverlayNotificationProvider.showOverlayNotification('target collection is ${widget.flashCardCollection.title}', status: NotificationStatus.success);
         },
         child: SizedBox(
           height: SizeConfig.getMediaHeight(context, p: 0.5),

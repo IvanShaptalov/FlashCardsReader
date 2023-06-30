@@ -83,7 +83,7 @@ class PortraitSmallNewWord extends BaseScreenNewWord {
                                         : flashCardCollection[index],
                                     widget.callback,
                                     design: ScreenIdentifier.indentify(context),
-                                    backToListStart: backToStartCallback,
+                                    backElementToStart: backElementToStart,
                                   ))),
                         ),
                       );

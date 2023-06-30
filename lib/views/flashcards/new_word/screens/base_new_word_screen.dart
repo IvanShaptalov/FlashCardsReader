@@ -32,7 +32,7 @@ class BaseScreenNewWord {
     return SideMenu(appBarHeight);
   }
 
-  void backToStartCallback() {
+  void backElementToStart() {
     widget.scrollController.animateTo(
       0.toDouble(),
       duration: const Duration(milliseconds: 500),

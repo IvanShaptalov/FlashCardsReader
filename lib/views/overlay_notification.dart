@@ -28,7 +28,7 @@ class OverlayNotificationProvider {
         ),
         slideDismissDirection: DismissDirection.up,
         background: _setColor(status),
-        duration: const Duration(milliseconds: 800));
+        duration: const Duration(milliseconds: 1600));
   }
 
   static void showInternetError() {
