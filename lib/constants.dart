@@ -244,3 +244,5 @@ List<String> allowedBookExtensions = [
   '.chm',
   '.djvu',
 ];
+
+const String androidBasePath = '/storage/emulated/0/';

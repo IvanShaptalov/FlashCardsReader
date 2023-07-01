@@ -183,7 +183,7 @@ class ThemeDatabaseProvider {
   }
 
   /// write flashcardcollection object to hive database in flashcards box
-  static Future<bool> writeEditAsync(Themes theme,
+  static Future<bool> writeEditAsync(BookThemes theme,
       {bool isTest = false}) async {
     selectSession(isTest);
     try {
@@ -195,13 +195,13 @@ class ThemeDatabaseProvider {
     }
   }
 
-  static Future<Themes> getAsync({bool isTest = false}) async {
+  static Future<BookThemes> getAsync({bool isTest = false}) async {
     selectSession(isTest);
 
     var themeObj = currentSession!.get('theme');
     if (themeObj == null) {
-      await writeEditAsync(Themes.light, isTest: isTest);
-      return Themes.light;
+      await writeEditAsync(BookThemes.light, isTest: isTest);
+      return BookThemes.light;
     } else {
       return themeObj;
     }

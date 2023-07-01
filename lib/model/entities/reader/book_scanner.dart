@@ -4,48 +4,47 @@ import 'dart:io';
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/extension_check.dart';
+import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+// TODO test on old android device
 class BookScanner {
   static Future<bool> getFilePermission() async {
     var status = await Permission.manageExternalStorage.status;
     if (!status.isGranted) {
       await Permission.manageExternalStorage.request();
-      // openAppSettings();
     }
     return status.isGranted;
   }
 
   static Future<void> scan() async {
     if (await getFilePermission()) {
-      print('Permission not granted');
+      debugPrintIt('Permission not granted');
+      OverlayNotificationProvider.showOverlayNotification(
+          'Permission not granted');
 
-      Directory dir = Directory('/storage/emulated/0');
+      Directory dir = Directory(androidBasePath);
       var files = await dirContents(dir);
 
-      print(files);
+      debugPrintIt(files);
+
+      // here we should bind books to the database
+      bindBooks();
     }
   }
 
   static Future<List<FileSystemEntity>> dirContents(Directory dir) {
     var files = <FileSystemEntity>[];
-    int counter = 0;
     var completer = Completer<List<FileSystemEntity>>();
     var lister = dir.list(recursive: true);
     lister.listen((file) {
       try {
-        print('-----$file ---------');
-        counter++;
-
-        if (counter % 10 == 0) {
-          print('-----$counter ---------');
-        }
         if (file is File) {
           String extension = getExtension(file.path);
           if (file.path.contains('Download')) {
             debugPrintIt('Download');
           }
-          print(file.path + ' --- ' + extension);
+          // debugPrintIt(file.path + ' --- ' + extension);
           if (allowedBookExtensions.contains(extension)) {
             files.add(file);
           }
@@ -57,5 +56,9 @@ class BookScanner {
         // should also register onError
         onDone: () => completer.complete(files));
     return completer.future;
+  }
+
+  static Future<void> bindBooks() async {
+    
   }
 }

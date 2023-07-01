@@ -1,4 +1,5 @@
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -6,11 +7,13 @@ import 'package:hive_flutter/hive_flutter.dart';
 class DataBase {
   static Box<FlashCardCollection>? flashcardsSession;
   static Box<String>? themeSession;
-  static Box<Themes>? settingsSession;
+  static Box<BookThemes>? settingsSession;
+  static Box<BookModel>? booksSession;
 
   static Box<FlashCardCollection>? flashcardsTestSession;
-  static Box<Themes>? settingsTestSession;
+  static Box<BookThemes>? settingsTestSession;
   static Box<String>? themeTestSession;
+  static Box<BookModel>? testBooksSession;
 
   static bool dbInitialized = false;
   static bool adaptersRegistered = false;
@@ -26,9 +29,11 @@ class DataBase {
           await Hive.openBox<FlashCardCollection>('flashCardsTest');
       themeSession = await Hive.openBox<String>('theme');
       themeTestSession = await Hive.openBox<String>('testTheme');
-      settingsSession = await Hive.openBox<Themes>('settings');
-      settingsTestSession =
-          await Hive.openBox<Themes>('testSettings');
+      // settingsSession = await Hive.openBox<BookThemes>('settings');
+      booksSession = await Hive.openBox<BookModel>('books');
+      testBooksSession = await Hive.openBox<BookModel>('testBooks');
+
+      settingsTestSession = await Hive.openBox<BookThemes>('testSettings');
 
       // database initialized
       dbInitialized = true;
@@ -44,7 +49,8 @@ class DataBase {
     try {
       Hive.registerAdapter<FlashCardCollection>(FlashCardCollectionAdapter());
       Hive.registerAdapter<FlashCard>(FlashCardAdapter());
-      Hive.registerAdapter<Themes>(ThemesAdapter());
+      // Hive.registerAdapter<BookThemes>(ThemesAdapter());
+      // Hive.registerAdapter<BookModel>(BookModelAdapter());
       debugPrintIt('Hive adapters registered');
     } catch (e) {
       debugPrintIt('Error registering Hive adapters: $e');

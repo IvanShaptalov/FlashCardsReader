@@ -6,54 +6,54 @@ part of 'enums.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ThemesAdapter extends TypeAdapter<Themes> {
+class BookThemesAdapter extends TypeAdapter<BookThemes> {
   @override
   final int typeId = 3;
 
   @override
-  Themes read(BinaryReader reader) {
+  BookThemes read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return Themes.darkSoft;
+        return BookThemes.darkSoft;
       case 1:
-        return Themes.dark;
+        return BookThemes.dark;
       case 2:
-        return Themes.light;
+        return BookThemes.light;
       case 3:
-        return Themes.lightSoft;
+        return BookThemes.lightSoft;
       case 4:
-        return Themes.grey;
+        return BookThemes.grey;
       case 5:
-        return Themes.sepia;
+        return BookThemes.sepia;
       case 6:
-        return Themes.sepiaSoft;
+        return BookThemes.sepiaSoft;
       default:
-        return Themes.darkSoft;
+        return BookThemes.darkSoft;
     }
   }
 
   @override
-  void write(BinaryWriter writer, Themes obj) {
+  void write(BinaryWriter writer, BookThemes obj) {
     switch (obj) {
-      case Themes.darkSoft:
+      case BookThemes.darkSoft:
         writer.writeByte(0);
         break;
-      case Themes.dark:
+      case BookThemes.dark:
         writer.writeByte(1);
         break;
-      case Themes.light:
+      case BookThemes.light:
         writer.writeByte(2);
         break;
-      case Themes.lightSoft:
+      case BookThemes.lightSoft:
         writer.writeByte(3);
         break;
-      case Themes.grey:
+      case BookThemes.grey:
         writer.writeByte(4);
         break;
-      case Themes.sepia:
+      case BookThemes.sepia:
         writer.writeByte(5);
         break;
-      case Themes.sepiaSoft:
+      case BookThemes.sepiaSoft:
         writer.writeByte(6);
         break;
     }
@@ -65,7 +65,7 @@ class ThemesAdapter extends TypeAdapter<Themes> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ThemesAdapter &&
+      other is BookThemesAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

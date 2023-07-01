@@ -5,7 +5,7 @@ part 'enums.g.dart';
 Uuid uuid = const Uuid();
 
 @HiveType(typeId: 3)
-enum Themes {
+enum BookThemes {
   @HiveField(0)
   darkSoft,
   @HiveField(1)

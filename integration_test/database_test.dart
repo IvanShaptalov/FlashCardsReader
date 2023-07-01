@@ -261,15 +261,15 @@ void main() async {
 
   group('Database theme', () {
     testWidgets('theme from hive database', (widgetTester) async {
-      await ThemeDatabaseProvider.writeEditAsync(Themes.dark, isTest: true);
+      await ThemeDatabaseProvider.writeEditAsync(BookThemes.dark, isTest: true);
       var theme = await ThemeDatabaseProvider.getAsync(isTest: true);
-      expect(theme, Themes.dark);
+      expect(theme, BookThemes.dark);
     });
 
     testWidgets('theme from empty hive database', (widgetTester) async {
       await ThemeDatabaseProvider.deleteAsync(isTest: true);
       var theme = await ThemeDatabaseProvider.getAsync(isTest: true);
-      expect(theme, Themes.light);
+      expect(theme, BookThemes.light);
     });
   });
 }
