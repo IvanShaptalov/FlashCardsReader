@@ -79,12 +79,12 @@ class _MyHomePageState extends ParentState<MyHomePage> {
       body: Center(
           child: Column(
         children: [
-          Text('hello world'),
+          const Text('hello world'),
           IconButton(
               onPressed: () {
                 BookScanner.scan();
               },
-              icon: Icon(Icons.add))
+              icon: const Icon(Icons.add))
         ],
       )),
       drawer: SideMenu(appBarHeight),

@@ -16,12 +16,13 @@ class BookStatusAdapter extends TypeAdapter<BookStatus> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return BookStatus()
-      ..reading = fields[0] as bool
-      ..read = fields[1] as bool
-      ..wantToRead = fields[2] as bool
-      ..favourite = fields[3] as bool
-      ..onPage = fields[4] as int;
+    return BookStatus(
+      reading: fields[0] as bool,
+      read: fields[1] as bool,
+      wantToRead: fields[2] as bool,
+      favourite: fields[3] as bool,
+      onPage: fields[4] as int,
+    );
   }
 
   @override
@@ -61,7 +62,9 @@ class BookSettingsAdapter extends TypeAdapter<BookSettings> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return BookSettings()..theme = fields[0] as BookThemes;
+    return BookSettings(
+      theme: fields[0] as BookThemes,
+    );
   }
 
   @override
@@ -83,9 +86,55 @@ class BookSettingsAdapter extends TypeAdapter<BookSettings> {
           typeId == other.typeId;
 }
 
-class BookModelAdapter extends TypeAdapter<BookModel> {
+class BookFileAdapter extends TypeAdapter<BookFile> {
   @override
   final int typeId = 6;
+
+  @override
+  BookFile read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return BookFile(
+      path: fields[0] as String?,
+      name: fields[1] as String?,
+      extension: fields[2] as String?,
+      size: fields[3] as int?,
+      lastModified: fields[4] as String?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, BookFile obj) {
+    writer
+      ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.path)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.extension)
+      ..writeByte(3)
+      ..write(obj.size)
+      ..writeByte(4)
+      ..write(obj.lastModified);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BookFileAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class BookModelAdapter extends TypeAdapter<BookModel> {
+  @override
+  final int typeId = 7;
 
   @override
   BookModel read(BinaryReader reader) {
@@ -103,13 +152,16 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       textSnippet: fields[6] as String?,
       path: fields[7] as String?,
       isBinded: fields[8] as bool?,
+      status: fields[9] as BookStatus,
+      settings: fields[10] as BookSettings,
+      file: fields[11] as BookFile,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -127,7 +179,13 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       ..writeByte(7)
       ..write(obj.path)
       ..writeByte(8)
-      ..write(obj.isBinded);
+      ..write(obj.isBinded)
+      ..writeByte(9)
+      ..write(obj.status)
+      ..writeByte(10)
+      ..write(obj.settings)
+      ..writeByte(11)
+      ..write(obj.file);
   }
 
   @override
