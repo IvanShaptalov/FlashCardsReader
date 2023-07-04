@@ -32,6 +32,10 @@ dependencies:
   # READER dependencies
   pdf: ^3.0.0
   fb2_parse: ^1.0.1
+  epubx: ^4.0.0
+  html: ^0.15.4
+  archive: ^3.3.7
+  xml: ^6.3.0
 
   cached_network_image: ^3.0.0
   connectivity: ^3.0.6
