@@ -30,7 +30,8 @@ dependencies:
   flutter_dialogs: ^3.0.0
 
   # READER dependencies
-  pdf: ^3.0.0
+  pdfx: ^2.4.0
+  printing: ^5.9.3
   fb2_parse: ^1.0.1
   epubx: ^4.0.0
   html: ^0.15.4

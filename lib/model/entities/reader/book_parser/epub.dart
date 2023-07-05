@@ -109,8 +109,7 @@ class BinderEpub {
   Future<String> _saveCover(ArchiveFile fileBytes) async {
     // print(fileBytes);
     String ext = getExtension(fileBytes.name);
-    String path =
-        (await getApplicationDocumentsDirectory()).path + uuid.v4() + ext;
+    String path = (await getExternalStorageDirectory())!.path + uuid.v4() + ext;
     await File(path).create().then((value) => value
         .writeAsBytes(fileBytes.content)
         .then((value) => print('$value saved succesfully')));
