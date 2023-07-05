@@ -1,3 +1,5 @@
+// ignore_for_file: sdk_version_since
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -5,9 +7,7 @@ import 'dart:io';
 import 'package:archive/archive.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
-import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/extension_check.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:xml/xml.dart';
 
