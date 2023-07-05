@@ -2,16 +2,18 @@ import 'dart:async';
 // import 'dart:ffi';
 import 'dart:io';
 
+import 'package:flashcards_reader/bloc/providers/book_provider.dart';
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/epub.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/fb2.dart';
-import 'package:flashcards_reader/model/entities/reader/book_parser/mobi.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/pdf.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/txt.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/extension_check.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'book_model.dart';
 
 // TODO test on old android device
 class BookScanner {
@@ -47,7 +49,7 @@ class BookScanner {
         if (file is File) {
           String extension = getExtension(file.path);
           if (file.path.contains('Download')) {
-            debugPrintIt('Download');
+            // debugPrintIt('Download');
           }
           // debugPrintIt(file.path + ' --- ' + extension);
           if (allowedBookExtensions.contains(extension)) {
@@ -70,11 +72,11 @@ class BookScanner {
       File file = File(fileEntity.path);
       // TODO scan in c++ for performance in the future
       String extension = getExtension(file.path);
-
+      BookModel? model;
       switch (extension) {
         case '.epub':
           try {
-            await BinderEpub().bind(file);
+            model = await BinderEpub().bind(file);
           } catch (e) {
             debugPrintIt('$e error in epub');
           }
@@ -83,7 +85,7 @@ class BookScanner {
 
         case '.pdf':
           try {
-            await BinderPdf.bind(file);
+            model = await BinderPdf.bind(file);
           } catch (e) {
             debugPrintIt('$e error in pdf');
           }
@@ -91,21 +93,23 @@ class BookScanner {
 
         case '.fb2':
           try {
-            await BinderFB2.bind(file);
+            model = await BinderFB2().bind(file);
           } catch (e) {
             debugPrintIt('$e error in fb2');
           }
           break;
-        case '.mobi':
+
+        case '.zip':
           try {
-            await BinderMobi.bind(file);
+            model = await BinderFB2().bind(file);
           } catch (e) {
-            debugPrintIt('$e error in mobi');
+            debugPrintIt('$e error in fb2 zip');
           }
           break;
+
         case '.txt':
           try {
-            await BinderTxt.bind(file);
+            model = await BinderTxt.bind(file);
           } catch (e) {
             debugPrintIt('$e error in txt');
           }
@@ -113,6 +117,11 @@ class BookScanner {
         default:
           break;
       }
+      if (model != null && !BookProvider.models.contains(model)) {
+        BookProvider.models.add(model);
+      }
+      print('================book models');
+      print(BookProvider.models);
     }
   }
 }
