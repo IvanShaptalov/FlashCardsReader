@@ -155,13 +155,14 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       status: fields[9] as BookStatus,
       settings: fields[10] as BookSettings,
       file: fields[11] as BookFile,
+      lastAccess: fields[12] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookModel obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -185,7 +186,9 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       ..writeByte(10)
       ..write(obj.settings)
       ..writeByte(11)
-      ..write(obj.file);
+      ..write(obj.file)
+      ..writeByte(12)
+      ..write(obj.lastAccess);
   }
 
   @override

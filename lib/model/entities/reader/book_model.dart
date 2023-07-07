@@ -128,6 +128,10 @@ class BookModel {
   BookSettings settings;
   @HiveField(11)
   BookFile file;
+  @HiveField(12)
+  DateTime lastAccess = DateTime.now();
+
+  int id() => "${title ?? ''}$description${author ?? ''}".hashCode;
 
   BookModel({
     this.title,
@@ -142,22 +146,23 @@ class BookModel {
     required this.status,
     required this.settings,
     required this.file,
+    required this.lastAccess,
   });
 
   factory BookModel.fromJson(Map<String, dynamic> json) {
     return BookModel(
-      title: json['title'],
-      author: json['author'],
-      description: json['description'],
-      language: json['language'],
-      pageCount: json['pageCount'],
-      textSnippet: json['textSnippet'],
-      path: json['path'],
-      isBinded: json['isBinded'],
-      status: BookStatus.fromJson(json['status']),
-      settings: BookSettings.fromJson(json['settings']),
-      file: BookFile.fromJson(json['file']),
-    );
+        title: json['title'],
+        author: json['author'],
+        description: json['description'],
+        language: json['language'],
+        pageCount: json['pageCount'],
+        textSnippet: json['textSnippet'],
+        path: json['path'],
+        isBinded: json['isBinded'],
+        status: BookStatus.fromJson(json['status']),
+        settings: BookSettings.fromJson(json['settings']),
+        file: BookFile.fromJson(json['file']),
+        lastAccess: DateTime.parse(json['lastAccess']));
   }
 
   Map<String, dynamic> toJson() => {
@@ -172,7 +177,14 @@ class BookModel {
         'status': status.toJson(),
         'settings': settings.toJson(),
         'file': file.toJson(),
+        'lastAccess': lastAccess.toIso8601String(),
       };
+
+  static List<BookModel> sortedByDate(List<BookModel> listBook) {
+    List<BookModel> flist = listBook.toList();
+    flist.sort((a, b) => b.lastAccess.compareTo(a.lastAccess));
+    return flist;
+  }
 
   @override
   String toString() {

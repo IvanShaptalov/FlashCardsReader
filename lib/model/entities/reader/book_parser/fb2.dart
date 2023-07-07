@@ -58,6 +58,7 @@ class BinderFB2 {
     BookModel fb2Book = BookModel(
         title: getName(file.path),
         path: file.path,
+        lastAccess: DateTime.now(),
         textSnippet: '',
         status: BookStatus(
           reading: false,

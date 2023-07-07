@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/database/core/core.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 
@@ -215,6 +216,43 @@ class ThemeDatabaseProvider {
     } catch (e) {
       debugPrintIt('error while delete flashcardCollection $e');
       return false;
+    }
+  }
+}
+
+class BookDatabaseProvider {
+  static var currentSession = DataBase.booksSession;
+
+  static void selectSession(bool isTest) {
+    if (isTest) {
+      debugPrintIt('test session selected');
+      currentSession = DataBase.booksSession;
+    } else {
+      debugPrintIt('normal session selected');
+      currentSession = DataBase.testBooksSession;
+    }
+  }
+
+  /// write book object to hive database in  box
+  static Future<bool> writeEditAsync(BookModel book,
+      {bool isTest = false}) async {
+    selectSession(isTest);
+    try {
+      await currentSession!.put(book.id(), book);
+      return true;
+    } catch (e) {
+      debugPrintIt('error while write or edit books $e');
+      return false;
+    }
+  }
+
+  static List<BookModel> getAll({bool isTest = false}) {
+    selectSession(isTest);
+    try {
+      return BookModel.sortedByDate(currentSession!.values.toList());
+    } catch (e) {
+      debugPrintIt('error while get books $e');
+      return [];
     }
   }
 }

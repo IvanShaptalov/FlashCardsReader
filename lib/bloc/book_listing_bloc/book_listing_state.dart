@@ -14,8 +14,7 @@ class BookState {
 
   /// ===============================================================[PROVIDER METHODS]===============================================================
   BookState copyWith({List<BookModel>? books}) {
-    return BookState(
-        books: /* FlashcardDatabaseProvider.getAllFromTrash(fromTrash) */ []);
+    return BookState(books: BookDatabaseProvider.getAll());
   }
 
   Future<BookState> deletePermanently(List<BookModel> books) async {

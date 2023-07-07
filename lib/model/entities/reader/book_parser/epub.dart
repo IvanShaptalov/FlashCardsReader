@@ -26,6 +26,7 @@ class BinderEpub {
       title: title.isEmpty ? getName(file.path) : title,
       path: file.path,
       textSnippet: '',
+      lastAccess: DateTime.now(),
       status: BookStatus(
         reading: false,
         read: false,

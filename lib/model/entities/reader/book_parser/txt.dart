@@ -27,6 +27,7 @@ class BinderTxt {
     BookModel txtBook = BookModel(
         title: getName(file.path),
         path: file.path,
+        lastAccess: DateTime.now(),
         textSnippet: snippet,
         status: BookStatus(
           reading: false,

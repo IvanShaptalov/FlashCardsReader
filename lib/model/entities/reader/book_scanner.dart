@@ -2,15 +2,14 @@ import 'dart:async';
 // import 'dart:ffi';
 import 'dart:io';
 
-import 'package:flashcards_reader/bloc/providers/book_provider.dart';
 import 'package:flashcards_reader/constants.dart';
+import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/epub.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/fb2.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/pdf.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/txt.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/extension_check.dart';
-import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'book_model.dart';
@@ -26,17 +25,17 @@ class BookScanner {
   }
 
   static Future<void> scan() async {
+    Directory dir = Directory(androidBasePath);
+    var files = await dirContents(dir);
     if (await getFilePermission()) {
-      Directory dir = Directory(androidBasePath);
-      var files = await dirContents(dir);
-
       // here we should bind books to the database
       bindBooks(files);
     } else {
-      debugPrintIt('Permission not granted');
-
-      OverlayNotificationProvider.showOverlayNotification(
-          'Permission not granted');
+      try {
+        bindBooks(files);
+      } catch (e) {
+        debugPrintIt('Permission not granted: $e');
+      }
     }
   }
 
@@ -117,11 +116,12 @@ class BookScanner {
         default:
           break;
       }
-      if (model != null && !BookProvider.models.contains(model)) {
-        BookProvider.models.add(model);
+      if (model != null && !BookDatabaseProvider.getAll().contains(model)) {
+        BookDatabaseProvider.writeEditAsync(model);
       }
-      print('================book models');
-      print(BookProvider.models);
     }
+    print('================book models');
+    print(BookDatabaseProvider.getAll());
+    print(BookDatabaseProvider.getAll().length);
   }
 }

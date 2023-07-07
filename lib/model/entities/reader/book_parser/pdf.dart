@@ -30,6 +30,7 @@ class BinderPdf {
         title: getName(file.path),
         path: file.path,
         textSnippet: '',
+        lastAccess: DateTime.now(),
         status: BookStatus(
           reading: false,
           read: false,

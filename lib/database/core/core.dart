@@ -49,8 +49,11 @@ class DataBase {
     try {
       Hive.registerAdapter<FlashCardCollection>(FlashCardCollectionAdapter());
       Hive.registerAdapter<FlashCard>(FlashCardAdapter());
-      // Hive.registerAdapter<BookThemes>(ThemesAdapter());
-      // Hive.registerAdapter<BookModel>(BookModelAdapter());
+      Hive.registerAdapter<BookModel>(BookModelAdapter());
+      Hive.registerAdapter<BookStatus>(BookStatusAdapter());
+      Hive.registerAdapter<BookSettings>(BookSettingsAdapter());
+      Hive.registerAdapter<BookFile>(BookFileAdapter());
+      Hive.registerAdapter<BookThemes>(BookThemesAdapter());
       debugPrintIt('Hive adapters registered');
     } catch (e) {
       debugPrintIt('Error registering Hive adapters: $e');
