@@ -5,9 +5,9 @@ part 'book_model.g.dart';
 @HiveType(typeId: 4)
 class BookStatus {
   @HiveField(0)
-  bool reading = false;
+  bool _reading = false;
   @HiveField(1)
-  bool read = false;
+  bool _read = false;
   @HiveField(2)
   bool wantToRead = false;
   @HiveField(3)
@@ -15,13 +15,29 @@ class BookStatus {
   @HiveField(4)
   int onPage = 0;
 
+  /// one from two: already read or reading
+  set reading(bool reading) {
+    _reading = reading;
+    _read = !reading;
+  }
+
+  /// one from two: already read or reading
+  set read(bool read) {
+    _read = read;
+    _reading = !read;
+  }
+
+  bool get read => _read;
+  bool get reading => _reading;
+
   BookStatus({
-    required this.reading,
-    required this.read,
+    required bool reading,
+    required bool read,
     required this.wantToRead,
     required this.favourite,
     required this.onPage,
-  });
+  })  : _read = read,
+        _reading = reading;
 
   factory BookStatus.fromJson(Map<String, dynamic> json) {
     return BookStatus(
@@ -34,8 +50,8 @@ class BookStatus {
   }
 
   Map<String, dynamic> toJson() => {
-        'reading': reading,
-        'read': read,
+        'reading': _reading,
+        'read': _read,
         'wantToRead': wantToRead,
         'favourite': favourite,
         'onPage': onPage,

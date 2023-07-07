@@ -15,8 +15,17 @@ class BookBloc extends Bloc<BookEvent, BookState> {
   }
 
   /// realisation of the event, event trigger emit
-  getBooks(GetBooksEvent event, Emitter<BookState> emit) {
-    emit(state);
+  getBooks(GetBooksEvent event, Emitter<BookState> emit) async {
+    if (![event.favourite, event.read, event.reading, event.wantToRead]
+        .contains(true)) {
+      emit(state);
+    } else {
+      emit(await state.getBooksFiltered(
+          reading: event.reading,
+          read: event.read,
+          wantToRead: event.wantToRead,
+          favourite: event.favourite));
+    }
   }
 
   addEdit(UpdateBookEvent event, Emitter<BookState> emit) async {

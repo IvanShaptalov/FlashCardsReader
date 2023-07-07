@@ -30,9 +30,9 @@ class BookStatusAdapter extends TypeAdapter<BookStatus> {
     writer
       ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.reading)
+      ..write(obj._reading)
       ..writeByte(1)
-      ..write(obj.read)
+      ..write(obj._read)
       ..writeByte(2)
       ..write(obj.wantToRead)
       ..writeByte(3)

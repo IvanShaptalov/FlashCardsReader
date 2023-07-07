@@ -255,4 +255,40 @@ class BookDatabaseProvider {
       return [];
     }
   }
+
+  static List<BookModel> getFiltered(
+      {bool isTest = false,
+      reading = false,
+      read = false,
+      wantToRead = false,
+      favourite = false}) {
+    selectSession(isTest);
+    try {
+      if (reading == true) {
+        return BookModel.sortedByDate(currentSession!.values
+            .toList()
+            .where((element) => element.status.reading == true)
+            .toList());
+      } else if (read == true) {
+        return BookModel.sortedByDate(currentSession!.values
+            .toList()
+            .where((element) => element.status.read == true)
+            .toList());
+      } else if (wantToRead == true) {
+        return BookModel.sortedByDate(currentSession!.values
+            .toList()
+            .where((element) => element.status.wantToRead == true)
+            .toList());
+      } else if (favourite == true) {
+        return BookModel.sortedByDate(currentSession!.values
+            .toList()
+            .where((element) => element.status.favourite == true)
+            .toList());
+      }
+      return BookModel.sortedByDate(currentSession!.values.toList());
+    } catch (e) {
+      debugPrintIt('error while get books $e');
+      return [];
+    }
+  }
 }

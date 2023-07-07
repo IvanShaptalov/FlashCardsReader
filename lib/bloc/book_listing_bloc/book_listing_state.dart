@@ -9,22 +9,28 @@ class BookState {
 
   // default state
   factory BookState.initial() =>
-      BookState(books: [] //TODO add all books from database
-          );
+      BookState(books: BookDatabaseProvider.getAll());
 
   /// ===============================================================[PROVIDER METHODS]===============================================================
   BookState copyWith({List<BookModel>? books}) {
     return BookState(books: BookDatabaseProvider.getAll());
   }
 
-  Future<BookState> deletePermanently(List<BookModel> books) async {
-    // await FlashcardDatabaseProvider.deleteFlashCardsAsync(
-    //     [flashCardCollection]);
-    return BookState.initial().copyWith();
+  Future<BookState> getBooksFiltered(
+      {reading = false,
+      read = false,
+      wantToRead = false,
+      favourite = false}) async {
+    return BookState.initial().copyWith(
+        books: BookDatabaseProvider.getFiltered(
+            reading: reading,
+            read: read,
+            wantToRead: wantToRead,
+            favourite: favourite));
   }
 
   Future<BookState> updateBookAsync(BookModel model) async {
-    // await FlashcardDatabaseProvider.writeEditAsync(flashCardCollection);
-    return BookState.initial().copyWith(books: [] /* books here */);
+    await BookDatabaseProvider.writeEditAsync(model);
+    return BookState.initial().copyWith(books: BookDatabaseProvider.getAll());
   }
 }
