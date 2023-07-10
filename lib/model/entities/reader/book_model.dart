@@ -17,6 +17,20 @@ class BookStatus {
   @HiveField(5)
   int onPage = 0;
 
+  @override
+  String toString() {
+    return 'reading: $readingPrivate readPrivate: $readPrivate toRead: $toRead favourite $favourite inTrash :$inTrash page: $onPage';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is BookStatus &&
+      other.runtimeType == runtimeType &&
+      other.hashCode == hashCode;
+
+  @override
+  int get hashCode => toString().hashCode;
+
   /// one from two: already read or reading
   set reading(bool reading) {
     readingPrivate = reading;
@@ -70,6 +84,20 @@ class BookSettings {
   BookSettings({
     required this.theme,
   });
+
+  @override
+  String toString() {
+    return 'theme: ${theme.toString()}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is BookSettings &&
+      other.runtimeType == runtimeType &&
+      other.hashCode == hashCode;
+
+  @override
+  int get hashCode => toString().hashCode;
 
   factory BookSettings.fromJson(Map<String, dynamic> json) {
     return BookSettings(
@@ -208,6 +236,13 @@ class BookModel {
 
   @override
   String toString() {
-    return 'BookModel{title: $title, author: $author, description: $description, cover: $cover, language: $language, pageCount: $pageCount, textSnippet: $textSnippet, path: $path, isBinded: $isBinded}';
+    return 'BookModel{title: $title, author: $author, description: $description, cover: $cover, language: $language, pageCount: $pageCount, textSnippet: $textSnippet, path: $path, isBinded: $isBinded';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      other is BookModel && other.hashCode == hashCode;
+
+  @override
+  int get hashCode => toString().hashCode;
 }

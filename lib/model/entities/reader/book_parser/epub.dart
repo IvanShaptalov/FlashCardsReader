@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:archive/archive.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/extension_check.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:xml/xml.dart';
@@ -15,6 +16,7 @@ class BinderEpub {
   String title = '';
   String author = '';
   String language = '';
+  String description = '';
   String coverPath = '';
   ZipDecoder zip = ZipDecoder();
 
@@ -46,7 +48,7 @@ class BinderEpub {
       language: language,
       author: author,
     );
-    print(epubBook);
+    debugPrintIt(epubBook);
     return epubBook;
   }
 
@@ -75,6 +77,9 @@ class BinderEpub {
             if (meta.qualifiedName.toString().contains('language')) {
               language = meta.innerText;
             }
+            if (meta.qualifiedName.toString().contains('description')) {
+              description = meta.innerText;
+            }
           }
         }
 
@@ -87,35 +92,38 @@ class BinderEpub {
       // print(document);
 
       final items = document.findAllElements('item');
-      String? innerCoverPath = items
-          .firstWhere((p0) => p0.attributes
-              .where((p0) =>
-                  p0.value == 'image/jpeg' ||
-                  p0.value.toString().contains('cover'))
-              .isNotEmpty)
-          .attributes
-          .firstOrNull
-          ?.value
-          .toString();
+      coverPath = items
+              .firstWhere((p0) => p0.attributes
+                  .where((p0) =>
+                      p0.value == 'image/jpeg' ||
+                      p0.value.toString().contains('cover.jpg')  ||
+                      p0.value.toString().contains('cover.png'))
+                  .isNotEmpty)
+              .attributes
+              .firstOrNull
+              ?.value
+              .toString() ??
+          '';
       // debugPrintIt(coverPath);
-      if (innerCoverPath != null) {
-        var coverFileBytes = archive.files
-            .firstWhere((p0) => p0.toString().contains(innerCoverPath));
-        coverPath = await _saveCover(coverFileBytes);
+      if (coverPath.isNotEmpty) {
+        var coverFileBytes =
+            archive.files.firstWhere((p0) => p0.toString().contains(coverPath));
+        coverPath = await _saveCover(
+            coverFileBytes, getName(file.path.replaceAll('/', '')));
       }
     } else {
       // print('opfFile is null');
     }
   }
 
-  Future<String> _saveCover(ArchiveFile fileBytes) async {
+  Future<String> _saveCover(ArchiveFile fileBytes, String name) async {
     // print(fileBytes);
     String ext = getExtension(fileBytes.name);
-    String path = (await getExternalStorageDirectory())!.path + uuid.v4() + ext;
+    String path = (await getExternalStorageDirectory())!.path + name + ext;
     await File(path).create().then((value) => value
         .writeAsBytes(fileBytes.content)
-        .then((value) => print('$value saved succesfully')));
-    print(File(path).existsSync());
+        .then((value) => debugPrintIt('$value saved succesfully')));
+    debugPrintIt(File(path).existsSync());
     return path;
   }
 }

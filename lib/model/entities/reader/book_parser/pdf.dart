@@ -17,7 +17,7 @@ class BinderPdf {
         await page.render(width: page.width, height: page.height);
     if (pageImage != null) {
       coverPath = (await getExternalStorageDirectory())!.path +
-          uuid.v4() +
+          getName(file.path.replaceAll('/', '').replaceAll('\'', '')) +
           pageImage.format.toString();
 
       File(coverPath).create().then((value) => value

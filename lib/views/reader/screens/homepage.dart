@@ -10,6 +10,7 @@ class ReadingHomePage extends StatefulWidget {
   const ReadingHomePage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ReadingHomePageState createState() => _ReadingHomePageState();
 }
 
@@ -56,30 +57,23 @@ class HomePageState extends ParentState<ReadingHomePageView> {
     ),
   ];
 
-  final _kTabPages = <Widget>[
-    const BookCatalog(
-      bookStatus: BookStatus.allBooks,
-    ),
-    const BookCatalog(
-      bookStatus: BookStatus.reading,
-    ),
-    const BookCatalog(
-      bookStatus: BookStatus.favourites,
-    ),
-    const BookCatalog(
-      bookStatus: BookStatus.toRead,
-    ),
-    const BookCatalog(
-      bookStatus: BookStatus.haveRead,
-    ),
-    const BookCatalog(
-      bookStatus: BookStatus.inTrash,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BookBloc, BookState>(builder: (context, state) {
+      final kTabPages = <Widget>[
+        BookCatalog(
+          bookStatus: BookStatus.allBooks,
+          upperContext: context,
+        ),
+        BookCatalog(
+          bookStatus: BookStatus.reading,
+          upperContext: context,
+        ),
+        BookCatalog(bookStatus: BookStatus.favourites, upperContext: context),
+        BookCatalog(bookStatus: BookStatus.toRead, upperContext: context),
+        BookCatalog(bookStatus: BookStatus.haveRead, upperContext: context),
+        BookCatalog(bookStatus: BookStatus.inTrash, upperContext: context),
+      ];
       var appbar = AppBar(
         elevation: 0,
         title: const Text(
@@ -105,7 +99,7 @@ class HomePageState extends ParentState<ReadingHomePageView> {
           appBar: appbar,
           body: TabBarView(
             physics: const BouncingScrollPhysics(),
-            children: _kTabPages,
+            children: kTabPages,
           ),
         ),
       );

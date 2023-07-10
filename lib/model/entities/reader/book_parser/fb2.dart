@@ -32,19 +32,19 @@ class BinderFB2 {
       }
 
       /// parse fb2 file
-      FB2Book _book = FB2Book(path);
-      await _book.parse();
+      FB2Book fb2BookRaw = FB2Book(path);
+      await fb2BookRaw.parse();
 
-      title = _book.description.bookTitle.toString();
-      snippet = _book.body.epigraph ?? '';
-      if (_book.description.authors != null) {
-        for (var a in _book.description.authors!) {
+      title = fb2BookRaw.description.bookTitle.toString();
+      snippet = fb2BookRaw.body.epigraph ?? '';
+      if (fb2BookRaw.description.authors != null) {
+        for (var a in fb2BookRaw.description.authors!) {
           author += '${a.firstName} ${a.lastName};';
         }
       }
-      language = _book.description.lang ?? '';
-      if (_book.images.isNotEmpty) {
-        var image = _book.images.first;
+      language = fb2BookRaw.description.lang ?? '';
+      if (fb2BookRaw.images.isNotEmpty) {
+        var image = fb2BookRaw.images.first;
         coverPath =
             '${(await getExternalStorageDirectory())!.path}${uuid.v4()}jpg';
         File(coverPath).create().then((value) => value

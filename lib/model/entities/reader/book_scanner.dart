@@ -65,7 +65,6 @@ class BookScanner {
   }
 
   static Future<void> bindBooks(List<FileSystemEntity> files) async {
-    // TODO bind books to the database
     debugPrintIt('Binding books to the database');
     for (var fileEntity in files) {
       File file = File(fileEntity.path);
@@ -120,8 +119,8 @@ class BookScanner {
         BookDatabaseProvider.writeEditAsync(model);
       }
     }
-    print('================book models');
-    print(BookDatabaseProvider.getAll());
-    print(BookDatabaseProvider.getAll().length);
+    debugPrintIt('================book models');
+    debugPrintIt(BookDatabaseProvider.getAll());
+    debugPrintIt(BookDatabaseProvider.getAll().length);
   }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/model/entities/reader/open_book.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,9 @@ enum DotsMenu { share, trash, edit }
 enum BookStatus { favourites, haveRead, reading, toRead, allBooks, inTrash }
 
 class BookCatalog extends StatefulWidget {
-  const BookCatalog({required this.bookStatus, super.key});
+  const BookCatalog(
+      {required this.bookStatus, super.key, required this.upperContext});
+  final BuildContext upperContext;
   final BookStatus bookStatus;
   static const icon = Icon(Icons.book_sharp);
   static const String booksTitle = 'Books';
@@ -76,8 +79,6 @@ class BookCatalogState extends State<BookCatalog> {
             .where((element) => !element.status.inTrash)
             .toList();
     }
-
-    print('data: $data');
   }
 
   @override
@@ -195,8 +196,6 @@ class BookCatalogState extends State<BookCatalog> {
                                                         ..status.favourite =
                                                             !book.status
                                                                 .favourite));
-                                              // TODO resolve setstate problem
-                                              setState(() {});
                                             },
                                           ),
                                           GestureDetector(
@@ -212,8 +211,6 @@ class BookCatalogState extends State<BookCatalog> {
                                                       bookModel: book
                                                         ..status.toRead = !book
                                                             .status.toRead));
-                                              // TODO resolve setstate problem
-                                              setState(() {});
                                             },
                                           ),
                                           GestureDetector(
@@ -224,21 +221,19 @@ class BookCatalogState extends State<BookCatalog> {
                                                   : null,
                                             ),
                                             onTap: () {
-                                              BlocProvider.of<BookBloc>(context)
-                                                  .add(UpdateBookEvent(
+                                              context.read<BookBloc>().add(
+                                                  UpdateBookEvent(
                                                       bookModel: book
                                                         ..status.haveRead =
                                                             !book.status
                                                                 .haveRead));
-                                              // TODO resolve setstate problem
-                                              setState(() {});
                                             },
                                           ),
                                           PopupMenuButton<DotsMenu>(
                                             initialValue: selectedMenu,
                                             // Callback that sets the selected popup menu item.
                                             onSelected: (DotsMenu item) {
-                                              print(item.toString());
+                                              debugPrintIt(item.toString());
                                               switch (item) {
                                                 case DotsMenu.trash:
                                                   BlocProvider.of<BookBloc>(
@@ -247,12 +242,9 @@ class BookCatalogState extends State<BookCatalog> {
                                                           bookModel: book
                                                             ..status.inTrash =
                                                                 true));
-                                                  // TODO resolve setstate problem
-                                                  setState(() {});
                                                   break;
                                                 default:
                                               }
-                                              setState(() {});
                                             },
                                             itemBuilder:
                                                 (BuildContext context) =>
@@ -289,8 +281,6 @@ class BookCatalogState extends State<BookCatalog> {
                                                       bookModel: book
                                                         ..status.inTrash =
                                                             false));
-                                              // TODO resolve setstate problem
-                                              setState(() {});
                                             },
                                           ),
                                         ],
