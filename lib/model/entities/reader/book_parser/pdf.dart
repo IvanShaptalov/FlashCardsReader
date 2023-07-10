@@ -10,17 +10,17 @@ import 'package:pdfx/pdfx.dart';
 class BinderPdf {
   static Future<BookModel> bind(File file) async {
     String ext = getExtension(file.path);
-
+    String coverPath = '';
     final document = await PdfDocument.openFile(file.path);
     final page = await document.getPage(1);
     PdfPageImage? pageImage =
         await page.render(width: page.width, height: page.height);
     if (pageImage != null) {
-      String path = (await getExternalStorageDirectory())!.path +
+      coverPath = (await getExternalStorageDirectory())!.path +
           uuid.v4() +
           pageImage.format.toString();
 
-      File(path).create().then((value) => value
+      File(coverPath).create().then((value) => value
           .writeAsBytes(pageImage.bytes)
           .then((value) => debugPrintIt('$value saved succesfully')));
     }
@@ -28,13 +28,14 @@ class BinderPdf {
     // model binding to ram
     BookModel pdfBook = BookModel(
         title: getName(file.path),
+        cover: coverPath,
         path: file.path,
         textSnippet: '',
         lastAccess: DateTime.now(),
         status: BookStatus(
           reading: false,
           read: false,
-          wantToRead: false,
+          toRead: false,
           favourite: false,
           onPage: 0,
         ),

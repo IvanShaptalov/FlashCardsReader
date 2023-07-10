@@ -32,7 +32,7 @@ class BinderTxt {
         status: BookStatus(
           reading: false,
           read: false,
-          wantToRead: false,
+          toRead: false,
           favourite: false,
           onPage: 0,
         ),

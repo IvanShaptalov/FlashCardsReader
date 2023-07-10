@@ -19,7 +19,7 @@ class BookStatusAdapter extends TypeAdapter<BookStatus> {
     return BookStatus(
       reading: fields[0] as bool,
       read: fields[1] as bool,
-      wantToRead: fields[2] as bool,
+      toRead: fields[2] as bool,
       favourite: fields[3] as bool,
       onPage: fields[4] as int,
     );
@@ -34,7 +34,7 @@ class BookStatusAdapter extends TypeAdapter<BookStatus> {
       ..writeByte(1)
       ..write(obj._read)
       ..writeByte(2)
-      ..write(obj.wantToRead)
+      ..write(obj.toRead)
       ..writeByte(3)
       ..write(obj.favourite)
       ..writeByte(4)

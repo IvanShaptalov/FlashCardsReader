@@ -9,10 +9,12 @@ class BookStatus {
   @HiveField(1)
   bool _read = false;
   @HiveField(2)
-  bool wantToRead = false;
+  bool toRead = false;
   @HiveField(3)
   bool favourite = false;
   @HiveField(4)
+  bool inTrash = false;
+  @HiveField(5)
   int onPage = 0;
 
   /// one from two: already read or reading
@@ -22,18 +24,18 @@ class BookStatus {
   }
 
   /// one from two: already read or reading
-  set read(bool read) {
+  set haveRead(bool read) {
     _read = read;
     _reading = !read;
   }
 
-  bool get read => _read;
+  bool get haveRead => _read;
   bool get reading => _reading;
 
   BookStatus({
     required bool reading,
     required bool read,
-    required this.wantToRead,
+    required this.toRead,
     required this.favourite,
     required this.onPage,
   })  : _read = read,
@@ -43,7 +45,7 @@ class BookStatus {
     return BookStatus(
       reading: json['reading'],
       read: json['read'],
-      wantToRead: json['wantToRead'],
+      toRead: json['wantToRead'],
       favourite: json['favourite'],
       onPage: json['onPage'],
     );
@@ -52,7 +54,7 @@ class BookStatus {
   Map<String, dynamic> toJson() => {
         'reading': _reading,
         'read': _read,
-        'wantToRead': wantToRead,
+        'wantToRead': toRead,
         'favourite': favourite,
         'onPage': onPage,
       };

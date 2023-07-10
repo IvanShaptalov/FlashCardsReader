@@ -1,4 +1,4 @@
-import 'package:flashcards_reader/views/reader/tabs/reading.dart';
+import 'package:flashcards_reader/views/reader/tabs/book_catalog.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/deleted%20flashcards/deleted_flashcards_screen.dart';
@@ -43,7 +43,7 @@ class SideMenu extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.book_sharp, size: ConfigMenu.iconSize),
-            title: const Text(Reading.booksTitle),
+            title: const Text(BookCatalog.booksTitle),
             onTap: () {
               MyRouter.pushPageReplacement(context, ReadingHomePage());
             },

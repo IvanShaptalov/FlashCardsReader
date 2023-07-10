@@ -1,10 +1,5 @@
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
-import 'package:flashcards_reader/views/reader/tabs/have_read.dart';
-import 'package:flashcards_reader/views/reader/tabs/reading.dart';
-import 'package:flashcards_reader/views/reader/tabs/favourites.dart';
-import 'package:flashcards_reader/views/reader/tabs/to_read.dart';
-import 'package:flashcards_reader/views/reader/tabs/all_books.dart';
-import 'package:flashcards_reader/views/reader/tabs/authors.dart';
+import 'package:flashcards_reader/views/reader/tabs/book_catalog.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
@@ -39,38 +34,47 @@ class ReadingHomePageView extends ParentStatefulWidget {
 class HomePageState extends ParentState<ReadingHomePageView> {
   final _kTabs = <Tab>[
     const Tab(
-      text: Reading.tabTitle,
-      icon: Reading.icon,
+      text: BookCatalog.tabTitle,
+      icon: BookCatalog.icon,
     ),
     const Tab(
-      text: Favourites.title,
-      icon: Favourites.icon,
+      text: 'Favourites',
+      icon: Icon(Icons.star_outline),
+    ),
+    const Tab(text: 'To Read', icon: Icon(Icons.history)),
+    const Tab(
+      text: 'Have Read',
+      icon: Icon(Icons.library_add_check_outlined),
     ),
     const Tab(
-      text: ToRead.title,
-      icon: ToRead.icon,
+      icon: Icon(Icons.library_books_rounded),
+      text: 'All Books',
     ),
     const Tab(
-      text: HaveRead.title,
-      icon: HaveRead.icon,
-    ),
-    const Tab(
-      text: AllBooks.title,
-      icon: AllBooks.icon,
-    ),
-    const Tab(
-      text: Authors.title,
-      icon: Authors.icon,
+      icon: Icon(Icons.delete_outline_rounded),
+      text: 'Trash',
     ),
   ];
 
   final _kTabPages = <Widget>[
-    const Reading(),
-    const Favourites(),
-    const ToRead(),
-    const HaveRead(),
-    const AllBooks(),
-    const Authors(),
+    const BookCatalog(
+      bookStatus: BookStatus.reading,
+    ),
+    const BookCatalog(
+      bookStatus: BookStatus.favourites,
+    ),
+    const BookCatalog(
+      bookStatus: BookStatus.toRead,
+    ),
+    const BookCatalog(
+      bookStatus: BookStatus.haveRead,
+    ),
+    const BookCatalog(
+      bookStatus: BookStatus.allBooks,
+    ),
+    const BookCatalog(
+      bookStatus: BookStatus.inTrash,
+    ),
   ];
 
   @override
@@ -79,7 +83,7 @@ class HomePageState extends ParentState<ReadingHomePageView> {
       var appbar = AppBar(
         elevation: 0,
         title: const Text(
-          Reading.booksTitle,
+          BookCatalog.booksTitle,
           style: FontConfigs.pageNameTextStyle,
         ),
         bottom: TabBar(

@@ -45,7 +45,7 @@ class BinderFB2 {
       language = _book.description.lang ?? '';
       if (_book.images.isNotEmpty) {
         var image = _book.images.first;
-        String coverPath =
+        coverPath =
             '${(await getExternalStorageDirectory())!.path}${uuid.v4()}jpg';
         File(coverPath).create().then((value) => value
             .writeAsString(image.bytes)
@@ -63,7 +63,7 @@ class BinderFB2 {
         status: BookStatus(
           reading: false,
           read: false,
-          wantToRead: false,
+          toRead: false,
           favourite: false,
           onPage: 0,
         ),

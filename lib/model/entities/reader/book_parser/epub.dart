@@ -30,7 +30,7 @@ class BinderEpub {
       status: BookStatus(
         reading: false,
         read: false,
-        wantToRead: false,
+        toRead: false,
         favourite: false,
         onPage: 0,
       ),
@@ -86,7 +86,7 @@ class BinderEpub {
       // print(document);
 
       final items = document.findAllElements('item');
-      String? coverPath = items
+      String? innerCoverPath = items
           .firstWhere((p0) => p0.attributes
               .where((p0) =>
                   p0.value == 'image/jpeg' ||
@@ -97,9 +97,9 @@ class BinderEpub {
           ?.value
           .toString();
       // debugPrintIt(coverPath);
-      if (coverPath != null) {
+      if (innerCoverPath != null) {
         var coverFileBytes = archive.files
-            .firstWhere((p0) => p0.toString().contains(coverPath!));
+            .firstWhere((p0) => p0.toString().contains(innerCoverPath));
         coverPath = await _saveCover(coverFileBytes);
       }
     } else {
