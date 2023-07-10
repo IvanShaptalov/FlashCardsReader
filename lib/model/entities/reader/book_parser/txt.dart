@@ -30,10 +30,11 @@ class BinderTxt {
         lastAccess: DateTime.now(),
         textSnippet: snippet,
         status: BookStatus(
-          reading: false,
-          read: false,
+          readingPrivate: false,
+          readPrivate: false,
           toRead: false,
           favourite: false,
+          inTrash: false,
           onPage: 0,
         ),
         settings: BookSettings(

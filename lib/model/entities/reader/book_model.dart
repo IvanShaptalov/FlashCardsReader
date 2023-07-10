@@ -5,9 +5,9 @@ part 'book_model.g.dart';
 @HiveType(typeId: 4)
 class BookStatus {
   @HiveField(0)
-  bool _reading = false;
+  bool readingPrivate = false;
   @HiveField(1)
-  bool _read = false;
+  bool readPrivate = false;
   @HiveField(2)
   bool toRead = false;
   @HiveField(3)
@@ -19,44 +19,46 @@ class BookStatus {
 
   /// one from two: already read or reading
   set reading(bool reading) {
-    _reading = reading;
-    _read = !reading;
+    readingPrivate = reading;
+    readPrivate = !reading;
   }
 
   /// one from two: already read or reading
   set haveRead(bool read) {
-    _read = read;
-    _reading = !read;
+    readPrivate = read;
+    readingPrivate = !read;
   }
 
-  bool get haveRead => _read;
-  bool get reading => _reading;
+  bool get haveRead => readPrivate;
+  bool get reading => readingPrivate;
 
   BookStatus({
-    required bool reading,
-    required bool read,
+    required this.readPrivate,
+    required this.readingPrivate,
     required this.toRead,
     required this.favourite,
     required this.onPage,
-  })  : _read = read,
-        _reading = reading;
+    required this.inTrash,
+  });
 
   factory BookStatus.fromJson(Map<String, dynamic> json) {
     return BookStatus(
-      reading: json['reading'],
-      read: json['read'],
+      readingPrivate: json['reading'],
+      readPrivate: json['read'],
       toRead: json['wantToRead'],
       favourite: json['favourite'],
       onPage: json['onPage'],
+      inTrash: json['inTrash'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'reading': _reading,
-        'read': _read,
+        'reading': readingPrivate,
+        'read': readPrivate,
         'wantToRead': toRead,
         'favourite': favourite,
         'onPage': onPage,
+        'inTrash': inTrash,
       };
 }
 

@@ -86,6 +86,20 @@ class BookCatalogState extends State<BookCatalog> {
     fetchData();
   }
 
+  void openBook(BookModel book) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => OpenBook(
+                book.id(),
+                book.title ?? 'no title',
+                book.author ?? 'no author',
+                'Reading',
+                book.file.path ?? '',
+                book.cover ?? 'assets/images/empty.png',
+                book.textSnippet ?? '')));
+  }
+
   @override
   Widget build(BuildContext context) {
     fetchData();
@@ -97,29 +111,19 @@ class BookCatalogState extends State<BookCatalog> {
               itemCount: data?.length,
               itemBuilder: (BuildContext context, int index) {
                 final book = data![index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OpenBook(
-                                book.id(),
-                                book.title ?? 'no title',
-                                book.author ?? 'no author',
-                                'Reading',
-                                book.file.path ?? '',
-                                book.cover ?? 'assets/images/empty.png',
-                                book.textSnippet ?? '')));
-                  },
-                  child: Container(
-                      height: SizeConfig.getMediaHeight(context, p: 0.21),
-                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white),
-                      child: Row(
-                        children: [
-                          Hero(
+                return Container(
+                    height: SizeConfig.getMediaHeight(context, p: 0.21),
+                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            openBook(book);
+                          },
+                          child: Hero(
                             tag: book.id(),
                             child: Container(
                               height: MediaQuery.of(context).size.height,
@@ -139,7 +143,12 @@ class BookCatalogState extends State<BookCatalog> {
                                   borderRadius: BorderRadius.circular(5)),
                             ),
                           ),
-                          Column(
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            openBook(book);
+                          },
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
@@ -268,8 +277,8 @@ class BookCatalogState extends State<BookCatalog> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          SizedBox.shrink(),
-                                          SizedBox.shrink(),
+                                          const SizedBox.shrink(),
+                                          const SizedBox.shrink(),
                                           GestureDetector(
                                             child: const Icon(
                                               Icons.restore_from_trash,
@@ -288,10 +297,10 @@ class BookCatalogState extends State<BookCatalog> {
                                       ),
                               )
                             ],
-                          )
-                        ],
-                      )),
-                );
+                          ),
+                        )
+                      ],
+                    ));
               },
             )
           : const Center(

@@ -34,6 +34,10 @@ class ReadingHomePageView extends ParentStatefulWidget {
 class HomePageState extends ParentState<ReadingHomePageView> {
   final _kTabs = <Tab>[
     const Tab(
+      icon: Icon(Icons.library_books_rounded),
+      text: 'All Books',
+    ),
+    const Tab(
       text: BookCatalog.tabTitle,
       icon: BookCatalog.icon,
     ),
@@ -47,16 +51,15 @@ class HomePageState extends ParentState<ReadingHomePageView> {
       icon: Icon(Icons.library_add_check_outlined),
     ),
     const Tab(
-      icon: Icon(Icons.library_books_rounded),
-      text: 'All Books',
-    ),
-    const Tab(
       icon: Icon(Icons.delete_outline_rounded),
       text: 'Trash',
     ),
   ];
 
   final _kTabPages = <Widget>[
+    const BookCatalog(
+      bookStatus: BookStatus.allBooks,
+    ),
     const BookCatalog(
       bookStatus: BookStatus.reading,
     ),
@@ -68,9 +71,6 @@ class HomePageState extends ParentState<ReadingHomePageView> {
     ),
     const BookCatalog(
       bookStatus: BookStatus.haveRead,
-    ),
-    const BookCatalog(
-      bookStatus: BookStatus.allBooks,
     ),
     const BookCatalog(
       bookStatus: BookStatus.inTrash,

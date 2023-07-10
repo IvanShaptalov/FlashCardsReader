@@ -33,10 +33,11 @@ class BinderPdf {
         textSnippet: '',
         lastAccess: DateTime.now(),
         status: BookStatus(
-          reading: false,
-          read: false,
+          readingPrivate: false,
+          readPrivate: false,
           toRead: false,
           favourite: false,
+          inTrash: false,
           onPage: 0,
         ),
         settings: BookSettings(
