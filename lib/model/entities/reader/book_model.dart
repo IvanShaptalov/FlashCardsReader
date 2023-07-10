@@ -179,7 +179,8 @@ class BookModel {
   @HiveField(12)
   DateTime lastAccess = DateTime.now();
 
-  int id() => "${title ?? ''}$description${author ?? ''}".hashCode;
+  int id() =>
+      "${title ?? ''}$description${author ?? ''} ${file.extension}".hashCode;
 
   BookModel({
     this.title,

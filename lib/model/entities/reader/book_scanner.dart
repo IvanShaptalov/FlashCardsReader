@@ -10,6 +10,7 @@ import 'package:flashcards_reader/model/entities/reader/book_parser/pdf.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/txt.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/extension_check.dart';
+import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'book_model.dart';
@@ -25,17 +26,21 @@ class BookScanner {
   }
 
   static Future<void> scan() async {
-    Directory dir = Directory(androidBasePath);
-    var files = await dirContents(dir);
-    if (await getFilePermission()) {
-      // here we should bind books to the database
-      bindBooks(files);
-    } else {
-      try {
-        bindBooks(files);
-      } catch (e) {
-        debugPrintIt('Permission not granted: $e');
-      }
+    OverlayNotificationProvider.showOverlayNotification('scanning start ...',
+        status: NotificationStatus.info);
+
+    try {
+      Directory dir = Directory(androidBasePath);
+      var files = await dirContents(dir);
+      if (await getFilePermission()) {
+        // here we should bind books to the database
+        bindBooks(files).then((value) =>
+            OverlayNotificationProvider.showOverlayNotification(
+                'new files: $value',
+                status: NotificationStatus.info));
+      } else {}
+    } catch (e) {
+      debugPrintIt('Error while scanning: $e');
     }
   }
 
@@ -64,8 +69,10 @@ class BookScanner {
     return completer.future;
   }
 
-  static Future<void> bindBooks(List<FileSystemEntity> files) async {
+  static Future<int> bindBooks(List<FileSystemEntity> files) async {
     debugPrintIt('Binding books to the database');
+    int counter = 0;
+
     for (var fileEntity in files) {
       File file = File(fileEntity.path);
       // TODO scan in c++ for performance in the future
@@ -115,12 +122,17 @@ class BookScanner {
         default:
           break;
       }
-      if (model != null && !BookDatabaseProvider.getAll().contains(model)) {
+      if (model != null &&
+          !BookDatabaseProvider.getAll()
+              .map((e) => e.id())
+              .contains(model.id())) {
         BookDatabaseProvider.writeEditAsync(model);
+        counter++;
       }
     }
     debugPrintIt('================book models');
     debugPrintIt(BookDatabaseProvider.getAll());
     debugPrintIt(BookDatabaseProvider.getAll().length);
+    return counter;
   }
 }
