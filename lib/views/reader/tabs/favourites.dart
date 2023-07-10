@@ -1,11 +1,15 @@
-import 'dart:convert';
+import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
+import 'package:flashcards_reader/model/entities/reader/book_model.dart';
+import 'package:flashcards_reader/views/reader/tabs/have_read.dart';
+import 'package:flashcards_reader/views/reader/tabs/reading.dart';
+import 'package:flashcards_reader/views/reader/tabs/to_read.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/model/entities/reader/open_book.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:http/http.dart' as http;
 
 class Favourites extends StatefulWidget {
   const Favourites({super.key});
@@ -17,98 +21,143 @@ class Favourites extends StatefulWidget {
 }
 
 class FavouritesState extends State<Favourites> {
-  final String url = 'https://samwitadhikary.github.io/jsons/cpp.json';
-  List? data;
+  List<BookModel>? data;
 
+  DotsMenu selectedMenu = DotsMenu.share;
   @override
   void initState() {
-    super.initState();
-    fetchCpp();
-  }
+    BlocProvider.of<BookBloc>(context).add(GetBooksEvent(read: true));
 
-  fetchCpp() async {
-    var response = await http.get(Uri.parse(url));
-    if (!mounted) return;
-    setState(() {
-      var convertJson = json.decode(response.body);
-      data = convertJson['cpp'];
-    });
+    super.initState();
+    print('data: $data');
   }
 
   @override
   Widget build(BuildContext context) {
+    data = BlocProvider.of<BookBloc>(context).state.books;
+
     return Container(
       child: data != null
           ? ListView.builder(
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
-              itemCount: data!.length,
+              itemCount: data?.length,
               itemBuilder: (BuildContext context, int index) {
-                final mycpp = data![index];
+                final book = data![index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => OpenBook(
-                                mycpp['id'],
-                                mycpp['name'],
-                                mycpp['author'],
-                                mycpp['tagline'],
-                                mycpp['url'],
-                                mycpp['image'],
-                                mycpp['desc'])));
+                                book.id(),
+                                book.title ?? 'no title',
+                                book.author ?? 'no author',
+                                'tagline',
+                                book.file.path ?? '',
+                                book.cover ?? 'assets/images/empty.png',
+                                book.textSnippet ?? '')));
                   },
                   child: Container(
-                    height: 150,
-                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white),
-                    child: Row(
-                      children: [
-                        Hero(
-                          tag: mycpp['id'],
-                          child: Container(
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width * 0.23,
-                            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: CachedNetworkImageProvider(
-                                        mycpp['image']),
-                                    fit: BoxFit.fill),
-                                borderRadius: BorderRadius.circular(5)),
+                      height: SizeConfig.getMediaHeight(context, p: 0.25),
+                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white),
+                      child: Row(
+                        children: [
+                          Hero(
+                            tag: book.id(),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              decoration: BoxDecoration(
+                                  image: book.cover != null &&
+                                          File(book.cover ?? '').existsSync()
+                                      ? DecorationImage(
+                                          image: FileImage(File(book.cover!)),
+                                          fit: BoxFit.fill,
+                                        )
+                                      : const DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/empty.png'),
+                                          fit: BoxFit.fill),
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
                           ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              color: Colors.white,
-                              width: MediaQuery.of(context).size.width * 0.65,
-                              margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
-                              child: Text(
-                                mycpp['name'],
-                                style: const TextStyle(
-                                  fontSize: 15.5,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                color: Colors.white,
+                                width: MediaQuery.of(context).size.width * 0.65,
+                                margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
+                                child: Text(
+                                  book.title ?? 'no title',
+                                  style: const TextStyle(
+                                    fontSize: 15.5,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.06,
-                              width: MediaQuery.of(context).size.width * 0.67,
-                              margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                              child: Text(
-                                mycpp['author'],
-                                style: const TextStyle(fontSize: 12),
+                              Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.06,
+                                width: MediaQuery.of(context).size.width * 0.67,
+                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                child: Text(
+                                  book.author ?? 'no author',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+                              SizedBox(
+                                width:
+                                    SizeConfig.getMediaWidth(context, p: 0.67),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    GestureDetector(
+                                      child: Favourites.icon,
+                                      onTap: () {},
+                                    ),
+                                    GestureDetector(
+                                      child: ToRead.icon,
+                                      onTap: () {},
+                                    ),
+                                    GestureDetector(
+                                      child: HaveRead.icon,
+                                      onTap: () {},
+                                    ),
+                                    PopupMenuButton<DotsMenu>(
+                                      initialValue: selectedMenu,
+                                      // Callback that sets the selected popup menu item.
+                                      onSelected: (DotsMenu item) {
+                                        setState(() {});
+                                      },
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry<DotsMenu>>[
+                                        const PopupMenuItem<DotsMenu>(
+                                          value: DotsMenu.share,
+                                          child: Text('Share file'),
+                                        ),
+                                        const PopupMenuItem<DotsMenu>(
+                                          value: DotsMenu.trash,
+                                          child: Text('Move to trash'),
+                                        ),
+                                        const PopupMenuItem<DotsMenu>(
+                                          value: DotsMenu.edit,
+                                          child: Text('Edit'),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      )),
                 );
               },
             )

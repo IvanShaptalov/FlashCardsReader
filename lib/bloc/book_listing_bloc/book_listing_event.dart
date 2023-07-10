@@ -9,7 +9,7 @@ class GetBooksEvent extends BookEvent {
   bool wantToRead = false;
   bool favourite = false;
   GetBooksEvent(
-      {reading = false, read = false, wantToRead = false, favoutire = false});
+      {reading = false, read = false, haveRead = false, favoutire = false});
 }
 
 class UpdateBookEvent extends BookEvent {

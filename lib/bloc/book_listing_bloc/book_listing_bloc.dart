@@ -9,7 +9,6 @@ part 'book_listing_state.dart';
 class BookBloc extends Bloc<BookEvent, BookState> {
   BookBloc() : super(BookState.initial()) {
     on<GetBooksEvent>((event, emit) => getBooks(event, emit));
-    // on<DeletePermanentlyEvent>((event, emit) => incrementCounter(event, emit));
 
     on<UpdateBookEvent>((event, emit) => addEdit(event, emit));
   }

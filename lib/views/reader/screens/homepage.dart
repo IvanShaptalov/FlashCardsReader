@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/views/reader/tabs/have_read.dart';
 import 'package:flashcards_reader/views/reader/tabs/reading.dart';
 import 'package:flashcards_reader/views/reader/tabs/favourites.dart';
@@ -8,16 +9,34 @@ import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class ReadingHomePage extends StatefulWidget {
+  const ReadingHomePage({Key? key}) : super(key: key);
+
+  @override
+  _ReadingHomePageState createState() => _ReadingHomePageState();
+}
+
+class _ReadingHomePageState extends State<ReadingHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => BookBloc(),
+      child: ReadingHomePageView(),
+    );
+  }
+}
 
 // ignore: must_be_immutable
-class ReadingHomePage extends ParentStatefulWidget {
-  ReadingHomePage({super.key});
+class ReadingHomePageView extends ParentStatefulWidget {
+  ReadingHomePageView({super.key});
 
   @override
   HomePageState createState() => HomePageState();
 }
 
-class HomePageState extends ParentState<ReadingHomePage> {
+class HomePageState extends ParentState<ReadingHomePageView> {
   final _kTabs = <Tab>[
     const Tab(
       text: Reading.tabTitle,
@@ -56,35 +75,37 @@ class HomePageState extends ParentState<ReadingHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var appbar = AppBar(
-      elevation: 0,
-      title: const Text(
-        Reading.booksTitle,
-        style: FontConfigs.pageNameTextStyle,
-      ),
-      bottom: TabBar(
-        indicatorColor: Palette.darkblue,
-        indicatorWeight: 2.5,
-        isScrollable: true,
-        physics: const BouncingScrollPhysics(),
-        labelColor: Palette.darkblue,
-        labelStyle: const TextStyle(fontSize: 18),
-        tabs: _kTabs,
-      ),
-    );
-    widget.page = DefaultTabController(
-      length: _kTabs.length,
-      child: Scaffold(
-        drawer: Drawer(
-          child: SideMenu(appbar.preferredSize.height),
+    return BlocBuilder<BookBloc, BookState>(builder: (context, state) {
+      var appbar = AppBar(
+        elevation: 0,
+        title: const Text(
+          Reading.booksTitle,
+          style: FontConfigs.pageNameTextStyle,
         ),
-        appBar: appbar,
-        body: TabBarView(
+        bottom: TabBar(
+          indicatorColor: Palette.darkblue,
+          indicatorWeight: 2.5,
+          isScrollable: true,
           physics: const BouncingScrollPhysics(),
-          children: _kTabPages,
+          labelColor: Palette.darkblue,
+          labelStyle: const TextStyle(fontSize: 18),
+          tabs: _kTabs,
         ),
-      ),
-    );
-    return super.build(context);
+      );
+      widget.page = DefaultTabController(
+        length: _kTabs.length,
+        child: Scaffold(
+          drawer: Drawer(
+            child: SideMenu(appbar.preferredSize.height),
+          ),
+          appBar: appbar,
+          body: TabBarView(
+            physics: const BouncingScrollPhysics(),
+            children: _kTabPages,
+          ),
+        ),
+      );
+      return super.build(context);
+    });
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
@@ -92,16 +94,22 @@ class OpenBookState extends State<OpenBook> {
       ),
       body: Stack(children: [
         Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: CachedNetworkImageProvider(image),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                      Palette.darkblue.withOpacity(0.999),
-                      BlendMode.multiply))),
-        ),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                image: File(image).existsSync()
+                    ? DecorationImage(
+                        image: FileImage(File(image)),
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                            Palette.darkblue.withOpacity(0.999),
+                            BlendMode.multiply))
+                    : DecorationImage(
+                        image: const AssetImage('assets/images/empty.png'),
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                            Palette.darkblue.withOpacity(0.999),
+                            BlendMode.multiply)))),
         Center(
           child: Column(
             children: [
