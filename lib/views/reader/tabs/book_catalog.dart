@@ -113,7 +113,7 @@ class BookCatalogState extends State<BookCatalog> {
               itemBuilder: (BuildContext context, int index) {
                 final book = data![index];
                 return Container(
-                    height: SizeConfig.getMediaHeight(context, p: 0.21),
+                    height: ScreenIdentifier.isNormal(context)? SizeConfig.getMediaHeight(context, p: 0.21): 160,
                     margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),

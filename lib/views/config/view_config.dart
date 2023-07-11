@@ -108,6 +108,14 @@ class ScreenIdentifier {
     return indentify(context) == ScreenDesign.landscape;
   }
 
+  static bool isSmall(BuildContext context) {
+    return !isNormal(context);
+  }
+
+  static bool isNormal(BuildContext context) {
+    return isLandscape(context) || isPortrait(context);
+  }
+
   static Widget returnScreen(
       {required Widget portraitScreen,
       required Widget landscapeScreen,

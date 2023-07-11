@@ -178,6 +178,8 @@ class BookModel {
   BookFile file;
   @HiveField(12)
   DateTime lastAccess = DateTime.now();
+  @HiveField(13)
+  String? flashCardId;
 
   int id() =>
       "${title ?? ''}$description${author ?? ''} ${file.extension}".hashCode;
@@ -192,6 +194,7 @@ class BookModel {
     this.textSnippet,
     this.path,
     this.isBinded,
+    this.flashCardId,
     required this.status,
     required this.settings,
     required this.file,
@@ -211,6 +214,7 @@ class BookModel {
         status: BookStatus.fromJson(json['status']),
         settings: BookSettings.fromJson(json['settings']),
         file: BookFile.fromJson(json['file']),
+        flashCardId: json['flashCardId'],
         lastAccess: DateTime.parse(json['lastAccess']));
   }
 
@@ -227,6 +231,7 @@ class BookModel {
         'settings': settings.toJson(),
         'file': file.toJson(),
         'lastAccess': lastAccess.toIso8601String(),
+        'flashCardId': flashCardId,
       };
 
   static List<BookModel> sortedByDate(List<BookModel> listBook) {

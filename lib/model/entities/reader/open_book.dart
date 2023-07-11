@@ -102,13 +102,13 @@ class OpenBookState extends State<OpenBook> {
                         image: FileImage(File(image)),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
-                            Palette.darkblue.withOpacity(0.999),
+                            Palette.darkblue.withOpacity(0.8),
                             BlendMode.multiply))
                     : DecorationImage(
                         image: const AssetImage('assets/images/empty.png'),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
-                            Palette.darkblue.withOpacity(0.999),
+                            Palette.darkblue.withOpacity(0.8),
                             BlendMode.multiply)))),
         Center(
           child: Column(

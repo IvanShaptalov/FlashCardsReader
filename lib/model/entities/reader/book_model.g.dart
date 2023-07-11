@@ -155,6 +155,7 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       textSnippet: fields[6] as String?,
       path: fields[7] as String?,
       isBinded: fields[8] as bool?,
+      flashCardId: fields[13] as String?,
       status: fields[9] as BookStatus,
       settings: fields[10] as BookSettings,
       file: fields[11] as BookFile,
@@ -165,7 +166,7 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
   @override
   void write(BinaryWriter writer, BookModel obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -191,7 +192,9 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       ..writeByte(11)
       ..write(obj.file)
       ..writeByte(12)
-      ..write(obj.lastAccess);
+      ..write(obj.lastAccess)
+      ..writeByte(13)
+      ..write(obj.flashCardId);
   }
 
   @override
