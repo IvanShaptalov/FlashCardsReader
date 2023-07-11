@@ -47,7 +47,7 @@ class LandscapeNewWord extends BaseScreenNewWord {
     return BlocBuilder<FlashCardBloc, FlashcardsState>(
         builder: (context, state) {
       var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
-      putSelectedCardToFirstPosition(flashCardCollection);
+      FastCardListProvider.putSelectedCardToFirstPosition(flashCardCollection);
       var appbar = getAppBar(flashCardCollection);
       appBarHeight = appbar.preferredSize.height;
       widget.wordFormContoller
@@ -75,7 +75,7 @@ class LandscapeNewWord extends BaseScreenNewWord {
                       height: SizeConfig.getMediaHeight(context, p: 0.65),
                       width: SizeConfig.getMediaWidth(context, p: 0.25),
                       child: ListView.builder(
-                          controller: widget.scrollController,
+                          controller: FastCardListProvider.scrollController,
                           scrollDirection: Axis.vertical,
                           itemCount: flashCardCollection.isEmpty
                               ? 1
@@ -90,13 +90,14 @@ class LandscapeNewWord extends BaseScreenNewWord {
                                     child: Transform.scale(
                                   scale: 0.9,
                                   child: FastAddWordFCcWidget(
-                                    flashCardCollection.isEmpty
-                                        ? FlashCardProvider.fc
-                                        : flashCardCollection[index],
-                                    widget.callback,
-                                    design: ScreenIdentifier.indentify(context),
-                                    backElementToStart: backElementToStart,
-                                  ),
+                                      flashCardCollection.isEmpty
+                                          ? FlashCardProvider.fc
+                                          : flashCardCollection[index],
+                                      widget.callback,
+                                      design:
+                                          ScreenIdentifier.indentify(context),
+                                      backElementToStart: FastCardListProvider
+                                          .backElementToStart),
                                 )),
                               ),
                             );

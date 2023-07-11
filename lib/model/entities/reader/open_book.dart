@@ -1,17 +1,25 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/open_books/view_pdf.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/open_books/view_txt.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/screens/base_new_word_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class OpenBook extends StatefulWidget {
   final BookModel book;
-  const OpenBook({required this.book, super.key});
+  final BuildContext upperContext;
+
+  OpenBook({required this.book, super.key, required this.upperContext});
 
   @override
   OpenBookState createState() =>
@@ -20,8 +28,19 @@ class OpenBook extends StatefulWidget {
 }
 
 class OpenBookState extends State<OpenBook> {
+  void callback() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    var flashCardCollection =
+        BlocProvider.of<FlashCardBloc>(widget.upperContext)
+            .state
+            .copyWith(fromTrash: false)
+            .flashCards;
+    FastCardListProvider.putSelectedCardToFirstPosition(flashCardCollection);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -102,61 +121,78 @@ class OpenBookState extends State<OpenBook> {
           ),
         ),
         SlidingUpPanel(
+          color: Palette.menuColor,
           minHeight: 80,
           backdropEnabled: true,
           panel: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
                 height: 20,
                 // color: Colors.red,
-                margin: const EdgeInsets.only(top: 10),
                 child: Column(
                   children: [
-                    Container(
-                      width: 15,
-                      color: Colors.grey,
-                      height: 5,
-                    ),
                     const SizedBox(
                       height: 2,
                     ),
                     Container(
                       height: 5,
-                      color: Colors.grey,
-                      width: 30,
+                      width: SizeConfig.getMediaWidth(context, p: 0.3),
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(15)),
                     )
                   ],
                 ),
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.fromLTRB(20, 0, 0, 35),
-                child: const Text(
-                  'Description :',
-                  style: TextStyle(fontSize: 22, color: Palette.darkblue),
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(
+                  'Collection to save words',
+                  style: FontConfigs.h1TextStyle.copyWith(
+                      fontWeight: FontWeight.bold, color: Colors.white),
+                  textAlign: TextAlign.center,
                 ),
               ),
               Container(
-                height: 270,
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child:
-                    ListView(physics: const BouncingScrollPhysics(), children: [
-                  Text(
-                    widget.book.descriptionOrEmpty,
-                    style: const TextStyle(fontSize: 15),
-                    textAlign: TextAlign.justify,
+                color: Colors.grey.shade300,
+                child: Transform.scale(
+                  scale: 0.9,
+                  child: AnimationLimiter(
+                    child: SizedBox(
+                      height: SizeConfig.getMediaHeight(context, p: 0.3),
+                      width: SizeConfig.getMediaWidth(context, p: 1),
+                      child: ListView.builder(
+                          controller: FastCardListProvider.scrollController,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: flashCardCollection.isEmpty
+                              ? 1
+                              : flashCardCollection.length,
+                          itemBuilder: (context, index) {
+                            return AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(milliseconds: 400),
+                              child: FastAddWordFCcWidget(
+                                  flashCardCollection.isEmpty
+                                      ? FlashCardProvider.fc
+                                      : flashCardCollection[index],
+                                  callback,
+                                  design: ScreenIdentifier.indentify(context),
+                                  backElementToStart:
+                                      FastCardListProvider.backElementToStart),
+                            );
+                          }),
+                    ),
                   ),
-                ]),
-              ),
-              const SizedBox(
-                height: 30,
+                ),
               ),
               ElevatedButton(
                 style: ButtonStyle(
                     padding:
-                        MaterialStateProperty.all(const EdgeInsets.all(20)),
+                        MaterialStateProperty.all(const EdgeInsets.all(25)),
                     backgroundColor:
-                        MaterialStateProperty.all(Palette.lightblue),
+                        MaterialStateProperty.all(Palette.cardButtonColor),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)))),
                 onPressed: () {
@@ -183,10 +219,7 @@ class OpenBookState extends State<OpenBook> {
                     default:
                   }
                 },
-                child: const Text(
-                  "Read Book",
-                  style: TextStyle(fontSize: 21, color: Colors.white),
-                ),
+                child: const Text("Read Book", style: FontConfigs.h1TextStyle),
               )
             ],
           ),

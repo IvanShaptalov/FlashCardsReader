@@ -44,7 +44,7 @@ class PortraitSmallNewWord extends BaseScreenNewWord {
     return BlocBuilder<FlashCardBloc, FlashcardsState>(
         builder: (context, state) {
       var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
-      putSelectedCardToFirstPosition(flashCardCollection);
+      FastCardListProvider.putSelectedCardToFirstPosition(flashCardCollection);
       var appbar = getAppBar(flashCardCollection);
       appBarHeight = appbar.preferredSize.height;
       widget.wordFormContoller
@@ -63,7 +63,7 @@ class PortraitSmallNewWord extends BaseScreenNewWord {
                 height: SizeConfig.getMediaHeight(context, p: 0.41),
                 width: SizeConfig.getMediaWidth(context, p: 1),
                 child: ListView.builder(
-                    controller: widget.scrollController,
+                    controller: FastCardListProvider.scrollController,
                     scrollDirection: Axis.horizontal,
                     itemCount: flashCardCollection.isEmpty
                         ? 1
@@ -83,7 +83,7 @@ class PortraitSmallNewWord extends BaseScreenNewWord {
                                         : flashCardCollection[index],
                                     widget.callback,
                                     design: ScreenIdentifier.indentify(context),
-                                    backElementToStart: backElementToStart,
+                                    backElementToStart: FastCardListProvider.backElementToStart,
                                   ))),
                         ),
                       );

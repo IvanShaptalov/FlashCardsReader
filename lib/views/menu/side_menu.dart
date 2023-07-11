@@ -6,7 +6,7 @@ import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/flashcards/sharing/import_page.dart';
-import 'package:flashcards_reader/views/reader/screens/homepage.dart';
+import 'package:flashcards_reader/views/reader/screens/reading_homepage.dart';
 import 'package:flutter/material.dart';
 
 class SideMenu extends StatelessWidget {

@@ -47,7 +47,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
     return BlocBuilder<FlashCardBloc, FlashcardsState>(
         builder: (context, state) {
       var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
-      putSelectedCardToFirstPosition(flashCardCollection);
+      FastCardListProvider.putSelectedCardToFirstPosition(flashCardCollection);
       var appbar = getAppBar(flashCardCollection);
       appBarHeight = appbar.preferredSize.height;
       widget.wordFormContoller
@@ -74,7 +74,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
                       height: SizeConfig.getMediaHeight(context, p: 0.57),
                       width: SizeConfig.getMediaWidth(context, p: 0.35),
                       child: ListView.builder(
-                          controller: widget.scrollController,
+                          controller: FastCardListProvider.scrollController,
                           scrollDirection: Axis.vertical,
                           itemCount: flashCardCollection.isEmpty
                               ? 1
@@ -94,7 +94,8 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
                                         : flashCardCollection[index],
                                     widget.callback,
                                     design: ScreenIdentifier.indentify(context),
-                                    backElementToStart: backElementToStart,
+                                    backElementToStart:
+                                        FastCardListProvider.backElementToStart,
                                   ),
                                 )),
                               ),

@@ -38,7 +38,6 @@ class WordFormContoller {
 
 class AddWordFastScreen extends ParentStatefulWidget {
   AddWordFastScreen({super.key});
-  ScrollController scrollController = ScrollController();
   WordFormContoller wordFormContoller = WordFormContoller();
   GoogleTranslatorApiWrapper translator = GoogleTranslatorApiWrapper();
 
@@ -90,7 +89,6 @@ class _AddWordFastScreenState extends ParentState<AddWordFastScreen> {
         child: BlocProvider(
           create: (_) => TranslatorBloc(),
           child: AddWordView(
-            scrollController: widget.scrollController,
             wordFormContoller: widget.wordFormContoller,
             translator: widget.translator,
             callback: callback,
@@ -102,14 +100,12 @@ class _AddWordFastScreenState extends ParentState<AddWordFastScreen> {
 
 class AddWordView extends StatefulWidget {
   AddWordView(
-      {required this.scrollController,
-      required this.wordFormContoller,
+      {required this.wordFormContoller,
       required this.translator,
       required this.callback,
       super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
   Function callback;
-  ScrollController scrollController;
   WordFormContoller wordFormContoller;
   GoogleTranslatorApiWrapper translator;
 

@@ -1,4 +1,6 @@
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
+import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/views/reader/tabs/book_catalog.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
@@ -18,9 +20,11 @@ class _ReadingHomePageState extends State<ReadingHomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => BookBloc(),
-      child: ReadingHomePageView(),
-    );
+        create: (_) => FlashCardBloc(),
+        child: BlocProvider(
+            create: (_) => TranslatorBloc(),
+            child: BlocProvider(
+                create: (_) => BookBloc(), child: ReadingHomePageView())));
   }
 }
 
@@ -29,10 +33,10 @@ class ReadingHomePageView extends ParentStatefulWidget {
   ReadingHomePageView({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
+  ReadingHomePageState createState() => ReadingHomePageState();
 }
 
-class HomePageState extends ParentState<ReadingHomePageView> {
+class ReadingHomePageState extends ParentState<ReadingHomePageView> {
   final _kTabs = <Tab>[
     const Tab(
       icon: Icon(Icons.library_books_rounded),

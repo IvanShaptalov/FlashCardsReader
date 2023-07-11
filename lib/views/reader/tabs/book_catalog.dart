@@ -89,7 +89,12 @@ class BookCatalogState extends State<BookCatalog> {
 
   void openBook(BookModel book) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => OpenBook(book: book)));
+        context,
+        MaterialPageRoute(
+            builder: (context) => OpenBook(
+                  book: book,
+                  upperContext: widget.upperContext,
+                )));
   }
 
   @override
