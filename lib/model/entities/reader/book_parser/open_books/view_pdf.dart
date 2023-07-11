@@ -6,18 +6,18 @@ import 'package:flashcards_reader/views/config/view_config.dart';
 
 class ViewPDF extends StatefulWidget {
   final String name;
-  final String url;
-  const ViewPDF(this.name, this.url, {super.key});
+  final String path;
+  const ViewPDF(this.name, this.path, {super.key});
 
   @override
   // ignore: no_logic_in_create_state
-  ViewPDFState createState() => ViewPDFState(name, url);
+  ViewPDFState createState() => ViewPDFState(name, path);
 }
 
 class ViewPDFState extends State<ViewPDF> {
   final String name;
-  final String url;
-  ViewPDFState(this.name, this.url);
+  final String path;
+  ViewPDFState(this.name, this.path);
 
   final Completer<PDFViewController> _pdfViewController =
       Completer<PDFViewController>();
@@ -76,33 +76,9 @@ class ViewPDFState extends State<ViewPDF> {
           _pageCountController.add('${currentPage! + 1} - $pageCount');
         },
         preventLinkNavigation: true,
-      ).cachedFromUrl(url,
-          placeholder: (progress) => Center(
-                child: SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: /* LiquidCircularProgressIndicator(
-                    borderWidth: 5.0,
-                    borderColor: Palette.scaffold,
-                    value: progress / 100,
-                    valueColor: const AlwaysStoppedAnimation(Colors.pink),
-                    backgroundColor: Palette.scaffold,
-                    direction: Axis.vertical,
-                    center: Text(
-                      '$progress',
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                   */
-                        Text('$progress')),
-              ),
-          errorWidget: (error) => const Center(
-                child: Text('Loading Error....\nCheck Internet Connection'),
-              )),
+      ).fromPath(
+        path,
+      ),
       floatingActionButton: FutureBuilder<PDFViewController>(
         future: _pdfViewController.future,
         builder: (_, AsyncSnapshot<PDFViewController> snapshot) {

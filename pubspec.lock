@@ -419,6 +419,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  flutter_native_text_view:
+    dependency: "direct main"
+    description:
+      name: flutter_native_text_view
+      sha256: aba4530273316a49f0bd10f56a1aff09bc1111f8285f16ccad7f222a429596b5
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   flutter_pdfview:
     dependency: transitive
     description:

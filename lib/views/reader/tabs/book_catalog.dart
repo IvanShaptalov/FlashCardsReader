@@ -89,16 +89,7 @@ class BookCatalogState extends State<BookCatalog> {
 
   void openBook(BookModel book) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => OpenBook(
-                book.id(),
-                book.title ?? 'no title',
-                book.author ?? 'no author',
-                'Reading',
-                book.file.path ?? '',
-                book.cover ?? 'assets/images/empty.png',
-                book.textSnippet ?? '')));
+        context, MaterialPageRoute(builder: (context) => OpenBook(book: book)));
   }
 
   @override
@@ -113,7 +104,9 @@ class BookCatalogState extends State<BookCatalog> {
               itemBuilder: (BuildContext context, int index) {
                 final book = data![index];
                 return Container(
-                    height: ScreenIdentifier.isNormal(context)? SizeConfig.getMediaHeight(context, p: 0.21): 160,
+                    height: ScreenIdentifier.isNormal(context)
+                        ? SizeConfig.getMediaHeight(context, p: 0.21)
+                        : 160,
                     margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),

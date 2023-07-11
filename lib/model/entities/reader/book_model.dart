@@ -112,6 +112,8 @@ class BookSettings {
 
 @HiveType(typeId: 6)
 class BookFile {
+  String get pathOrEmpty => path ?? '';
+
   @HiveField(0)
   String? path;
   @HiveField(1)
@@ -152,6 +154,14 @@ class BookFile {
 
 @HiveType(typeId: 7)
 class BookModel {
+  String get titleOrEmpty => title ?? '';
+  String get authorOrEmpty => author ?? '';
+  String get descriptionOrEmpty => description ?? '';
+  String get coverOrEmpty => cover ?? '';
+  String get languageOrEmpty => language ?? '';
+  int get pageCountOrEmpty => pageCount ?? 0;
+  String get textSnippetOrEmpty => textSnippet ?? '';
+
   @HiveField(0)
   String? title;
   @HiveField(1)
@@ -181,8 +191,7 @@ class BookModel {
   @HiveField(13)
   String? flashCardId;
 
-  int id() =>
-      "${title ?? ''}$description${author ?? ''} ${file.extension}".hashCode;
+  int id() => "${title ?? ''}$description${author ?? ''} ${file.path}".hashCode;
 
   BookModel({
     this.title,
