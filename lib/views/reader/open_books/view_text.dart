@@ -1,6 +1,7 @@
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -80,35 +81,9 @@ class ViewTextState extends State<ViewText> {
                   contextMenuBuilder: (
                     BuildContext context,
                     SelectableRegionState selectableRegionState,
-                  ) {
-                    return AdaptiveTextSelectionToolbar(
-                      anchors: selectableRegionState.contextMenuAnchors,
-                      children: [
-                        Wrap(
-                          spacing: 5,
-                          children: [
-                            IconButton(
-                                onPressed: selectableRegionState
-                                    .contextMenuButtonItems
-                                    .firstWhere((element) =>
-                                        element.type ==
-                                        ContextMenuButtonType.copy)
-                                    .onPressed,
-                                icon: const Icon(Icons.copy)),
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.format_quote_rounded)),
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.translate)),
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.share)),
-                          ],
-                        )
-                      ],
-                    );
-                  },
+                  ) =>
+                      FlashReaderAdaptiveContextSelectionMenu(
+                          selectableRegionState: selectableRegionState),
                   child: Text(widget.book.getAllText()),
                 ),
               )),
