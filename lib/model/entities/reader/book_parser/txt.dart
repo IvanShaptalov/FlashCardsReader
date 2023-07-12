@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
-import 'package:flashcards_reader/util/extension_check.dart';
+import 'package:flashcards_reader/util/checker.dart';
 
 class BinderTxt {
   static Future<BookModel> bind(File file) async {
-    String extension = getExtension(file.path);
+    String extension = Checker.getExtension(file.path);
     StringBuffer buffer = StringBuffer();
     file.openRead();
     int counter = 0;
@@ -25,7 +25,7 @@ class BinderTxt {
 
     // model binding to ram
     BookModel txtBook = BookModel(
-        title: getName(file.path),
+        title: Checker.getName(file.path),
         path: file.path,
         lastAccess: DateTime.now(),
         textSnippet: snippet,

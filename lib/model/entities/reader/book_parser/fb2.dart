@@ -5,7 +5,7 @@ import 'package:fb2_parse/fb2_parse.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/extension_check.dart';
+import 'package:flashcards_reader/util/checker.dart';
 import 'package:path_provider/path_provider.dart';
 
 class BinderFB2 {
@@ -17,7 +17,7 @@ class BinderFB2 {
   ZipDecoder zip = ZipDecoder();
 
   Future<BookModel> bind(File file) async {
-    String ext = getExtension(file.path);
+    String ext = Checker.getExtension(file.path);
     if (['.fb2', '.zip'].contains(ext)) {
       /// encode zip
       String path = file.path;
@@ -47,16 +47,18 @@ class BinderFB2 {
         var image = fb2BookRaw.images.first;
         coverPath =
             '${(await getExternalStorageDirectory())!.path}${uuid.v4()}jpg';
-        File(coverPath).create().then((value) => value
-            .writeAsString(image.bytes)
-            .then((value) => debugPrintIt('$value saved succesfully')));
+        if (!File(coverPath).existsSync()) {
+          File(coverPath).create().then((value) => value
+              .writeAsString(image.bytes)
+              .then((value) => debugPrintIt('$value saved succesfully')));
+        }
       }
 
       // todo bind pdf file
     }
-    String extension = getExtension(file.path);
+    String extension = Checker.getExtension(file.path);
     BookModel fb2Book = BookModel(
-        title: getName(file.path),
+        title: Checker.getName(file.path),
         path: file.path,
         lastAccess: DateTime.now(),
         textSnippet: '',

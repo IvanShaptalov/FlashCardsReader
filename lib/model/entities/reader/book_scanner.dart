@@ -9,7 +9,7 @@ import 'package:flashcards_reader/model/entities/reader/book_parser/fb2.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/pdf.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/txt.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/extension_check.dart';
+import 'package:flashcards_reader/util/checker.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -51,7 +51,7 @@ class BookScanner {
     lister.listen((file) {
       try {
         if (file is File) {
-          String extension = getExtension(file.path);
+          String extension = Checker.getExtension(file.path);
           if (file.path.contains('Download')) {
             // debugPrintIt('Download');
           }
@@ -76,7 +76,7 @@ class BookScanner {
     for (var fileEntity in files) {
       File file = File(fileEntity.path);
       // TODO scan in c++ for performance in the future
-      String extension = getExtension(file.path);
+      String extension = Checker.getExtension(file.path);
       BookModel? model;
       switch (extension) {
         case '.epub':

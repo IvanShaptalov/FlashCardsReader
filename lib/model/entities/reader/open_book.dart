@@ -19,7 +19,7 @@ class OpenBook extends StatefulWidget {
   final BookModel book;
   final BuildContext upperContext;
 
-  OpenBook({required this.book, super.key, required this.upperContext});
+  const OpenBook({required this.book, super.key, required this.upperContext});
 
   @override
   OpenBookState createState() =>
@@ -127,7 +127,7 @@ class OpenBookState extends State<OpenBook> {
           panel: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Container(
+              SizedBox(
                 height: 20,
                 // color: Colors.red,
                 child: Column(

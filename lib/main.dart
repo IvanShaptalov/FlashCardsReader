@@ -1,8 +1,8 @@
 import 'package:flashcards_reader/model/IO/local_manager.dart';
 import 'package:flashcards_reader/model/entities/reader/book_scanner.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
+import 'package:flashcards_reader/util/checker.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/internet_checker.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ Future<bool> initAsync() async {
 
   // start checking internet connection
   debugPrintIt('start checking internet connection');
-  InternetConnectionChecker.startChecking();
+  Checker.startChecking();
   return dbInit && ioInit;
 }
 

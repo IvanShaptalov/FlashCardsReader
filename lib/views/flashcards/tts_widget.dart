@@ -1,7 +1,6 @@
 import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/constants.dart';
-
-import 'package:flashcards_reader/util/internet_checker.dart';
+import 'package:flashcards_reader/util/checker.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 
 class TextToSpeechWrapper {
@@ -11,7 +10,7 @@ class TextToSpeechWrapper {
 
   static void onPressed(text, language) async {
     if (text.isNotEmpty) {
-      if (await InternetConnectionChecker.connected()) {
+      if (await Checker.connected()) {
         if (text.length <= ttsMaxLength) {
           await TextToSpeechService.speak(text, language);
         } else {

@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/extension_check.dart';
+import 'package:flashcards_reader/util/checker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdfx/pdfx.dart';
 
 class BinderPdf {
   static Future<BookModel> bind(File file) async {
-    String ext = getExtension(file.path);
+    String ext = Checker.getExtension(file.path);
     String coverPath = '';
     final document = await PdfDocument.openFile(file.path);
     final page = await document.getPage(1);
@@ -17,17 +17,18 @@ class BinderPdf {
         await page.render(width: page.width, height: page.height);
     if (pageImage != null) {
       coverPath = (await getExternalStorageDirectory())!.path +
-          getName(file.path.replaceAll('/', '').replaceAll('\'', '')) +
+          Checker.getName(file.path.replaceAll('/', '').replaceAll('\'', '')) +
           pageImage.format.toString();
-
-      File(coverPath).create().then((value) => value
-          .writeAsBytes(pageImage.bytes)
-          .then((value) => debugPrintIt('$value saved succesfully')));
+      if (!File(coverPath).existsSync()) {
+        File(coverPath).create().then((value) => value
+            .writeAsBytes(pageImage.bytes)
+            .then((value) => debugPrintIt('$value saved succesfully')));
+      }
     }
 
     // model binding to ram
     BookModel pdfBook = BookModel(
-        title: getName(file.path),
+        title: Checker.getName(file.path),
         cover: coverPath,
         path: file.path,
         textSnippet: '',

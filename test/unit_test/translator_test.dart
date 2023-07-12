@@ -1,6 +1,6 @@
 import 'package:flashcards_reader/model/entities/translator/api.dart';
 import 'package:flashcards_reader/constants.dart';
-import 'package:flashcards_reader/util/internet_checker.dart';
+import 'package:flashcards_reader/util/checker.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -31,7 +31,7 @@ void main() {
       TranslateResponse result =
           await api.translate(text, to: 'uk', from: 'en');
 
-      bool internet = await InternetConnectionChecker.connected();
+      bool internet = await Checker.connected();
       if (internet) {
         expect(result.toString(), 'Привіт');
       } else {
@@ -45,7 +45,7 @@ void main() {
       String text = 'День';
       TranslateResponse result = await api.translate(text, to: 'en');
 
-      bool internet = await InternetConnectionChecker.connected();
+      bool internet = await Checker.connected();
       if (internet) {
         expect(result.toString(), 'Day');
       } else {

@@ -5,7 +5,7 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/extension_check.dart';
+import 'package:flashcards_reader/util/checker.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pick_or_save/pick_or_save.dart';
@@ -92,7 +92,7 @@ class SharingProvider {
           status: NotificationStatus.info);
     } else {
       String fileResult = file.readAsStringSync();
-      String ext = getExtension(filePath!);
+      String ext = Checker.getExtension(filePath!);
 
       /// [import section]
       switch (ext) {

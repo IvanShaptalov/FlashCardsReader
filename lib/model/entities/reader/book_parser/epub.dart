@@ -8,7 +8,7 @@ import 'package:archive/archive.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/extension_check.dart';
+import 'package:flashcards_reader/util/checker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:xml/xml.dart';
 
@@ -22,10 +22,10 @@ class BinderEpub {
 
   Future<BookModel> bind(File file) async {
     // todo bind pdf file
-    String extension = getExtension(file.path);
+    String extension = Checker.getExtension(file.path);
     await _unzip(file);
     BookModel epubBook = BookModel(
-      title: title.isEmpty ? getName(file.path) : title,
+      title: title.isEmpty ? Checker.getName(file.path) : title,
       path: file.path,
       textSnippet: '',
       lastAccess: DateTime.now(),
@@ -96,7 +96,7 @@ class BinderEpub {
               .firstWhere((p0) => p0.attributes
                   .where((p0) =>
                       p0.value == 'image/jpeg' ||
-                      p0.value.toString().contains('cover.jpg')  ||
+                      p0.value.toString().contains('cover.jpg') ||
                       p0.value.toString().contains('cover.png'))
                   .isNotEmpty)
               .attributes
@@ -109,7 +109,7 @@ class BinderEpub {
         var coverFileBytes =
             archive.files.firstWhere((p0) => p0.toString().contains(coverPath));
         coverPath = await _saveCover(
-            coverFileBytes, getName(file.path.replaceAll('/', '')));
+            coverFileBytes, Checker.getName(file.path.replaceAll('/', '')));
       }
     } else {
       // print('opfFile is null');
@@ -118,11 +118,14 @@ class BinderEpub {
 
   Future<String> _saveCover(ArchiveFile fileBytes, String name) async {
     // print(fileBytes);
-    String ext = getExtension(fileBytes.name);
+    String ext = Checker.getExtension(fileBytes.name);
     String path = (await getExternalStorageDirectory())!.path + name + ext;
-    await File(path).create().then((value) => value
-        .writeAsBytes(fileBytes.content)
-        .then((value) => debugPrintIt('$value saved succesfully')));
+    if (!File(path).existsSync()) {
+      await File(path).create().then((value) => value
+          .writeAsBytes(fileBytes.content)
+          .then((value) => debugPrintIt('$value saved succesfully')));
+    }
+
     debugPrintIt(File(path).existsSync());
     return path;
   }

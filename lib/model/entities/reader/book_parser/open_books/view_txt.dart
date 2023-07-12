@@ -21,10 +21,10 @@ class ViewTextState extends State<ViewText> {
           backgroundColor: Palette.scaffold,
           elevation: 0,
           iconTheme: const IconThemeData(color: Palette.darkblue),
-          actions: <Widget>[],
+          actions: const <Widget>[],
         ),
         body: PageView(
-          children: [Text('here')],
+          children: const [Text('here')],
         ));
   }
 }
