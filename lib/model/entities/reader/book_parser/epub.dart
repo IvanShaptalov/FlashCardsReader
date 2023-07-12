@@ -25,9 +25,12 @@ class BinderEpub {
     String extension = Checker.getExtension(file.path);
     await _unzip(file);
     BookModel epubBook = BookModel(
+      isBinded: true,
+      pageCount: 0,
       title: title.isEmpty ? Checker.getName(file.path) : title,
       path: file.path,
       textSnippet: '',
+      description: '',
       lastAccess: DateTime.now(),
       status: BookStatus(
         readingPrivate: false,
@@ -40,11 +43,12 @@ class BinderEpub {
       settings: BookSettings(
         theme: BookThemes.light,
       ),
-      file: BookFile(
-        size: file.lengthSync(),
-        extension: extension,
-      ),
-      cover: coverPath,
+      file: BookFileMeta(
+          name: Checker.getName(file.path),
+          size: file.lengthSync(),
+          extension: extension,
+          lastModified: DateTime.now().toIso8601String()),
+      coverPath: coverPath,
       language: language,
       author: author,
     );

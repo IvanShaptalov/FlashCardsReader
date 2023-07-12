@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
-import 'package:flashcards_reader/model/entities/reader/book_parser/open_books/view_pdf.dart';
-import 'package:flashcards_reader/model/entities/reader/book_parser/open_books/view_txt.dart';
+import 'package:flashcards_reader/views/reader/open_books/view_pdf.dart';
+import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/base_new_word_screen.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +43,7 @@ class OpenBookState extends State<OpenBook> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.book.titleOrEmpty,
+          widget.book.title,
           style: FontConfigs.pageNameTextStyle,
         ),
         actions: const [Offstage()],
@@ -57,9 +56,9 @@ class OpenBookState extends State<OpenBook> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-                image: File(widget.book.coverOrEmpty).existsSync()
+                image: File(widget.book.coverPath).existsSync()
                     ? DecorationImage(
-                        image: FileImage(File(widget.book.coverOrEmpty)),
+                        image: FileImage(File(widget.book.coverPath)),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
                             Palette.darkblue.withOpacity(0.8),
@@ -79,10 +78,9 @@ class OpenBookState extends State<OpenBook> {
                   margin: const EdgeInsets.fromLTRB(0, 45, 0, 0),
                   height: 340,
                   width: 250,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              widget.book.coverOrEmpty),
+                          image: AssetImage('assets/images/empty.png'),
                           fit: BoxFit.fill)),
                 ),
               ),
@@ -92,7 +90,7 @@ class OpenBookState extends State<OpenBook> {
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Text(
-                  widget.book.titleOrEmpty,
+                  widget.book.title,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                       fontSize: 19,
@@ -157,22 +155,22 @@ class OpenBookState extends State<OpenBook> {
               ),
               Container(
                 color: Colors.grey.shade300,
-                child: Transform.scale(
-                  scale: 0.9,
-                  child: AnimationLimiter(
-                    child: SizedBox(
-                      height: SizeConfig.getMediaHeight(context, p: 0.3),
-                      width: SizeConfig.getMediaWidth(context, p: 1),
-                      child: ListView.builder(
-                          controller: FastCardListProvider.scrollController,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: flashCardCollection.isEmpty
-                              ? 1
-                              : flashCardCollection.length,
-                          itemBuilder: (context, index) {
-                            return AnimationConfiguration.staggeredList(
-                              position: index,
-                              duration: const Duration(milliseconds: 400),
+                child: AnimationLimiter(
+                  child: SizedBox(
+                    height: SizeConfig.getMediaHeight(context, p: 0.3),
+                    width: SizeConfig.getMediaWidth(context, p: 1),
+                    child: ListView.builder(
+                        controller: FastCardListProvider.scrollController,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: flashCardCollection.isEmpty
+                            ? 1
+                            : flashCardCollection.length,
+                        itemBuilder: (context, index) {
+                          return AnimationConfiguration.staggeredList(
+                            position: index,
+                            duration: const Duration(milliseconds: 400),
+                            child: Transform.scale(
+                              scale: 0.9,
                               child: FastAddWordFCcWidget(
                                   flashCardCollection.isEmpty
                                       ? FlashCardProvider.fc
@@ -181,9 +179,9 @@ class OpenBookState extends State<OpenBook> {
                                   design: ScreenIdentifier.indentify(context),
                                   backElementToStart:
                                       FastCardListProvider.backElementToStart),
-                            );
-                          }),
-                    ),
+                            ),
+                          );
+                        }),
                   ),
                 ),
               ),
@@ -202,15 +200,14 @@ class OpenBookState extends State<OpenBook> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  ViewText(textBook: widget.book)));
+                                  ViewText(book: widget.book)));
                       break;
                     case '.pdf':
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => ViewPDF(
-                                  widget.book.titleOrEmpty,
-                                  widget.book.file.pathOrEmpty)));
+                                  widget.book.title, widget.book.path)));
                       break;
                     case '.epub':
                       break;

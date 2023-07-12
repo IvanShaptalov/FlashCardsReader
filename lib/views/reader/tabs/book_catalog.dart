@@ -129,10 +129,11 @@ class BookCatalogState extends State<BookCatalog> {
                               width: MediaQuery.of(context).size.width * 0.25,
                               margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                               decoration: BoxDecoration(
-                                  image: book.cover != null &&
-                                          File(book.cover ?? '').existsSync()
+                                  image: book.coverPath.isNotEmpty &&
+                                          File(book.coverPath).existsSync()
                                       ? DecorationImage(
-                                          image: FileImage(File(book.cover!)),
+                                          image:
+                                              FileImage(File(book.coverPath)),
                                           fit: BoxFit.fill,
                                         )
                                       : const DecorationImage(
@@ -155,7 +156,7 @@ class BookCatalogState extends State<BookCatalog> {
                                 width: MediaQuery.of(context).size.width * 0.65,
                                 margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                                 child: Text(
-                                  book.title ?? 'no title',
+                                  book.title,
                                   style: const TextStyle(
                                     fontSize: 15.5,
                                   ),
@@ -168,7 +169,7 @@ class BookCatalogState extends State<BookCatalog> {
                                 width: MediaQuery.of(context).size.width * 0.67,
                                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                                 child: Text(
-                                  book.author ?? '',
+                                  book.author,
                                   style: const TextStyle(fontSize: 12),
                                 ),
                               ),

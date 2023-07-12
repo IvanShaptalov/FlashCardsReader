@@ -28,8 +28,10 @@ class BinderPdf {
 
     // model binding to ram
     BookModel pdfBook = BookModel(
+        author: '',
+        description: '',
         title: Checker.getName(file.path),
-        cover: coverPath,
+        coverPath: coverPath,
         path: file.path,
         textSnippet: '',
         lastAccess: DateTime.now(),
@@ -44,10 +46,14 @@ class BinderPdf {
         settings: BookSettings(
           theme: BookThemes.light,
         ),
-        file: BookFile(
-          size: file.lengthSync(),
-          extension: ext,
-        ));
+        file: BookFileMeta(
+            size: file.lengthSync(),
+            extension: ext,
+            name: Checker.getName(file.path),
+            lastModified: DateTime.now().toIso8601String()),
+        isBinded: true,
+        language: '',
+        pageCount: 0);
     return pdfBook;
   }
 }

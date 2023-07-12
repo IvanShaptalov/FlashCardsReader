@@ -58,6 +58,12 @@ class BinderFB2 {
     }
     String extension = Checker.getExtension(file.path);
     BookModel fb2Book = BookModel(
+        author: author,
+        description: '',
+        coverPath: coverPath,
+        language: language,
+        pageCount: 0,
+        isBinded: true,
         title: Checker.getName(file.path),
         path: file.path,
         lastAccess: DateTime.now(),
@@ -73,9 +79,11 @@ class BinderFB2 {
         settings: BookSettings(
           theme: BookThemes.light,
         ),
-        file: BookFile(
+        file: BookFileMeta(
           size: file.lengthSync(),
           extension: extension,
+          lastModified: DateTime.now().toIso8601String(),
+          name: Checker.getName(file.path),
         ));
     return fb2Book;
 

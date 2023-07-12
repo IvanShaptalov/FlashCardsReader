@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:hive/hive.dart';
 part 'book_model.g.dart';
@@ -111,31 +113,25 @@ class BookSettings {
 }
 
 @HiveType(typeId: 6)
-class BookFile {
-  String get pathOrEmpty => path ?? '';
-
+class BookFileMeta {
   @HiveField(0)
-  String? path;
+  String name;
   @HiveField(1)
-  String? name;
+  String extension;
   @HiveField(2)
-  String? extension;
+  int size;
   @HiveField(3)
-  int? size;
-  @HiveField(4)
-  String? lastModified;
+  String lastModified;
 
-  BookFile({
-    this.path,
-    this.name,
-    this.extension,
-    this.size,
-    this.lastModified,
+  BookFileMeta({
+    required this.name,
+    required this.extension,
+    required this.size,
+    required this.lastModified,
   });
 
-  factory BookFile.fromJson(Map<String, dynamic> json) {
-    return BookFile(
-      path: json['path'],
+  factory BookFileMeta.fromJson(Map<String, dynamic> json) {
+    return BookFileMeta(
       name: json['name'],
       extension: json['extension'],
       size: json['size'],
@@ -144,7 +140,6 @@ class BookFile {
   }
 
   Map<String, dynamic> toJson() => {
-        'path': path,
         'name': name,
         'extension': extension,
         'size': size,
@@ -154,55 +149,61 @@ class BookFile {
 
 @HiveType(typeId: 7)
 class BookModel {
-  String get titleOrEmpty => title ?? '';
-  String get authorOrEmpty => author ?? '';
-  String get descriptionOrEmpty => description ?? '';
-  String get coverOrEmpty => cover ?? '';
-  String get languageOrEmpty => language ?? '';
-  int get pageCountOrEmpty => pageCount ?? 0;
-  String get textSnippetOrEmpty => textSnippet ?? '';
+  Stream<List<String>> getContentStream() {
+    if (File(path).existsSync()) {
+      return Stream.fromFuture(File(path).readAsLines());
+    }
+    return Stream.value(['file empty']);
+  }
+
+  String getAllText() {
+    if (File(path).existsSync()) {
+      return File(path).readAsStringSync();
+    }
+    return 'file empty';
+  }
 
   @HiveField(0)
-  String? title;
+  String title;
   @HiveField(1)
-  String? author;
+  String author;
   @HiveField(2)
-  String? description;
+  String description;
   @HiveField(3)
-  String? cover;
+  String coverPath;
   @HiveField(4)
-  String? language;
+  String language;
   @HiveField(5)
-  int? pageCount;
+  int pageCount;
   @HiveField(6)
-  String? textSnippet;
+  String textSnippet;
   @HiveField(7)
-  String? path;
+  String path;
   @HiveField(8)
-  bool? isBinded;
+  bool isBinded;
   @HiveField(9)
   BookStatus status;
   @HiveField(10)
   BookSettings settings;
   @HiveField(11)
-  BookFile file;
+  BookFileMeta file;
   @HiveField(12)
   DateTime lastAccess = DateTime.now();
   @HiveField(13)
   String? flashCardId;
 
-  int id() => "${title ?? ''}$description${author ?? ''} ${file.path}".hashCode;
+  int id() => "$title $description $author $path".hashCode;
 
   BookModel({
-    this.title,
-    this.author,
-    this.description,
-    this.cover,
-    this.language,
-    this.pageCount,
-    this.textSnippet,
-    this.path,
-    this.isBinded,
+    required this.title,
+    required this.author,
+    required this.description,
+    required this.coverPath,
+    required this.language,
+    required this.pageCount,
+    required this.textSnippet,
+    required this.path,
+    required this.isBinded,
     this.flashCardId,
     required this.status,
     required this.settings,
@@ -219,10 +220,11 @@ class BookModel {
         pageCount: json['pageCount'],
         textSnippet: json['textSnippet'],
         path: json['path'],
+        coverPath: json['coverPath'],
         isBinded: json['isBinded'],
         status: BookStatus.fromJson(json['status']),
         settings: BookSettings.fromJson(json['settings']),
-        file: BookFile.fromJson(json['file']),
+        file: BookFileMeta.fromJson(json['file']),
         flashCardId: json['flashCardId'],
         lastAccess: DateTime.parse(json['lastAccess']));
   }
@@ -251,7 +253,7 @@ class BookModel {
 
   @override
   String toString() {
-    return 'BookModel{title: $title, author: $author, description: $description, cover: $cover, language: $language, pageCount: $pageCount, textSnippet: $textSnippet, path: $path, isBinded: $isBinded';
+    return 'BookModel{title: $title, author: $author, description: $description, cover: $coverPath, language: $language, pageCount: $pageCount, textSnippet: $textSnippet, path: $path, isBinded: $isBinded';
   }
 
   @override

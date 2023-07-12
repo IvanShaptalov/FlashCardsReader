@@ -52,7 +52,7 @@ class DataBase {
       Hive.registerAdapter<BookModel>(BookModelAdapter());
       Hive.registerAdapter<BookStatus>(BookStatusAdapter());
       Hive.registerAdapter<BookSettings>(BookSettingsAdapter());
-      Hive.registerAdapter<BookFile>(BookFileAdapter());
+      Hive.registerAdapter<BookFileMeta>(BookFileMetaAdapter());
       Hive.registerAdapter<BookThemes>(BookThemesAdapter());
       debugPrintIt('Hive adapters registered');
     } catch (e) {
