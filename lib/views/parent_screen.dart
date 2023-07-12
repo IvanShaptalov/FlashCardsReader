@@ -2,6 +2,7 @@ import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
+import 'package:flashcards_reader/views/reader/screens/reading_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_actions/quick_actions.dart';
 
@@ -58,6 +59,7 @@ class ParentState<T extends ParentStatefulWidget> extends State<T> {
       ),
       const ShortcutItem(
           type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
+      const ShortcutItem(type: books, localizedTitle: books, icon: 'books'),
     ]).then((void _) {
       setState(() {
         if (widget.shortcut == 'no action set') {
@@ -78,6 +80,8 @@ class ParentState<T extends ParentStatefulWidget> extends State<T> {
       return AddWordFastScreen();
     } else if (widget.shortcut == quizAction) {
       return const QuizMenu();
+    } else if (widget.shortcut == books) {
+      return const ReadingHomePage();
     } else {
       return widget.page ??
           const Center(child: Text('no page set, use bindPage() method'));

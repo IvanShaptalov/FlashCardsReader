@@ -205,6 +205,7 @@ const double volume = 1.0;
 
 const String quizAction = 'quiz';
 const String addWordAction = 'add word';
+const String books = 'books';
 
 const String textExt = '.txt';
 const String jsonExt = '.js';
