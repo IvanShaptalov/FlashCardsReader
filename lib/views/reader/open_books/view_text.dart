@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
@@ -48,6 +49,8 @@ class ViewTextState extends ParentState<ViewText> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrintIt(
+        'title of selected flashcard : ======================${FlashCardProvider.fc.title}');
     bindPage(Scaffold(
         appBar: ViewText.showBar
             ? AppBar(
