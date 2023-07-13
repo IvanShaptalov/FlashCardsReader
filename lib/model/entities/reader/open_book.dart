@@ -30,22 +30,27 @@ class OpenBook extends StatefulWidget {
 }
 
 class OpenBookState extends State<OpenBook> {
-  List<FlashCardCollection>? flashCardCollection;
+  List<FlashCardCollection>? collection;
   void callback() {
     setState(() {});
   }
 
-  void selectSavedFlashCard() {
-    var savedFlashCard = BlocProvider.of(context);
-  }
 
   @override
   void initState() {
     // get collection
-    flashCardCollection = BlocProvider.of<FlashCardBloc>(widget.upperContext)
+    collection = BlocProvider.of<FlashCardBloc>(widget.upperContext)
         .state
         .copyWith(fromTrash: false)
         .flashCards;
+
+    FlashCardCollection? selected = FlashCardProvider.fc;
+    if (collection != null &&
+        collection!.isNotEmpty &&
+        selected.compareWithoutId(flashExample())) {
+      selected = collection!.first;
+      FlashCardProvider.fc = selected;
+    }
 
     super.initState();
   }
@@ -54,10 +59,10 @@ class OpenBookState extends State<OpenBook> {
   Widget build(BuildContext context) {
     // reorder cards
     if (!FastCardListProvider.putSelectedCardToFirstPositionBookMenu(
-        flashCardCollection ?? [], widget.book)) {
+        collection ?? [], widget.book)) {
       debugPrintIt('book doesn`t have flashcard id yet, select and save first');
-      var selectedFlash = FastCardListProvider.putSelectedCardToFirstPosition(
-          flashCardCollection ?? []);
+      var selectedFlash =
+          FastCardListProvider.putSelectedCardToFirstPosition(collection ?? []);
       // save flashcard
       widget.upperContext.read<BookBloc>().add(UpdateBookEvent(
           bookModel: widget.book..flashCardId = selectedFlash.id));
@@ -185,9 +190,7 @@ class OpenBookState extends State<OpenBook> {
                     child: ListView.builder(
                         controller: FastCardListProvider.scrollController,
                         scrollDirection: Axis.horizontal,
-                        itemCount: flashCardCollection!.isEmpty
-                            ? 1
-                            : flashCardCollection!.length,
+                        itemCount: collection!.isEmpty ? 1 : collection!.length,
                         itemBuilder: (context, index) {
                           return AnimationConfiguration.staggeredList(
                             position: index,
@@ -195,9 +198,9 @@ class OpenBookState extends State<OpenBook> {
                             child: Transform.scale(
                               scale: 0.9,
                               child: FastAddWordFCcWidget(
-                                flashCardCollection!.isEmpty
+                                collection!.isEmpty
                                     ? FlashCardProvider.fc
-                                    : flashCardCollection![index],
+                                    : collection![index],
                                 callback,
                                 design: ScreenIdentifier.indentify(context),
                                 book: widget.book,
