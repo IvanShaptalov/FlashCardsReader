@@ -13,8 +13,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
   Function callback;
   Function loadTranslate;
 
-  LandscapeSmallNewWord(super.widget,
-      {required this.callback, required this.loadTranslate});
+  LandscapeSmallNewWord({required this.callback, required this.loadTranslate});
 
   Widget addWordMenuWidget(BuildContext context) {
     return Padding(
@@ -47,7 +46,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
       FastCardListProvider.putSelectedCardToFirstPosition(flashCardCollection);
       var appbar = getAppBar(flashCardCollection);
       appBarHeight = appbar.preferredSize.height;
-      BaseNewWordWidgetService.wordFormContoller
+      BaseNewWordWidgetService.wordFormController
           .setUp(WordCreatingUIProvider.tmpFlashCard);
       debugPrintIt('selected collection:  ${FlashCardProvider.fc}');
       return Scaffold(
@@ -78,7 +77,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
                           itemBuilder: (context, index) {
                             return AnimationConfiguration.staggeredList(
                               position: index,
-                              duration: widget.cardAppearDuration,
+                              duration: DurationConfig.cardAppearDuration,
                               child: SlideAnimation(
                                 verticalOffset: 50.0,
                                 child: FadeInAnimation(
@@ -88,7 +87,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
                                     flashCardCollection.isEmpty
                                         ? FlashCardProvider.fc
                                         : flashCardCollection[index],
-                                    widget.callback,
+                                    callback,
                                     design: ScreenIdentifier.indentify(context),
                                   ),
                                 )),

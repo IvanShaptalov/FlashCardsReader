@@ -236,7 +236,7 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
                                       child:
                                           AnimationConfiguration.staggeredGrid(
                                         position: index,
-                                        duration: widget.cardAppearDuration,
+                                        duration: DurationConfig.cardAppearDuration,
                                         columnCount: columnCount,
                                         child: SlideAnimation(
                                           child: FadeInAnimation(

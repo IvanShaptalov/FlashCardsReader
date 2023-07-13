@@ -140,3 +140,7 @@ class ScreenIdentifier {
 class ConfigMenu {
   static double iconSize = 28;
 }
+
+class DurationConfig {
+  static Duration cardAppearDuration = const Duration(milliseconds: 375);
+}

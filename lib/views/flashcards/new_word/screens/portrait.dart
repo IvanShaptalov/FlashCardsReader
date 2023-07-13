@@ -13,8 +13,7 @@ class PortraitNewWord extends BaseScreenNewWord {
   Function callback;
   Function loadTranslate;
 
-  PortraitNewWord(super.widget,
-      {required this.callback, required this.loadTranslate});
+  PortraitNewWord({required this.callback, required this.loadTranslate});
 
   Widget addWordWidget(BuildContext context) {
     return Container(
@@ -38,13 +37,13 @@ class PortraitNewWord extends BaseScreenNewWord {
     debugPrintIt('screen loaded ');
     return BlocBuilder<FlashCardBloc, FlashcardsState>(
         builder: (context, state) {
-      BaseNewWordWidgetService.wordFormContoller
+      BaseNewWordWidgetService.wordFormController
           .setUp(WordCreatingUIProvider.tmpFlashCard);
       var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
       FastCardListProvider.putSelectedCardToFirstPosition(flashCardCollection);
       var appbar = getAppBar(flashCardCollection);
       appBarHeight = appbar.preferredSize.height;
-      BaseNewWordWidgetService.wordFormContoller
+      BaseNewWordWidgetService.wordFormController
           .setUp(WordCreatingUIProvider.tmpFlashCard);
 
       debugPrintIt('selected collection:  ${FlashCardProvider.fc}');
@@ -71,7 +70,7 @@ class PortraitNewWord extends BaseScreenNewWord {
                     itemBuilder: (context, index) {
                       return AnimationConfiguration.staggeredList(
                         position: index,
-                        duration: widget.cardAppearDuration,
+                        duration: DurationConfig.cardAppearDuration,
                         child: SlideAnimation(
                           verticalOffset: 50.0,
                           child: FadeInAnimation(
@@ -81,7 +80,7 @@ class PortraitNewWord extends BaseScreenNewWord {
                                     flashCardCollection.isEmpty
                                         ? FlashCardProvider.fc
                                         : flashCardCollection[index],
-                                    widget.callback,
+                                    callback,
                                     design: ScreenIdentifier.indentify(context),
                                   ))),
                         ),

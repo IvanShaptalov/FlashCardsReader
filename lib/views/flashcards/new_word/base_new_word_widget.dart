@@ -39,7 +39,7 @@ class BaseNewWordWidgetService {
   /// @override
   /// build()
   /// method
-  static WordFormContoller wordFormContoller = WordFormContoller();
+  static WordFormController wordFormController = WordFormController();
 
   static Widget translateListenerWidget(
       {required BuildContext context, required Function callback}) {
@@ -65,14 +65,14 @@ class BaseNewWordWidgetService {
                     context: context,
                     oldWord: state.source);
               } else {
-                wordFormContoller.answerController.text = state.result;
+                wordFormController.answerController.text = state.result;
                 WordCreatingUIProvider.setAnswer(state.result);
                 debugPrintIt(
                     'answer changed to ${state.result} from translate');
               }
             },
             child: TextField(
-              controller: wordFormContoller.answerController,
+              controller: wordFormController.answerController,
               decoration: InputDecoration(
                 labelText: 'Add Translation',
                 labelStyle: FontConfigs.h3TextStyle,
@@ -115,7 +115,7 @@ class BaseNewWordWidgetService {
           child: BlocProvider(
             create: (context) => TranslatorBloc(),
             child: TextField(
-              controller: wordFormContoller.questionController,
+              controller: wordFormController.questionController,
               decoration: InputDecoration(
                 labelText: 'Add Word',
                 labelStyle: FontConfigs.h3TextStyle,

@@ -32,7 +32,7 @@ class FlashCardFormController {
   }
 }
 
-class WordFormContoller {
+class WordFormController {
   TextEditingController questionController = TextEditingController();
   TextEditingController answerController = TextEditingController();
 
@@ -47,7 +47,7 @@ class WordFormContoller {
     answerController.text = flashCard.answer;
 
     // set cursor to the end of the text
-    
+
     questionController.selection = TextSelection.fromPosition(
         TextPosition(offset: flashCard.question.length));
     answerController.selection = TextSelection.fromPosition(
@@ -119,7 +119,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
   @override
   Widget build(BuildContext context) {
     widget.flashCardFormController.setUp(FlashCardProvider.fc);
-    BaseNewWordWidgetService.wordFormContoller
+    BaseNewWordWidgetService.wordFormController
         .setUp(WordCreatingUIProvider.tmpFlashCard);
     return Container(
         decoration: BoxDecoration(

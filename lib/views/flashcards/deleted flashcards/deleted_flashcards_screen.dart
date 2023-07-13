@@ -64,7 +64,6 @@ class _DeletedFlashCardScreenState extends State<DeletedFlashCardScreen> {
 // ignore: must_be_immutable
 class DeletedFlashCardView extends ParentStatefulWidget {
   DeletedFlashCardView({super.key});
-  Duration cardAppearDuration = const Duration(milliseconds: 375);
 
   @override
   ParentState<DeletedFlashCardView> createState() =>
@@ -148,7 +147,7 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
                             scale: 0.9,
                             child: AnimationConfiguration.staggeredGrid(
                               position: index,
-                              duration: widget.cardAppearDuration,
+                              duration: DurationConfig.cardAppearDuration,
                               columnCount: columnCount,
                               child: SlideAnimation(
                                 child: FadeInAnimation(

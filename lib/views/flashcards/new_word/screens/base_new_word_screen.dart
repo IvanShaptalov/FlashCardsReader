@@ -22,7 +22,8 @@ class FastCardListProvider {
   static bool putSelectedCardToFirstPositionBookMenu(
       List<FlashCardCollection> collection, BookModel book) {
     var bookFlashId = book.flashCardId;
-    var index = collection.indexWhere((fc) => fc.id == bookFlashId && !fc.isDeleted);
+    var index =
+        collection.indexWhere((fc) => fc.id == bookFlashId && !fc.isDeleted);
     if (index != -1) {
       var card = collection[index].copy();
 
@@ -47,8 +48,7 @@ class FastCardListProvider {
 class BaseScreenNewWord {
   String oldWord = '';
 
-  dynamic widget;
-  BaseScreenNewWord(this.widget);
+  BaseScreenNewWord();
   double appBarHeight = 0;
 
   AppBar getAppBar(flashCardCollection) {

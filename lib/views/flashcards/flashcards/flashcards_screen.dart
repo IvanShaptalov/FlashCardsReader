@@ -187,7 +187,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                           scale: 0.85,
                           child: AnimationConfiguration.staggeredGrid(
                             position: index,
-                            duration: widget.cardAppearDuration,
+                            duration: DurationConfig.cardAppearDuration,
                             columnCount: columnCount,
                             child: SlideAnimation(
                               child: FadeInAnimation(

@@ -31,7 +31,7 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                 onPressed: () {}, icon: const Icon(Icons.format_quote_rounded)),
             IconButton(
                 onPressed: () {
-                  BaseNewWordWidgetService.wordFormContoller.setUp(
+                  BaseNewWordWidgetService.wordFormController.setUp(
                       WordCreatingUIProvider.tmpFlashCard..question = '1');
                   showUpdateFlashCardMenu(context, widget, '1');
                 },

@@ -55,7 +55,6 @@ class QuizTrainerView extends StatefulWidget {
   final int numberOfFlashCards;
   final String fromPage;
 
-  final Duration cardAppearDuration = const Duration(milliseconds: 375);
 
   @override
   State<QuizTrainerView> createState() => _QuizTrainerViewState();

@@ -132,27 +132,27 @@ class _AddWordViewState extends State<AddWordView> {
     Widget screen;
     switch (ScreenIdentifier.indentify(context)) {
       case ScreenDesign.portrait:
-        screen = PortraitNewWord(widget,
+        screen = PortraitNewWord(
                 callback: widget.callback, loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.portraitSmall:
-        screen = PortraitSmallNewWord(widget,
+        screen = PortraitSmallNewWord(
                 callback: widget.callback, loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.landscape:
-        screen = LandscapeNewWord(widget,
+        screen = LandscapeNewWord(
                 callback: widget.callback, loadTranslate: loadTranslate)
             .loadScreen();
         break;
       case ScreenDesign.landscapeSmall:
-        screen = LandscapeSmallNewWord(widget,
+        screen = LandscapeSmallNewWord(
                 callback: widget.callback, loadTranslate: loadTranslate)
             .loadScreen();
         break;
       default:
-        screen = PortraitNewWord(widget,
+        screen = PortraitNewWord(
                 callback: widget.callback, loadTranslate: loadTranslate)
             .loadScreen();
     }
