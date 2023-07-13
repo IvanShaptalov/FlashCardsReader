@@ -58,10 +58,9 @@ class OpenBookState extends State<OpenBook> {
       debugPrintIt('book doesn`t have flashcard id yet, select and save first');
       var selectedFlash = FastCardListProvider.putSelectedCardToFirstPosition(
           flashCardCollection ?? []);
-      widget.upperContext
-          .read<BookBloc>()
-          .state
-          .updateBookAsync(widget.book..flashCardId = selectedFlash.id);
+      // save flashcard
+      widget.upperContext.read<BookBloc>().add(UpdateBookEvent(
+          bookModel: widget.book..flashCardId = selectedFlash.id));
     }
     ;
     return Scaffold(
