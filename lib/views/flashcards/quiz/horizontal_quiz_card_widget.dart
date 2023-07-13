@@ -134,7 +134,7 @@ class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
                     },
                     icon: Icon(
                       Icons.swap_vert_rounded,
-                      color: ConfigFlashcardView.quizIconColor,
+                      color: Palette.grey800,
                     )),
                 second
               ],

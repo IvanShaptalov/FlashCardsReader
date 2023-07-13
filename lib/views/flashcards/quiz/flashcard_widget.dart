@@ -43,7 +43,7 @@ class QuizCollectionView extends StatefulWidget {
 
 class _QuizCollectionViewState extends State<QuizCollectionView> {
   Color setCardColor() {
-    return CardViewConfig.defaultCardColor;
+    return Palette.amber50;
   }
 
   List<Widget> getCardActions() {

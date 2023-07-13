@@ -292,9 +292,9 @@ class BookCatalogState extends State<BookCatalog> {
                     ));
               },
             )
-          : const Center(
+          : Center(
               child: SpinKitWave(
-                color: Palette.cardBlue,
+                color: Palette.green600,
               ),
             ),
     );

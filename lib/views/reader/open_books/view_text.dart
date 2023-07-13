@@ -53,9 +53,9 @@ class ViewTextState extends ParentState<ViewText> {
                   style: FontConfigs.pageNameTextStyle,
                 ),
                 actions: const [Offstage()],
-                backgroundColor: Palette.menuColor,
+                backgroundColor: Palette.green300Primary,
                 elevation: 0,
-                iconTheme: const IconThemeData(color: Palette.darkblue),
+                iconTheme: IconThemeData(color: Palette.darkBlue),
               )
             : null,
         body: Stack(children: [
@@ -73,7 +73,7 @@ class ViewTextState extends ParentState<ViewText> {
                     left: 8,
                     right: 8,
                     bottom: 8),
-                color: Palette.cardButtonColor,
+                color: Palette.amber50,
                 height: SizeConfig.getMediaHeight(context),
                 width: SizeConfig.getMediaWidth(context),
                 child: SelectionArea(

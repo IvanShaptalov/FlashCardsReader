@@ -32,9 +32,9 @@ class ViewPDFState extends State<ViewPDF> {
           name,
           style: FontConfigs.pageNameTextStyle,
         ),
-        backgroundColor: Palette.scaffold,
+        backgroundColor: Palette.white,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Palette.darkblue),
+        iconTheme: IconThemeData(color: Palette.darkBlue),
         actions: <Widget>[
           StreamBuilder<String>(
             stream: _pageCountController.stream,
@@ -49,8 +49,8 @@ class ViewPDFState extends State<ViewPDF> {
                         ),
                     child: Text(
                       snapshot.data!,
-                      style: const TextStyle(
-                          color: Palette.darkblue,
+                      style: TextStyle(
+                          color: Palette.darkBlue,
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -91,7 +91,7 @@ class ViewPDFState extends State<ViewPDF> {
                 FloatingActionButton(
                   heroTag: '-',
                   backgroundColor: Colors.white,
-                  hoverColor: Palette.darkblue,
+                  hoverColor: Palette.darkBlue,
                   onPressed: () async {
                     final PDFViewController pdfController = snapshot.data!;
                     final int currentPage =
@@ -100,10 +100,10 @@ class ViewPDFState extends State<ViewPDF> {
                       await pdfController.setPage(currentPage);
                     }
                   },
-                  child: const Text(
+                  child: Text(
                     '<',
                     style: TextStyle(
-                        color: Palette.darkblue,
+                        color: Palette.darkBlue,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
@@ -121,10 +121,10 @@ class ViewPDFState extends State<ViewPDF> {
                       await pdfController.setPage(currentPage);
                     }
                   },
-                  child: const Text(
+                  child: Text(
                     '>',
                     style: TextStyle(
-                        color: Palette.darkblue,
+                        color: Palette.darkBlue,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),

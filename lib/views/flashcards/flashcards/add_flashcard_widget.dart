@@ -43,7 +43,7 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 0.5),
-            color: CardViewConfig.defaultCardColor,
+            color: Palette.amber50,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

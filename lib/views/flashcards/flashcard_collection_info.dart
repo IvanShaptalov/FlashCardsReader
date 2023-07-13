@@ -19,7 +19,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
               Transform.scale(
                 scale: iconScale,
                 child: Icon(Icons.language,
-                    color: ConfigFCWordsInfo.questionLanguageIconColor),
+                    color: Palette.blueAccent),
               ),
               Text(
                 flashCardCollection.questionLanguage,
@@ -33,7 +33,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
               Transform.scale(
                 scale: iconScale,
                 child: Icon(Icons.language,
-                    color: ConfigFCWordsInfo.answerLanguageIconColor),
+                    color: Palette.green600),
               ),
               Text(
                 flashCardCollection.answerLanguage,

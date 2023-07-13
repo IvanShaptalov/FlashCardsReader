@@ -81,11 +81,11 @@ class ReadingHomePageState extends ParentState<ReadingHomePageView> {
         style: FontConfigs.pageNameTextStyle,
       ),
       bottom: TabBar(
-        indicatorColor: Palette.darkblue,
+        indicatorColor: Palette.darkBlue,
         indicatorWeight: 2.5,
         isScrollable: true,
         physics: const BouncingScrollPhysics(),
-        labelColor: Palette.darkblue,
+        labelColor: Palette.darkBlue,
         labelStyle: const TextStyle(fontSize: 18),
         tabs: _kTabs,
       ),

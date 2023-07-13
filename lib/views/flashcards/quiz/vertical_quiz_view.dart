@@ -23,7 +23,7 @@ class _VerticalQuizState extends State<VerticalQuiz> {
       quizContext: context,
     );
     return Container(
-      color: ConfigQuizView.quizResultBackgroundColor,
+      color: Palette.grey300,
       child: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,7 +106,7 @@ class CorrectAnswerArea extends StatelessWidget {
       width: SizeConfig.getMediaWidth(context, p: 0.05),
       height: SizeConfig.getMediaHeight(context, p: 0.6),
       decoration: BoxDecoration(
-          color: ConfigQuizView.correctAreaColor,
+          color: Palette.green300Primary,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             bottomLeft: Radius.circular(10),
@@ -124,7 +124,7 @@ class WrongAnswerArea extends StatelessWidget {
       width: SizeConfig.getMediaWidth(context, p: 0.05),
       height: SizeConfig.getMediaHeight(context, p: 0.6),
       decoration: BoxDecoration(
-          color: ConfigQuizView.wrongAreaColor,
+          color: Palette.red300,
           borderRadius: const BorderRadius.only(
             topRight: Radius.circular(10),
             bottomRight: Radius.circular(10),

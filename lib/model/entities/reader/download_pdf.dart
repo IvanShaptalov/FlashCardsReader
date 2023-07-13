@@ -35,8 +35,8 @@ class DownloadPDFState extends State<DownloadPDF> {
           pathdir,
           style: FontConfigs.pageNameTextStyle,
         ),
-        backgroundColor: Palette.scaffold,
-        iconTheme: const IconThemeData(color: Palette.darkblue),
+        backgroundColor: Palette.white,
+        iconTheme: IconThemeData(color: Palette.darkBlue),
         actions: <Widget>[
           StreamBuilder<String>(
             stream: _pageCountController.stream,
@@ -51,8 +51,8 @@ class DownloadPDFState extends State<DownloadPDF> {
                         ),
                     child: Text(
                       snapshot.data!,
-                      style: const TextStyle(
-                          color: Palette.darkblue,
+                      style: TextStyle(
+                          color: Palette.darkBlue,
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -92,7 +92,7 @@ class DownloadPDFState extends State<DownloadPDF> {
                 FloatingActionButton(
                   heroTag: '-',
                   backgroundColor: Colors.white,
-                  hoverColor: Palette.darkblue,
+                  hoverColor: Palette.darkBlue,
                   onPressed: () async {
                     final PDFViewController pdfController = snapshot.data!;
                     final int currentPage =
@@ -101,10 +101,10 @@ class DownloadPDFState extends State<DownloadPDF> {
                       await pdfController.setPage(currentPage);
                     }
                   },
-                  child: const Text(
+                  child: Text(
                     '<',
                     style: TextStyle(
-                        color: Palette.darkblue,
+                        color: Palette.darkBlue,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
@@ -122,10 +122,10 @@ class DownloadPDFState extends State<DownloadPDF> {
                       await pdfController.setPage(currentPage);
                     }
                   },
-                  child: const Text(
+                  child: Text(
                     '>',
                     style: TextStyle(
-                        color: Palette.darkblue,
+                        color: Palette.darkBlue,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),

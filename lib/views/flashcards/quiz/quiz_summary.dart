@@ -63,28 +63,28 @@ List<Widget> loadListItems(BuildContext context) {
       padding: const EdgeInsets.all(8.0),
       child: Text(
         'Total: ${SummaryFlashCardsProvider.totalAnswers()}',
-        style: ConfigQuizView.quizSummaryTextStyle,
+        style: FontConfigs.quizSummaryTextStyle,
       ),
     ),
     Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
         'Correct: ${SummaryFlashCardsProvider.correctAnswers()}',
-        style: ConfigQuizView.quizSummaryTextStyle,
+        style: FontConfigs.quizSummaryTextStyle,
       ),
     ),
     Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
         'Wrong: ${SummaryFlashCardsProvider.wrongAnswers()}',
-        style: ConfigQuizView.quizSummaryTextStyle,
+        style: FontConfigs.quizSummaryTextStyle,
       ),
     ),
     Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
         'Percentage: ${SummaryFlashCardsProvider.correctPercentage()}%',
-        style: ConfigQuizView.quizSummaryTextStyle,
+        style: FontConfigs.quizSummaryTextStyle,
       ),
     ),
     const Divider(
@@ -102,8 +102,8 @@ List<Widget> loadListItems(BuildContext context) {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               color: flash.isCorrect
-                  ? ConfigQuizView.correctAreaColor.withOpacity(0.7)
-                  : ConfigQuizView.wrongAreaColor.withOpacity(0.7)),
+                  ? Palette.green300Primary.withOpacity(0.7)
+                  : Palette.red300.withOpacity(0.7)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -112,7 +112,7 @@ List<Widget> loadListItems(BuildContext context) {
                 child: Center(
                   child: Text(
                     flash.question,
-                    style: ConfigQuizView.quizWordSummaryTextStyleBlack,
+                    style: FontConfigs.quizWordSummaryTextStyleBlack,
                     maxLines: 1,
                   ),
                 ),
@@ -125,7 +125,7 @@ List<Widget> loadListItems(BuildContext context) {
                 child: Center(
                   child: Text(
                     flash.answer,
-                    style: ConfigQuizView.quizWordSummaryTextStyle,
+                    style: FontConfigs.quizWordSummaryTextStyle,
                     maxLines: 1,
                   ),
                 ),
@@ -142,7 +142,7 @@ Widget loadEndQuiz(BuildContext context, String fromPage) {
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
       Container(
-        color: ConfigQuizView.quizResultBackgroundColor,
+        color: Palette.grey300,
         height: SizeConfig.getMediaHeight(context,
             p: ScreenIdentifier.isLandscapeRelative(context) ? 0.6 : 0.7),
         child: Padding(
@@ -163,7 +163,7 @@ Widget loadEndQuiz(BuildContext context, String fromPage) {
                 p: ScreenIdentifier.isLandscapeRelative(context) ? 0.35 : 0.6),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
-                color: ConfigQuizView.backFromQuizButtonBackgroundColor),
+                color: Palette.green300Primary),
             child: Transform.scale(
               scale: 1,
               child: Padding(
@@ -171,14 +171,14 @@ Widget loadEndQuiz(BuildContext context, String fromPage) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Icon(Icons.arrow_downward_rounded,
-                        color: ConfigQuizView.backFromQuizIconColor),
+                    const Icon(Icons.arrow_downward_rounded,
+                        color: Palette.white),
                     Text(
                       'Quiz Finished',
-                      style: ConfigQuizView.backFromQuizTextStyle,
+                      style: FontConfigs.backFromQuizTextStyle,
                     ),
-                    Icon(Icons.arrow_downward_rounded,
-                        color: ConfigQuizView.backFromQuizIconColor)
+                    const Icon(Icons.arrow_downward_rounded,
+                        color: Palette.white)
                   ],
                 ),
               ),

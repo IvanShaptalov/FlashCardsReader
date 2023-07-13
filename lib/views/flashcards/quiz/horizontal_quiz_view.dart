@@ -22,7 +22,7 @@ class _HorizontalQuizState extends State<HorizontalQuiz> {
       quizContext: context,
     );
     return Container(
-      color: ConfigQuizView.quizResultBackgroundColor,
+      color: Palette.grey300,
       child: Card(
         child: Center(
           child: BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished
@@ -89,7 +89,7 @@ class CorrectAnswerArea extends StatelessWidget {
       width: SizeConfig.getMediaWidth(context, p: 0.6),
       height: SizeConfig.getMediaHeight(context, p: 0.03),
       decoration: BoxDecoration(
-          color: ConfigQuizView.correctAreaColor,
+          color: Palette.green300Primary,
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(10),
             bottomRight: Radius.circular(10),
@@ -107,7 +107,7 @@ class WrongAnswerArea extends StatelessWidget {
       width: SizeConfig.getMediaWidth(context, p: 0.6),
       height: SizeConfig.getMediaHeight(context, p: 0.03),
       decoration: BoxDecoration(
-          color: ConfigQuizView.wrongAreaColor,
+          color: Palette.red300,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),

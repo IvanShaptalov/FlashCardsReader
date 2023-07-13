@@ -18,7 +18,7 @@ class DeletedFlashCardCollectionWidget extends StatefulWidget {
 class _DeletedFlashCardCollectionWidgetState
     extends State<DeletedFlashCardCollectionWidget> {
   Color getCardColor() {
-    return CardViewConfig.defaultCardColor;
+    return Palette.amber50;
   }
 
   List<Widget> getCardActions(

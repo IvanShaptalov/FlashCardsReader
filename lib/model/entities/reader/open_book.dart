@@ -75,9 +75,9 @@ class OpenBookState extends ParentState<OpenBook> {
           style: FontConfigs.pageNameTextStyle,
         ),
         actions: const [Offstage()],
-        backgroundColor: Palette.scaffold,
+        backgroundColor: Palette.white,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Palette.darkblue),
+        iconTheme:  IconThemeData(color: Palette.darkBlue),
       ),
       body: Stack(children: [
         Container(
@@ -89,13 +89,13 @@ class OpenBookState extends ParentState<OpenBook> {
                         image: FileImage(File(widget.book.coverPath)),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
-                            Palette.darkblue.withOpacity(0.8),
+                            Palette.darkBlue.withOpacity(0.8),
                             BlendMode.multiply))
                     : DecorationImage(
                         image: const AssetImage('assets/images/empty.png'),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
-                            Palette.darkblue.withOpacity(0.8),
+                            Palette.darkBlue.withOpacity(0.8),
                             BlendMode.multiply)))),
         Center(
           child: Column(
@@ -147,7 +147,7 @@ class OpenBookState extends ParentState<OpenBook> {
           ),
         ),
         SlidingUpPanel(
-          color: Palette.menuColor,
+          color: Palette.green300Primary,
           minHeight: 80,
           backdropEnabled: true,
           panel: Column(
@@ -217,7 +217,7 @@ class OpenBookState extends ParentState<OpenBook> {
                     padding:
                         MaterialStateProperty.all(const EdgeInsets.all(25)),
                     backgroundColor:
-                        MaterialStateProperty.all(Palette.cardButtonColor),
+                        MaterialStateProperty.all(Palette.amber50),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)))),
                 onPressed: () {

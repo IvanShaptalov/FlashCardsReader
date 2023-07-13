@@ -26,14 +26,14 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
     if (FlashCardCollectionProvider.isMergeModeStarted) {
       if (FlashCardCollectionProvider.flashcardsToMerge
           .contains(widget.flashCardCollection)) {
-        return ConfigFlashcardView.mergeObjectColor;
+        return Palette.amber200;
       }
       if (FlashCardCollectionProvider.targetFlashCard ==
           widget.flashCardCollection) {
-        return ConfigFlashcardView.mergeTargetColor;
+        return Palette.green100;
       }
     }
-    return CardViewConfig.defaultCardColor;
+    return Palette.amber50;
   }
 
   /// if icon is target, cancel merge mode, otherwise cancel selection

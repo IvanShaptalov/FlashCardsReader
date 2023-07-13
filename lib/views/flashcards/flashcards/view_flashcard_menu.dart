@@ -60,7 +60,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-          color: CardViewConfig.defaultCardColor,
+          color: Palette.amber50,
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25)),
         ),
@@ -74,7 +74,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
               children: [
                 Icon(
                   Icons.arrow_drop_down,
-                  color: ConfigFlashcardView.descriptionIconColor,
+                  color: Palette.descriptionIconColor,
                 ),
                 Text(
                   'drag to hide menu',
@@ -82,7 +82,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                 ),
                 Icon(
                   Icons.arrow_drop_down,
-                  color: ConfigFlashcardView.descriptionIconColor,
+                  color: Palette.descriptionIconColor,
                 ),
               ],
             ),
@@ -128,7 +128,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                   const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.verified_outlined,
-                                                color: ConfigFlashcardView
+                                                color: Palette
                                                     .descriptionIconColor,
                                               ),
                                             ),
@@ -191,7 +191,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                   const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.language,
-                                                color: ConfigFlashcardView
+                                                color: Palette
                                                     .descriptionIconColor,
                                               ),
                                             ),
@@ -235,7 +235,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                   const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.translate,
-                                                color: ConfigFlashcardView
+                                                color: Palette
                                                     .descriptionIconColor,
                                               ),
                                             ),
@@ -283,7 +283,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                   const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.calendar_month_outlined,
-                                                color: ConfigFlashcardView
+                                                color: Palette
                                                     .descriptionIconColor,
                                               ),
                                             ),
@@ -331,7 +331,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                   const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.web_stories_outlined,
-                                                color: ConfigFlashcardView
+                                                color: Palette
                                                     .descriptionIconColor,
                                               ),
                                             ),
@@ -400,8 +400,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Icon(
                                               Icons.import_export,
-                                              color: ConfigFlashcardView
-                                                  .quizIconColor,
+                                              color: Palette
+                                                  .grey800,
                                             ),
                                             const Text(
                                               'Export FlashCards',
@@ -484,8 +484,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Icon(
                                               Icons.quiz_outlined,
-                                              color: ConfigFlashcardView
-                                                  .quizIconColor,
+                                              color: Palette
+                                                  .grey800,
                                             ),
                                             const Text(
                                               'Start Quiz',

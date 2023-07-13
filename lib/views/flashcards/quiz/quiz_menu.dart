@@ -272,10 +272,10 @@ class SelectQuizMode extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: TextButton(
         style: TextButton.styleFrom(
-          foregroundColor: ConfigQuizView.foregroundModeColor,
+          foregroundColor: Palette.white,
           backgroundColor: isSelected || explisit
-              ? ConfigQuizView.selectedModeColor
-              : ConfigQuizView.unselectedModeColor,
+              ? Palette.teal
+              : Palette.darkBlue,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),

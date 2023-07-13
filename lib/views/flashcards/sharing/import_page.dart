@@ -106,7 +106,7 @@ class _SharingPageViewState extends ParentState<SharingPageView> {
                             ? 0.3
                             : 0.8),
                     decoration: BoxDecoration(
-                      color: ConfigFastAddWordView.buttonColor,
+                      color: Palette.amber50,
 
                       // rounded full border
                       borderRadius: const BorderRadius.all(Radius.circular(25)),

@@ -32,13 +32,13 @@ class _SelectLanguageDropdownState extends State<SelectLanguageDropdown> {
       child: Column(
         children: [
           DropdownButton<String>(
-            dropdownColor: ConfigViewUpdateMenu.dropDownColor,
+            dropdownColor: Palette.amber50,
             value: widget.startValue,
             isExpanded: true,
             style: FontConfigs.h3TextStyleBlack,
             underline: Container(
               height: 2,
-              color: ConfigViewUpdateMenu.dropDownColorUndlerline,
+              color: Palette.green300Primary,
             ),
             onChanged: (String? value) {
               // This is called when the user selects an item.

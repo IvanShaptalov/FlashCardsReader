@@ -123,7 +123,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
         .setUp(WordCreatingUIProvider.tmpFlashCard);
     return Container(
         decoration: BoxDecoration(
-          color: CardViewConfig.defaultCardColor,
+          color: Palette.amber50,
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25)),
         ),
@@ -160,7 +160,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
 
                   width: SizeConfig.getMediaWidth(context, p: 1),
 
-                  color: ConfigViewUpdateMenu.addWordMenuColor,
+                  color: Palette.green200,
                   child: BaseNewWordWidgetService.addWordMenu(
                       context: context, callback: callback, oldWord: oldWord),
                 )
@@ -566,11 +566,9 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                         : 0.14),
                                                 width: SizeConfig.getMediaWidth(
                                                     context,
-                                                    p: ConfigViewUpdateMenu
-                                                        .wordButtonWidthPercent),
+                                                    p: 0.3),
                                                 decoration: BoxDecoration(
-                                                    color: ConfigViewUpdateMenu
-                                                        .addWordMenuColor,
+                                                    color: Palette.green200,
                                                     border: Border.all(
                                                         color: Colors
                                                             .grey.shade400,
@@ -591,8 +589,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                                 right: 4.0),
                                                         child: Icon(
                                                           Icons.delete_forever,
-                                                          color: ConfigViewUpdateMenu
-                                                              .buttonIconColor,
+                                                          color:
+                                                              Palette.grey800,
                                                         ),
                                                       ),
                                                       const Text('delete',
@@ -625,11 +623,9 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                         : 0.14),
                                                 width: SizeConfig.getMediaWidth(
                                                     context,
-                                                    p: ConfigViewUpdateMenu
-                                                        .wordButtonWidthPercent),
+                                                    p: 0.3),
                                                 decoration: BoxDecoration(
-                                                    color: ConfigViewUpdateMenu
-                                                        .addWordMenuColor,
+                                                    color: Palette.green200,
                                                     border: Border.all(
                                                         color: Colors
                                                             .grey.shade400,
@@ -650,8 +646,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                                 right: 4.0),
                                                         child: Icon(
                                                           Icons.school_outlined,
-                                                          color: ConfigViewUpdateMenu
-                                                              .buttonIconColor,
+                                                          color:
+                                                              Palette.grey800,
                                                         ),
                                                       ),
                                                       Text(
@@ -744,7 +740,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
           height: SizeConfig.getMediaHeight(context, p: 0.1),
           width: SizeConfig.getMediaWidth(context, p: 0.8),
           decoration: BoxDecoration(
-            color: ConfigViewUpdateMenu.addWordMenuColor,
+            color: Palette.green200,
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(25), topRight: Radius.circular(25)),
           ),

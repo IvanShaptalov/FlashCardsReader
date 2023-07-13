@@ -131,7 +131,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: ConfigQuizView.cardQuizColor,
+        color: Palette.amber50,
         shape: ShapeBorder.lerp(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -157,7 +157,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                     },
                     icon: Icon(
                       Icons.swap_vert_rounded,
-                      color: ConfigFlashcardView.quizIconColor,
+                      color: Palette.grey800,
                     )),
               ),
               second

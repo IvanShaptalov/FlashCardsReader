@@ -22,7 +22,7 @@ class PortraitSmallNewWord extends BaseScreenNewWord {
           height: SizeConfig.getMediaHeight(context, p: 0.35),
           width: SizeConfig.getMediaWidth(context, p: 1),
           decoration: BoxDecoration(
-            color: ConfigFastAddWordView.menuColor,
+            color: Palette.green200,
 
             // rounded full border
             borderRadius: const BorderRadius.all(Radius.circular(10)),

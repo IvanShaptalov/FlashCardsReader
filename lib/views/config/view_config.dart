@@ -30,7 +30,7 @@ class ViewConfig {
 
 class FontConfigs {
   static const TextStyle pageNameTextStyle = TextStyle(
-      color: Palette.scaffold,
+      color: Palette.white,
       fontSize: 24,
       fontWeight: FontWeight.bold,
       letterSpacing: -0.6);
@@ -56,6 +56,16 @@ class FontConfigs {
       TextStyle(fontSize: 22, color: Colors.black);
   static const TextStyle cardQuestionTextStyle =
       TextStyle(fontSize: 22, color: Colors.black);
+  static TextStyle backFromQuizTextStyle = const TextStyle(
+      fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white);
+
+  static TextStyle quizSummaryTextStyle = TextStyle(
+      fontSize: 18, fontWeight: FontWeight.w700, color: Colors.grey.shade800);
+
+  static TextStyle quizWordSummaryTextStyleBlack =
+      const TextStyle(fontSize: 18, color: Colors.black);
+  static TextStyle quizWordSummaryTextStyle =
+      TextStyle(fontSize: 16, color: Colors.grey.shade900);
 }
 
 enum ScreenDesign { portrait, landscape, portraitSmall, landscapeSmall }

@@ -27,9 +27,9 @@ class FastAddWordFCcWidget extends StatefulWidget {
 class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
   Color setCardColor() {
     if (widget.flashCardCollection == FlashCardProvider.fc) {
-      return ConfigFastAddWordView.selectedCard;
+      return Palette.green100;
     }
-    return CardViewConfig.defaultCardColor;
+    return Palette.amber50;
   }
 
   /// if icon is target, cancel merge mode, otherwise cancel selection
