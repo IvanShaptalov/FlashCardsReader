@@ -9,6 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BaseNewWordWidget {
+  /// addWordMenu create widget to save words faster
+  /// [callback] to update screen
+  /// [widget] parent widget
+  /// [oldWord] to compare words and detect that user typing or not
   static Widget addWordMenu(
       {required BuildContext context,
       required Function callback,
