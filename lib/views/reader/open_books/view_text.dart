@@ -2,20 +2,23 @@ import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ViewText extends StatefulWidget {
-  const ViewText({Key? key, required this.book}) : super(key: key);
+// ignore: must_be_immutable
+class ViewText extends ParentStatefulWidget {
+  ViewText({super.key, required this.book, required this.upperContext});
   final BookModel book;
+  final BuildContext upperContext;
   static bool showBar = false;
 
   @override
   ViewTextState createState() => ViewTextState();
 }
 
-class ViewTextState extends State<ViewText> {
+class ViewTextState extends ParentState<ViewText> {
   @override
   void initState() {
     ViewText.showBar = true;
@@ -45,7 +48,7 @@ class ViewTextState extends State<ViewText> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    bindPage(Scaffold(
         appBar: ViewText.showBar
             ? AppBar(
                 title: Text(
@@ -86,6 +89,7 @@ class ViewTextState extends State<ViewText> {
                   child: Text(widget.book.getAllText()),
                 ),
               )),
-        ]));
+        ])));
+    return super.build(context);
   }
 }

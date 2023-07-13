@@ -1,6 +1,7 @@
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
+import 'package:flashcards_reader/views/reader/screens/reading_homepage.dart';
 import 'package:flutter/material.dart';
 
 import 'views/flashcards/new_word/new_word_screen.dart';
@@ -17,6 +18,9 @@ class ShortcutsProvider {
     } else if (shortcut == quizAction) {
       shortcut = 'no action set';
       return const QuizMenu();
+    } else if (shortcut == books) {
+      shortcut = 'no action set';
+      return const ReadingHomePage();
     } else {
       return child;
     }

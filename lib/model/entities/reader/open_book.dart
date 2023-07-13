@@ -6,6 +6,8 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/overlay_notification.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_pdf.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
@@ -17,24 +19,22 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class OpenBook extends StatefulWidget {
+// ignore: must_be_immutable
+class OpenBook extends ParentStatefulWidget {
   final BookModel book;
   final BuildContext upperContext;
 
-  const OpenBook({required this.book, super.key, required this.upperContext});
+  OpenBook({required this.book, super.key, required this.upperContext});
 
   @override
-  OpenBookState createState() =>
-      // ignore: no_logic_in_create_state
-      OpenBookState();
+  OpenBookState createState() => OpenBookState();
 }
 
-class OpenBookState extends State<OpenBook> {
+class OpenBookState extends ParentState<OpenBook> {
   List<FlashCardCollection>? collection;
   void callback() {
     setState(() {});
   }
-
 
   @override
   void initState() {
@@ -67,8 +67,7 @@ class OpenBookState extends State<OpenBook> {
       widget.upperContext.read<BookBloc>().add(UpdateBookEvent(
           bookModel: widget.book..flashCardId = selectedFlash.id));
     }
-    ;
-    return Scaffold(
+    bindPage(Scaffold(
       appBar: AppBar(
         title: Text(
           widget.book.title,
@@ -221,26 +220,42 @@ class OpenBookState extends State<OpenBook> {
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)))),
                 onPressed: () {
-                  switch (widget.book.file.extension) {
-                    case '.txt':
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ViewText(book: widget.book)));
-                      break;
-                    case '.pdf':
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewPDF(
-                                  widget.book.title, widget.book.path)));
-                      break;
-                    case '.epub':
-                      break;
-                    case '.fb2':
-                      break;
-                    default:
+                  // check that flashcard selected
+                  if (collection != null &&
+                      widget.book.flashCardId != null &&
+                      collection!
+                          .map((e) => e.id)
+                          .contains(widget.book.flashCardId)) {
+                    switch (widget.book.file.extension) {
+                      case '.txt':
+                        // check that collection has selected flashCard
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ViewText(
+                                      book: widget.book,
+                                      upperContext: widget.upperContext,
+                                    )));
+
+                        break;
+                      case '.pdf':
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ViewPDF(
+                                    widget.book.title, widget.book.path)));
+                        break;
+                      case '.epub':
+                        break;
+                      case '.fb2':
+                        break;
+                      default:
+                    }
+                  } else {
+                    OverlayNotificationProvider.showOverlayNotification(
+                        'Select flashcard collection to save words',
+                        status: NotificationStatus.info);
                   }
                 },
                 child: const Text("Read Book", style: FontConfigs.h1TextStyle),
@@ -250,54 +265,9 @@ class OpenBookState extends State<OpenBook> {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         ),
-        /* downloading
-            ? Container(
-                decoration: const BoxDecoration(color: Colors.black54),
-                child: Center(
-                  child: Container(
-                    height: 200,
-                    width: 300,
-                    decoration: BoxDecoration(
-                        color: Colors.black87,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 50,
-                          ),
-                          const SizedBox(
-                            height: 70,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 8,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          SizedBox(
-                            height: 30,
-                            child: Center(
-                              child: Text(
-                                'Downloading File $progressString',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            :  */
         const Offstage()
       ]),
-    );
+    ));
+    return super.build(context);
   }
 }
