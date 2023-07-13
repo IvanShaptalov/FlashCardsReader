@@ -47,7 +47,7 @@ class WordFormContoller {
     answerController.text = flashCard.answer;
 
     // set cursor to the end of the text
-
+    
     questionController.selection = TextSelection.fromPosition(
         TextPosition(offset: flashCard.question.length));
     answerController.selection = TextSelection.fromPosition(
@@ -107,7 +107,6 @@ class FlashCardCreatingWallView extends StatefulWidget {
   final Function updateCallbackCrunch;
   bool isEdit;
   FlashCardFormController flashCardFormController = FlashCardFormController();
-  WordFormContoller wordFormContoller = WordFormContoller();
   @override
   State<FlashCardCreatingWallView> createState() =>
       _FlashCardCreatingWallViewState();
@@ -120,7 +119,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
   @override
   Widget build(BuildContext context) {
     widget.flashCardFormController.setUp(FlashCardProvider.fc);
-    widget.wordFormContoller.setUp(WordCreatingUIProvider.tmpFlashCard);
+    BaseNewWordWidgetService.wordFormContoller
+        .setUp(WordCreatingUIProvider.tmpFlashCard);
     return Container(
         decoration: BoxDecoration(
           color: CardViewConfig.defaultCardColor,

@@ -52,9 +52,8 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (BuildContext context, setState) {
-            return BaseNewWordWidget(
-              oldWord: oldWord,
-            );
+            return BaseNewWordWidgetService.addWordMenu(
+                context: context, callback: callback, oldWord: oldWord);
           });
         });
   }

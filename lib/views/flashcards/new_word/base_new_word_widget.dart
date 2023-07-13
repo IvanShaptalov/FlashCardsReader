@@ -1,4 +1,3 @@
-import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
@@ -9,52 +8,6 @@ import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-/// [BaseNewWordWidget] has Translator Bloc provider to prevent multiple context parameter crossing
-// ignore: must_be_immutable
-class BaseNewWordWidget extends StatefulWidget {
-  BaseNewWordWidget({super.key, required this.oldWord});
-  String oldWord;
-  @override
-  State<BaseNewWordWidget> createState() => _BaseNewWordWidgetState();
-}
-
-class _BaseNewWordWidgetState extends State<BaseNewWordWidget> {
-  void callback() {
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => BookBloc(),
-      child: BlocProvider(
-        create: (_) => FlashCardBloc(),
-        child: BlocProvider(
-            create: (_) => TranslatorBloc(),
-            child: SizedBox(
-              height: SizeConfig.getMediaHeight(context, p: 0.5),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      height: 5,
-                      width: SizeConfig.getMediaWidth(context, p: 0.3),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.grey)),
-                  BaseNewWordWidgetService.addWordMenu(
-                      context: context,
-                      callback: callback,
-                      oldWord: widget.oldWord),
-                ],
-              ),
-            )),
-      ),
-    );
-  }
-}
 
 class BaseNewWordWidgetService {
   /// addWordMenu create widget to save words faster

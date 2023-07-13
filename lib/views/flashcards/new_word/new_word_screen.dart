@@ -7,6 +7,7 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/model/entities/translator/api.dart';
 import 'package:flashcards_reader/quick_actions.dart';
 import 'package:flashcards_reader/constants.dart';
+
 import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape_small.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/portrait.dart';
@@ -24,8 +25,9 @@ class WordFormContoller {
   void setUp(FlashCard flashCard, context) {
     // update controller text
     questionController.text = flashCard.question;
-    answerController.text =
-        BlocProvider.of<TranslatorBloc>(context).state.result;
+    // answerController.text =
+    //     BlocProvider.of<TranslatorBloc>(context).state.result;
+    answerController.text = flashCard.answer;
 
     // set cursor to the end of the text
 
@@ -38,7 +40,6 @@ class WordFormContoller {
 
 class AddWordFastScreen extends ParentStatefulWidget {
   AddWordFastScreen({super.key});
-  WordFormContoller wordFormContoller = WordFormContoller();
   GoogleTranslatorApiWrapper translator = GoogleTranslatorApiWrapper();
 
   @override
@@ -89,7 +90,6 @@ class _AddWordFastScreenState extends ParentState<AddWordFastScreen> {
         child: BlocProvider(
           create: (_) => TranslatorBloc(),
           child: AddWordView(
-            wordFormContoller: widget.wordFormContoller,
             translator: widget.translator,
             callback: callback,
           ),
@@ -99,14 +99,9 @@ class _AddWordFastScreenState extends ParentState<AddWordFastScreen> {
 }
 
 class AddWordView extends StatefulWidget {
-  AddWordView(
-      {required this.wordFormContoller,
-      required this.translator,
-      required this.callback,
-      super.key});
+  AddWordView({required this.translator, required this.callback, super.key});
   Duration cardAppearDuration = const Duration(milliseconds: 375);
   Function callback;
-  WordFormContoller wordFormContoller;
   GoogleTranslatorApiWrapper translator;
 
   @override

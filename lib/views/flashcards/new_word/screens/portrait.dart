@@ -44,8 +44,8 @@ class PortraitNewWord extends BaseScreenNewWord {
       FastCardListProvider.putSelectedCardToFirstPosition(flashCardCollection);
       var appbar = getAppBar(flashCardCollection);
       appBarHeight = appbar.preferredSize.height;
-      widget.wordFormContoller
-          .setUp(WordCreatingUIProvider.tmpFlashCard, context);
+      BaseNewWordWidgetService.wordFormContoller
+          .setUp(WordCreatingUIProvider.tmpFlashCard);
 
       debugPrintIt('selected collection:  ${FlashCardProvider.fc}');
       return Scaffold(
