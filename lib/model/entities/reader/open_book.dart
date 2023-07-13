@@ -233,13 +233,13 @@ class OpenBookState extends ParentState<OpenBook> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ViewText(
+                              builder: (context) => TextBookProvider(
                                     book: widget.book,
-                                    upperContext: widget.upperContext,
                                   )));
 
                       break;
                     case '.pdf':
+                    
                       Navigator.push(
                           context,
                           MaterialPageRoute(

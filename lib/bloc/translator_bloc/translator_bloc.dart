@@ -7,8 +7,8 @@ import 'package:flashcards_reader/util/error_handler.dart';
 part 'translator_event.dart';
 part 'translator_state.dart';
 
-class TranslatorBloc extends Bloc<TranslatorEvent, TranslatorInitial> {
-  TranslatorBloc() : super(TranslatorInitial(result: '', source: '')) {
+class TranslatorBloc extends Bloc<TranslatorEvent, TranslatorState> {
+  TranslatorBloc() : super(TranslatorState(result: '', source: '')) {
     on<TranslateEvent>((event, emit) async {
       emit(await state.translate(event.text, event.fromLan, event.toLan));
     });

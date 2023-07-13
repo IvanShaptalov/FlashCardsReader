@@ -1,4 +1,6 @@
+import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
+import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
@@ -7,22 +9,43 @@ import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class TextBookProvider extends StatefulWidget {
+  const TextBookProvider({super.key, required this.book});
+  final BookModel book;
+
+  @override
+  State<TextBookProvider> createState() => _TextBookProviderState();
+}
+
+class _TextBookProviderState extends State<TextBookProvider> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => FlashCardBloc(),
+      child: BlocProvider(
+        create: (_) => TranslatorBloc(),
+        child: ViewTextBook(book: widget.book),
+      ),
+    );
+  }
+}
 
 // ignore: must_be_immutable
-class ViewText extends ParentStatefulWidget {
-  ViewText({super.key, required this.book, required this.upperContext});
+class ViewTextBook extends ParentStatefulWidget {
+  ViewTextBook({super.key, required this.book});
   final BookModel book;
-  final BuildContext upperContext;
   static bool showBar = false;
 
   @override
   ViewTextState createState() => ViewTextState();
 }
 
-class ViewTextState extends ParentState<ViewText> {
+class ViewTextState extends ParentState<ViewTextBook> {
   @override
   void initState() {
-    ViewText.showBar = true;
+    ViewTextBook.showBar = true;
     super.initState();
     if (kIsWeb) {
       BrowserContextMenu.disableContextMenu();
@@ -43,53 +66,59 @@ class ViewTextState extends ParentState<ViewText> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrintIt(
-        'title of selected flashcard : ======================${FlashCardProvider.fc.title}');
-    bindPage(Scaffold(
-        appBar: ViewText.showBar
-            ? AppBar(
-                title: Text(
-                  widget.book.title,
-                  style: FontConfigs.pageNameTextStyle,
-                ),
-                actions: const [Offstage()],
-                backgroundColor: Palette.green300Primary,
-                elevation: 0,
-                iconTheme: IconThemeData(color: Palette.blueGrey),
-              )
-            : null,
-        body: Stack(children: [
-          GestureDetector(
-              // behavior: HitTestBehavior.,
-              onDoubleTap: () {
-                ViewText.showBar = !ViewText.showBar;
-                debugPrintIt('on tap');
-                setState(() {});
-              },
-              child: Container(
-                padding: EdgeInsets.only(
-                    top: SizeConfig.getMediaHeight(context,
-                        p: !ViewText.showBar ? 0.05 : 0),
-                    left: 8,
-                    right: 8,
-                    bottom: 8),
-                color: Palette.amber50,
-                height: SizeConfig.getMediaHeight(context),
-                width: SizeConfig.getMediaWidth(context),
-                child: SelectionArea(
-                  contextMenuBuilder: (
-                    BuildContext context,
-                    SelectableRegionState selectableRegionState,
-                  ) =>
-                      FlashReaderAdaptiveContextSelectionMenu(
-                    selectableRegionState: selectableRegionState,
-                    callback: callback,
-                    widget: widget,
+    return BlocBuilder<TranslatorBloc, TranslatorState>(
+        builder: (translatorContext, state) {
+      debugPrintIt('try to get translator');
+      state.translate('hello', 'English', 'Ukrainian');
+      debugPrintIt(
+          'title of selected flashcard : ======================${FlashCardProvider.fc.title}');
+      bindPage(Scaffold(
+          appBar: ViewTextBook.showBar
+              ? AppBar(
+                  title: Text(
+                    widget.book.title,
+                    style: FontConfigs.pageNameTextStyle,
                   ),
-                  child: Text(widget.book.getAllText()),
-                ),
-              )),
-        ])));
-    return super.build(context);
+                  actions: const [Offstage()],
+                  backgroundColor: Palette.green300Primary,
+                  elevation: 0,
+                  iconTheme: IconThemeData(color: Palette.blueGrey),
+                )
+              : null,
+          body: Stack(children: [
+            GestureDetector(
+                // behavior: HitTestBehavior.,
+                onDoubleTap: () {
+                  ViewTextBook.showBar = !ViewTextBook.showBar;
+                  debugPrintIt('on tap');
+                  setState(() {});
+                },
+                child: Container(
+                  padding: EdgeInsets.only(
+                      top: SizeConfig.getMediaHeight(translatorContext,
+                          p: !ViewTextBook.showBar ? 0.05 : 0),
+                      left: 8,
+                      right: 8,
+                      bottom: 8),
+                  color: Palette.amber50,
+                  height: SizeConfig.getMediaHeight(translatorContext),
+                  width: SizeConfig.getMediaWidth(translatorContext),
+                  child: SelectionArea(
+                    contextMenuBuilder: (
+                      BuildContext context,
+                      SelectableRegionState selectableRegionState,
+                    ) =>
+                        FlashReaderAdaptiveContextSelectionMenu(
+                      selectableRegionState: selectableRegionState,
+                      callback: callback,
+                      widget: widget,
+                      translatorContext: translatorContext,
+                    ),
+                    child: Text(widget.book.getAllText()),
+                  ),
+                )),
+          ])));
+      return super.build(translatorContext);
+    });
   }
 }

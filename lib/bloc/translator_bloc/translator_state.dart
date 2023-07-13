@@ -1,12 +1,12 @@
 part of 'translator_bloc.dart';
 
-class TranslatorInitial {
+class TranslatorState {
   String result;
   String source;
   GoogleTranslatorApiWrapper _translator = GoogleTranslatorApiWrapper();
   String actionId = uuid.v4();
 
-  TranslatorInitial(
+  TranslatorState(
       {required this.result,
       required this.source,
       GoogleTranslatorApiWrapper? translator}) {
@@ -15,18 +15,18 @@ class TranslatorInitial {
     }
   }
 
-  TranslatorInitial copyWith({
+  TranslatorState copyWith({
     String? result,
     String? source,
   }) {
-    return TranslatorInitial(
+    return TranslatorState(
       result: result ?? this.result,
       source: source ?? this.source,
       translator: _translator,
     );
   }
 
-  Future<TranslatorInitial> translate(
+  Future<TranslatorState> translate(
       String text, String fromLan, String toLan) async {
     await _translate(text, fromLan, toLan);
     return copyWith(result: result, source: source);
@@ -43,7 +43,7 @@ class TranslatorInitial {
     return response.to;
   }
 
-  TranslatorInitial clear() {
+  TranslatorState clear() {
     return copyWith(result: '');
   }
 }

@@ -18,21 +18,25 @@ class BaseNewWordWidgetService {
       {required BuildContext context,
       required Function callback,
       required String oldWord}) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        addWordEventWidget(
-            context: context, callback: callback, oldWord: oldWord),
-        translateListenerWidget(
-          context: context,
-          callback: callback,
-        ),
-        addWordsButton(
-          context: context,
-          callback: callback,
-        ),
-      ],
-    );
+    return BlocProvider(
+        create: (_) => FlashCardBloc(),
+        child: BlocProvider(
+            create: (_) => TranslatorBloc(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                addWordEventWidget(
+                    context: context, callback: callback, oldWord: oldWord),
+                translateListenerWidget(
+                  context: context,
+                  callback: callback,
+                ),
+                addWordsButton(
+                  context: context,
+                  callback: callback,
+                ),
+              ],
+            )));
   }
 
   /// put setUp() method in
@@ -48,7 +52,7 @@ class BaseNewWordWidgetService {
       children: [
         IconButton(onPressed: () {}, icon: const Icon(Icons.translate)),
         Expanded(
-          child: BlocListener<TranslatorBloc, TranslatorInitial>(
+          child: BlocListener<TranslatorBloc, TranslatorState>(
             listener: (context, state) {
               if (WordCreatingUIProvider.tmpFlashCard.question.isEmpty) {
                 debugPrintIt('empty question');
@@ -180,7 +184,7 @@ class BaseNewWordWidgetService {
             SizedBox(
               width: SizeConfig.getMediaWidth(context, p: 0.01),
             ),
-             Text(
+            Text(
               'save word',
               style: FontConfigs.h2TextStyleBlack,
             )
