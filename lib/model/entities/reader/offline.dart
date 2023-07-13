@@ -8,7 +8,6 @@ class Offline extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.45,
-      // color: Colors.red,
       child: Center(
         child: Column(
           children: [

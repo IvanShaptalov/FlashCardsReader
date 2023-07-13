@@ -115,7 +115,7 @@ class BookCatalogState extends State<BookCatalog> {
                     margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.white),
+                        color: Palette.white),
                     child: Row(
                       children: [
                         GestureDetector(
@@ -152,7 +152,7 @@ class BookCatalogState extends State<BookCatalog> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
-                                color: Colors.white,
+                                color: Palette.white,
                                 width: MediaQuery.of(context).size.width * 0.65,
                                 margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
                                 child: Text(
@@ -185,7 +185,7 @@ class BookCatalogState extends State<BookCatalog> {
                                             child: Icon(
                                               Icons.star_outline,
                                               color: book.status.favourite
-                                                  ? Colors.green
+                                                  ? Palette.green
                                                   : null,
                                             ),
                                             onTap: () {
@@ -201,7 +201,7 @@ class BookCatalogState extends State<BookCatalog> {
                                             child: Icon(
                                               Icons.history,
                                               color: book.status.toRead
-                                                  ? Colors.green
+                                                  ? Palette.green
                                                   : null,
                                             ),
                                             onTap: () {
@@ -216,7 +216,7 @@ class BookCatalogState extends State<BookCatalog> {
                                             child: Icon(
                                               Icons.library_add_check_outlined,
                                               color: book.status.haveRead
-                                                  ? Colors.green
+                                                  ? Palette.green
                                                   : null,
                                             ),
                                             onTap: () {

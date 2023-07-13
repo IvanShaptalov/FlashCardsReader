@@ -180,7 +180,7 @@ class BaseNewWordWidgetService {
             SizedBox(
               width: SizeConfig.getMediaWidth(context, p: 0.01),
             ),
-            const Text(
+             Text(
               'save word',
               style: FontConfigs.h2TextStyleBlack,
             )

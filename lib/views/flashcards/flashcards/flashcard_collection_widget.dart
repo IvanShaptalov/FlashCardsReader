@@ -190,8 +190,8 @@ class _FlashCardCollectionWidgetState extends State<FlashCardCollectionWidget> {
                   ),
                 ),
               ),
-              const Divider(
-                color: Colors.grey,
+              Divider(
+                color: Palette.grey,
                 thickness: 1,
               ),
               FlashCardCollectionInfo(widget.flashCardCollection),

@@ -34,38 +34,37 @@ class FontConfigs {
       fontSize: 24,
       fontWeight: FontWeight.bold,
       letterSpacing: -0.6);
-  static const TextStyle h1TextStyle =
-      TextStyle(fontSize: 20, color: Colors.black);
+  static TextStyle h1TextStyle = TextStyle(fontSize: 20, color: Palette.black);
 
   static TextStyle h2TextStyle =
-      TextStyle(fontSize: 18, color: Colors.grey.shade800);
+      TextStyle(fontSize: 18, color: Palette.grey800);
 
-  static const TextStyle h2TextStyleBlack =
-      TextStyle(fontSize: 18, color: Colors.black);
+  static TextStyle h2TextStyleBlack =
+      TextStyle(fontSize: 18, color: Palette.black);
 
   static TextStyle h3TextStyle =
-      TextStyle(fontSize: 16, color: Colors.grey.shade800);
+      TextStyle(fontSize: 16, color: Palette.grey800);
 
-  static const TextStyle h3TextStyleBlack =
-      TextStyle(fontSize: 16, color: Colors.black);
+  static TextStyle h3TextStyleBlack =
+      TextStyle(fontSize: 16, color: Palette.black);
 
   static const TextStyle cardTitleTextStyle =
       TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
 
-  static const TextStyle cardAnswerTextStyle =
-      TextStyle(fontSize: 22, color: Colors.black);
-  static const TextStyle cardQuestionTextStyle =
-      TextStyle(fontSize: 22, color: Colors.black);
+  static TextStyle cardAnswerTextStyle =
+      TextStyle(fontSize: 22, color: Palette.black);
+  static TextStyle cardQuestionTextStyle =
+      TextStyle(fontSize: 22, color: Palette.black);
   static TextStyle backFromQuizTextStyle = const TextStyle(
-      fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white);
+      fontSize: 16, fontWeight: FontWeight.bold, color: Palette.white);
 
   static TextStyle quizSummaryTextStyle = TextStyle(
-      fontSize: 18, fontWeight: FontWeight.w700, color: Colors.grey.shade800);
+      fontSize: 18, fontWeight: FontWeight.w700, color: Palette.grey800);
 
   static TextStyle quizWordSummaryTextStyleBlack =
-      const TextStyle(fontSize: 18, color: Colors.black);
+       TextStyle(fontSize: 18, color: Palette.black);
   static TextStyle quizWordSummaryTextStyle =
-      TextStyle(fontSize: 16, color: Colors.grey.shade900);
+      TextStyle(fontSize: 16, color: Palette.grey900);
 }
 
 enum ScreenDesign { portrait, landscape, portraitSmall, landscapeSmall }

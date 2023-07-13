@@ -81,7 +81,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
         });
       },
       child: Container(
-        color: Colors.transparent,
+        color: Palette.transparent,
         height: SizeConfig.getMediaHeight(context, p: 0.3),
         child: Center(
           child: Padding(

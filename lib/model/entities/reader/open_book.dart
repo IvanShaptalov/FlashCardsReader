@@ -75,9 +75,9 @@ class OpenBookState extends ParentState<OpenBook> {
           style: FontConfigs.pageNameTextStyle,
         ),
         actions: const [Offstage()],
-        backgroundColor: Palette.white,
+        backgroundColor: Palette.green300Primary,
         elevation: 0,
-        iconTheme:  IconThemeData(color: Palette.darkBlue),
+        iconTheme: IconThemeData(color: Palette.blueGrey),
       ),
       body: Stack(children: [
         Container(
@@ -89,13 +89,13 @@ class OpenBookState extends ParentState<OpenBook> {
                         image: FileImage(File(widget.book.coverPath)),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
-                            Palette.darkBlue.withOpacity(0.8),
+                            Palette.darkBlue.withOpacity(0.9),
                             BlendMode.multiply))
                     : DecorationImage(
                         image: const AssetImage('assets/images/empty.png'),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
-                            Palette.darkBlue.withOpacity(0.8),
+                            Palette.darkBlue.withOpacity(0.9),
                             BlendMode.multiply)))),
         Center(
           child: Column(
@@ -123,7 +123,7 @@ class OpenBookState extends ParentState<OpenBook> {
                   style: const TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                      color: Palette.white),
                 ),
               ),
               const SizedBox(
@@ -131,13 +131,12 @@ class OpenBookState extends ParentState<OpenBook> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                // color: Colors.red,
                 padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                 child: const Text(
                   'book',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Palette.white,
                     fontStyle: FontStyle.italic,
                     fontSize: 15,
                   ),
@@ -155,7 +154,6 @@ class OpenBookState extends ParentState<OpenBook> {
             children: [
               SizedBox(
                 height: 20,
-                // color: Colors.red,
                 child: Column(
                   children: [
                     const SizedBox(
@@ -165,7 +163,7 @@ class OpenBookState extends ParentState<OpenBook> {
                       height: 5,
                       width: SizeConfig.getMediaWidth(context, p: 0.3),
                       decoration: BoxDecoration(
-                          color: Colors.grey,
+                          color: Palette.grey,
                           borderRadius: BorderRadius.circular(15)),
                     )
                   ],
@@ -177,12 +175,12 @@ class OpenBookState extends ParentState<OpenBook> {
                 child: Text(
                   'Collection to save words',
                   style: FontConfigs.h1TextStyle.copyWith(
-                      fontWeight: FontWeight.bold, color: Colors.white),
+                      fontWeight: FontWeight.bold, color: Palette.white),
                   textAlign: TextAlign.center,
                 ),
               ),
               Container(
-                color: Colors.grey.shade300,
+                color: Palette.grey300,
                 child: AnimationLimiter(
                   child: SizedBox(
                     height: SizeConfig.getMediaHeight(context, p: 0.3),
@@ -216,8 +214,7 @@ class OpenBookState extends ParentState<OpenBook> {
                 style: ButtonStyle(
                     padding:
                         MaterialStateProperty.all(const EdgeInsets.all(25)),
-                    backgroundColor:
-                        MaterialStateProperty.all(Palette.amber50),
+                    backgroundColor: MaterialStateProperty.all(Palette.amber50),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)))),
                 onPressed: () {
@@ -256,7 +253,7 @@ class OpenBookState extends ParentState<OpenBook> {
                     default:
                   }
                 },
-                child: const Text("Read Book", style: FontConfigs.h1TextStyle),
+                child: Text("Read Book", style: FontConfigs.h1TextStyle),
               )
             ],
           ),

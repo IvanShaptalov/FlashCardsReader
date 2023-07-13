@@ -87,8 +87,8 @@ List<Widget> loadListItems(BuildContext context) {
         style: FontConfigs.quizSummaryTextStyle,
       ),
     ),
-    const Divider(
-      color: Colors.black,
+    Divider(
+      color: Palette.black,
     ),
   ];
 

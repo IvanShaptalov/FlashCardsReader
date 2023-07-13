@@ -118,7 +118,7 @@ class _SharingPageViewState extends ParentState<SharingPageView> {
                         SizedBox(
                           width: SizeConfig.getMediaWidth(context, p: 0.01),
                         ),
-                        const Text(
+                        Text(
                           'import flashcards',
                           style: FontConfigs.h1TextStyle,
                         )

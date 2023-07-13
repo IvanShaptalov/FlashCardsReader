@@ -3,6 +3,7 @@ import 'package:flashcards_reader/model/entities/reader/book_scanner.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/checker.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/material.dart';
@@ -45,8 +46,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.green,
           // ignore: deprecated_member_use
           androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
-          iconTheme: IconThemeData(color: Colors.grey.shade700),
-          scaffoldBackgroundColor: Colors.grey.shade200,
+          iconTheme: IconThemeData(color: Palette.grey800),
+          scaffoldBackgroundColor: Palette.grey200,
         ),
         home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),

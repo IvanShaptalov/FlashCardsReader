@@ -89,8 +89,8 @@ class _DeletedFlashCardCollectionWidgetState
                 ),
               ),
             ),
-            const Divider(
-              color: Colors.grey,
+            Divider(
+              color: Palette.grey,
               thickness: 1,
             ),
             FlashCardCollectionInfo(widget.flashCardCollection),

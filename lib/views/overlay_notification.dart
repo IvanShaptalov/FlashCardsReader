@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 
@@ -7,15 +8,15 @@ class OverlayNotificationProvider {
   static Color _setColor(NotificationStatus status) {
     switch (status) {
       case NotificationStatus.success:
-        return Colors.green;
+        return Palette.green;
       case NotificationStatus.error:
-        return Colors.blueGrey;
+        return Palette.blueGrey;
       case NotificationStatus.warning:
-        return Colors.blueGrey;
+        return Palette.blueGrey;
       case NotificationStatus.info:
-        return Colors.teal;
+        return Palette.teal;
       default:
-        return Colors.green;
+        return Palette.green;
     }
   }
 
@@ -38,7 +39,7 @@ class OverlayNotificationProvider {
           style: TextStyle(fontSize: 20),
         ),
         slideDismissDirection: DismissDirection.up,
-        background: Colors.blueGrey,
+        background: Palette.blueGrey,
         duration: const Duration(seconds: 2));
   }
 
@@ -49,7 +50,7 @@ class OverlayNotificationProvider {
           style: TextStyle(fontSize: 20),
         ),
         slideDismissDirection: DismissDirection.up,
-        background: Colors.green,
+        background: Palette.green,
         duration: const Duration(seconds: 2));
   }
 }

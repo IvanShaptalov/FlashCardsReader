@@ -161,10 +161,10 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (MyConfigOrientation.isPortrait(context))
-                        const Center(
+                        Center(
                             child: Padding(
                           padding:
-                              EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0),
+                              const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0),
                           child: Text('Select quiz mode',
                               style: FontConfigs.h1TextStyle),
                         )),
@@ -181,7 +181,7 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
                                   children: [
                                     if (MyConfigOrientation.isLandscape(
                                         context))
-                                      const Text('Select quiz mode',
+                                       Text('Select quiz mode',
                                           style: FontConfigs.h1TextStyle),
                                     const SelectQuizMode(
                                       mode: QuizMode.all,
@@ -202,7 +202,7 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
                   ),
                   Expanded(
                     child: Container(
-                      color: Colors.grey.shade300,
+                      color: Palette.grey300,
                       child: flashCollectionList.isEmpty
                           ? Center(
                               child: Center(
@@ -236,7 +236,8 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
                                       child:
                                           AnimationConfiguration.staggeredGrid(
                                         position: index,
-                                        duration: DurationConfig.cardAppearDuration,
+                                        duration:
+                                            DurationConfig.cardAppearDuration,
                                         columnCount: columnCount,
                                         child: SlideAnimation(
                                           child: FadeInAnimation(
@@ -273,9 +274,8 @@ class SelectQuizMode extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(
           foregroundColor: Palette.white,
-          backgroundColor: isSelected || explisit
-              ? Palette.teal
-              : Palette.darkBlue,
+          backgroundColor:
+              isSelected || explisit ? Palette.teal : Palette.blueGrey,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),

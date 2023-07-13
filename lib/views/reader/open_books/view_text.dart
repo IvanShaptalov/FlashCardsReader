@@ -55,7 +55,7 @@ class ViewTextState extends ParentState<ViewText> {
                 actions: const [Offstage()],
                 backgroundColor: Palette.green300Primary,
                 elevation: 0,
-                iconTheme: IconThemeData(color: Palette.darkBlue),
+                iconTheme: IconThemeData(color: Palette.blueGrey),
               )
             : null,
         body: Stack(children: [

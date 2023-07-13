@@ -32,7 +32,7 @@
 //         height: 150,
 //         margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
 //         decoration: BoxDecoration(
-//             borderRadius: BorderRadius.circular(20), color: Colors.white),
+//             borderRadius: BorderRadius.circular(20), color: Palette.white),
 //         child: Row(
 //           children: [
 //             Hero(
@@ -54,7 +54,7 @@
 //               mainAxisAlignment: MainAxisAlignment.center,
 //               children: [
 //                 Container(
-//                   color: Colors.white,
+//                   color: Palette.white,
 //                   width: MediaQuery.of(context).size.width * 0.65,
 //                   margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
 //                   child: Text(

@@ -97,8 +97,8 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
                     ),
                   ),
                 ),
-                const Divider(
-                  color: Colors.grey,
+                Divider(
+                  color: Palette.grey,
                   thickness: 1,
                 ),
                 FlashCardCollectionInfo(

@@ -17,7 +17,7 @@ class SideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Palette.grey300,
       child: ListView(
         semanticChildCount: 14,
         children: [
@@ -39,7 +39,7 @@ class SideMenu extends StatelessWidget {
             ),
           ),
           Divider(
-            color: Colors.grey[700],
+            color: Palette.grey800,
           ),
           ListTile(
             leading: Icon(Icons.book_sharp, size: ConfigMenu.iconSize),
@@ -86,7 +86,7 @@ class SideMenu extends StatelessWidget {
             },
           ),
           Divider(
-            color: Colors.grey[700],
+            color: Palette.grey700,
           ),
           ListTile(
             leading: Icon(Icons.settings, size: ConfigMenu.iconSize),

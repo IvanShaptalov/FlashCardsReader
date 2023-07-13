@@ -180,8 +180,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                   ),
                 ),
           if (ScreenIdentifier.isPortraitRelative(context))
-            const Divider(
-              color: Colors.grey,
+            Divider(
+              color: Palette.grey,
               thickness: 1,
             ),
           Expanded(
@@ -257,8 +257,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                   ),
                 ),
 
-                const Divider(
-                  color: Colors.grey,
+                Divider(
+                  color: Palette.grey,
                   thickness: 1,
                 ),
 
@@ -292,7 +292,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                             child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: Colors.grey.shade400, width: 1),
+                                        color: Palette.grey400, width: 1),
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Column(
                                   mainAxisAlignment:
@@ -416,21 +416,22 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                               RichText(
                                                 overflow: TextOverflow.ellipsis,
                                                 text: TextSpan(
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 12,
-                                                      color: Colors.black),
+                                                      color: Palette.black),
                                                   children: [
-                                                    const WidgetSpan(
+                                                    WidgetSpan(
                                                       child: Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
                                                                 horizontal:
                                                                     2.0),
                                                         child: Icon(
                                                             Icons.check_circle,
                                                             size: 16,
                                                             color:
-                                                                Colors.green),
+                                                                Palette.green),
                                                       ),
                                                     ),
                                                     TextSpan(
@@ -448,9 +449,9 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   text: TextSpan(
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         fontSize: 12,
-                                                        color: Colors.grey),
+                                                        color: Palette.grey),
                                                     children: [
                                                       WidgetSpan(
                                                         alignment:
@@ -466,17 +467,17 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                                         0 &&
                                                                     flashCard
                                                                         .isLearned
-                                                                ? const Icon(
+                                                                ? Icon(
                                                                     Icons
                                                                         .check_circle,
                                                                     size: 16,
-                                                                    color: Colors
+                                                                    color: Palette
                                                                         .green)
-                                                                : const Icon(
+                                                                : Icon(
                                                                     Icons
                                                                         .cancel_outlined,
                                                                     size: 16,
-                                                                    color: Colors
+                                                                    color: Palette
                                                                         .deepPurple)),
                                                       ),
                                                       WidgetSpan(
@@ -521,8 +522,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                             size: 16,
                                                             color: flashCard
                                                                     .isLearned
-                                                                ? Colors.green
-                                                                : Colors
+                                                                ? Palette.green
+                                                                : Palette
                                                                     .deepPurple),
                                                       ),
                                                     ),
@@ -570,8 +571,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                 decoration: BoxDecoration(
                                                     color: Palette.green200,
                                                     border: Border.all(
-                                                        color: Colors
-                                                            .grey.shade400,
+                                                        color: Palette.grey400,
                                                         width: 1),
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -593,7 +593,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                               Palette.grey800,
                                                         ),
                                                       ),
-                                                      const Text('delete',
+                                                      Text('delete',
                                                           style: FontConfigs
                                                               .h3TextStyleBlack),
                                                     ],
@@ -627,8 +627,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                 decoration: BoxDecoration(
                                                     color: Palette.green200,
                                                     border: Border.all(
-                                                        color: Colors
-                                                            .grey.shade400,
+                                                        color: Palette.grey400,
                                                         width: 1),
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -686,7 +685,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Container(
-                color: Colors.transparent,
+                color: Palette.transparent,
                 height: SizeConfig.getMediaHeight(context, p: 0.08),
                 width: SizeConfig.getMediaWidth(context, p: 1),
                 child: Center(
@@ -744,7 +743,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(25), topRight: Radius.circular(25)),
           ),
-          child: const Center(
+          child: Center(
             child: Text(
               'Save collection',
               style: FontConfigs.h2TextStyleBlack,

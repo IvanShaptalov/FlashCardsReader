@@ -18,8 +18,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
             children: [
               Transform.scale(
                 scale: iconScale,
-                child: Icon(Icons.language,
-                    color: Palette.blueAccent),
+                child: Icon(Icons.language, color: Palette.blueAccent),
               ),
               Text(
                 flashCardCollection.questionLanguage,
@@ -32,8 +31,7 @@ class FlashCardCollectionInfo extends StatelessWidget {
             children: [
               Transform.scale(
                 scale: iconScale,
-                child: Icon(Icons.language,
-                    color: Palette.green600),
+                child: Icon(Icons.language, color: Palette.green600),
               ),
               Text(
                 flashCardCollection.answerLanguage,
@@ -49,11 +47,11 @@ class FlashCardCollectionInfo extends StatelessWidget {
               Row(
                 children: [
                   Icon(Icons.web_stories_outlined,
-                      size: 14, color: Colors.green.shade300),
+                      size: 14, color: Palette.green300Primary),
                   Text(
                     flashCardCollection.flashCardSet.length.toString(),
                     style: FontConfigs.h3TextStyle
-                        .copyWith(color: Colors.green.shade300, fontSize: 14),
+                        .copyWith(color: Palette.green300Primary, fontSize: 14),
                     textAlign: TextAlign.start,
                   ),
                 ],
@@ -63,12 +61,12 @@ class FlashCardCollectionInfo extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const Icon(Icons.school_outlined,
-                      size: 16, color: Colors.blueAccent),
+                  Icon(Icons.school_outlined,
+                      size: 16, color: Palette.blueAccent),
                   Text(
                     flashCardCollection.learnedCount().toString(),
                     style: FontConfigs.h3TextStyle
-                        .copyWith(color: Colors.blueAccent, fontSize: 14),
+                        .copyWith(color: Palette.blueAccent, fontSize: 14),
                     textAlign: TextAlign.start,
                   ),
                 ],
@@ -89,8 +87,8 @@ class FlashCardCollectionInfo extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.bar_chart_rounded,
-                    size: 16, color: Colors.blueAccent),
+                Icon(Icons.bar_chart_rounded,
+                    size: 16, color: Palette.blueAccent),
                 Text(
                   '${flashCardCollection.learnedPercent()} %',
                   style: FontConfigs.h3TextStyle.copyWith(fontSize: 14),

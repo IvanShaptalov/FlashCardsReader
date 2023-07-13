@@ -29,7 +29,7 @@ class LandscapeSmallNewWord extends BaseScreenNewWord {
               // rounded full border
               borderRadius: const BorderRadius.all(Radius.circular(10)),
               border: Border.all(
-                color: Colors.grey,
+                color: Palette.grey,
                 width: 1,
               ),
             ),

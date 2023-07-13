@@ -62,8 +62,8 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
 
       return GestureDetector(
         onTap: () {
-
-          if (widget.flashCardCollection.isLearned && QuizModeProvider.mode != QuizMode.learned) {
+          if (widget.flashCardCollection.isLearned &&
+              QuizModeProvider.mode != QuizMode.learned) {
             OverlayNotificationProvider.showOverlayNotification(
                 'To review select "Learned" mode',
                 status: NotificationStatus.info);
@@ -118,8 +118,8 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
                     ),
                   ),
                 ),
-                const Divider(
-                  color: Colors.grey,
+                Divider(
+                  color: Palette.grey,
                   thickness: 1,
                 ),
                 FlashCardCollectionInfo(widget.flashCardCollection),

@@ -36,7 +36,7 @@ class DownloadPDFState extends State<DownloadPDF> {
           style: FontConfigs.pageNameTextStyle,
         ),
         backgroundColor: Palette.white,
-        iconTheme: IconThemeData(color: Palette.darkBlue),
+        iconTheme: IconThemeData(color: Palette.blueGrey),
         actions: <Widget>[
           StreamBuilder<String>(
             stream: _pageCountController.stream,
@@ -47,12 +47,12 @@ class DownloadPDFState extends State<DownloadPDF> {
                     margin: const EdgeInsets.fromLTRB(10, 10, 16, 10),
                     padding: const EdgeInsets.all(8),
                     decoration: const BoxDecoration(
-                        // color: Colors.red
+                        // color: Palette.red
                         ),
                     child: Text(
                       snapshot.data!,
                       style: TextStyle(
-                          color: Palette.darkBlue,
+                          color: Palette.blueGrey,
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -91,8 +91,8 @@ class DownloadPDFState extends State<DownloadPDF> {
               children: <Widget>[
                 FloatingActionButton(
                   heroTag: '-',
-                  backgroundColor: Colors.white,
-                  hoverColor: Palette.darkBlue,
+                  backgroundColor: Palette.white,
+                  hoverColor: Palette.blueGrey,
                   onPressed: () async {
                     final PDFViewController pdfController = snapshot.data!;
                     final int currentPage =
@@ -104,14 +104,14 @@ class DownloadPDFState extends State<DownloadPDF> {
                   child: Text(
                     '<',
                     style: TextStyle(
-                        color: Palette.darkBlue,
+                        color: Palette.blueGrey,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
                 FloatingActionButton(
                   heroTag: '+',
-                  backgroundColor: Colors.white,
+                  backgroundColor: Palette.white,
                   onPressed: () async {
                     final PDFViewController pdfController = snapshot.data!;
                     final int currentPage =
@@ -125,7 +125,7 @@ class DownloadPDFState extends State<DownloadPDF> {
                   child: Text(
                     '>',
                     style: TextStyle(
-                        color: Palette.darkBlue,
+                        color: Palette.blueGrey,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),

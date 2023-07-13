@@ -59,8 +59,8 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                         style: FontConfigs.cardTitleTextStyle,
                       ),
                     ),
-                    const Divider(
-                      color: Colors.grey,
+                    Divider(
+                      color: Palette.grey,
                       thickness: 1,
                     ),
                   ],

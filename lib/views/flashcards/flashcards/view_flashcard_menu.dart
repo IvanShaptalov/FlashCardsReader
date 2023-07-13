@@ -27,7 +27,7 @@ class FlashCardViewBottomSheet {
   showFlashCardViewMenu(BuildContext specialContext) async {
     showModalBottomSheet(
         isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
+        shape:  const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
         context: specialContext,
         builder: (BuildContext context) {
@@ -61,7 +61,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
     return Container(
         decoration: BoxDecoration(
           color: Palette.amber50,
-          borderRadius: const BorderRadius.only(
+          borderRadius:  const BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25)),
         ),
         height: SizeConfig.getMediaHeight(context, p: 0.85),
@@ -87,8 +87,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
               ],
             ),
           ),
-          const Divider(
-            color: Colors.grey,
+           Divider(
+            color: Palette.grey,
             thickness: 1,
           ),
           Expanded(
@@ -104,13 +104,13 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                     child: SizedBox(
                         width: SizeConfig.getMediaWidth(context, p: 0.99),
                         child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            margin:  const EdgeInsets.symmetric(vertical: 4),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: Colors.grey.shade400, width: 1),
+                                    color: Palette.grey400, width: 1),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding:  const EdgeInsets.all(8.0),
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -125,7 +125,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                                   const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.verified_outlined,
                                                 color: Palette
@@ -174,8 +174,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       ],
                                     ),
                                   ),
-                                  const Divider(
-                                    color: Colors.grey,
+                                   Divider(
+                                    color: Palette.grey,
                                     thickness: 1,
                                   ),
                                   Align(
@@ -188,7 +188,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                                   const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.language,
                                                 color: Palette
@@ -232,7 +232,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                                   const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.translate,
                                                 color: Palette
@@ -266,8 +266,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       ],
                                     ),
                                   ),
-                                  const Divider(
-                                    color: Colors.grey,
+                                   Divider(
+                                    color: Palette.grey,
                                     thickness: 1,
                                   ),
                                   Align(
@@ -280,7 +280,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                                   const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.calendar_month_outlined,
                                                 color: Palette
@@ -314,8 +314,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       ],
                                     ),
                                   ),
-                                  const Divider(
-                                    color: Colors.grey,
+                                   Divider(
+                                    color: Palette.grey,
                                     thickness: 1,
                                   ),
                                   Align(
@@ -328,7 +328,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                                   const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.web_stories_outlined,
                                                 color: Palette
@@ -363,8 +363,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       ],
                                     ),
                                   ),
-                                  const Divider(
-                                    color: Colors.grey,
+                                   Divider(
+                                    color: Palette.grey,
                                     thickness: 1,
                                   ),
                                   Align(
@@ -389,9 +389,9 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         width: SizeConfig.getMediaWidth(context,
                                             p: 0.6),
                                         decoration: BoxDecoration(
-                                            color: Colors.green.shade200,
+                                            color: Palette.green200,
                                             border: Border.all(
-                                                color: Colors.grey, width: 1),
+                                                color: Palette.grey, width: 1),
                                             borderRadius:
                                                 BorderRadius.circular(25)),
                                         child: Row(
@@ -403,7 +403,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               color: Palette
                                                   .grey800,
                                             ),
-                                            const Text(
+                                             Text(
                                               'Export FlashCards',
                                               style:
                                                   FontConfigs.h2TextStyleBlack,
@@ -413,8 +413,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       ),
                                     ),
                                   ),
-                                  const Divider(
-                                    color: Colors.grey,
+                                   Divider(
+                                    color: Palette.grey,
                                     thickness: 1,
                                   ),
                                   Align(
@@ -473,9 +473,9 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         width: SizeConfig.getMediaWidth(context,
                                             p: 0.6),
                                         decoration: BoxDecoration(
-                                            color: Colors.green.shade200,
+                                            color: Palette.green200,
                                             border: Border.all(
-                                                color: Colors.grey, width: 1),
+                                                color: Palette.grey, width: 1),
                                             borderRadius:
                                                 BorderRadius.circular(25)),
                                         child: Row(
@@ -487,7 +487,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               color: Palette
                                                   .grey800,
                                             ),
-                                            const Text(
+                                             Text(
                                               'Start Quiz',
                                               style:
                                                   FontConfigs.h2TextStyleBlack,
@@ -516,7 +516,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                           .toList()
                           .reversed)
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding:  const EdgeInsets.all(8.0),
                           child: Align(
                             alignment: Alignment.center,
                             child: SizedBox(
@@ -533,10 +533,10 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           : 0.25),
                               child: Container(
                                   margin:
-                                      const EdgeInsets.symmetric(vertical: 4),
+                                       const EdgeInsets.symmetric(vertical: 4),
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: Colors.grey.shade400,
+                                          color: Palette.grey400,
                                           width: 1),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Column(
@@ -551,7 +551,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               alignment: Alignment.center,
                                               child: Padding(
                                                 padding:
-                                                    const EdgeInsets.symmetric(
+                                                     const EdgeInsets.symmetric(
                                                         horizontal: 8.0),
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -588,14 +588,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                                       .fc
                                                                       .questionLanguage);
                                                         },
-                                                        icon: const Icon(Icons
+                                                        icon:  const Icon(Icons
                                                             .volume_up_outlined)),
                                                   ],
                                                 ),
                                               )),
                                         ],
                                       ),
-                                      const Divider(
+                                       const Divider(
                                         thickness: 1,
                                         height: 1,
                                       ),
@@ -607,7 +607,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               alignment: Alignment.center,
                                               child: Padding(
                                                 padding:
-                                                    const EdgeInsets.symmetric(
+                                                     const EdgeInsets.symmetric(
                                                         horizontal: 8.0),
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -640,14 +640,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                                       .fc
                                                                       .answerLanguage);
                                                         },
-                                                        icon: const Icon(Icons
+                                                        icon:  const Icon(Icons
                                                             .volume_up_outlined)),
                                                   ],
                                                 ),
                                               )),
                                         ],
                                       ),
-                                      const Divider(
+                                       const Divider(
                                         thickness: 1,
                                         height: 1,
                                       ),
@@ -662,13 +662,13 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               RichText(
                                                 overflow: TextOverflow.ellipsis,
                                                 text: TextSpan(
-                                                  style: const TextStyle(
+                                                  style:  TextStyle(
                                                       fontSize: 12,
-                                                      color: Colors.black),
+                                                      color: Palette.black),
                                                   children: [
-                                                    const WidgetSpan(
+                                                     WidgetSpan(
                                                       child: Padding(
-                                                        padding: EdgeInsets
+                                                        padding: const EdgeInsets
                                                             .symmetric(
                                                                 horizontal:
                                                                     2.0),
@@ -676,7 +676,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                             Icons.check_circle,
                                                             size: 16,
                                                             color:
-                                                                Colors.green),
+                                                                Palette.green),
                                                       ),
                                                     ),
                                                     TextSpan(
@@ -691,9 +691,9 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                 textAlign: TextAlign.left,
                                                 overflow: TextOverflow.ellipsis,
                                                 text: TextSpan(
-                                                  style: const TextStyle(
+                                                  style:  TextStyle(
                                                       fontSize: 12,
-                                                      color: Colors.grey),
+                                                      color: Palette.grey),
                                                   children: [
                                                     WidgetSpan(
                                                       alignment:
@@ -701,7 +701,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                               .middle,
                                                       child: Padding(
                                                           padding:
-                                                              const EdgeInsets
+                                                               const EdgeInsets
                                                                       .symmetric(
                                                                   horizontal:
                                                                       2.0),
@@ -709,17 +709,17 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                                       0 &&
                                                                   flashCard
                                                                       .isLearned
-                                                              ? const Icon(
+                                                              ?  Icon(
                                                                   Icons
                                                                       .check_circle,
                                                                   size: 16,
-                                                                  color: Colors
+                                                                  color: Palette
                                                                       .green)
-                                                              : const Icon(
+                                                              :  Icon(
                                                                   Icons
                                                                       .cancel_outlined,
                                                                   size: 16,
-                                                                  color: Colors
+                                                                  color: Palette
                                                                       .deepPurple)),
                                                     ),
                                                     WidgetSpan(
@@ -728,7 +728,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                               .middle,
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets
+                                                             const EdgeInsets
                                                                     .symmetric(
                                                                 horizontal:
                                                                     2.0),
@@ -754,7 +754,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                       WidgetSpan(
                                                         child: Padding(
                                                           padding:
-                                                              const EdgeInsets
+                                                               const EdgeInsets
                                                                       .symmetric(
                                                                   horizontal:
                                                                       2.0),
@@ -768,8 +768,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                               size: 16,
                                                               color: flashCard
                                                                       .isLearned
-                                                                  ? Colors.green
-                                                                  : Colors
+                                                                  ? Palette.green
+                                                                  : Palette
                                                                       .deepPurple),
                                                         ),
                                                       ),

@@ -68,7 +68,7 @@ class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
         });
       },
       child: Container(
-        color: Colors.transparent,
+        color: Palette.transparent,
         height: SizeConfig.getMediaHeight(context, p: 0.2),
         child: Center(
           child: Padding(
@@ -110,7 +110,7 @@ class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Palette.black.withOpacity(0.2),
               spreadRadius: 1,
               blurRadius: 5,
               offset: const Offset(0, 3), // changes position of shadow
@@ -118,7 +118,7 @@ class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
           ],
         ),
         child: Card(
-          shadowColor: Colors.black.withOpacity(0.2),
+          shadowColor: Palette.black.withOpacity(0.2),
           child: SizedBox(
             height: SizeConfig.getMediaHeight(context, p: 0.55),
             width: SizeConfig.getMediaWidth(context, p: 0.8),
