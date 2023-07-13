@@ -106,8 +106,6 @@ class ViewTextState extends ParentState<ViewTextBook> {
                   ) =>
                       FlashReaderAdaptiveContextSelectionMenu(
                     selectableRegionState: selectableRegionState,
-                    callback: callback,
-                    widget: widget,
                   ),
                   child: Text(widget.book.getAllText()),
                 ),

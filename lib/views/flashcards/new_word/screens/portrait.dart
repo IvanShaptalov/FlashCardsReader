@@ -30,7 +30,7 @@ class PortraitNewWord extends BaseScreenNewWord {
           ),
         ),
         child: BaseNewWordWidgetService.addWordMenu(
-            context: context, callback: callback, oldWord: oldWord));
+            context: context, callback: callback));
   }
 
   Widget loadScreen() {

@@ -162,7 +162,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
 
                   color: Palette.green200,
                   child: BaseNewWordWidgetService.addWordMenu(
-                      context: context, callback: callback, oldWord: oldWord),
+                      context: context, callback: callback),
                 )
               : Padding(
                   padding: const EdgeInsets.all(8.0),
