@@ -112,7 +112,6 @@ class ViewTextState extends ParentState<ViewTextBook> {
                       selectableRegionState: selectableRegionState,
                       callback: callback,
                       widget: widget,
-                      translatorContext: translatorContext,
                     ),
                     child: Text(widget.book.getAllText()),
                   ),

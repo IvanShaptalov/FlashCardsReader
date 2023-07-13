@@ -60,49 +60,51 @@ class ReadingHomePageState extends ParentState<ReadingHomePageView> {
 
   @override
   Widget build(BuildContext context) {
-    final kTabPages = <Widget>[
-      BookCatalog(
-        bookStatus: BookStatus.allBooks,
-        upperContext: context,
-      ),
-      BookCatalog(
-        bookStatus: BookStatus.reading,
-        upperContext: context,
-      ),
-      BookCatalog(bookStatus: BookStatus.favourites, upperContext: context),
-      BookCatalog(bookStatus: BookStatus.toRead, upperContext: context),
-      BookCatalog(bookStatus: BookStatus.haveRead, upperContext: context),
-      BookCatalog(bookStatus: BookStatus.inTrash, upperContext: context),
-    ];
-    var appbar = AppBar(
-      elevation: 0,
-      title: const Text(
-        BookCatalog.booksTitle,
-        style: FontConfigs.pageNameTextStyle,
-      ),
-      bottom: TabBar(
-        indicatorColor: Palette.darkBlue,
-        indicatorWeight: 2.5,
-        isScrollable: true,
-        physics: const BouncingScrollPhysics(),
-        labelColor: Palette.darkBlue,
-        labelStyle: const TextStyle(fontSize: 18),
-        tabs: _kTabs,
-      ),
-    );
-    widget.page = DefaultTabController(
-      length: _kTabs.length,
-      child: Scaffold(
-        drawer: Drawer(
-          child: SideMenu(appbar.preferredSize.height),
+    return BlocBuilder<BookBloc, BookState>(builder: (context, state) {
+      final kTabPages = <Widget>[
+        BookCatalog(
+          bookStatus: BookStatus.allBooks,
+          upperContext: context,
         ),
-        appBar: appbar,
-        body: TabBarView(
+        BookCatalog(
+          bookStatus: BookStatus.reading,
+          upperContext: context,
+        ),
+        BookCatalog(bookStatus: BookStatus.favourites, upperContext: context),
+        BookCatalog(bookStatus: BookStatus.toRead, upperContext: context),
+        BookCatalog(bookStatus: BookStatus.haveRead, upperContext: context),
+        BookCatalog(bookStatus: BookStatus.inTrash, upperContext: context),
+      ];
+      var appbar = AppBar(
+        elevation: 0,
+        title: const Text(
+          BookCatalog.booksTitle,
+          style: FontConfigs.pageNameTextStyle,
+        ),
+        bottom: TabBar(
+          indicatorColor: Palette.darkBlue,
+          indicatorWeight: 2.5,
+          isScrollable: true,
           physics: const BouncingScrollPhysics(),
-          children: kTabPages,
+          labelColor: Palette.darkBlue,
+          labelStyle: const TextStyle(fontSize: 18),
+          tabs: _kTabs,
         ),
-      ),
-    );
-    return super.build(context);
+      );
+      widget.page = DefaultTabController(
+        length: _kTabs.length,
+        child: Scaffold(
+          drawer: Drawer(
+            child: SideMenu(appbar.preferredSize.height),
+          ),
+          appBar: appbar,
+          body: TabBarView(
+            physics: const BouncingScrollPhysics(),
+            children: kTabPages,
+          ),
+        ),
+      );
+      return super.build(context);
+    });
   }
 }
