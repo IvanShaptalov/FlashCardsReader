@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class FastCardListProvider {
   static ScrollController scrollController = ScrollController();
-  static void putSelectedCardToFirstPosition(
+  static FlashCardCollection putSelectedCardToFirstPosition(
       List<FlashCardCollection> collection) {
     var selected = FlashCardProvider.fc;
     var index = collection.indexWhere((element) => element == selected);
@@ -15,9 +15,11 @@ class FastCardListProvider {
       collection.removeAt(index);
       collection.insert(0, selected);
     }
+    return selected;
   }
 
-  static void putSelectedCardToFirstPositionBookMenu(
+  /// return true if reordered
+  static bool putSelectedCardToFirstPositionBookMenu(
       List<FlashCardCollection> collection, BookModel book) {
     var bookFlashId = book.flashCardId;
     var index = collection.indexWhere((element) => element.id == bookFlashId);
@@ -26,7 +28,11 @@ class FastCardListProvider {
 
       collection.removeAt(index);
       collection.insert(0, card);
+      // set card to selected and provide to interact
+      FlashCardProvider.fc = card;
+      return true;
     }
+    return false;
   }
 
   static void backElementToStart() {

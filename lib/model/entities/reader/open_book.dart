@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_pdf.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
@@ -27,19 +30,40 @@ class OpenBook extends StatefulWidget {
 }
 
 class OpenBookState extends State<OpenBook> {
+  List<FlashCardCollection>? flashCardCollection;
   void callback() {
     setState(() {});
   }
 
+  void selectSavedFlashCard() {
+    var savedFlashCard = BlocProvider.of(context);
+  }
+
+  @override
+  void initState() {
+    // get collection
+    flashCardCollection = BlocProvider.of<FlashCardBloc>(widget.upperContext)
+        .state
+        .copyWith(fromTrash: false)
+        .flashCards;
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var flashCardCollection =
-        BlocProvider.of<FlashCardBloc>(widget.upperContext)
-            .state
-            .copyWith(fromTrash: false)
-            .flashCards;
-    FastCardListProvider.putSelectedCardToFirstPosition(flashCardCollection);
-
+    // reorder cards
+    if (!FastCardListProvider.putSelectedCardToFirstPositionBookMenu(
+        flashCardCollection ?? [], widget.book)) {
+      debugPrintIt('book doesn`t have flashcard id yet, select and save first');
+      var selectedFlash = FastCardListProvider.putSelectedCardToFirstPosition(
+          flashCardCollection ?? []);
+      widget.upperContext
+          .read<BookBloc>()
+          .state
+          .updateBookAsync(widget.book..flashCardId = selectedFlash.id);
+    }
+    ;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -162,9 +186,9 @@ class OpenBookState extends State<OpenBook> {
                     child: ListView.builder(
                         controller: FastCardListProvider.scrollController,
                         scrollDirection: Axis.horizontal,
-                        itemCount: flashCardCollection.isEmpty
+                        itemCount: flashCardCollection!.isEmpty
                             ? 1
-                            : flashCardCollection.length,
+                            : flashCardCollection!.length,
                         itemBuilder: (context, index) {
                           return AnimationConfiguration.staggeredList(
                             position: index,
@@ -172,13 +196,14 @@ class OpenBookState extends State<OpenBook> {
                             child: Transform.scale(
                               scale: 0.9,
                               child: FastAddWordFCcWidget(
-                                  flashCardCollection.isEmpty
-                                      ? FlashCardProvider.fc
-                                      : flashCardCollection[index],
-                                  callback,
-                                  design: ScreenIdentifier.indentify(context),
-                                  backElementToStart:
-                                      FastCardListProvider.backElementToStart),
+                                flashCardCollection!.isEmpty
+                                    ? FlashCardProvider.fc
+                                    : flashCardCollection![index],
+                                callback,
+                                design: ScreenIdentifier.indentify(context),
+                                book: widget.book,
+                                bookContext: widget.upperContext,
+                              ),
                             ),
                           );
                         }),

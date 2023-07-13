@@ -5,7 +5,6 @@ import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dar
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 class ViewText extends StatefulWidget {
   const ViewText({Key? key, required this.book}) : super(key: key);

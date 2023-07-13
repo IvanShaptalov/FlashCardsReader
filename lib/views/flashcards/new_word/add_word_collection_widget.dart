@@ -1,16 +1,23 @@
+import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/model/entities/reader/book_model.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/flashcard_collection_info.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/screens/base_new_word_screen.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FastAddWordFCcWidget extends StatefulWidget {
+  /// if called from open book menu, when select - save flashcard to book
   const FastAddWordFCcWidget(this.flashCardCollection, this.updateCallback,
-      {required this.backElementToStart, required this.design, super.key});
+      {required this.design, super.key, this.book, this.bookContext});
   final Function updateCallback;
-  final Function backElementToStart;
   final ScreenDesign design;
+  final BookModel? book;
+  final BuildContext? bookContext;
 
   final FlashCardCollection flashCardCollection;
   @override
@@ -42,9 +49,22 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
             FlashCardProvider.fc = widget.flashCardCollection;
           }
 
+          if (widget.book is BookModel && widget.bookContext is BuildContext) {
+            // send save book event to book bloc to
+            debugPrintIt('called from book menu');
+            widget.bookContext!.read<BookBloc>().state.updateBookAsync(
+                widget.book!..flashCardId = widget.flashCardCollection.id);
+          } else if (widget.book is BookModel ||
+              widget.bookContext is BuildContext) {
+            throw Exception(
+                'for book menu must provided book, bookContext to work with bloc');
+          }
           widget.updateCallback();
-          widget.backElementToStart();
-          OverlayNotificationProvider.showOverlayNotification('target collection is ${widget.flashCardCollection.title}', status: NotificationStatus.success);
+          FastCardListProvider.backElementToStart();
+
+          OverlayNotificationProvider.showOverlayNotification(
+              'target collection is ${widget.flashCardCollection.title}',
+              status: NotificationStatus.success);
         },
         child: SizedBox(
           height: SizeConfig.getMediaHeight(context, p: 0.5),

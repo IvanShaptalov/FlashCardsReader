@@ -90,14 +90,12 @@ class LandscapeNewWord extends BaseScreenNewWord {
                                     child: Transform.scale(
                                   scale: 0.9,
                                   child: FastAddWordFCcWidget(
-                                      flashCardCollection.isEmpty
-                                          ? FlashCardProvider.fc
-                                          : flashCardCollection[index],
-                                      widget.callback,
-                                      design:
-                                          ScreenIdentifier.indentify(context),
-                                      backElementToStart: FastCardListProvider
-                                          .backElementToStart),
+                                    flashCardCollection.isEmpty
+                                        ? FlashCardProvider.fc
+                                        : flashCardCollection[index],
+                                    widget.callback,
+                                    design: ScreenIdentifier.indentify(context),
+                                  ),
                                 )),
                               ),
                             );
