@@ -66,58 +66,53 @@ class ViewTextState extends ParentState<ViewTextBook> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TranslatorBloc, TranslatorState>(
-        builder: (translatorContext, state) {
-      debugPrintIt('try to get translator');
-      state.translate('hello', 'English', 'Ukrainian');
-      debugPrintIt(
-          'title of selected flashcard : ======================${FlashCardProvider.fc.title}');
-      bindPage(Scaffold(
-          appBar: ViewTextBook.showBar
-              ? AppBar(
-                  title: Text(
-                    widget.book.title,
-                    style: FontConfigs.pageNameTextStyle,
+    debugPrintIt(
+        'title of selected flashcard : ======================${FlashCardProvider.fc.title}');
+    bindPage(Scaffold(
+        appBar: ViewTextBook.showBar
+            ? AppBar(
+                title: Text(
+                  widget.book.title,
+                  style: FontConfigs.pageNameTextStyle,
+                ),
+                actions: const [Offstage()],
+                backgroundColor: Palette.green300Primary,
+                elevation: 0,
+                iconTheme: IconThemeData(color: Palette.blueGrey),
+              )
+            : null,
+        body: Stack(children: [
+          GestureDetector(
+              // behavior: HitTestBehavior.,
+              onDoubleTap: () {
+                ViewTextBook.showBar = !ViewTextBook.showBar;
+                debugPrintIt('on tap');
+                setState(() {});
+              },
+              child: Container(
+                padding: EdgeInsets.only(
+                    top: SizeConfig.getMediaHeight(context,
+                        p: !ViewTextBook.showBar ? 0.05 : 0),
+                    left: 8,
+                    right: 8,
+                    bottom: 8),
+                color: Palette.amber50,
+                height: SizeConfig.getMediaHeight(context),
+                width: SizeConfig.getMediaWidth(context),
+                child: SelectionArea(
+                  contextMenuBuilder: (
+                    BuildContext context,
+                    SelectableRegionState selectableRegionState,
+                  ) =>
+                      FlashReaderAdaptiveContextSelectionMenu(
+                    selectableRegionState: selectableRegionState,
+                    callback: callback,
+                    widget: widget,
                   ),
-                  actions: const [Offstage()],
-                  backgroundColor: Palette.green300Primary,
-                  elevation: 0,
-                  iconTheme: IconThemeData(color: Palette.blueGrey),
-                )
-              : null,
-          body: Stack(children: [
-            GestureDetector(
-                // behavior: HitTestBehavior.,
-                onDoubleTap: () {
-                  ViewTextBook.showBar = !ViewTextBook.showBar;
-                  debugPrintIt('on tap');
-                  setState(() {});
-                },
-                child: Container(
-                  padding: EdgeInsets.only(
-                      top: SizeConfig.getMediaHeight(translatorContext,
-                          p: !ViewTextBook.showBar ? 0.05 : 0),
-                      left: 8,
-                      right: 8,
-                      bottom: 8),
-                  color: Palette.amber50,
-                  height: SizeConfig.getMediaHeight(translatorContext),
-                  width: SizeConfig.getMediaWidth(translatorContext),
-                  child: SelectionArea(
-                    contextMenuBuilder: (
-                      BuildContext context,
-                      SelectableRegionState selectableRegionState,
-                    ) =>
-                        FlashReaderAdaptiveContextSelectionMenu(
-                      selectableRegionState: selectableRegionState,
-                      callback: callback,
-                      widget: widget,
-                    ),
-                    child: Text(widget.book.getAllText()),
-                  ),
-                )),
-          ])));
-      return super.build(translatorContext);
-    });
+                  child: Text(widget.book.getAllText()),
+                ),
+              )),
+        ])));
+    return super.build(context);
   }
 }

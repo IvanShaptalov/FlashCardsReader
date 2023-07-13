@@ -18,25 +18,21 @@ class BaseNewWordWidgetService {
       {required BuildContext context,
       required Function callback,
       required String oldWord}) {
-    return BlocProvider(
-        create: (_) => FlashCardBloc(),
-        child: BlocProvider(
-            create: (_) => TranslatorBloc(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                addWordEventWidget(
-                    context: context, callback: callback, oldWord: oldWord),
-                translateListenerWidget(
-                  context: context,
-                  callback: callback,
-                ),
-                addWordsButton(
-                  context: context,
-                  callback: callback,
-                ),
-              ],
-            )));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        addWordEventWidget(
+            context: context, callback: callback, oldWord: oldWord),
+        translateListenerWidget(
+          context: context,
+          callback: callback,
+        ),
+        addWordsButton(
+          context: context,
+          callback: callback,
+        ),
+      ],
+    );
   }
 
   /// put setUp() method in

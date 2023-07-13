@@ -1,7 +1,10 @@
+import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
+import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
   final SelectableRegionState selectableRegionState;
@@ -32,8 +35,8 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                 onPressed: () {}, icon: const Icon(Icons.format_quote_rounded)),
             IconButton(
                 onPressed: () {
-                  BaseNewWordWidgetService.wordFormController.setUp(
-                      WordCreatingUIProvider.tmpFlashCard..question = '1');
+                  BaseNewWordWidgetService.wordFormController
+                      .setUp(WordCreatingUIProvider.tmpFlashCard);
                   showUpdateFlashCardMenu(context, widget, '1');
                 },
                 icon: const Icon(Icons.translate)),
@@ -60,13 +63,41 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                 children: [
                   SizedBox(
                     height: SizeConfig.getMediaHeight(context, p: 0.3),
-                    child: BaseNewWordWidgetService.addWordMenu(
-                        context: context, callback: callback, oldWord: oldWord),
+                    child: BlocProvider(
+                        create: (_) => FlashCardBloc(),
+                        child: BlocProvider(
+                            create: (_) => TranslatorBloc(),
+                            child: BaseNewWordWrapper(
+                                callback: callback, oldWord: oldWord))),
                   ),
                 ],
               ),
             );
           });
         });
+  }
+}
+
+class BaseNewWordWrapper extends StatefulWidget {
+  const BaseNewWordWrapper(
+      {super.key, required this.callback, required this.oldWord});
+  final Function callback;
+  final String oldWord;
+
+  @override
+  State<BaseNewWordWrapper> createState() => _BaseNewWordWrapperState();
+}
+
+class _BaseNewWordWrapperState extends State<BaseNewWordWrapper> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+        create: (_) => FlashCardBloc(),
+        child: BlocProvider(
+            create: (_) => TranslatorBloc(),
+            child: BaseNewWordWidgetService.addWordMenu(
+                context: context,
+                callback: widget.callback,
+                oldWord: widget.oldWord)));
   }
 }
