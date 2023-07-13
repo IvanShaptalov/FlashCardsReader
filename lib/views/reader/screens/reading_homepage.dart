@@ -1,6 +1,5 @@
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
-import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/views/reader/tabs/book_catalog.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
@@ -22,9 +21,7 @@ class _ReadingHomePageState extends State<ReadingHomePage> {
     return BlocProvider(
         create: (_) => FlashCardBloc(),
         child: BlocProvider(
-            create: (_) => TranslatorBloc(),
-            child: BlocProvider(
-                create: (_) => BookBloc(), child: ReadingHomePageView())));
+            create: (_) => BookBloc(), child: ReadingHomePageView()));
   }
 }
 
@@ -63,51 +60,49 @@ class ReadingHomePageState extends ParentState<ReadingHomePageView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookBloc, BookState>(builder: (context, state) {
-      final kTabPages = <Widget>[
-        BookCatalog(
-          bookStatus: BookStatus.allBooks,
-          upperContext: context,
+    final kTabPages = <Widget>[
+      BookCatalog(
+        bookStatus: BookStatus.allBooks,
+        upperContext: context,
+      ),
+      BookCatalog(
+        bookStatus: BookStatus.reading,
+        upperContext: context,
+      ),
+      BookCatalog(bookStatus: BookStatus.favourites, upperContext: context),
+      BookCatalog(bookStatus: BookStatus.toRead, upperContext: context),
+      BookCatalog(bookStatus: BookStatus.haveRead, upperContext: context),
+      BookCatalog(bookStatus: BookStatus.inTrash, upperContext: context),
+    ];
+    var appbar = AppBar(
+      elevation: 0,
+      title: const Text(
+        BookCatalog.booksTitle,
+        style: FontConfigs.pageNameTextStyle,
+      ),
+      bottom: TabBar(
+        indicatorColor: Palette.darkblue,
+        indicatorWeight: 2.5,
+        isScrollable: true,
+        physics: const BouncingScrollPhysics(),
+        labelColor: Palette.darkblue,
+        labelStyle: const TextStyle(fontSize: 18),
+        tabs: _kTabs,
+      ),
+    );
+    widget.page = DefaultTabController(
+      length: _kTabs.length,
+      child: Scaffold(
+        drawer: Drawer(
+          child: SideMenu(appbar.preferredSize.height),
         ),
-        BookCatalog(
-          bookStatus: BookStatus.reading,
-          upperContext: context,
-        ),
-        BookCatalog(bookStatus: BookStatus.favourites, upperContext: context),
-        BookCatalog(bookStatus: BookStatus.toRead, upperContext: context),
-        BookCatalog(bookStatus: BookStatus.haveRead, upperContext: context),
-        BookCatalog(bookStatus: BookStatus.inTrash, upperContext: context),
-      ];
-      var appbar = AppBar(
-        elevation: 0,
-        title: const Text(
-          BookCatalog.booksTitle,
-          style: FontConfigs.pageNameTextStyle,
-        ),
-        bottom: TabBar(
-          indicatorColor: Palette.darkblue,
-          indicatorWeight: 2.5,
-          isScrollable: true,
+        appBar: appbar,
+        body: TabBarView(
           physics: const BouncingScrollPhysics(),
-          labelColor: Palette.darkblue,
-          labelStyle: const TextStyle(fontSize: 18),
-          tabs: _kTabs,
+          children: kTabPages,
         ),
-      );
-      widget.page = DefaultTabController(
-        length: _kTabs.length,
-        child: Scaffold(
-          drawer: Drawer(
-            child: SideMenu(appbar.preferredSize.height),
-          ),
-          appBar: appbar,
-          body: TabBarView(
-            physics: const BouncingScrollPhysics(),
-            children: kTabPages,
-          ),
-        ),
-      );
-      return super.build(context);
-    });
+      ),
+    );
+    return super.build(context);
   }
 }

@@ -2,7 +2,6 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
-import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
 import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -15,7 +14,6 @@ class ViewText extends ParentStatefulWidget {
   final BookModel book;
   final BuildContext upperContext;
   static bool showBar = false;
-  String oldWord = '';
 
   @override
   ViewTextState createState() => ViewTextState();
@@ -86,7 +84,6 @@ class ViewTextState extends ParentState<ViewText> {
                       FlashReaderAdaptiveContextSelectionMenu(
                     selectableRegionState: selectableRegionState,
                     callback: callback,
-                    oldWord: widget.oldWord,
                     widget: widget,
                   ),
                   child: Text(widget.book.getAllText()),

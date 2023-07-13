@@ -34,11 +34,8 @@ class LandscapeNewWord extends BaseScreenNewWord {
                 width: 1,
               ),
             ),
-            child: BaseNewWordWidget.addWordMenu(
-                context: context,
-                callback: callback,
-                widget: widget,
-                oldWord: oldWord)),
+            child: BaseNewWordWidgetService.addWordMenu(
+                context: context, callback: callback, oldWord: oldWord)),
       ),
     );
   }
@@ -52,7 +49,8 @@ class LandscapeNewWord extends BaseScreenNewWord {
       appBarHeight = appbar.preferredSize.height;
       widget.wordFormContoller
           .setUp(WordCreatingUIProvider.tmpFlashCard, context);
-
+      BaseNewWordWidgetService.wordFormContoller
+          .setUp(WordCreatingUIProvider.tmpFlashCard);
       debugPrintIt('selected collection:  ${FlashCardProvider.fc}');
       return Scaffold(
         resizeToAvoidBottomInset: true,

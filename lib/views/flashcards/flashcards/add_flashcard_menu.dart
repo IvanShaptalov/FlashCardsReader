@@ -36,6 +36,11 @@ class WordFormContoller {
   TextEditingController questionController = TextEditingController();
   TextEditingController answerController = TextEditingController();
 
+  /// add setup method in widget build method
+  /// [example:
+  /// wordFormContoller.setUp(WordCreatingUIProvider.tmpFlashCard);
+  /// from:
+  /// import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
   void setUp(FlashCard flashCard) {
     // update controller text
     questionController.text = flashCard.question;
@@ -156,11 +161,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                   width: SizeConfig.getMediaWidth(context, p: 1),
 
                   color: ConfigViewUpdateMenu.addWordMenuColor,
-                  child: BaseNewWordWidget.addWordMenu(
-                      context: context,
-                      callback: callback,
-                      widget: widget,
-                      oldWord: oldWord),
+                  child: BaseNewWordWidgetService.addWordMenu(
+                      context: context, callback: callback, oldWord: oldWord),
                 )
               : Padding(
                   padding: const EdgeInsets.all(8.0),

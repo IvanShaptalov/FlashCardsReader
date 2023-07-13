@@ -30,17 +30,16 @@ class PortraitNewWord extends BaseScreenNewWord {
             width: 1,
           ),
         ),
-        child: BaseNewWordWidget.addWordMenu(
-            context: context,
-            callback: callback,
-            widget: widget,
-            oldWord: oldWord));
+        child: BaseNewWordWidgetService.addWordMenu(
+            context: context, callback: callback, oldWord: oldWord));
   }
 
   Widget loadScreen() {
     debugPrintIt('screen loaded ');
     return BlocBuilder<FlashCardBloc, FlashcardsState>(
         builder: (context, state) {
+      BaseNewWordWidgetService.wordFormContoller
+          .setUp(WordCreatingUIProvider.tmpFlashCard);
       var flashCardCollection = state.copyWith(fromTrash: false).flashCards;
       FastCardListProvider.putSelectedCardToFirstPosition(flashCardCollection);
       var appbar = getAppBar(flashCardCollection);

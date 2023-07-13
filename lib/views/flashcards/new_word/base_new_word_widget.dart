@@ -1,14 +1,62 @@
+import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BaseNewWordWidget {
+/// [BaseNewWordWidget] has Translator Bloc provider to prevent multiple context parameter crossing
+// ignore: must_be_immutable
+class BaseNewWordWidget extends StatefulWidget {
+  BaseNewWordWidget({super.key, required this.oldWord});
+  String oldWord;
+  @override
+  State<BaseNewWordWidget> createState() => _BaseNewWordWidgetState();
+}
+
+class _BaseNewWordWidgetState extends State<BaseNewWordWidget> {
+  void callback() {
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => BookBloc(),
+      child: BlocProvider(
+        create: (_) => FlashCardBloc(),
+        child: BlocProvider(
+            create: (_) => TranslatorBloc(),
+            child: SizedBox(
+              height: SizeConfig.getMediaHeight(context, p: 0.5),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      height: 5,
+                      width: SizeConfig.getMediaWidth(context, p: 0.3),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.grey)),
+                  BaseNewWordWidgetService.addWordMenu(
+                      context: context,
+                      callback: callback,
+                      oldWord: widget.oldWord),
+                ],
+              ),
+            )),
+      ),
+    );
+  }
+}
+
+class BaseNewWordWidgetService {
   /// addWordMenu create widget to save words faster
   /// [callback] to update screen
   /// [widget] parent widget
@@ -16,27 +64,32 @@ class BaseNewWordWidget {
   static Widget addWordMenu(
       {required BuildContext context,
       required Function callback,
-      required dynamic widget,
       required String oldWord}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         addWordEventWidget(
-            context: context,
-            callback: callback,
-            widget: widget,
-            oldWord: oldWord),
+            context: context, callback: callback, oldWord: oldWord),
         translateListenerWidget(
-            context: context, callback: callback, widget: widget),
-        addWordsButton(context: context, callback: callback, widget: widget),
+          context: context,
+          callback: callback,
+        ),
+        addWordsButton(
+          context: context,
+          callback: callback,
+        ),
       ],
     );
   }
 
+  /// put setUp() method in
+  /// @override
+  /// build()
+  /// method
+  static WordFormContoller wordFormContoller = WordFormContoller();
+
   static Widget translateListenerWidget(
-      {required BuildContext context,
-      required Function callback,
-      required dynamic widget}) {
+      {required BuildContext context, required Function callback}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -59,14 +112,14 @@ class BaseNewWordWidget {
                     context: context,
                     oldWord: state.source);
               } else {
-                widget.wordFormContoller.answerController.text = state.result;
+                wordFormContoller.answerController.text = state.result;
                 WordCreatingUIProvider.setAnswer(state.result);
                 debugPrintIt(
                     'answer changed to ${state.result} from translate');
               }
             },
             child: TextField(
-              controller: widget.wordFormContoller.answerController,
+              controller: wordFormContoller.answerController,
               decoration: InputDecoration(
                 labelText: 'Add Translation',
                 labelStyle: FontConfigs.h3TextStyle,
@@ -78,10 +131,7 @@ class BaseNewWordWidget {
               },
               onSubmitted: (value) {
                 saveCollectionFromWord(
-                    onSubmitted: true,
-                    callback: callback,
-                    context: context,
-                    widget: widget);
+                    onSubmitted: true, callback: callback, context: context);
 
                 BlocProvider.of<TranslatorBloc>(context)
                     .add(ClearTranslateEvent());
@@ -103,17 +153,16 @@ class BaseNewWordWidget {
   static Widget addWordEventWidget(
       {required BuildContext context,
       required Function callback,
-      required dynamic widget,
       required String oldWord}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        clearFieldButton(context: context, widget: widget, callback: callback),
+        clearFieldButton(context: context, callback: callback),
         Expanded(
           child: BlocProvider(
             create: (context) => TranslatorBloc(),
             child: TextField(
-              controller: widget.wordFormContoller.questionController,
+              controller: wordFormContoller.questionController,
               decoration: InputDecoration(
                 labelText: 'Add Word',
                 labelStyle: FontConfigs.h3TextStyle,
@@ -125,10 +174,7 @@ class BaseNewWordWidget {
               },
               onSubmitted: (value) {
                 saveCollectionFromWord(
-                    onSubmitted: true,
-                    callback: callback,
-                    context: context,
-                    widget: widget);
+                    onSubmitted: true, callback: callback, context: context);
                 BlocProvider.of<TranslatorBloc>(context)
                     .add(ClearTranslateEvent());
               },
@@ -147,16 +193,14 @@ class BaseNewWordWidget {
   }
 
   static Widget addWordsButton(
-      {required BuildContext context,
-      required Function callback,
-      required dynamic widget}) {
+      {required BuildContext context, required Function callback}) {
     return GestureDetector(
       onTap: () {
         saveCollectionFromWord(
-            onSubmitted: false,
-            callback: callback,
-            context: context,
-            widget: widget);
+          onSubmitted: false,
+          callback: callback,
+          context: context,
+        );
         BlocProvider.of<TranslatorBloc>(context).add(ClearTranslateEvent());
       },
       child: Container(
@@ -222,16 +266,12 @@ class BaseNewWordWidget {
   static void saveCollectionFromWord(
       {required bool onSubmitted,
       required BuildContext context,
-      required Function callback,
-      required dynamic widget}) {
-    updateWord(
-        onSubmitted: onSubmitted,
-        callback: callback,
-        widget: widget,
-        context: context);
+      required Function callback}) {
+    updateWord(onSubmitted: onSubmitted, callback: callback, context: context);
     if (FlashCardProvider.fc.isValid) {
-      context.read<FlashCardBloc>().add(UpdateFlashCardEvent(
-          flashCardCollection: FlashCardProvider.fc));
+      context
+          .read<FlashCardBloc>()
+          .add(UpdateFlashCardEvent(flashCardCollection: FlashCardProvider.fc));
     } else {
       showValidatorMessage();
     }
@@ -274,7 +314,6 @@ class BaseNewWordWidget {
   static void updateWord(
       {bool onSubmitted = false,
       required Function callback,
-      required dynamic widget,
       required BuildContext context}) {
     var flash = WordCreatingUIProvider.tmpFlashCard;
     if (onSubmitted && flash.answer.isEmpty && flash.question.isEmpty) {
@@ -310,9 +349,7 @@ class BaseNewWordWidget {
   }
 
   static Widget clearFieldButton(
-      {required BuildContext context,
-      required dynamic widget,
-      required Function callback}) {
+      {required BuildContext context, required Function callback}) {
     return IconButton(
         onPressed: () {
           callback();
