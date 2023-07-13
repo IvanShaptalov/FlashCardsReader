@@ -22,7 +22,7 @@ class FastCardListProvider {
   static bool putSelectedCardToFirstPositionBookMenu(
       List<FlashCardCollection> collection, BookModel book) {
     var bookFlashId = book.flashCardId;
-    var index = collection.indexWhere((element) => element.id == bookFlashId);
+    var index = collection.indexWhere((fc) => fc.id == bookFlashId && !fc.isDeleted);
     if (index != -1) {
       var card = collection[index].copy();
 

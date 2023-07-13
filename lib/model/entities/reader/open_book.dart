@@ -6,7 +6,6 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_pdf.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
@@ -44,6 +43,7 @@ class OpenBookState extends ParentState<OpenBook> {
         .copyWith(fromTrash: false)
         .flashCards;
 
+    /// get selected flashcard
     FlashCardCollection? selected = FlashCardProvider.fc;
     if (collection != null &&
         collection!.isNotEmpty &&
@@ -67,6 +67,7 @@ class OpenBookState extends ParentState<OpenBook> {
       widget.upperContext.read<BookBloc>().add(UpdateBookEvent(
           bookModel: widget.book..flashCardId = selectedFlash.id));
     }
+
     bindPage(Scaffold(
       appBar: AppBar(
         title: Text(
@@ -226,36 +227,33 @@ class OpenBookState extends ParentState<OpenBook> {
                       collection!
                           .map((e) => e.id)
                           .contains(widget.book.flashCardId)) {
-                    switch (widget.book.file.extension) {
-                      case '.txt':
-                        // check that collection has selected flashCard
+                    widget.book.flashCardId = FlashCardProvider.fc.id;
+                  }
+                  switch (widget.book.file.extension) {
+                    case '.txt':
+                      // check that collection has selected flashCard
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ViewText(
-                                      book: widget.book,
-                                      upperContext: widget.upperContext,
-                                    )));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewText(
+                                    book: widget.book,
+                                    upperContext: widget.upperContext,
+                                  )));
 
-                        break;
-                      case '.pdf':
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ViewPDF(
-                                    widget.book.title, widget.book.path)));
-                        break;
-                      case '.epub':
-                        break;
-                      case '.fb2':
-                        break;
-                      default:
-                    }
-                  } else {
-                    OverlayNotificationProvider.showOverlayNotification(
-                        'Select flashcard collection to save words',
-                        status: NotificationStatus.info);
+                      break;
+                    case '.pdf':
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewPDF(
+                                  widget.book.title, widget.book.path)));
+                      break;
+                    case '.epub':
+                      break;
+                    case '.fb2':
+                      break;
+                    default:
                   }
                 },
                 child: const Text("Read Book", style: FontConfigs.h1TextStyle),

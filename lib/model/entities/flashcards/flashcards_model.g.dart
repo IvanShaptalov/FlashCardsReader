@@ -73,7 +73,7 @@ class FlashCardCollectionAdapter extends TypeAdapter<FlashCardCollection> {
       title: fields[1] as String,
       flashCardSet: (fields[2] as List).toSet().cast<FlashCard>(),
       createdAt: fields[3] as DateTime,
-      isDeleted: fields[4] as bool?,
+      isDeleted: fields[4] as bool,
       questionLanguage: fields[5] as String,
       answerLanguage: fields[6] as String,
     );

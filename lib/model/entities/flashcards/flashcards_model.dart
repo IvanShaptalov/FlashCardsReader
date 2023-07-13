@@ -189,7 +189,7 @@ class FlashCardCollection {
   @HiveField(3)
   DateTime createdAt;
   @HiveField(4)
-  bool? isDeleted;
+  bool isDeleted;
   @HiveField(5)
   String questionLanguage;
   @HiveField(6)
@@ -202,7 +202,7 @@ class FlashCardCollection {
   // ignore: unnecessary_null_comparison
   bool get isValid =>
       title.isNotEmpty &&
-      flashCardSet.isNotEmpty &&
+      flashCardSet.isNotEmpty && //TODO check it 
       id.isNotEmpty &&
       questionLanguage.isNotEmpty &&
       answerLanguage.isNotEmpty &&

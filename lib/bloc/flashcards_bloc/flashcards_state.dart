@@ -21,6 +21,7 @@ class FlashcardsState {
   }
 
   Future<FlashcardsState> deleteFromTrashAllAsync() async {
+    FlashCardProvider.clear();
     var deletedFlashCards = FlashcardDatabaseProvider.getAllFromTrash(true);
     await FlashcardDatabaseProvider.deleteFlashCardsAsync(deletedFlashCards);
     return FlashcardsState.initial().copyWith(fromTrash: true);
@@ -28,8 +29,12 @@ class FlashcardsState {
 
   Future<FlashcardsState> deletePermanently(
       FlashCardCollection flashCardCollection) async {
+    if (flashCardCollection == FlashCardProvider.fc) {
+      FlashCardProvider.clear();
+    }
     await FlashcardDatabaseProvider.deleteFlashCardsAsync(
         [flashCardCollection]);
+
     return FlashcardsState.initial().copyWith(fromTrash: true);
   }
 
@@ -49,6 +54,9 @@ class FlashcardsState {
 
   Future<FlashcardsState> moveToTrashAsync(
       FlashCardCollection flashCardCollection) async {
+    if (flashCardCollection == FlashCardProvider.fc) {
+      FlashCardProvider.clear();
+    }
     await FlashcardDatabaseProvider.moveToTrashAsync(flashCardCollection, true);
     return FlashcardsState.initial().copyWith(fromTrash: false);
   }
