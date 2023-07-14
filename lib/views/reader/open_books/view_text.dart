@@ -107,6 +107,12 @@ class ViewTextState extends ParentState<ViewTextBook> {
                       FlashReaderAdaptiveContextSelectionMenu(
                     selectableRegionState: selectableRegionState,
                   ),
+                  onSelectionChanged: (value) {
+                    if (value != null) {
+                      WordCreatingUIProvider.tmpFlashCard.question =
+                          value.plainText;
+                    }
+                  },
                   child: Text(widget.book.getAllText()),
                 ),
               )),

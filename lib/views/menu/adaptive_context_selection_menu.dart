@@ -3,7 +3,6 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
-import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,11 +36,8 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                         icon: const Icon(Icons.format_quote_rounded)),
                     IconButton(
                         onPressed: () {
-                          WordCreatingUIProvider.clear();
-
-                          BaseNewWordWidgetService.wordFormController.setUp(
-                              WordCreatingUIProvider.tmpFlashCard
-                                ..question = '1');
+                          BaseNewWordWidgetService.wordFormController
+                              .setUp(WordCreatingUIProvider.tmpFlashCard);
 
                           showUpdateFlashCardMenu(context);
                         },

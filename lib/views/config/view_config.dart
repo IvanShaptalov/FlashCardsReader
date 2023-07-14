@@ -62,7 +62,7 @@ class FontConfigs {
       fontSize: 18, fontWeight: FontWeight.w700, color: Palette.grey800);
 
   static TextStyle quizWordSummaryTextStyleBlack =
-       TextStyle(fontSize: 18, color: Palette.black);
+      TextStyle(fontSize: 18, color: Palette.black);
   static TextStyle quizWordSummaryTextStyle =
       TextStyle(fontSize: 16, color: Palette.grey900);
 }
