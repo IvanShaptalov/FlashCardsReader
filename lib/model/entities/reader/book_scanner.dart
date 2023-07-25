@@ -11,17 +11,31 @@ import 'package:flashcards_reader/model/entities/reader/book_parser/txt.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/checker.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
+import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'book_model.dart';
 
 // TODO test on old android device
 class BookScanner {
+  static Future<void> init() async {
+    getStatus();
+  }
+
+  static Future<void> getStatus() async {
+    manageExternalStoragePermission.value =
+        await Permission.manageExternalStorage.status.isGranted;
+  }
+
+  static ValueNotifier<bool> manageExternalStoragePermission =
+      ValueNotifier(false);
+
   static Future<bool> getFilePermission() async {
     var status = await Permission.manageExternalStorage.status;
     if (!status.isGranted) {
       await Permission.manageExternalStorage.request();
     }
+    manageExternalStoragePermission.value = status.isGranted;
     return status.isGranted;
   }
 

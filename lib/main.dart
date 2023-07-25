@@ -4,8 +4,7 @@ import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/checker.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
-import 'package:flashcards_reader/views/menu/side_menu.dart';
-import 'package:flashcards_reader/views/parent_screen.dart';
+import 'package:flashcards_reader/views/feedback_support/feedback_support_page.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 
@@ -14,6 +13,8 @@ import 'database/core/core.dart';
 Future<bool> initAsync() async {
   bool ioInit = await LocalManager.initAsync();
   bool dbInit = await DataBase.initAsync();
+  
+  BookScanner.init();
   debugPrint('db inited: $dbInit');
 
   TextToSpeechService.initTtsEngineAsync()
@@ -49,50 +50,10 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: Palette.grey800),
           scaffoldBackgroundColor: Palette.grey200,
         ),
-        home: MyHomePage(title: 'Flutter Demo Home Page'),
+        home: FeedbackSupportPage(),
       ),
     );
   }
 }
 
 // ignore: must_be_immutable
-class MyHomePage extends ParentStatefulWidget {
-  MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  ParentState<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends ParentState<MyHomePage> {
-  double appBarHeight = 0;
-
-  @override
-  Widget build(BuildContext context, {Widget? page}) {
-    /// ===============================================[Create page]===============================
-    var appBar = AppBar(
-      title: Text(widget.title),
-    );
-    appBarHeight = appBar.preferredSize.height;
-
-    bindPage(Scaffold(
-      appBar: appBar,
-      body: Center(
-          child: Column(
-        children: [
-          const Text('hello world'),
-          IconButton(
-              onPressed: () {
-                BookScanner.scan();
-              },
-              icon: const Icon(Icons.add))
-        ],
-      )),
-      drawer: SideMenu(appBarHeight),
-    ));
-
-    /// ===============================================[Select design via context]===============================
-
-    return super.build(context);
-  }
-}

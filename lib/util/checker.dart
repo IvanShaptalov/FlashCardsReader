@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/model/entities/reader/book_scanner.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 
@@ -14,11 +15,9 @@ class Checker {
     return p.basename(path);
   }
 
-
   /// =========================[Internet]========================
   static bool isConnected = true;
 
-  
   static Future<bool> connected() async {
     try {
       final response = await InternetAddress.lookup('www.kindacode.com');
@@ -39,7 +38,8 @@ class Checker {
     debugPrintIt('start checking internet connection');
     bool connectionIsLost = false;
     while (true) {
-      debugPrintIt('check');
+      BookScanner.getStatus();
+      debugPrintIt('check connection and permission');
       await Future.delayed(const Duration(seconds: 3));
       // send once notification about internet connection back
       if (await Checker.connected() && connectionIsLost) {
@@ -60,7 +60,7 @@ class Checker {
   }
 
   ///=========================[ANDROIDVERSION]=================
-  static int androidVersion(){
+  static int androidVersion() {
     return 0;
   }
 }
