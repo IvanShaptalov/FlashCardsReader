@@ -6,6 +6,7 @@ import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 
 // ignore: must_be_immutable
 class FeedbackSupportPage extends ParentStatefulWidget {
@@ -144,8 +145,37 @@ class _MyHomePageState extends ParentState<FeedbackSupportPageView> {
                       ],
                     );
                   }),
-            )
-            
+            ),
+            SizedBox(
+              height: lineHeight,
+              child: ValueListenableBuilder(
+                  valueListenable: BookScanner.manageExternalStoragePermission,
+                  builder:
+                      (BuildContext context, bool isGranted, Widget? child) {
+                    return ValueListenableBuilder(
+                        valueListenable: BookScanner.scanPercent,
+                        builder: (BuildContext context, double percent,
+                            Widget? child) {
+                          return LiquidLinearProgressIndicator(
+                            value: percent, // Defaults to 0.5.
+                            valueColor: AlwaysStoppedAnimation(Palette
+                                .blueAccent), // Defaults to the current Theme's accentColor.
+                            backgroundColor: Colors
+                                .white, // Defaults to the current Theme's backgroundColor.
+                            borderColor: Palette.green200,
+                            borderWidth: 5.0,
+                            borderRadius: 12.0,
+                            direction: Axis
+                                .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+                            center: Text(
+                              isGranted && percent > 0 ? "Loading ..." : "",
+                              style: FontConfigs.h3TextStyle
+                                  .copyWith(color: Palette.white),
+                            ),
+                          );
+                        });
+                  }),
+            ),
           ],
         ),
       )),

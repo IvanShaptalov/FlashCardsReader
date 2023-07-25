@@ -38,6 +38,7 @@ dependencies:
   archive: ^3.3.7
   xml: ^6.3.0
   flutter_native_text_view: ^0.1.1
+  liquid_progress_indicator_v2: ^0.5.0
 
   cached_network_image: ^3.0.0
   connectivity: ^3.0.6

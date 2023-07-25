@@ -22,6 +22,9 @@ class BookScanner {
     getStatus();
   }
 
+  static ValueNotifier<double> scanPercent = ValueNotifier(0);
+  static double scanStep = 0;
+
   static Future<void> getStatus() async {
     manageExternalStoragePermission.value =
         await Permission.manageExternalStorage.status.isGranted;
@@ -46,6 +49,9 @@ class BookScanner {
     try {
       Directory dir = Directory(androidBasePath);
       var files = await dirContents(dir);
+      // set scanPercent to 0
+      scanStep = 1 / files.length;
+      scanPercent.value = 0;
       if (await getFilePermission()) {
         // here we should bind books to the database
         bindBooks(files).then((value) =>
@@ -83,11 +89,35 @@ class BookScanner {
     return completer.future;
   }
 
+  static Future<void> progressScan() async {
+    if (scanStep > 0.01) {
+      for (int i = 0; i < 50; i++) {
+        scanPercent.value += scanStep / 50;
+        await Future.delayed(const Duration(milliseconds: 1));
+        scanPercent.value += 0.001;
+      }
+    } else {
+      scanPercent.value += scanStep;
+      await Future.delayed(const Duration(milliseconds: 50));
+    }
+  }
+
+  static Future<void> regressScan() async {
+    scanPercent.value = 1;
+    for (int i = 0; i < 50; i++) {
+      scanPercent.value -= 0.02;
+      await Future.delayed(const Duration(milliseconds: 1));
+    }
+    scanPercent.value = 0;
+  }
+
   static Future<int> bindBooks(List<FileSystemEntity> files) async {
     debugPrintIt('Binding books to the database');
     int counter = 0;
 
     for (var fileEntity in files) {
+      await progressScan();
+
       File file = File(fileEntity.path);
       // TODO scan in c++ for performance in the future
       String extension = Checker.getExtension(file.path);
@@ -144,6 +174,7 @@ class BookScanner {
         counter++;
       }
     }
+    await regressScan();
     debugPrintIt('================book models');
     debugPrintIt(BookDatabaseProvider.getAll());
     debugPrintIt(BookDatabaseProvider.getAll().length);
