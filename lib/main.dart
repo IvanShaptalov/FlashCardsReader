@@ -4,7 +4,7 @@ import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/checker.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
-import 'package:flashcards_reader/views/feedback_support/feedback_support_page.dart';
+import 'package:flashcards_reader/views/help_page/help_page.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: Palette.grey800),
           scaffoldBackgroundColor: Palette.grey200,
         ),
-        home: FeedbackSupportPage(),
+        home: HelpPage(),
       ),
     );
   }

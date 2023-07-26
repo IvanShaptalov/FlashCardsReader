@@ -1,4 +1,4 @@
-import 'package:flashcards_reader/views/feedback_support/feedback_support_page.dart';
+import 'package:flashcards_reader/views/help_page/help_page.dart';
 import 'package:flashcards_reader/views/reader/tabs/book_catalog.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
@@ -92,14 +92,14 @@ class SideMenu extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.settings, size: ConfigMenu.iconSize),
             title: const Text('Settings and Help'),
-            onTap: () {},
+            onTap: () {
+              MyRouter.pushPageReplacement(context, HelpPage());
+            },
           ),
           ListTile(
             leading: Icon(Icons.feedback, size: ConfigMenu.iconSize),
             title: const Text('Feedback & Support'),
-            onTap: () {
-              MyRouter.pushPageReplacement(context, FeedbackSupportPage());
-            },
+            onTap: () {},
           ),
         ],
       ),
