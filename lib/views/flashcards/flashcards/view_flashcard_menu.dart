@@ -6,6 +6,7 @@ import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/sharing/extension_dialog.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_process.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/gestures.dart';
@@ -24,10 +25,11 @@ class FlashCardViewBottomSheet {
 
   late FlashCardCollection flashCardCollection;
 
-  showFlashCardViewMenu(BuildContext specialContext) async {
+  showFlashCardViewMenu(BuildContext specialContext,
+      {bool isTutorial = false}) async {
     showModalBottomSheet(
         isScrollControlled: true,
-        shape:  const RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
         context: specialContext,
         builder: (BuildContext context) {
@@ -35,6 +37,7 @@ class FlashCardViewBottomSheet {
             return FlashCardViewWall(
               specialContext,
               flashCardCollection,
+              isTutorial: isTutorial,
             );
           });
         });
@@ -46,8 +49,10 @@ class FlashCardViewWall extends StatefulWidget {
   FlashCardViewWall(
     this.specialContext,
     this.flashCardCollection, {
+    this.isTutorial = false,
     super.key,
   });
+  final bool isTutorial;
   BuildContext specialContext;
 
   FlashCardCollection flashCardCollection;
@@ -57,11 +62,22 @@ class FlashCardViewWall extends StatefulWidget {
 
 class _FlashCardViewWallState extends State<FlashCardViewWall> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      GuideProvider.introController.next();
+
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
           color: Palette.amber50,
-          borderRadius:  const BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25)),
         ),
         height: SizeConfig.getMediaHeight(context, p: 0.85),
@@ -87,7 +103,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
               ],
             ),
           ),
-           Divider(
+          Divider(
             color: Palette.grey,
             thickness: 1,
           ),
@@ -104,13 +120,13 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                     child: SizedBox(
                         width: SizeConfig.getMediaWidth(context, p: 0.99),
                         child: Container(
-                            margin:  const EdgeInsets.symmetric(vertical: 4),
+                            margin: const EdgeInsets.symmetric(vertical: 4),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     color: Palette.grey400, width: 1),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Padding(
-                              padding:  const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -125,7 +141,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Padding(
                                               padding:
-                                                   const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.verified_outlined,
                                                 color: Palette
@@ -174,7 +190,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       ],
                                     ),
                                   ),
-                                   Divider(
+                                  Divider(
                                     color: Palette.grey,
                                     thickness: 1,
                                   ),
@@ -188,7 +204,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Padding(
                                               padding:
-                                                   const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.language,
                                                 color: Palette
@@ -232,7 +248,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Padding(
                                               padding:
-                                                   const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.translate,
                                                 color: Palette
@@ -266,7 +282,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       ],
                                     ),
                                   ),
-                                   Divider(
+                                  Divider(
                                     color: Palette.grey,
                                     thickness: 1,
                                   ),
@@ -280,7 +296,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Padding(
                                               padding:
-                                                   const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.calendar_month_outlined,
                                                 color: Palette
@@ -314,7 +330,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       ],
                                     ),
                                   ),
-                                   Divider(
+                                  Divider(
                                     color: Palette.grey,
                                     thickness: 1,
                                   ),
@@ -328,7 +344,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Padding(
                                               padding:
-                                                   const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.web_stories_outlined,
                                                 color: Palette
@@ -363,7 +379,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       ],
                                     ),
                                   ),
-                                   Divider(
+                                  Divider(
                                     color: Palette.grey,
                                     thickness: 1,
                                   ),
@@ -400,10 +416,9 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           children: [
                                             Icon(
                                               Icons.import_export,
-                                              color: Palette
-                                                  .grey800,
+                                              color: Palette.grey800,
                                             ),
-                                             Text(
+                                            Text(
                                               'Export FlashCards',
                                               style:
                                                   FontConfigs.h2TextStyleBlack,
@@ -413,89 +428,61 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       ),
                                     ),
                                   ),
-                                   Divider(
+                                  Divider(
                                     color: Palette.grey,
                                     thickness: 1,
                                   ),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        if (widget
-                                            .flashCardCollection.isLearned) {
-                                          MyRouter.pushPage(
-                                            context,
-                                            QuizTrainer(
-                                              numberOfFlashCards: widget
-                                                  .flashCardCollection
-                                                  .flashCardSet
-                                                  .length,
-                                              mode: QuizMode.learned,
-                                              fCollection:
-                                                  widget.flashCardCollection,
-                                              fromPage: 'collection',
-                                            ),
-                                          );
-                                        } else if (widget
-                                            .flashCardCollection.isEmpty) {
-                                          OverlayNotificationProvider
-                                              .showOverlayNotification(
-                                                  'This collection is empty',
-                                                  status:
-                                                      NotificationStatus.info);
-                                        } else {
-                                          MyRouter.pushPage(
-                                            context,
-                                            QuizTrainer(
-                                              numberOfFlashCards: widget
-                                                  .flashCardCollection
-                                                  .flashCardSet
-                                                  .length,
-                                              mode: QuizMode.all,
-                                              fCollection:
-                                                  widget.flashCardCollection,
-                                              fromPage: 'collection',
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      child: Container(
-                                        height: SizeConfig.getMediaHeight(
-                                            context,
-                                            p: [
-                                              ScreenDesign.landscape,
-                                              ScreenDesign.landscapeSmall
-                                            ].contains(
-                                                    ScreenIdentifier.indentify(
-                                                        context))
-                                                ? 0.15
-                                                : 0.06),
-                                        width: SizeConfig.getMediaWidth(context,
-                                            p: 0.6),
-                                        decoration: BoxDecoration(
-                                            color: Palette.green200,
-                                            border: Border.all(
-                                                color: Palette.grey, width: 1),
-                                            borderRadius:
-                                                BorderRadius.circular(25)),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.quiz_outlined,
-                                              color: Palette
-                                                  .grey800,
-                                            ),
-                                             Text(
-                                              'Start Quiz',
-                                              style:
-                                                  FontConfigs.h2TextStyleBlack,
-                                            ),
-                                          ],
+                                  GuideProvider.wrapInGuideIfNeeded(
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: GestureDetector(
+                                        onTap: openQuiz,
+                                        child: Container(
+                                          height: SizeConfig.getMediaHeight(
+                                              context,
+                                              p: [
+                                                ScreenDesign.landscape,
+                                                ScreenDesign.landscapeSmall
+                                              ].contains(ScreenIdentifier
+                                                      .indentify(context))
+                                                  ? 0.15
+                                                  : 0.06),
+                                          width: SizeConfig.getMediaWidth(
+                                              context,
+                                              p: 0.6),
+                                          decoration: BoxDecoration(
+                                              color: Palette.green200,
+                                              border: Border.all(
+                                                  color: Palette.grey,
+                                                  width: 1),
+                                              borderRadius:
+                                                  BorderRadius.circular(25)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.quiz_outlined,
+                                                color: Palette.grey800,
+                                              ),
+                                              Text(
+                                                'Start Quiz',
+                                                style: FontConfigs
+                                                    .h2TextStyleBlack,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
+                                    guideText: 'tap to start quiz',
+                                    onHighlightTap: () {
+                                      GuideProvider.introController
+                                          .close()
+                                          .then((value) => openQuiz());
+                                    },
+                                    step: 6,
+                                    toWrap: widget.isTutorial,
                                   ),
                                 ],
                               ),
@@ -516,7 +503,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                           .toList()
                           .reversed)
                         Padding(
-                          padding:  const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Align(
                             alignment: Alignment.center,
                             child: SizedBox(
@@ -533,11 +520,10 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                           : 0.25),
                               child: Container(
                                   margin:
-                                       const EdgeInsets.symmetric(vertical: 4),
+                                      const EdgeInsets.symmetric(vertical: 4),
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: Palette.grey400,
-                                          width: 1),
+                                          color: Palette.grey400, width: 1),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Column(
                                     mainAxisAlignment:
@@ -551,7 +537,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               alignment: Alignment.center,
                                               child: Padding(
                                                 padding:
-                                                     const EdgeInsets.symmetric(
+                                                    const EdgeInsets.symmetric(
                                                         horizontal: 8.0),
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -588,14 +574,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                                       .fc
                                                                       .questionLanguage);
                                                         },
-                                                        icon:  const Icon(Icons
+                                                        icon: const Icon(Icons
                                                             .volume_up_outlined)),
                                                   ],
                                                 ),
                                               )),
                                         ],
                                       ),
-                                       const Divider(
+                                      const Divider(
                                         thickness: 1,
                                         height: 1,
                                       ),
@@ -607,7 +593,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               alignment: Alignment.center,
                                               child: Padding(
                                                 padding:
-                                                     const EdgeInsets.symmetric(
+                                                    const EdgeInsets.symmetric(
                                                         horizontal: 8.0),
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -640,14 +626,14 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                                       .fc
                                                                       .answerLanguage);
                                                         },
-                                                        icon:  const Icon(Icons
+                                                        icon: const Icon(Icons
                                                             .volume_up_outlined)),
                                                   ],
                                                 ),
                                               )),
                                         ],
                                       ),
-                                       const Divider(
+                                      const Divider(
                                         thickness: 1,
                                         height: 1,
                                       ),
@@ -662,14 +648,15 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                               RichText(
                                                 overflow: TextOverflow.ellipsis,
                                                 text: TextSpan(
-                                                  style:  TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 12,
                                                       color: Palette.black),
                                                   children: [
-                                                     WidgetSpan(
+                                                    WidgetSpan(
                                                       child: Padding(
-                                                        padding: const EdgeInsets
-                                                            .symmetric(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
                                                                 horizontal:
                                                                     2.0),
                                                         child: Icon(
@@ -691,7 +678,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                 textAlign: TextAlign.left,
                                                 overflow: TextOverflow.ellipsis,
                                                 text: TextSpan(
-                                                  style:  TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 12,
                                                       color: Palette.grey),
                                                   children: [
@@ -701,7 +688,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                               .middle,
                                                       child: Padding(
                                                           padding:
-                                                               const EdgeInsets
+                                                              const EdgeInsets
                                                                       .symmetric(
                                                                   horizontal:
                                                                       2.0),
@@ -709,13 +696,13 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                                       0 &&
                                                                   flashCard
                                                                       .isLearned
-                                                              ?  Icon(
+                                                              ? Icon(
                                                                   Icons
                                                                       .check_circle,
                                                                   size: 16,
                                                                   color: Palette
                                                                       .green)
-                                                              :  Icon(
+                                                              : Icon(
                                                                   Icons
                                                                       .cancel_outlined,
                                                                   size: 16,
@@ -728,7 +715,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                               .middle,
                                                       child: Padding(
                                                         padding:
-                                                             const EdgeInsets
+                                                            const EdgeInsets
                                                                     .symmetric(
                                                                 horizontal:
                                                                     2.0),
@@ -754,13 +741,12 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                       WidgetSpan(
                                                         child: Padding(
                                                           padding:
-                                                               const EdgeInsets
+                                                              const EdgeInsets
                                                                       .symmetric(
                                                                   horizontal:
                                                                       2.0),
                                                           child: Icon(
-                                                              flashCard
-                                                                      .isLearned
+                                                              flashCard.isLearned
                                                                   ? Icons
                                                                       .check_circle
                                                                   : Icons
@@ -768,7 +754,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                                               size: 16,
                                                               color: flashCard
                                                                       .isLearned
-                                                                  ? Palette.green
+                                                                  ? Palette
+                                                                      .green
                                                                   : Palette
                                                                       .deepPurple),
                                                         ),
@@ -799,5 +786,33 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
             ),
           )),
         ]));
+  }
+
+  void openQuiz() {
+    if (widget.flashCardCollection.isLearned) {
+      MyRouter.pushPage(
+        context,
+        QuizTrainer(
+          numberOfFlashCards: widget.flashCardCollection.flashCardSet.length,
+          mode: QuizMode.learned,
+          fCollection: widget.flashCardCollection,
+          fromPage: 'collection',
+        ),
+      );
+    } else if (widget.flashCardCollection.isEmpty) {
+      OverlayNotificationProvider.showOverlayNotification(
+          'This collection is empty',
+          status: NotificationStatus.info);
+    } else {
+      MyRouter.pushPage(
+        context,
+        QuizTrainer(
+          numberOfFlashCards: widget.flashCardCollection.flashCardSet.length,
+          mode: QuizMode.all,
+          fCollection: widget.flashCardCollection,
+          fromPage: 'collection',
+        ),
+      );
+    }
   }
 }

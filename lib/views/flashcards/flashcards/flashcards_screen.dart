@@ -1,10 +1,12 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/flashcard_merge_provider.dart';
+import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/quick_actions.dart';
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/view_flashcard_menu.dart';
 import 'package:flashcards_reader/views/flashcards/sharing/extension_dialog.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
@@ -217,7 +219,11 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                     return GuideProvider.wrapInGuideIfNeeded(
                       guideText: 'tap on FlashCard',
                       onHighlightTap: () {
-                        
+                        FlashCardProvider.fc = flashCardCollection[index - 1];
+                        FlashCardViewBottomSheet(
+                                creatingFlashC: flashCardCollection[index - 1])
+                            .showFlashCardViewMenu(context,
+                                isTutorial: widget.isTutorial);
                       },
                       step: 5,
                       toWrap: widget.isTutorial,
