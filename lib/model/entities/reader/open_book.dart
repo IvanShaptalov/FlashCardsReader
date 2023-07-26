@@ -208,7 +208,7 @@ class OpenBookState extends ParentState<OpenBook> {
                               child: GuideProvider.wrapInGuideIfNeeded(
                                 step: 2,
                                 // only first card
-                                toWrap: index == 0,
+                                toWrap: index == 0 && widget.isTutorial,
                                 guideText:
                                     'Select flashCard to save words from book',
                                 onHighlightTap: () {
@@ -232,10 +232,11 @@ class OpenBookState extends ParentState<OpenBook> {
               ),
               GuideProvider.wrapInGuideIfNeeded(
                 step: 3,
-                toWrap: true,
+                toWrap: widget.isTutorial,
                 guideText: 'Open book',
                 onHighlightTap: () {
                   GuideProvider.introController.close();
+
                   if (collection != null &&
                       widget.book.flashCardId != null &&
                       collection!
@@ -250,6 +251,7 @@ class OpenBookState extends ParentState<OpenBook> {
                           context,
                           TextBookProvider(
                             book: widget.book,
+                            isTutorial: true,
                           ));
 
                       break;

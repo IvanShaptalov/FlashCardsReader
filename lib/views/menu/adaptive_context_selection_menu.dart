@@ -3,6 +3,7 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -94,6 +95,13 @@ class _BaseNewWordWrapperState extends State<BaseNewWordWrapper> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    GuideProvider.startStep(context, callback, 4);
+  }
+
+  @override
   Widget build(BuildContext context) {
     BaseNewWordWidgetService.wordFormController
         .setUp(WordCreatingUIProvider.tmpFlashCard);
@@ -105,6 +113,7 @@ class _BaseNewWordWrapperState extends State<BaseNewWordWrapper> {
     return BaseNewWordWidgetService.addWordMenu(
       context: context,
       callback: callback,
+      
     );
   }
 }

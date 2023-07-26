@@ -140,7 +140,7 @@ class BookCatalogState extends State<BookCatalog> {
                   guideText: 'Click on book',
                   step: 1,
                   // if element is first - wrap
-                  toWrap: index == 0,
+                  toWrap: index == 0 && widget.isTutorial,
                   child: Container(
                       height: ScreenIdentifier.isNormal(context)
                           ? SizeConfig.getMediaHeight(context, p: 0.21)

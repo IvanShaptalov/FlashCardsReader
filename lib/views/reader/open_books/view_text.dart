@@ -15,8 +15,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class TextBookProvider extends StatefulWidget {
-  const TextBookProvider({super.key, required this.book});
+  const TextBookProvider(
+      {super.key, required this.book, this.isTutorial = false});
   final BookModel book;
+  final bool isTutorial;
 
   @override
   State<TextBookProvider> createState() => _TextBookProviderState();
@@ -29,7 +31,10 @@ class _TextBookProviderState extends State<TextBookProvider> {
       create: (_) => FlashCardBloc(),
       child: BlocProvider(
         create: (_) => TranslatorBloc(),
-        child: ViewTextBook(book: widget.book),
+        child: ViewTextBook(
+          book: widget.book,
+          isTutorial: widget.isTutorial,
+        ),
       ),
     );
   }
@@ -37,9 +42,11 @@ class _TextBookProviderState extends State<TextBookProvider> {
 
 // ignore: must_be_immutable
 class ViewTextBook extends ParentStatefulWidget {
-  ViewTextBook({super.key, required this.book});
+  ViewTextBook({super.key, required this.book, required this.isTutorial});
   final BookModel book;
   static bool showBar = false;
+  final bool isTutorial;
+  static bool textLoaded = false;
 
   @override
   ViewTextState createState() => ViewTextState();
@@ -70,6 +77,7 @@ class ViewTextState extends ParentState<ViewTextBook> {
   @override
   Widget build(BuildContext context) {
     Future<String> textFuture = widget.book.getAllTextAsync();
+
     debugPrintIt(
         'title of selected flashcard : ======================${FlashCardProvider.fc.title}');
     bindPage(Scaffold(
@@ -126,7 +134,12 @@ class ViewTextState extends ParentState<ViewTextBook> {
                   child: FutureBuilder(
                     builder: (context, snapshot) {
                       if (snapshot.hasData && snapshot.data != null) {
-                        return Text(snapshot.data!);
+                        // start from 4 step
+                        ViewTextBook.textLoaded = true;
+                        return widget.isTutorial
+                            ? Text(
+                                "\n\n\nSELECT TEXT AND TAP TRANSLATE BUTTON \n\n\n${snapshot.data!}")
+                            : Text(snapshot.data!);
                       } else {
                         return Center(
                           child: SpinKitWave(
@@ -140,6 +153,7 @@ class ViewTextState extends ParentState<ViewTextBook> {
                 ),
               )),
         ])));
+
     return super.build(context);
   }
 }
