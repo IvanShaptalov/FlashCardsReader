@@ -6,6 +6,7 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_pdf.dart';
@@ -233,12 +234,13 @@ class OpenBookState extends ParentState<OpenBook> {
                               scale: 0.9,
                               child: GuideProvider.wrapInGuideIfNeeded(
                                 step: 2,
-                                toWrap: true,
+                                // only first card
+                                toWrap: index == 0,
                                 guideText:
                                     'Select flashCard to save words from book',
                                 context: context,
                                 onHighlightTap: () {
-                                  Intro.of(context).controller.close();
+                                  Intro.of(context).controller.jumpTo(3);
                                 },
                                 child: FastAddWordFCcWidget(
                                   collection!.isEmpty
@@ -256,15 +258,13 @@ class OpenBookState extends ParentState<OpenBook> {
                   ),
                 ),
               ),
-              ElevatedButton(
-                style: ButtonStyle(
-                    padding:
-                        MaterialStateProperty.all(const EdgeInsets.all(25)),
-                    backgroundColor: MaterialStateProperty.all(Palette.amber50),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)))),
-                onPressed: () {
-                  // check that flashcard selected
+              GuideProvider.wrapInGuideIfNeeded(
+                step: 3,
+                toWrap: true,
+                guideText: 'Open book',
+                context: context,
+                onHighlightTap: () {
+                  Intro.of(context).controller.close();
                   if (collection != null &&
                       widget.book.flashCardId != null &&
                       collection!
@@ -275,21 +275,17 @@ class OpenBookState extends ParentState<OpenBook> {
                   switch (widget.book.file.extension) {
                     case '.txt':
                       // check that collection has selected flashCard
-
-                      Navigator.push(
+                      MyRouter.pushPageReplacement(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => TextBookProvider(
-                                    book: widget.book,
-                                  )));
+                          TextBookProvider(
+                            book: widget.book,
+                          ));
 
                       break;
                     case '.pdf':
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewPDF(
-                                  widget.book.title, widget.book.path)));
+                      MyRouter.pushPageReplacement(context,
+                          ViewPDF(widget.book.title, widget.book.path));
+
                       break;
                     case '.epub':
                       break;
@@ -298,7 +294,47 @@ class OpenBookState extends ParentState<OpenBook> {
                     default:
                   }
                 },
-                child: Text("Read Book", style: FontConfigs.h1TextStyle),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.all(25)),
+                      backgroundColor:
+                          MaterialStateProperty.all(Palette.amber50),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)))),
+                  onPressed: () {
+                    // check that flashcard selected
+                    if (collection != null &&
+                        widget.book.flashCardId != null &&
+                        collection!
+                            .map((e) => e.id)
+                            .contains(widget.book.flashCardId)) {
+                      widget.book.flashCardId = FlashCardProvider.fc.id;
+                    }
+                    switch (widget.book.file.extension) {
+                      case '.txt':
+                        // check that collection has selected flashCard
+                        MyRouter.pushPageReplacement(
+                            context,
+                            TextBookProvider(
+                              book: widget.book,
+                            ));
+
+                        break;
+                      case '.pdf':
+                        MyRouter.pushPageReplacement(context,
+                            ViewPDF(widget.book.title, widget.book.path));
+
+                        break;
+                      case '.epub':
+                        break;
+                      case '.fb2':
+                        break;
+                      default:
+                    }
+                  },
+                  child: Text("Read Book", style: FontConfigs.h1TextStyle),
+                ),
               )
             ],
           ),
