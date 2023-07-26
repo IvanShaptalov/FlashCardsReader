@@ -6,6 +6,7 @@ import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/help_page/help_page.dart';
 import 'package:flutter/material.dart';
+import 'package:intro/intro.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 import 'database/core/core.dart';
@@ -13,7 +14,7 @@ import 'database/core/core.dart';
 Future<bool> initAsync() async {
   bool ioInit = await LocalManager.initAsync();
   bool dbInit = await DataBase.initAsync();
-  
+
   BookScanner.init();
   debugPrint('db inited: $dbInit');
 
@@ -41,16 +42,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OverlaySupport(
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-          // ignore: deprecated_member_use
-          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
-          iconTheme: IconThemeData(color: Palette.grey800),
-          scaffoldBackgroundColor: Palette.grey200,
+      child: Intro(
+        controller: IntroController(stepCount: 3),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.green,
+            // ignore: deprecated_member_use
+            androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
+            iconTheme: IconThemeData(color: Palette.grey800),
+            scaffoldBackgroundColor: Palette.grey200,
+          ),
+          home: HelpPage(),
         ),
-        home: HelpPage(),
       ),
     );
   }

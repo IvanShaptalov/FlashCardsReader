@@ -6,6 +6,7 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_pdf.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:intro/intro.dart';
 
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -22,8 +24,13 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class OpenBook extends ParentStatefulWidget {
   final BookModel book;
   final BuildContext upperContext;
+  final bool isTutorial;
 
-  OpenBook({required this.book, super.key, required this.upperContext});
+  OpenBook(
+      {required this.book,
+      super.key,
+      required this.upperContext,
+      this.isTutorial = false});
 
   @override
   OpenBookState createState() => OpenBookState();
@@ -34,6 +41,8 @@ class OpenBookState extends ParentState<OpenBook> {
   void callback() {
     setState(() {});
   }
+
+  PanelController panelController = PanelController();
 
   @override
   void initState() {
@@ -53,6 +62,28 @@ class OpenBookState extends ParentState<OpenBook> {
     }
 
     super.initState();
+
+    if (widget.isTutorial) {
+      debugPrintIt('start tutorial step 2');
+
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        panelController.open().then(
+          (value) {
+            GuideProvider.startStep(context, updateCallback, 2);
+          },
+        );
+        setState(() {});
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void updateCallback() {
+    setState(() {});
   }
 
   @override
@@ -150,6 +181,7 @@ class OpenBookState extends ParentState<OpenBook> {
           ),
         ),
         SlidingUpPanel(
+          controller: panelController,
           color: Palette.green300Primary,
           minHeight: 80,
           backdropEnabled: true,
@@ -169,7 +201,7 @@ class OpenBookState extends ParentState<OpenBook> {
                       decoration: BoxDecoration(
                           color: Palette.grey,
                           borderRadius: BorderRadius.circular(15)),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -199,14 +231,24 @@ class OpenBookState extends ParentState<OpenBook> {
                             duration: const Duration(milliseconds: 400),
                             child: Transform.scale(
                               scale: 0.9,
-                              child: FastAddWordFCcWidget(
-                                collection!.isEmpty
-                                    ? FlashCardProvider.fc
-                                    : collection![index],
-                                callback,
-                                design: ScreenIdentifier.indentify(context),
-                                book: widget.book,
-                                bookContext: widget.upperContext,
+                              child: GuideProvider.wrapInGuideIfNeeded(
+                                step: 2,
+                                toWrap: true,
+                                guideText:
+                                    'Select flashCard to save words from book',
+                                context: context,
+                                onHighlightTap: () {
+                                  Intro.of(context).controller.close();
+                                },
+                                child: FastAddWordFCcWidget(
+                                  collection!.isEmpty
+                                      ? FlashCardProvider.fc
+                                      : collection![index],
+                                  callback,
+                                  design: ScreenIdentifier.indentify(context),
+                                  book: widget.book,
+                                  bookContext: widget.upperContext,
+                                ),
                               ),
                             ),
                           );

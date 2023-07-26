@@ -5,9 +5,11 @@ import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/model/entities/reader/open_book.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intro/intro.dart';
 
 enum DotsMenu { share, trash, edit }
 
@@ -85,28 +87,38 @@ class BookCatalogState extends State<BookCatalog> {
 
         if (widget.isTutorial && data is List<BookModel>) {
           debugPrintIt('is tutorial, added book');
-          if (!data!.contains(BookModel.asset())) {
-            data!.insert(0, BookModel.asset());
-          }
+          data!.remove(BookModel.asset());
+          data!.insert(0, BookModel.asset());
         }
     }
+  }
+
+  void updateCallback() {
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
     fetchData();
+    // start tutorial if it is
+    if (widget.isTutorial) {
+      GuideProvider.startStep(context, updateCallback, 1);
+    }
   }
 
-  void openBook(BookModel book) {
+  void openBook(BookModel book, {bool isTutorial = false}) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => OpenBook(
                   book: book,
                   upperContext: widget.upperContext,
+                  isTutorial: isTutorial,
                 )));
   }
+
+  /// Wraps widget in guide
 
   @override
   Widget build(BuildContext context) {
@@ -119,190 +131,211 @@ class BookCatalogState extends State<BookCatalog> {
               itemCount: data?.length,
               itemBuilder: (BuildContext context, int index) {
                 final book = data![index];
-                return Container(
-                    height: ScreenIdentifier.isNormal(context)
-                        ? SizeConfig.getMediaHeight(context, p: 0.21)
-                        : 160,
-                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Palette.white),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            openBook(book);
-                          },
-                          child: Hero(
-                            tag: book.id(),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height,
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              decoration: BoxDecoration(
-                                  image: book.coverPath.isNotEmpty &&
-                                          File(book.coverPath).existsSync()
-                                      ? DecorationImage(
-                                          image:
-                                              FileImage(File(book.coverPath)),
-                                          fit: BoxFit.fill,
-                                        )
-                                      : DecorationImage(
-                                          image: AssetImage(book ==
-                                                  BookModel.asset()
-                                              ? 'assets/book/quotes_skin.png'
-                                              : 'assets/images/empty.png'),
-                                          fit: BoxFit.fill),
-                                  borderRadius: BorderRadius.circular(5)),
+                return GuideProvider.wrapInGuideIfNeeded(
+                  context: context,
+                  onHighlightTap: () {
+                    openBook(book, isTutorial: true);
+                    Intro.of(context).controller.close();
+                  },
+                  guideText: 'Click on book',
+                  step: 1,
+                  // if element is first - wrap
+                  toWrap: index == 0,
+                  child: Container(
+                      height: ScreenIdentifier.isNormal(context)
+                          ? SizeConfig.getMediaHeight(context, p: 0.21)
+                          : 160,
+                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Palette.white),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              openBook(book);
+                            },
+                            child: Hero(
+                              tag: book.id(),
+                              child: Container(
+                                height: MediaQuery.of(context).size.height,
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                margin:
+                                    const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                decoration: BoxDecoration(
+                                    image: book.coverPath.isNotEmpty &&
+                                            File(book.coverPath).existsSync()
+                                        ? DecorationImage(
+                                            image:
+                                                FileImage(File(book.coverPath)),
+                                            fit: BoxFit.fill,
+                                          )
+                                        : DecorationImage(
+                                            image: AssetImage(book ==
+                                                    BookModel.asset()
+                                                ? 'assets/book/quotes_skin.png'
+                                                : 'assets/images/empty.png'),
+                                            fit: BoxFit.fill),
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            openBook(book);
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                color: Palette.white,
-                                width: MediaQuery.of(context).size.width * 0.65,
-                                margin: const EdgeInsets.fromLTRB(0, 10, 10, 5),
-                                child: Text(
-                                  book.title,
-                                  style: const TextStyle(
-                                    fontSize: 15.5,
+                          GestureDetector(
+                            onTap: () {
+                              openBook(book);
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Container(
+                                  color: Palette.white,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.65,
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 10, 10, 5),
+                                  child: Text(
+                                    book.title,
+                                    style: const TextStyle(
+                                      fontSize: 15.5,
+                                    ),
+                                    maxLines: 2,
                                   ),
-                                  maxLines: 2,
                                 ),
-                              ),
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.06,
-                                width: MediaQuery.of(context).size.width * 0.67,
-                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                child: Text(
-                                  book.author,
-                                  style: const TextStyle(fontSize: 12),
+                                Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.06,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.67,
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                  child: Text(
+                                    book.author,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width:
-                                    SizeConfig.getMediaWidth(context, p: 0.67),
-                                child: !book.status.inTrash
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          GestureDetector(
-                                            child: Icon(
-                                              Icons.star_outline,
-                                              color: book.status.favourite
-                                                  ? Palette.green
-                                                  : null,
-                                            ),
-                                            onTap: () {
-                                              BlocProvider.of<BookBloc>(context)
-                                                  .add(UpdateBookEvent(
-                                                      bookModel: book
-                                                        ..status.favourite =
-                                                            !book.status
-                                                                .favourite));
-                                            },
-                                          ),
-                                          GestureDetector(
-                                            child: Icon(
-                                              Icons.history,
-                                              color: book.status.toRead
-                                                  ? Palette.green
-                                                  : null,
-                                            ),
-                                            onTap: () {
-                                              BlocProvider.of<BookBloc>(context)
-                                                  .add(UpdateBookEvent(
-                                                      bookModel: book
-                                                        ..status.toRead = !book
-                                                            .status.toRead));
-                                            },
-                                          ),
-                                          GestureDetector(
-                                            child: Icon(
-                                              Icons.library_add_check_outlined,
-                                              color: book.status.haveRead
-                                                  ? Palette.green
-                                                  : null,
-                                            ),
-                                            onTap: () {
-                                              context.read<BookBloc>().add(
-                                                  UpdateBookEvent(
-                                                      bookModel: book
-                                                        ..status.haveRead =
-                                                            !book.status
-                                                                .haveRead));
-                                            },
-                                          ),
-                                          PopupMenuButton<DotsMenu>(
-                                            initialValue: selectedMenu,
-                                            // Callback that sets the selected popup menu item.
-                                            onSelected: (DotsMenu item) {
-                                              debugPrintIt(item.toString());
-                                              switch (item) {
-                                                case DotsMenu.trash:
-                                                  BlocProvider.of<BookBloc>(
-                                                          context)
-                                                      .add(UpdateBookEvent(
-                                                          bookModel: book
-                                                            ..status.inTrash =
-                                                                true));
-                                                  break;
-                                                default:
-                                              }
-                                            },
-                                            itemBuilder:
-                                                (BuildContext context) =>
-                                                    <PopupMenuEntry<DotsMenu>>[
-                                              const PopupMenuItem<DotsMenu>(
-                                                value: DotsMenu.share,
-                                                child: Text('Share file'),
+                                SizedBox(
+                                  width: SizeConfig.getMediaWidth(context,
+                                      p: 0.67),
+                                  child: !book.status.inTrash
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            GestureDetector(
+                                              child: Icon(
+                                                Icons.star_outline,
+                                                color: book.status.favourite
+                                                    ? Palette.green
+                                                    : null,
                                               ),
-                                              const PopupMenuItem<DotsMenu>(
-                                                value: DotsMenu.trash,
-                                                child: Text('Move to trash'),
-                                              ),
-                                              const PopupMenuItem<DotsMenu>(
-                                                value: DotsMenu.edit,
-                                                child: Text('Edit'),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          const SizedBox.shrink(),
-                                          const SizedBox.shrink(),
-                                          GestureDetector(
-                                            child: const Icon(
-                                              Icons.restore_from_trash,
+                                              onTap: () {
+                                                BlocProvider.of<BookBloc>(
+                                                        context)
+                                                    .add(UpdateBookEvent(
+                                                        bookModel: book
+                                                          ..status.favourite =
+                                                              !book.status
+                                                                  .favourite));
+                                              },
                                             ),
-                                            onTap: () {
-                                              BlocProvider.of<BookBloc>(context)
-                                                  .add(UpdateBookEvent(
-                                                      bookModel: book
-                                                        ..status.inTrash =
-                                                            false));
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ));
+                                            GestureDetector(
+                                              child: Icon(
+                                                Icons.history,
+                                                color: book.status.toRead
+                                                    ? Palette.green
+                                                    : null,
+                                              ),
+                                              onTap: () {
+                                                BlocProvider.of<BookBloc>(
+                                                        context)
+                                                    .add(UpdateBookEvent(
+                                                        bookModel: book
+                                                          ..status.toRead =
+                                                              !book.status
+                                                                  .toRead));
+                                              },
+                                            ),
+                                            GestureDetector(
+                                              child: Icon(
+                                                Icons
+                                                    .library_add_check_outlined,
+                                                color: book.status.haveRead
+                                                    ? Palette.green
+                                                    : null,
+                                              ),
+                                              onTap: () {
+                                                context.read<BookBloc>().add(
+                                                    UpdateBookEvent(
+                                                        bookModel: book
+                                                          ..status.haveRead =
+                                                              !book.status
+                                                                  .haveRead));
+                                              },
+                                            ),
+                                            PopupMenuButton<DotsMenu>(
+                                              initialValue: selectedMenu,
+                                              // Callback that sets the selected popup menu item.
+                                              onSelected: (DotsMenu item) {
+                                                debugPrintIt(item.toString());
+                                                switch (item) {
+                                                  case DotsMenu.trash:
+                                                    BlocProvider.of<BookBloc>(
+                                                            context)
+                                                        .add(UpdateBookEvent(
+                                                            bookModel: book
+                                                              ..status.inTrash =
+                                                                  true));
+                                                    break;
+                                                  default:
+                                                }
+                                              },
+                                              itemBuilder: (BuildContext
+                                                      context) =>
+                                                  <PopupMenuEntry<DotsMenu>>[
+                                                const PopupMenuItem<DotsMenu>(
+                                                  value: DotsMenu.share,
+                                                  child: Text('Share file'),
+                                                ),
+                                                const PopupMenuItem<DotsMenu>(
+                                                  value: DotsMenu.trash,
+                                                  child: Text('Move to trash'),
+                                                ),
+                                                const PopupMenuItem<DotsMenu>(
+                                                  value: DotsMenu.edit,
+                                                  child: Text('Edit'),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        )
+                                      : Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            const SizedBox.shrink(),
+                                            const SizedBox.shrink(),
+                                            GestureDetector(
+                                              child: const Icon(
+                                                Icons.restore_from_trash,
+                                              ),
+                                              onTap: () {
+                                                BlocProvider.of<BookBloc>(
+                                                        context)
+                                                    .add(UpdateBookEvent(
+                                                        bookModel: book
+                                                          ..status.inTrash =
+                                                              false));
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      )),
+                );
               },
             )
           : Center(

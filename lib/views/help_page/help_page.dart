@@ -107,7 +107,7 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
                             isTutorial: true,
                           ));
                     },
-                    child: const Text('To Books'),
+                    child: const Text('TO BOOKS'),
                   ),
             if (details.stepIndex != 0)
               TextButton(
@@ -154,86 +154,87 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
             alignment: Alignment.centerLeft,
             child: Column(
               children: [
-                const Divider(),
-                SizedBox(
-                  height: lineHeight,
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: ValueListenableBuilder(
-                          valueListenable:
-                              BookScanner.manageExternalStoragePermission,
-                          builder: (BuildContext context, bool isGranted,
-                              Widget? child) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '${!isGranted ? "Tap to grant \n'Read Storage' " : "'Read Storage' granted"} ',
-                                  style: FontConfigs.h2TextStyleBlack,
-                                ),
-                                isGranted
-                                    ? IconButton(
-                                        icon: Icon(Icons.check,
-                                            color: Palette.green300Primary),
-                                        onPressed: () {
-                                          OverlayNotificationProvider
-                                              .showOverlayNotification(
-                                                  'permission already granted');
-                                        })
-                                    : IconButton(
-                                        icon: Icon(Icons.ads_click,
-                                            color: Palette.deepPurple),
-                                        onPressed: () async {
-                                          await BookScanner.getFilePermission();
-                                          setState(() {});
-                                        },
-                                      )
-                              ],
-                            );
-                          })),
-                ),
-                const Divider(),
-                SizedBox(
-                  height: lineHeight,
-                  child: ValueListenableBuilder(
-                      valueListenable:
-                          BookScanner.manageExternalStoragePermission,
-                      builder: (BuildContext context, bool isGranted,
-                          Widget? child) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                isGranted
-                                    ? 'scan now to find books'
-                                    : 'grant permission to scan',
-                                style: FontConfigs.h1TextStyle,
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: ValueListenableBuilder(
+                        valueListenable:
+                            BookScanner.manageExternalStoragePermission,
+                        builder: (BuildContext context, bool isGranted,
+                            Widget? child) {
+                          return GestureDetector(
+                            onTap: isGranted
+                                ? () {
+                                    OverlayNotificationProvider
+                                        .showOverlayNotification(
+                                            'permission already granted');
+                                  }
+                                : () async {
+                                    await BookScanner.getFilePermission();
+                                    setState(() {});
+                                  },
+                            child: SizedBox(
+                              height: lineHeight,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${!isGranted ? "tap to grant \n'Read Storage' " : "granted: 'Read Storage'"} ',
+                                    style: FontConfigs.h2TextStyleBlack,
+                                  ),
+                                  isGranted
+                                      ? Icon(Icons.check,
+                                          color: Palette.green300Primary)
+                                      : Icon(Icons.ads_click,
+                                          color: Palette.deepPurple)
+                                ],
                               ),
                             ),
-                            isGranted
-                                ? IconButton(
-                                    onPressed: () {
-                                      BookScanner.scan();
-                                    },
-                                    icon: const Icon(
+                          );
+                        })),
+                const Divider(),
+                ValueListenableBuilder(
+                    valueListenable:
+                        BookScanner.manageExternalStoragePermission,
+                    builder:
+                        (BuildContext context, bool isGranted, Widget? child) {
+                      return SizedBox(
+                        height: lineHeight,
+                        child: GestureDetector(
+                          onTap: isGranted
+                              ? () {
+                                  BookScanner.scan();
+                                }
+                              : () {
+                                  OverlayNotificationProvider
+                                      .showOverlayNotification(
+                                          'grant permission to scan');
+                                },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  isGranted
+                                      ? 'tap to find books'
+                                      : 'grant permission',
+                                  style: FontConfigs.h2TextStyleBlack,
+                                ),
+                              ),
+                              isGranted
+                                  ? const Icon(
                                       Icons.find_replace_outlined,
-                                    ))
-                                : IconButton(
-                                    onPressed: () {
-                                      OverlayNotificationProvider
-                                          .showOverlayNotification(
-                                              'grant permission to scan');
-                                    },
-                                    icon: Icon(
+                                    )
+                                  : Icon(
                                       Icons.warning,
                                       color: Palette.teal,
-                                    )),
-                          ],
-                        );
-                      }),
-                ),
+                                    ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
                 SizedBox(
                   height: ScreenIdentifier.isPortrait(context)
                       ? lineHeight / 2
@@ -277,6 +278,7 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
                             });
                       }),
                 ),
+                const Divider(),
               ],
             ),
           ),
