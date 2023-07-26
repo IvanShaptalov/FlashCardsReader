@@ -171,13 +171,13 @@ Widget loadEndQuiz(BuildContext context, String fromPage) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Icon(Icons.arrow_downward_rounded,
+                     Icon(Icons.arrow_downward_rounded,
                         color: Palette.white),
                     Text(
                       'Quiz Finished',
                       style: FontConfigs.backFromQuizTextStyle,
                     ),
-                    const Icon(Icons.arrow_downward_rounded,
+                    Icon(Icons.arrow_downward_rounded,
                         color: Palette.white)
                   ],
                 ),

@@ -33,5 +33,5 @@ class Palette {
   static Color black = Colors.black;
   static Color transparent = Colors.transparent;
 
-  static const Color white = Color(0xFFF0F2F5);
+  static Color white = Colors.white;
 }

@@ -94,7 +94,6 @@ class BookScanner {
       for (int i = 0; i < 50; i++) {
         scanPercent.value += scanStep / 50;
         await Future.delayed(const Duration(milliseconds: 1));
-        scanPercent.value += 0.001;
       }
     } else {
       scanPercent.value += scanStep;
@@ -109,6 +108,10 @@ class BookScanner {
       await Future.delayed(const Duration(milliseconds: 1));
     }
     scanPercent.value = 0;
+  }
+
+  static Future<void> setTo100() async {
+    scanPercent.value = 1;
   }
 
   static Future<int> bindBooks(List<FileSystemEntity> files) async {
@@ -174,6 +177,8 @@ class BookScanner {
         counter++;
       }
     }
+
+    await Future.delayed(Duration(seconds: 1));
     await regressScan();
     debugPrintIt('================book models');
     debugPrintIt(BookDatabaseProvider.getAll());

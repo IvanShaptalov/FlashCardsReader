@@ -158,8 +158,8 @@ class _MyHomePageState extends ParentState<FeedbackSupportPageView> {
                             Widget? child) {
                           return LiquidLinearProgressIndicator(
                             value: percent, // Defaults to 0.5.
-                            valueColor: AlwaysStoppedAnimation(Palette
-                                .blueAccent), // Defaults to the current Theme's accentColor.
+                            valueColor: AlwaysStoppedAnimation(isGranted? Palette
+                                .blueAccent: Palette.blueGrey), // Defaults to the current Theme's accentColor.
                             backgroundColor: Colors
                                 .white, // Defaults to the current Theme's backgroundColor.
                             borderColor: Palette.green200,
@@ -168,7 +168,7 @@ class _MyHomePageState extends ParentState<FeedbackSupportPageView> {
                             direction: Axis
                                 .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
                             center: Text(
-                              isGranted && percent > 0 ? "Loading ..." : "",
+                              isGranted && percent > 0 ? "Scanning" : "",
                               style: FontConfigs.h3TextStyle
                                   .copyWith(color: Palette.white),
                             ),

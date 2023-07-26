@@ -123,7 +123,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
   AppBar getAppBar(flashCardCollection) {
     if (FlashCardCollectionProvider.isMergeModeStarted) {
       return AppBar(
-        title: const Text(
+        title: Text(
           'Merge mode is on',
           style: FontConfigs.pageNameTextStyle,
         ),

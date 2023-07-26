@@ -77,7 +77,7 @@ class ReadingHomePageState extends ParentState<ReadingHomePageView> {
       ];
       var appbar = AppBar(
         elevation: 0,
-        title: const Text(
+        title: Text(
           BookCatalog.booksTitle,
           style: FontConfigs.pageNameTextStyle,
         ),

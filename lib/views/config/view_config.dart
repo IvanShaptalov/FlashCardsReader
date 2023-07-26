@@ -29,7 +29,7 @@ class ViewConfig {
 }
 
 class FontConfigs {
-  static const TextStyle pageNameTextStyle = TextStyle(
+  static TextStyle pageNameTextStyle = TextStyle(
       color: Palette.white,
       fontSize: 24,
       fontWeight: FontWeight.bold,
@@ -55,7 +55,7 @@ class FontConfigs {
       TextStyle(fontSize: 22, color: Palette.black);
   static TextStyle cardQuestionTextStyle =
       TextStyle(fontSize: 22, color: Palette.black);
-  static TextStyle backFromQuizTextStyle = const TextStyle(
+  static TextStyle backFromQuizTextStyle = TextStyle(
       fontSize: 16, fontWeight: FontWeight.bold, color: Palette.white);
 
   static TextStyle quizSummaryTextStyle = TextStyle(

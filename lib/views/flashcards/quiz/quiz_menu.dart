@@ -84,7 +84,7 @@ class _QuizMenuViewState extends ParentState<QuizMenuView> {
 
   AppBar getAppBar() {
     return AppBar(
-      title: const Text(
+      title:  Text(
         'Take a quiz',
         style: FontConfigs.pageNameTextStyle,
       ),

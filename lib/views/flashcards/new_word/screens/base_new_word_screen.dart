@@ -53,7 +53,7 @@ class BaseScreenNewWord {
 
   AppBar getAppBar(flashCardCollection) {
     return AppBar(
-      title: const Text(
+      title:  Text(
         'Add word',
         style: FontConfigs.pageNameTextStyle,
       ),

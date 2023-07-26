@@ -120,7 +120,7 @@ class OpenBookState extends ParentState<OpenBook> {
                 child: Text(
                   widget.book.title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style:  TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.bold,
                       color: Palette.white),
@@ -132,7 +132,7 @@ class OpenBookState extends ParentState<OpenBook> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                child: const Text(
+                child: Text(
                   'book',
                   textAlign: TextAlign.center,
                   style: TextStyle(
