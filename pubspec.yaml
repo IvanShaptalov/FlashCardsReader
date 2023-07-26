@@ -74,4 +74,5 @@ flutter:
     - assets/images/add_circle.png
     - assets/images/quiz.png
     - assets/images/empty.png
-    - assets/
+    - assets/book/quotes_skin.png
+    - assets/book/quotes.txt

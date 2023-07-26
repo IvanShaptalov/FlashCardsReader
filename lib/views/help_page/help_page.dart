@@ -1,9 +1,12 @@
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_scanner.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
+import 'package:flashcards_reader/views/reader/screens/reading_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
@@ -19,8 +22,7 @@ class HelpPage extends ParentStatefulWidget {
 class _FeedbackSupportPageState extends ParentState<HelpPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (_) => BookBloc(), child: HelpPageView());
+    return BlocProvider(create: (_) => BookBloc(), child: HelpPageView());
   }
 }
 
@@ -45,9 +47,8 @@ class _MyHomePageState extends ParentState<HelpPageView> {
   Widget build(BuildContext context, {Widget? page}) {
     /// ===============================================[Create page]===============================
     var appBar = AppBar(
-      title: const Text('Help'),
+      title: const Text('Settings and help'),
     );
-    double lineHeight = SizeConfig.getMediaHeight(context, p: 0.1);
     appBarHeight = appBar.preferredSize.height;
     bindPage(Scaffold(
       appBar: appBar,
@@ -57,18 +58,102 @@ class _MyHomePageState extends ParentState<HelpPageView> {
         child: SizedBox(
           height: SizeConfig.getMediaHeight(context),
           child: SingleChildScrollView(
+              child: Column(
+            children: [
+              AppIntroduceStepper(),
+            ],
+          )),
+        ),
+      )),
+      drawer: SideMenu(appBarHeight),
+    ));
+
+    /// ===============================================[Select design via context]===============================
+
+    return super.build(context);
+  }
+}
+
+// ignore: must_be_immutable
+class AppIntroduceStepper extends ParentStatefulWidget {
+  AppIntroduceStepper({super.key});
+
+  @override
+  ParentState<AppIntroduceStepper> createState() => _AppIntroduceStepperState();
+}
+
+class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
+  int _index = 0;
+  final int _stepCount = 3;
+  static ValueNotifier<int> oldBooksCount = ValueNotifier(0);
+
+  @override
+  Widget build(BuildContext context) {
+    double lineHeight = SizeConfig.getMediaHeight(context, p: 0.1);
+    return Stepper(
+      controlsBuilder: (context, details) {
+        return Row(
+          children: <Widget>[
+            details.stepIndex != _stepCount
+                ? TextButton(
+                    onPressed: details.onStepContinue,
+                    child: const Text('NEXT'),
+                  )
+                : TextButton(
+                    onPressed: () {
+                      MyRouter.pushPageReplacement(
+                          context,
+                          const ReadingHomePage(
+                            isTutorial: true,
+                          ));
+                    },
+                    child: const Text('To Books'),
+                  ),
+            if (details.stepIndex != 0)
+              TextButton(
+                onPressed: details.onStepCancel,
+                child: const Text('BACK'),
+              ),
+          ],
+        );
+      },
+      currentStep: _index,
+      onStepCancel: () {
+        if (_index > 0) {
+          setState(() {
+            _index -= 1;
+          });
+        }
+      },
+      onStepContinue: () {
+        if (_index < _stepCount) {
+          setState(() {
+            _index += 1;
+          });
+        }
+      },
+      onStepTapped: (int index) {
+        setState(() {
+          _index = index;
+        });
+      },
+      steps: <Step>[
+        const Step(
+          title: Text('Step 2 image'),
+          content: Text('Content for Step 2'),
+        ),
+        const Step(
+          title: Text('Step scanning'),
+          content: Text('Content for Step 2'),
+        ),
+
+        /// =========================================================[STEP 3 - scanning]
+        Step(
+          title: const Text('Scanning'),
+          content: Container(
+            alignment: Alignment.centerLeft,
             child: Column(
               children: [
-                SizedBox(
-                  height: lineHeight,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Books found: ${BlocProvider.of<BookBloc>(context).state.books.length}',
-                      style: FontConfigs.h2TextStyleBlack,
-                    ),
-                  ),
-                ),
                 const Divider(),
                 SizedBox(
                   height: lineHeight,
@@ -83,7 +168,7 @@ class _MyHomePageState extends ParentState<HelpPageView> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '${!isGranted ? "Tap to grant \n'Read Storage' permission" : "'Read Storage' permission granted"} ',
+                                  '${!isGranted ? "Tap to grant \n'Read Storage' " : "'Read Storage' granted"} ',
                                   style: FontConfigs.h2TextStyleBlack,
                                 ),
                                 isGranted
@@ -94,7 +179,6 @@ class _MyHomePageState extends ParentState<HelpPageView> {
                                           OverlayNotificationProvider
                                               .showOverlayNotification(
                                                   'permission already granted');
-                                          setState(() {});
                                         })
                                     : IconButton(
                                         icon: Icon(Icons.ads_click,
@@ -112,9 +196,10 @@ class _MyHomePageState extends ParentState<HelpPageView> {
                 SizedBox(
                   height: lineHeight,
                   child: ValueListenableBuilder(
-                      valueListenable: BookScanner.manageExternalStoragePermission,
-                      builder:
-                          (BuildContext context, bool isGranted, Widget? child) {
+                      valueListenable:
+                          BookScanner.manageExternalStoragePermission,
+                      builder: (BuildContext context, bool isGranted,
+                          Widget? child) {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -150,19 +235,32 @@ class _MyHomePageState extends ParentState<HelpPageView> {
                       }),
                 ),
                 SizedBox(
-                  height: ScreenIdentifier.isPortrait(context)? lineHeight/2: lineHeight,
+                  height: ScreenIdentifier.isPortrait(context)
+                      ? lineHeight / 2
+                      : lineHeight,
                   child: ValueListenableBuilder(
-                      valueListenable: BookScanner.manageExternalStoragePermission,
-                      builder:
-                          (BuildContext context, bool isGranted, Widget? child) {
+                      valueListenable:
+                          BookScanner.manageExternalStoragePermission,
+                      builder: (BuildContext context, bool isGranted,
+                          Widget? child) {
                         return ValueListenableBuilder(
                             valueListenable: BookScanner.scanPercent,
                             builder: (BuildContext context, double percent,
                                 Widget? child) {
+                              if (percent == 1 || percent == 0) {
+                                debugPrintIt('update book count');
+                                oldBooksCount.value =
+                                    BlocProvider.of<BookBloc>(context)
+                                        .state
+                                        .books
+                                        .length;
+                              }
                               return LiquidLinearProgressIndicator(
                                 value: percent, // Defaults to 0.5.
-                                valueColor: AlwaysStoppedAnimation(isGranted? Palette
-                                    .blueAccent: Palette.blueGrey), // Defaults to the current Theme's accentColor.
+                                valueColor: AlwaysStoppedAnimation(isGranted
+                                    ? Palette.blueAccent
+                                    : Palette
+                                        .blueGrey), // Defaults to the current Theme's accentColor.
                                 backgroundColor: Colors
                                     .white, // Defaults to the current Theme's backgroundColor.
                                 borderColor: Palette.green200,
@@ -183,12 +281,11 @@ class _MyHomePageState extends ParentState<HelpPageView> {
             ),
           ),
         ),
-      )),
-      drawer: SideMenu(appBarHeight),
-    ));
-
-    /// ===============================================[Select design via context]===============================
-
-    return super.build(context);
+        const Step(
+          title: Text('Step 2 image'),
+          content: Text('Content for Step 2'),
+        ),
+      ],
+    );
   }
 }

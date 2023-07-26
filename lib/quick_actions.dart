@@ -20,7 +20,9 @@ class ShortcutsProvider {
       return const QuizMenu();
     } else if (shortcut == books) {
       shortcut = 'no action set';
-      return const ReadingHomePage();
+      return const ReadingHomePage(
+        isTutorial: false,
+      );
     } else {
       return child;
     }

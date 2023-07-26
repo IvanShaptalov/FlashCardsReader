@@ -15,12 +15,16 @@ enum BookStatus { favourites, haveRead, reading, toRead, allBooks, inTrash }
 
 class BookCatalog extends StatefulWidget {
   const BookCatalog(
-      {required this.bookStatus, super.key, required this.upperContext});
+      {required this.bookStatus,
+      super.key,
+      required this.upperContext,
+      this.isTutorial = false});
   final BuildContext upperContext;
   final BookStatus bookStatus;
   static const icon = Icon(Icons.book_sharp);
   static const String booksTitle = 'Books';
   static const String tabTitle = 'Reading';
+  final bool isTutorial;
 
   @override
   BookCatalogState createState() => BookCatalogState();
@@ -78,6 +82,13 @@ class BookCatalogState extends State<BookCatalog> {
             .books
             .where((element) => !element.status.inTrash)
             .toList();
+
+        if (widget.isTutorial && data is List<BookModel>) {
+          debugPrintIt('is tutorial, added book');
+          if (!data!.contains(BookModel.asset())) {
+            data!.insert(0, BookModel.asset());
+          }
+        }
     }
   }
 
@@ -136,9 +147,11 @@ class BookCatalogState extends State<BookCatalog> {
                                               FileImage(File(book.coverPath)),
                                           fit: BoxFit.fill,
                                         )
-                                      : const DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/empty.png'),
+                                      : DecorationImage(
+                                          image: AssetImage(book ==
+                                                  BookModel.asset()
+                                              ? 'assets/book/quotes_skin.png'
+                                              : 'assets/images/empty.png'),
                                           fit: BoxFit.fill),
                                   borderRadius: BorderRadius.circular(5)),
                             ),

@@ -92,7 +92,9 @@ class OpenBookState extends ParentState<OpenBook> {
                             Palette.darkBlue.withOpacity(0.9),
                             BlendMode.multiply))
                     : DecorationImage(
-                        image: const AssetImage('assets/images/empty.png'),
+                        image: AssetImage(widget.book == BookModel.asset()
+                            ? 'assets/book/quotes_skin.png'
+                            : 'assets/images/empty.png'),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
                             Palette.darkBlue.withOpacity(0.9),
@@ -106,9 +108,11 @@ class OpenBookState extends ParentState<OpenBook> {
                   margin: const EdgeInsets.fromLTRB(0, 45, 0, 0),
                   height: 340,
                   width: 250,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/images/empty.png'),
+                          image: AssetImage(widget.book == BookModel.asset()
+                              ? 'assets/book/quotes_skin.png'
+                              : 'assets/images/empty.png'),
                           fit: BoxFit.fill)),
                 ),
               ),
@@ -120,7 +124,7 @@ class OpenBookState extends ParentState<OpenBook> {
                 child: Text(
                   widget.book.title,
                   textAlign: TextAlign.center,
-                  style:  TextStyle(
+                  style: TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.bold,
                       color: Palette.white),
@@ -239,7 +243,6 @@ class OpenBookState extends ParentState<OpenBook> {
 
                       break;
                     case '.pdf':
-                    
                       Navigator.push(
                           context,
                           MaterialPageRoute(

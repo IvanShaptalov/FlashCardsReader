@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class TextBookProvider extends StatefulWidget {
   const TextBookProvider({super.key, required this.book});
@@ -66,6 +67,7 @@ class ViewTextState extends ParentState<ViewTextBook> {
 
   @override
   Widget build(BuildContext context) {
+    Future<String> textFuture = widget.book.getAllTextAsync();
     debugPrintIt(
         'title of selected flashcard : ======================${FlashCardProvider.fc.title}');
     bindPage(Scaffold(
@@ -113,7 +115,20 @@ class ViewTextState extends ParentState<ViewTextBook> {
                           value.plainText;
                     }
                   },
-                  child: Text(widget.book.getAllText()),
+                  child: FutureBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data != null) {
+                        return Text(snapshot.data!);
+                      } else {
+                        return Center(
+                          child: SpinKitWave(
+                            color: Palette.green600,
+                          ),
+                        );
+                      }
+                    },
+                    future: textFuture,
+                  ),
                 ),
               )),
         ])));

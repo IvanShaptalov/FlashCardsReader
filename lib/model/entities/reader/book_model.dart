@@ -1,7 +1,11 @@
 import 'dart:io';
 
+import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 part 'book_model.g.dart';
 
 @HiveType(typeId: 4)
@@ -56,6 +60,16 @@ class BookStatus {
     required this.onPage,
     required this.inTrash,
   });
+
+  factory BookStatus.falseStatus() {
+    return BookStatus(
+        readPrivate: false,
+        readingPrivate: false,
+        toRead: false,
+        favourite: false,
+        onPage: 0,
+        inTrash: false);
+  }
 
   factory BookStatus.fromJson(Map<String, dynamic> json) {
     return BookStatus(
@@ -149,18 +163,64 @@ class BookFileMeta {
 
 @HiveType(typeId: 7)
 class BookModel {
-  Stream<List<String>> getContentStream() {
+  Future<Stream<List<String>>> getContentStream() async {
     if (File(path).existsSync()) {
       return Stream.fromFuture(File(path).readAsLines());
+    } else {
+      try {
+        var file = await getFileFromAssets(path);
+        return Stream.fromFuture(file.readAsLines());
+      } catch (e) {
+        debugPrintIt(e);
+        return Stream.value(['file empty']);
+      }
     }
-    return Stream.value(['file empty']);
   }
 
-  String getAllText() {
+  Future<File> getFileFromAssets(String path) async {
+    final byteData = await rootBundle.load(path);
+
+    final file = File('${(await getTemporaryDirectory()).path}/$path');
+    await file.create(recursive: true);
+    await file.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+    return file;
+  }
+
+  Future<String> getAllTextAsync() async {
     if (File(path).existsSync()) {
       return File(path).readAsStringSync();
+    } else {
+      try {
+        var file = await getFileFromAssets(path);
+        return file.readAsStringSync();
+      } catch (e) {
+        debugPrintIt(e);
+        return 'file empty';
+      }
     }
-    return 'file empty';
+  }
+
+  static BookModel asset() {
+    return BookModel(
+        title: 'Live once',
+        author: 'Everyone',
+        description: 'Die hard',
+        coverPath: 'assets/book/quotes_skin.png',
+        language: 'en',
+        pageCount: 1,
+        textSnippet: 'We need much less than we think we need',
+        path: 'assets/book/quotes.txt',
+        isBinded: true,
+        status: BookStatus.falseStatus(),
+        settings: BookSettings(theme: BookThemes.light),
+        file: BookFileMeta(
+            extension: textExt,
+            name: 'Live once',
+            size: 0,
+            lastModified: DateTime.now().toIso8601String()),
+        lastAccess: DateTime.now());
   }
 
   @HiveField(0)
