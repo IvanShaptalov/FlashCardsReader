@@ -3,16 +3,16 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
-import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
   final SelectableRegionState selectableRegionState;
-  const FlashReaderAdaptiveContextSelectionMenu({
-    Key? key,
-    required this.selectableRegionState,
-  }) : super(key: key);
+  const FlashReaderAdaptiveContextSelectionMenu(
+      {Key? key, required this.selectableRegionState, this.isTutorial = false})
+      : super(key: key);
+
+  final bool isTutorial;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                           BaseNewWordWidgetService.wordFormController
                               .setUp(WordCreatingUIProvider.tmpFlashCard);
 
-                          showUpdateFlashCardMenu(context);
+                          showUpdateFlashCardMenu(context, isTutorial);
                         },
                         icon: const Icon(Icons.translate)),
                     IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
@@ -50,7 +50,7 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
             )));
   }
 
-  void showUpdateFlashCardMenu(BuildContext context) async {
+  void showUpdateFlashCardMenu(BuildContext context, bool isTutorial) async {
     return showModalBottomSheet(
         useSafeArea: true,
         isScrollControlled: true,
@@ -70,7 +70,7 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                         create: (_) => FlashCardBloc(),
                         child: BlocProvider(
                             create: (_) => TranslatorBloc(),
-                            child: const BaseNewWordWrapper())),
+                            child: BaseNewWordWrapper(isTutorial: isTutorial))),
                   ),
                 ],
               ),
@@ -81,10 +81,9 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
 }
 
 class BaseNewWordWrapper extends StatefulWidget {
-  const BaseNewWordWrapper({
-    super.key,
-  });
+  const BaseNewWordWrapper({super.key, required this.isTutorial});
 
+  final bool isTutorial;
   @override
   State<BaseNewWordWrapper> createState() => _BaseNewWordWrapperState();
 }
@@ -98,7 +97,6 @@ class _BaseNewWordWrapperState extends State<BaseNewWordWrapper> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    GuideProvider.startStep(context, callback, 4);
   }
 
   @override
@@ -113,7 +111,7 @@ class _BaseNewWordWrapperState extends State<BaseNewWordWrapper> {
     return BaseNewWordWidgetService.addWordMenu(
       context: context,
       callback: callback,
-      
+      isTutorial: widget.isTutorial
     );
   }
 }

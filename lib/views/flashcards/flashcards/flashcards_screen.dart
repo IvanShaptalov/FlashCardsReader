@@ -16,7 +16,8 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:quick_actions/quick_actions.dart';
 
 class FlashCardScreen extends StatefulWidget {
-  const FlashCardScreen({super.key});
+  const FlashCardScreen({super.key, this.isTutorial = false});
+  final bool isTutorial;
 
   @override
   State<FlashCardScreen> createState() => _FlashCardScreenState();

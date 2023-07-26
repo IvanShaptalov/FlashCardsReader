@@ -124,6 +124,7 @@ class ViewTextState extends ParentState<ViewTextBook> {
                   ) =>
                       FlashReaderAdaptiveContextSelectionMenu(
                     selectableRegionState: selectableRegionState,
+                    isTutorial: widget.isTutorial
                   ),
                   onSelectionChanged: (value) {
                     if (value != null) {

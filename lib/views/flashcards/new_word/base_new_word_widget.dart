@@ -2,8 +2,11 @@ import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +14,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BaseNewWordWidgetService {
   static String oldWord = '';
+
   /// addWordMenu create widget to save words faster
   /// [callback] to update screen
   /// [widget] parent widget
   /// [oldWord] to compare words and detect that user typing or not
   static Widget addWordMenu(
       {required BuildContext context,
-      required Function callback}) {
+      required Function callback,
+      bool isTutorial = false}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -28,9 +33,7 @@ class BaseNewWordWidgetService {
           callback: callback,
         ),
         addWordsButton(
-          context: context,
-          callback: callback,
-        ),
+            context: context, callback: callback, isTutorial: isTutorial),
       ],
     );
   }
@@ -146,47 +149,62 @@ class BaseNewWordWidgetService {
   }
 
   static Widget addWordsButton(
-      {required BuildContext context, required Function callback}) {
-    return GestureDetector(
-      onTap: () {
-        saveCollectionFromWord(
-          onSubmitted: false,
-          callback: callback,
-          context: context,
-        );
-        BlocProvider.of<TranslatorBloc>(context).add(ClearTranslateEvent());
-      },
-      child: Container(
-        height: SizeConfig.getMediaHeight(context,
-            p: [ScreenDesign.landscape, ScreenDesign.landscapeSmall]
-                    .contains(ScreenIdentifier.indentify(context))
-                ? 0.1
-                : 0.07),
-        width: SizeConfig.getMediaWidth(context,
-            p: [ScreenDesign.landscape, ScreenDesign.landscapeSmall]
-                    .contains(ScreenIdentifier.indentify(context))
-                ? 0.3
-                : 0.6),
-        decoration: BoxDecoration(
-          color: Palette.amber50,
+      {required BuildContext context,
+      required Function callback,
+      required bool isTutorial}) {
+    return GuideProvider.wrapInGuideIfNeeded(
+      child: GestureDetector(
+        onTap: () {
+          saveCollectionFromWord(
+            onSubmitted: false,
+            callback: callback,
+            context: context,
+          );
+          BlocProvider.of<TranslatorBloc>(context).add(ClearTranslateEvent());
+          if (isTutorial) {
+            MyRouter.pushPage(
+                context,
+                FlashCardScreen(
+                  isTutorial: isTutorial,
+                ));
+          }
+        },
+        child: Container(
+          height: SizeConfig.getMediaHeight(context,
+              p: [ScreenDesign.landscape, ScreenDesign.landscapeSmall]
+                      .contains(ScreenIdentifier.indentify(context))
+                  ? 0.1
+                  : 0.07),
+          width: SizeConfig.getMediaWidth(context,
+              p: [ScreenDesign.landscape, ScreenDesign.landscapeSmall]
+                      .contains(ScreenIdentifier.indentify(context))
+                  ? 0.3
+                  : 0.6),
+          decoration: BoxDecoration(
+            color: Palette.amber50,
 
-          // rounded full border
-          borderRadius: const BorderRadius.all(Radius.circular(25)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.add_circle_outline_outlined),
-            SizedBox(
-              width: SizeConfig.getMediaWidth(context, p: 0.01),
-            ),
-            Text(
-              'save word',
-              style: FontConfigs.h2TextStyleBlack,
-            )
-          ],
+            // rounded full border
+            borderRadius: const BorderRadius.all(Radius.circular(25)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.add_circle_outline_outlined),
+              SizedBox(
+                width: SizeConfig.getMediaWidth(context, p: 0.01),
+              ),
+              Text(
+                'save word',
+                style: FontConfigs.h2TextStyleBlack,
+              )
+            ],
+          ),
         ),
       ),
+      guideText: 'tap to save word in collection',
+      onHighlightTap: () {},
+      step: 4,
+      toWrap: isTutorial,
     );
   }
 
