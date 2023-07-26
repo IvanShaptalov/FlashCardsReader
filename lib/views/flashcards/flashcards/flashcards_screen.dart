@@ -6,6 +6,7 @@ import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_widget.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcard_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/sharing/extension_dialog.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
@@ -35,15 +36,11 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
     });
 
     quickActions.setShortcutItems(<ShortcutItem>[
-      // NOTE: This first action icon will only work on iOS.
-      // In a real world project keep the same file name for both platforms.
       const ShortcutItem(
         type: addWordAction,
         localizedTitle: addWordAction,
         icon: 'add_circle',
       ),
-      // NOTE: This second action icon will only work on Android.
-      // In a real world project keep the same file name for both platforms.
       const ShortcutItem(
           type: quizAction, localizedTitle: quizAction, icon: 'quiz'),
     ]).then((void _) {
@@ -62,7 +59,7 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
       create: (_) => FlashCardBloc(),
       child: BlocProvider(
         create: (_) => TranslatorBloc(),
-        child: FlashCardView(),
+        child: FlashCardView(isTutorial: widget.isTutorial),
       ),
     );
   }
@@ -70,7 +67,8 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
 
 // ignore: must_be_immutable
 class FlashCardView extends ParentStatefulWidget {
-  FlashCardView({super.key});
+  FlashCardView({super.key, this.isTutorial = false});
+  final bool isTutorial;
   Duration cardAppearDuration = const Duration(milliseconds: 375);
 
   @override
@@ -161,6 +159,15 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.isTutorial) {
+      GuideProvider.startStep(context, updateCallback, 4);
+    }
+  }
+
+  @override
   Widget build(BuildContext upperContext) {
     widget.page = BlocBuilder<FlashCardBloc, FlashcardsState>(
         builder: (builderContext, state) {
@@ -183,36 +190,54 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                     List.generate(flashCardCollection.length + 1, (index) {
                   /// ====================================================================[FlashCardCollectionWidget]
                   // add flashcards
-                  return index == 0
-                      ? Transform.scale(
-                          scale: 0.85,
-                          child: AnimationConfiguration.staggeredGrid(
-                            position: index,
-                            duration: DurationConfig.cardAppearDuration,
-                            columnCount: columnCount,
-                            child: SlideAnimation(
-                              child: FadeInAnimation(
-                                child: AddFlashCardWidget(
-                                    updateCallbackCrunch: updateCallback),
-                              ),
+                  if (index == 0) {
+                    return GuideProvider.wrapInGuideIfNeeded(
+                      child: Transform.scale(
+                        scale: 0.85,
+                        child: AnimationConfiguration.staggeredGrid(
+                          position: index,
+                          duration: DurationConfig.cardAppearDuration,
+                          columnCount: columnCount,
+                          child: SlideAnimation(
+                            child: FadeInAnimation(
+                              child: AddFlashCardWidget(
+                                  updateCallbackCrunch: updateCallback),
                             ),
                           ),
-                        )
-                      : Transform.scale(
-                          scale: 0.85,
-                          child: AnimationConfiguration.staggeredGrid(
-                            position: index,
-                            duration: widget.cardAppearDuration,
-                            columnCount: columnCount,
-                            child: SlideAnimation(
-                              child: FadeInAnimation(
-                                child: FlashCardCollectionWidget(
-                                    flashCardCollection[index - 1],
-                                    updateCallback),
-                              ),
+                        ),
+                      ),
+                      guideText: 'Use this card to create new collections',
+                      onHighlightTap: () {
+                        GuideProvider.introController.next();
+                      },
+                      step: 4,
+                      toWrap: widget.isTutorial,
+                    );
+                  } else {
+                    return GuideProvider.wrapInGuideIfNeeded(
+                      guideText: 'tap on FlashCard',
+                      onHighlightTap: () {
+                        
+                      },
+                      step: 5,
+                      toWrap: widget.isTutorial,
+                      child: Transform.scale(
+                        scale: 0.85,
+                        child: AnimationConfiguration.staggeredGrid(
+                          position: index,
+                          duration: widget.cardAppearDuration,
+                          columnCount: columnCount,
+                          child: SlideAnimation(
+                            child: FadeInAnimation(
+                              child: FlashCardCollectionWidget(
+                                  flashCardCollection[index - 1],
+                                  updateCallback),
                             ),
                           ),
-                        );
+                        ),
+                      ),
+                    );
+                  }
                 })),
           ),
           drawer: getDrawer(),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intro/intro.dart';
 
 class GuideProvider {
-  static IntroController introController = IntroController(stepCount: 4);
+  static IntroController introController = IntroController(stepCount: 5);
 
   static Widget wrapInGuideIfNeeded(
       {required Widget child,
