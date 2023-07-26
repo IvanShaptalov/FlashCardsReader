@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:intro/intro.dart';
 
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -43,8 +42,6 @@ class OpenBookState extends ParentState<OpenBook> {
     setState(() {});
   }
 
-  PanelController panelController = PanelController();
-
   @override
   void initState() {
     // get collection
@@ -67,14 +64,7 @@ class OpenBookState extends ParentState<OpenBook> {
     if (widget.isTutorial) {
       debugPrintIt('start tutorial step 2');
 
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        panelController.open().then(
-          (value) {
-            GuideProvider.startStep(context, updateCallback, 2);
-          },
-        );
-        setState(() {});
-      });
+      GuideProvider.startStep(context, updateCallback, 2);
     }
   }
 
@@ -182,30 +172,13 @@ class OpenBookState extends ParentState<OpenBook> {
           ),
         ),
         SlidingUpPanel(
-          controller: panelController,
           color: Palette.green300Primary,
-          minHeight: 80,
+          minHeight: SizeConfig.getMediaHeight(context, p: 0.7),
+          maxHeight: SizeConfig.getMediaHeight(context, p: 0.7),
           backdropEnabled: true,
           panel: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              SizedBox(
-                height: 20,
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 2,
-                    ),
-                    Container(
-                      height: 5,
-                      width: SizeConfig.getMediaWidth(context, p: 0.3),
-                      decoration: BoxDecoration(
-                          color: Palette.grey,
-                          borderRadius: BorderRadius.circular(15)),
-                    ),
-                  ],
-                ),
-              ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -238,9 +211,8 @@ class OpenBookState extends ParentState<OpenBook> {
                                 toWrap: index == 0,
                                 guideText:
                                     'Select flashCard to save words from book',
-                                context: context,
                                 onHighlightTap: () {
-                                  Intro.of(context).controller.jumpTo(3);
+                                  GuideProvider.introController.jumpTo(3);
                                 },
                                 child: FastAddWordFCcWidget(
                                   collection!.isEmpty
@@ -262,9 +234,8 @@ class OpenBookState extends ParentState<OpenBook> {
                 step: 3,
                 toWrap: true,
                 guideText: 'Open book',
-                context: context,
                 onHighlightTap: () {
-                  Intro.of(context).controller.close();
+                  GuideProvider.introController.close();
                   if (collection != null &&
                       widget.book.flashCardId != null &&
                       collection!

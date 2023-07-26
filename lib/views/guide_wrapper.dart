@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:intro/intro.dart';
 
 class GuideProvider {
+  static IntroController introController = IntroController(stepCount: 4);
+
   static Widget wrapInGuideIfNeeded(
       {required Widget child,
       required VoidCallback? onHighlightTap,
       required int step,
       required bool toWrap,
-      required String guideText,
-      required BuildContext context}) {
+      required String guideText}) {
     if (toWrap) {
       return IntroStepTarget(
         cardDecoration: const IntroCardDecoration(
@@ -19,7 +20,7 @@ class GuideProvider {
             padding: EdgeInsets.all(8)),
         onHighlightTap: onHighlightTap,
         step: step,
-        controller: Intro.of(context).controller,
+        controller: introController,
         cardContents: TextSpan(
           text: guideText,
         ),
@@ -33,7 +34,7 @@ class GuideProvider {
       BuildContext context, Function updateCallback, int step) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       debugPrintIt('tutorial starts now...');
-      Intro.of(context).controller.start(context, initStep: step);
+      introController.start(context, initStep: step);
       updateCallback();
     });
   }

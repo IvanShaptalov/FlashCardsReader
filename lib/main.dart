@@ -4,6 +4,7 @@ import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/checker.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/help_page/help_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intro/intro.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlaySupport(
       child: Intro(
-        controller: IntroController(stepCount: 3),
+        controller: GuideProvider.introController,
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(

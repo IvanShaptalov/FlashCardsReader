@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/model/entities/reader/open_book.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:intro/intro.dart';
 
 enum DotsMenu { share, trash, edit }
 
@@ -108,14 +108,13 @@ class BookCatalogState extends State<BookCatalog> {
   }
 
   void openBook(BookModel book, {bool isTutorial = false}) {
-    Navigator.push(
+    MyRouter.pushPageReplacement(
         context,
-        MaterialPageRoute(
-            builder: (context) => OpenBook(
-                  book: book,
-                  upperContext: widget.upperContext,
-                  isTutorial: isTutorial,
-                )));
+        OpenBook(
+          book: book,
+          upperContext: widget.upperContext,
+          isTutorial: isTutorial,
+        ));
   }
 
   /// Wraps widget in guide
@@ -132,10 +131,11 @@ class BookCatalogState extends State<BookCatalog> {
               itemBuilder: (BuildContext context, int index) {
                 final book = data![index];
                 return GuideProvider.wrapInGuideIfNeeded(
-                  context: context,
-                  onHighlightTap: () {
+                  onHighlightTap: () async {
                     openBook(book, isTutorial: true);
-                    Intro.of(context).controller.close();
+                    await Future.delayed(const Duration(milliseconds: 400))
+                        .then(
+                            (value) => GuideProvider.introController.jumpTo(2));
                   },
                   guideText: 'Click on book',
                   step: 1,

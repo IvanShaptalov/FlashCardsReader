@@ -3,9 +3,11 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
+import 'package:flashcards_reader/views/reader/screens/reading_homepage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,7 +79,13 @@ class ViewTextState extends ParentState<ViewTextBook> {
                   widget.book.title,
                   style: FontConfigs.pageNameTextStyle,
                 ),
-                actions: const [Offstage()],
+                actions: const [
+                  Offstage(),
+                ],
+                leading: BackButton(
+                  onPressed: () => MyRouter.pushPageReplacement(
+                      context, const ReadingHomePage(isTutorial: true)),
+                ),
                 backgroundColor: Palette.green300Primary,
                 elevation: 0,
                 iconTheme: IconThemeData(color: Palette.blueGrey),
