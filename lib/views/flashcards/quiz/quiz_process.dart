@@ -2,8 +2,10 @@ import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/horizontal_quiz_view.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/vertical_quiz_view.dart';
+import 'package:flashcards_reader/views/help_page/help_page.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
@@ -12,16 +14,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
 class QuizTrainer extends ParentStatefulWidget {
+  bool isTutorial;
+  final FlashCardCollection fCollection;
+  final QuizMode mode;
+  final int numberOfFlashCards;
+  final String fromPage;
+
   QuizTrainer(
       {required this.numberOfFlashCards,
       required this.mode,
       required this.fCollection,
       required this.fromPage,
-      super.key});
-  final FlashCardCollection fCollection;
-  final QuizMode mode;
-  final int numberOfFlashCards;
-  final String fromPage;
+      super.key,
+      bool this.isTutorial = false});
 
   @override
   ParentState<QuizTrainer> createState() => _QuizTrainerState();
@@ -36,7 +41,8 @@ class _QuizTrainerState extends ParentState<QuizTrainer> {
           numberOfFlashCards: widget.numberOfFlashCards,
           mode: widget.mode,
           fCollection: widget.fCollection,
-          fromPage: widget.fromPage),
+          fromPage: widget.fromPage,
+          isTutorial: widget.isTutorial),
     ));
 
     return super.build(context);
@@ -44,17 +50,19 @@ class _QuizTrainerState extends ParentState<QuizTrainer> {
 }
 
 class QuizTrainerView extends StatefulWidget {
-  const QuizTrainerView(
-      {required this.numberOfFlashCards,
-      required this.mode,
-      required this.fCollection,
-      required this.fromPage,
-      super.key});
+  final bool isTutorial;
   final FlashCardCollection fCollection;
   final QuizMode mode;
   final int numberOfFlashCards;
   final String fromPage;
 
+  const QuizTrainerView(
+      {required this.numberOfFlashCards,
+      required this.mode,
+      required this.fCollection,
+      required this.fromPage,
+      super.key,
+      required this.isTutorial});
 
   @override
   State<QuizTrainerView> createState() => _QuizTrainerViewState();
@@ -92,6 +100,14 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
             appBar: AppBar(
               leading: IconButton(
                   onPressed: () {
+                    if (widget.isTutorial) {
+                      MyRouter.pushPage(
+                          context,
+                          HelpPage(
+                            initIndex: 4,
+                          ));
+                      return;
+                    }
                     ViewConfig.pushFromQuizProcess(
                         fromPage: widget.fromPage, context: context);
                   },
@@ -108,9 +124,9 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
             ),
             body: ScreenIdentifier.isPortraitRelative(context)
                 ? VerticalQuiz(
-                    fromPage: widget.fromPage,
-                  )
-                : HorizontalQuiz(fromPage: widget.fromPage));
+                    fromPage: widget.fromPage, isTutorial: widget.isTutorial)
+                : HorizontalQuiz(
+                    fromPage: widget.fromPage, isTutorial: widget.isTutorial));
       },
     );
   }

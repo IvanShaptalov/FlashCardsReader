@@ -479,7 +479,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                     onHighlightTap: () {
                                       GuideProvider.introController
                                           .close()
-                                          .then((value) => openQuiz());
+                                          .then((value) => openQuiz(
+                                              isTutorial: widget.isTutorial));
                                     },
                                     step: 6,
                                     toWrap: widget.isTutorial,
@@ -788,7 +789,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
         ]));
   }
 
-  void openQuiz() {
+  void openQuiz({bool isTutorial = false}) {
     if (widget.flashCardCollection.isLearned) {
       MyRouter.pushPage(
         context,
@@ -797,6 +798,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
           mode: QuizMode.learned,
           fCollection: widget.flashCardCollection,
           fromPage: 'collection',
+          isTutorial: isTutorial
         ),
       );
     } else if (widget.flashCardCollection.isEmpty) {
@@ -811,6 +813,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
           mode: QuizMode.all,
           fCollection: widget.flashCardCollection,
           fromPage: 'collection',
+          isTutorial: isTutorial
+
         ),
       );
     }

@@ -1,6 +1,8 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/help_page/help_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -137,7 +139,7 @@ List<Widget> loadListItems(BuildContext context) {
   return list;
 }
 
-Widget loadEndQuiz(BuildContext context, String fromPage) {
+Widget loadEndQuiz(BuildContext context, String fromPage, bool isTutorial) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -171,20 +173,26 @@ Widget loadEndQuiz(BuildContext context, String fromPage) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                     Icon(Icons.arrow_downward_rounded,
-                        color: Palette.white),
+                    Icon(Icons.arrow_downward_rounded, color: Palette.white),
                     Text(
                       'Quiz Finished',
                       style: FontConfigs.backFromQuizTextStyle,
                     ),
-                    Icon(Icons.arrow_downward_rounded,
-                        color: Palette.white)
+                    Icon(Icons.arrow_downward_rounded, color: Palette.white)
                   ],
                 ),
               ),
             ),
           ),
           onTap: () {
+            if (isTutorial) {
+              MyRouter.pushPage(
+                  context,
+                  HelpPage(
+                    initIndex: 4,
+                  ));
+              return;
+            }
             ViewConfig.pushFromQuizProcess(
                 fromPage: fromPage, context: context);
           },

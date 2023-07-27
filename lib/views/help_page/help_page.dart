@@ -3,6 +3,8 @@ import 'package:flashcards_reader/model/entities/reader/book_scanner.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
@@ -13,7 +15,8 @@ import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 
 // ignore: must_be_immutable
 class HelpPage extends ParentStatefulWidget {
-  HelpPage({super.key});
+  HelpPage({super.key, this.initIndex = 0});
+  int initIndex;
 
   @override
   ParentState<HelpPage> createState() => _FeedbackSupportPageState();
@@ -22,13 +25,17 @@ class HelpPage extends ParentStatefulWidget {
 class _FeedbackSupportPageState extends ParentState<HelpPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (_) => BookBloc(), child: HelpPageView());
+    return BlocProvider(
+        create: (_) => BookBloc(),
+        child: HelpPageView(initIndex: widget.initIndex));
   }
 }
 
 // ignore: must_be_immutable
 class HelpPageView extends ParentStatefulWidget {
-  HelpPageView({super.key});
+  int initIndex;
+
+  HelpPageView({super.key, required this.initIndex});
 
   @override
   ParentState<HelpPageView> createState() => _MyHomePageState();
@@ -60,7 +67,7 @@ class _MyHomePageState extends ParentState<HelpPageView> {
           child: SingleChildScrollView(
               child: Column(
             children: [
-              AppIntroduceStepper(),
+              AppIntroduceStepper(index: widget.initIndex),
             ],
           )),
         ),
@@ -76,15 +83,16 @@ class _MyHomePageState extends ParentState<HelpPageView> {
 
 // ignore: must_be_immutable
 class AppIntroduceStepper extends ParentStatefulWidget {
-  AppIntroduceStepper({super.key});
+  int index;
+
+  AppIntroduceStepper({super.key, required this.index});
 
   @override
   ParentState<AppIntroduceStepper> createState() => _AppIntroduceStepperState();
 }
 
 class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
-  int _index = 0;
-  final int _stepCount = 3;
+  final int _stepCount = GuideProvider.helpPageStepCount;
   static ValueNotifier<int> oldBooksCount = ValueNotifier(0);
 
   @override
@@ -94,21 +102,29 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
       controlsBuilder: (context, details) {
         return Row(
           children: <Widget>[
-            details.stepIndex != _stepCount
-                ? TextButton(
-                    onPressed: details.onStepContinue,
-                    child: const Text('NEXT'),
-                  )
-                : TextButton(
-                    onPressed: () {
-                      MyRouter.pushPageReplacement(
-                          context,
-                          const ReadingHomePage(
-                            isTutorial: true,
-                          ));
-                    },
-                    child: const Text('TO BOOKS'),
-                  ),
+            if (details.stepIndex == 3)
+              TextButton(
+                onPressed: () {
+                  MyRouter.pushPageReplacement(
+                      context,
+                      const ReadingHomePage(
+                        isTutorial: true,
+                      ));
+                },
+                child: const Text('TO BOOKS'),
+              )
+            else if (details.stepIndex != _stepCount)
+              TextButton(
+                onPressed: details.onStepContinue,
+                child: const Text('NEXT'),
+              )
+            else
+              TextButton(
+                onPressed: () {
+                  MyRouter.pushPage(context, const FlashCardScreen());
+                },
+                child: const Text('TO FLASHCARDS'),
+              ),
             if (details.stepIndex != 0)
               TextButton(
                 onPressed: details.onStepCancel,
@@ -117,24 +133,24 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
           ],
         );
       },
-      currentStep: _index,
+      currentStep: widget.index,
       onStepCancel: () {
-        if (_index > 0) {
+        if (widget.index > 0) {
           setState(() {
-            _index -= 1;
+            widget.index -= 1;
           });
         }
       },
       onStepContinue: () {
-        if (_index < _stepCount) {
+        if (widget.index < _stepCount) {
           setState(() {
-            _index += 1;
+            widget.index += 1;
           });
         }
       },
       onStepTapped: (int index) {
         setState(() {
-          _index = index;
+          widget.index = index;
         });
       },
       steps: <Step>[
@@ -284,8 +300,17 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
           ),
         ),
         const Step(
-          title: Text('Step 2 image'),
-          content: Text('Content for Step 2'),
+          title: Text('Step 4 image'),
+          content: Text('Content for Step 4'),
+        ),
+
+        const Step(
+          title: Text('Step 5 image'),
+          content: Text('Content for Step 5'),
+        ),
+        const Step(
+          title: Text('Step 6 image'),
+          content: Text('Content for Step 6'),
         ),
       ],
     );

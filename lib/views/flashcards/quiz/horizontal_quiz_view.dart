@@ -9,7 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
 class HorizontalQuiz extends StatefulWidget {
-  HorizontalQuiz({required this.fromPage, super.key});
+  bool isTutorial;
+
+  HorizontalQuiz({required this.fromPage, super.key, required this.isTutorial});
   String fromPage;
   @override
   State<HorizontalQuiz> createState() => _HorizontalQuizState();
@@ -25,8 +27,11 @@ class _HorizontalQuizState extends State<HorizontalQuiz> {
       color: Palette.grey300,
       child: Card(
         child: Center(
-          child: BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished
-              ? loadEndQuiz(context, widget.fromPage)
+          child: BlocProvider.of<QuizBloc>(context)
+                  .state
+                  .quizModel
+                  .isQuizFinished
+              ? loadEndQuiz(context, widget.fromPage, widget.isTutorial)
               : Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -53,7 +58,7 @@ class _HorizontalQuizState extends State<HorizontalQuiz> {
                               .state
                               .quizModel
                               .isQuizFinished);
-      
+
                           if (offset.dy <
                               SizeConfig.getMediaHeight(context,
                                   p: -0.1) /* 25 percent of screen to left*/) {

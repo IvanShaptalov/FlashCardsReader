@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intro/intro.dart';
 
 class GuideProvider {
-  static IntroController introController = IntroController(stepCount: 6);
+  static int interactiveStepCount = 6;
+  static int helpPageStepCount = 5;
+  static IntroController introController = IntroController(stepCount: interactiveStepCount);
 
   static Widget wrapInGuideIfNeeded(
       {required Widget child,
