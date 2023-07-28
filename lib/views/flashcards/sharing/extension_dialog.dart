@@ -94,6 +94,7 @@ class ExtensionDialog {
     switch (ext) {
       case jsonExt:
       case 'json':
+      case 'js':
         return 'as json';
       case textExt:
       case 'txt':

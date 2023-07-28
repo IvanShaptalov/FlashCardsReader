@@ -91,8 +91,14 @@ class SharingProvider {
       OverlayNotificationProvider.showOverlayNotification('No file selected',
           status: NotificationStatus.info);
     } else {
-      String fileResult = file.readAsStringSync();
       String ext = Checker.getExtension(filePath!);
+
+      if (![jsonExt, textExt].contains(ext)){
+        OverlayNotificationProvider.showOverlayNotification('Extension $ext not allowed');
+        return [];
+      }
+
+      String fileResult = file.readAsStringSync();
 
       /// [import section]
       switch (ext) {
@@ -133,6 +139,7 @@ class SharingProvider {
             OverlayNotificationProvider.showOverlayNotification(
                 'Imported ${collections.length} collections',
                 status: NotificationStatus.success);
+            return collections;
           }
           break;
         default:

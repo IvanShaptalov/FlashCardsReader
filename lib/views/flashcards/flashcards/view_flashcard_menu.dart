@@ -65,11 +65,13 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      GuideProvider.introController.next();
+    if (widget.isTutorial) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        GuideProvider.introController.next();
 
-      setState(() {});
-    });
+        setState(() {});
+      });
+    }
   }
 
   @override
@@ -794,12 +796,11 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
       MyRouter.pushPage(
         context,
         QuizTrainer(
-          numberOfFlashCards: widget.flashCardCollection.flashCardSet.length,
-          mode: QuizMode.learned,
-          fCollection: widget.flashCardCollection,
-          fromPage: 'collection',
-          isTutorial: isTutorial
-        ),
+            numberOfFlashCards: widget.flashCardCollection.flashCardSet.length,
+            mode: QuizMode.learned,
+            fCollection: widget.flashCardCollection,
+            fromPage: 'collection',
+            isTutorial: isTutorial),
       );
     } else if (widget.flashCardCollection.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
@@ -809,13 +810,11 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
       MyRouter.pushPage(
         context,
         QuizTrainer(
-          numberOfFlashCards: widget.flashCardCollection.flashCardSet.length,
-          mode: QuizMode.all,
-          fCollection: widget.flashCardCollection,
-          fromPage: 'collection',
-          isTutorial: isTutorial
-
-        ),
+            numberOfFlashCards: widget.flashCardCollection.flashCardSet.length,
+            mode: QuizMode.all,
+            fCollection: widget.flashCardCollection,
+            fromPage: 'collection',
+            isTutorial: isTutorial),
       );
     }
   }

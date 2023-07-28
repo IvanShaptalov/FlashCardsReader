@@ -67,10 +67,10 @@ class TextShare extends BaseShare {
       textShare += "${exportFlashCardCollection(collection)}$separator";
     }
 
-    debugPrintIt(textShare.toString());
-    String encodedText = jsonEncode(textShare);
-    debugPrintIt(encodedText);
-    return encodedText;
+    // debugPrintIt(textShare.toString());
+    // String encodedText = jsonEncode(textShare);
+    // debugPrintIt(encodedText);
+    return textShare;
   }
 
   String exportFlashCardCollection(FlashCardCollection fCC) {
