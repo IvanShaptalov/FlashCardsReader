@@ -15,8 +15,7 @@ import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 
 // ignore: must_be_immutable
 class HelpPage extends ParentStatefulWidget {
-  HelpPage({super.key, this.initIndex = 0});
-  int initIndex;
+  HelpPage({super.key});
 
   @override
   ParentState<HelpPage> createState() => _FeedbackSupportPageState();
@@ -25,17 +24,13 @@ class HelpPage extends ParentStatefulWidget {
 class _FeedbackSupportPageState extends ParentState<HelpPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (_) => BookBloc(),
-        child: HelpPageView(initIndex: widget.initIndex));
+    return BlocProvider(create: (_) => BookBloc(), child: HelpPageView());
   }
 }
 
 // ignore: must_be_immutable
 class HelpPageView extends ParentStatefulWidget {
-  int initIndex;
-
-  HelpPageView({super.key, required this.initIndex});
+  HelpPageView({super.key});
 
   @override
   ParentState<HelpPageView> createState() => _MyHomePageState();
@@ -58,19 +53,12 @@ class _MyHomePageState extends ParentState<HelpPageView> {
     );
     appBarHeight = appBar.preferredSize.height;
     bindPage(Scaffold(
+      backgroundColor: Palette.lightBlue,
       appBar: appBar,
       body: Center(
-          child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
-          height: SizeConfig.getMediaHeight(context),
-          child: SingleChildScrollView(
-              child: Column(
-            children: [
-              AppIntroduceStepper(index: widget.initIndex),
-            ],
-          )),
-        ),
+          child: SizedBox(
+        height: SizeConfig.getMediaHeight(context),
+        child: AppIntroduceStepper(),
       )),
       drawer: SideMenu(appBarHeight),
     ));
@@ -83,9 +71,9 @@ class _MyHomePageState extends ParentState<HelpPageView> {
 
 // ignore: must_be_immutable
 class AppIntroduceStepper extends ParentStatefulWidget {
-  int index;
-
-  AppIntroduceStepper({super.key, required this.index});
+  AppIntroduceStepper({
+    super.key,
+  });
 
   @override
   ParentState<AppIntroduceStepper> createState() => _AppIntroduceStepperState();
@@ -99,73 +87,100 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
   Widget build(BuildContext context) {
     double lineHeight = SizeConfig.getMediaHeight(context, p: 0.1);
     return Stepper(
+      elevation: 0,
       controlsBuilder: (context, details) {
         return Row(
           children: <Widget>[
-            if (details.stepIndex == 3)
-              TextButton(
-                onPressed: () {
-                  MyRouter.pushPageReplacement(
-                      context,
-                      const ReadingHomePage(
-                        isTutorial: true,
-                      ));
-                },
-                child: const Text('TO BOOKS'),
-              )
-            else if (details.stepIndex != _stepCount)
+            if (details.stepIndex != _stepCount)
               TextButton(
                 onPressed: details.onStepContinue,
-                child: const Text('NEXT'),
+                child: Icon(
+                  Icons.arrow_downward,
+                  color: Palette.white,
+                ),
               )
             else
               TextButton(
                 onPressed: () {
                   MyRouter.pushPage(context, const FlashCardScreen());
                 },
-                child: const Text('TO FLASHCARDS'),
+                child: Icon(Icons.web_stories_outlined, color: Palette.white),
               ),
-            if (details.stepIndex != 0)
+            if (details.stepIndex == 3)
+              TextButton(
+                  onPressed: () {
+                    MyRouter.pushPageReplacement(
+                        context,
+                        const ReadingHomePage(
+                          isTutorial: true,
+                        ));
+                  },
+                  child: Icon(Icons.play_circle, color: Palette.white)),
+            if (details.stepIndex > 0)
               TextButton(
                 onPressed: details.onStepCancel,
-                child: const Text('BACK'),
+                child: Icon(Icons.arrow_upward, color: Palette.white),
               ),
           ],
         );
       },
-      currentStep: widget.index,
+      currentStep: GuideProvider.initIndex,
       onStepCancel: () {
-        if (widget.index > 0) {
+        if (GuideProvider.initIndex > 0) {
           setState(() {
-            widget.index -= 1;
+            GuideProvider.initIndex -= 1;
           });
+          // widget.updateBackground(GuideProvider.initIndex);
         }
       },
       onStepContinue: () {
-        if (widget.index < _stepCount) {
+        if (GuideProvider.initIndex < _stepCount) {
           setState(() {
-            widget.index += 1;
+            GuideProvider.initIndex += 1;
           });
+          // widget.updateBackground(GuideProvider.initIndex);
         }
       },
       onStepTapped: (int index) {
         setState(() {
-          widget.index = index;
+          GuideProvider.initIndex = index;
         });
+        // widget.updateBackground(GuideProvider.initIndex);
       },
       steps: <Step>[
-        const Step(
-          title: Text('Step 2 image'),
-          content: Text('Content for Step 2'),
+        Step(
+          title: Text('Use it',
+              style: FontConfigs.h2TextStyle.copyWith(color: Palette.white)),
+          content: SizedBox(
+            height: SizeConfig.getMediaHeight(context, p: 0.4),
+            width: double.infinity,
+            child: Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/guide/1.png'),
+                      fit: BoxFit.contain)),
+            ),
+          ),
         ),
-        const Step(
-          title: Text('Step scanning'),
-          content: Text('Content for Step 2'),
+        Step(
+          title: Text('Abilities',
+              style: FontConfigs.h2TextStyle.copyWith(color: Palette.white)),
+          content: SizedBox(
+            height: SizeConfig.getMediaHeight(context, p: 0.4),
+            width: double.infinity,
+            child: Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/guide/2.png'),
+                      fit: BoxFit.contain)),
+            ),
+          ),
         ),
 
         /// =========================================================[STEP 3 - scanning]
         Step(
-          title: const Text('Scanning'),
+          title: Text('Scanning',
+              style: FontConfigs.h2TextStyle.copyWith(color: Palette.white)),
           content: Container(
             alignment: Alignment.centerLeft,
             child: Column(
@@ -196,13 +211,13 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
                                 children: [
                                   Text(
                                     '${!isGranted ? "tap to grant \n'Read Storage' " : "granted: 'Read Storage'"} ',
-                                    style: FontConfigs.h2TextStyleBlack,
+                                    style: FontConfigs.h2TextStyle
+                                        .copyWith(color: Palette.white),
                                   ),
                                   isGranted
-                                      ? Icon(Icons.check,
-                                          color: Palette.green300Primary)
+                                      ? Icon(Icons.check, color: Palette.white)
                                       : Icon(Icons.ads_click,
-                                          color: Palette.deepPurple)
+                                          color: Palette.white)
                                 ],
                               ),
                             ),
@@ -232,19 +247,20 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  isGranted
-                                      ? 'tap to find books'
-                                      : 'grant permission',
-                                  style: FontConfigs.h2TextStyleBlack,
-                                ),
+                                    isGranted
+                                        ? 'tap to find books'
+                                        : 'grant permission',
+                                    style: FontConfigs.h2TextStyle
+                                        .copyWith(color: Palette.white)),
                               ),
                               isGranted
-                                  ? const Icon(
+                                  ? Icon(
                                       Icons.find_replace_outlined,
+                                      color: Palette.white,
                                     )
                                   : Icon(
                                       Icons.warning,
-                                      color: Palette.teal,
+                                      color: Palette.white,
                                     ),
                             ],
                           ),
@@ -280,8 +296,6 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
                                         .blueGrey), // Defaults to the current Theme's accentColor.
                                 backgroundColor: Colors
                                     .white, // Defaults to the current Theme's backgroundColor.
-                                borderColor: Palette.green200,
-                                borderWidth: 5.0,
                                 borderRadius: 6.0,
                                 direction: Axis
                                     .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
@@ -299,18 +313,26 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
             ),
           ),
         ),
-        const Step(
-          title: Text('Step 4 image'),
-          content: Text('Content for Step 4'),
+        Step(
+          title: Text('How to use',
+              style: FontConfigs.h2TextStyle.copyWith(color: Palette.white)),
+          content: Text('Instruction how to use app,\nTap to play',
+              style: FontConfigs.h2TextStyle.copyWith(color: Palette.white)),
         ),
 
-        const Step(
-          title: Text('Step 5 image'),
-          content: Text('Content for Step 5'),
-        ),
-        const Step(
-          title: Text('Step 6 image'),
-          content: Text('Content for Step 6'),
+        Step(
+          title: Text('Quick actions',
+              style: FontConfigs.h2TextStyle.copyWith(color: Palette.white)),
+          content: SizedBox(
+            height: SizeConfig.getMediaHeight(context, p: 0.4),
+            width: double.infinity,
+            child: Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/guide/3.png'),
+                      fit: BoxFit.contain)),
+            ),
+          ),
         ),
       ],
     );

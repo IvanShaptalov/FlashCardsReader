@@ -18,6 +18,7 @@ class Palette {
   static Color descriptionIconColor = Colors.blueGrey.shade700;
 
   static Color blueAccent = Colors.blueAccent;
+  static Color lightBlue = const Color(0XFF5ce1e6);
 
   static Color grey200 = Colors.grey.shade200;
   static Color grey300 = Colors.grey.shade300;

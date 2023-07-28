@@ -77,3 +77,6 @@ flutter:
     - assets/images/empty.png
     - assets/book/quotes_skin.png
     - assets/book/quotes.txt
+    - assets/guide/1.png
+    - assets/guide/2.png
+    - assets/guide/3.png

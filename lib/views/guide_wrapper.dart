@@ -4,8 +4,15 @@ import 'package:intro/intro.dart';
 
 class GuideProvider {
   static int interactiveStepCount = 6;
-  static int helpPageStepCount = 5;
-  static IntroController introController = IntroController(stepCount: interactiveStepCount);
+  static int helpPageStepCount = 4; // five steps from 0
+  static IntroController introController =
+      IntroController(stepCount: interactiveStepCount);
+
+  static int initIndex = 0;
+
+  static void pushToLastStep() {
+    initIndex = GuideProvider.helpPageStepCount;
+  }
 
   static Widget wrapInGuideIfNeeded(
       {required Widget child,

@@ -2,6 +2,7 @@ import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/help_page/help_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -186,11 +187,9 @@ Widget loadEndQuiz(BuildContext context, String fromPage, bool isTutorial) {
           ),
           onTap: () {
             if (isTutorial) {
-              MyRouter.pushPage(
-                  context,
-                  HelpPage(
-                    initIndex: 4,
-                  ));
+              GuideProvider.pushToLastStep();
+
+              MyRouter.pushPage(context, HelpPage());
               return;
             }
             ViewConfig.pushFromQuizProcess(
