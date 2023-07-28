@@ -23,12 +23,6 @@ class _MyHomePageState extends ParentState<HelpPage> {
   double appBarHeight = 0;
 
   @override
-  void initState() {
-    // BookScanner.manageExternalStoragePermission.addListener()
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context, {Widget? page}) {
     /// ===============================================[Create page]===============================
     var appBar = AppBar(

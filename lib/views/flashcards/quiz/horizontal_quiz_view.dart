@@ -63,16 +63,16 @@ class _HorizontalQuizState extends State<HorizontalQuiz> {
                               SizeConfig.getMediaHeight(context,
                                   p: -0.1) /* 25 percent of screen to left*/) {
                             BlocProvider.of<QuizBloc>(context)
-                                .add(AnswerFlashEvent(isAnswerCorrect: false));
+                                .add(AnswerFlashEvent(isAnswerCorrect: true));
                             BlurProvider.blurred = true;
-                            addWordToResult(false, context);
+                            addWordToResult(true, context);
                           } else if (offset.dy >
                               SizeConfig.getMediaHeight(context, p: 0.1) +
                                   35 /* 25 percent of screen to right*/) {
                             BlocProvider.of<QuizBloc>(context)
-                                .add(AnswerFlashEvent(isAnswerCorrect: true));
+                                .add(AnswerFlashEvent(isAnswerCorrect: false));
                             BlurProvider.blurred = true;
-                            addWordToResult(true, context);
+                            addWordToResult(false, context);
                           }
                         },
                         child: dragCard),
