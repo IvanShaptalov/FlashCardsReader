@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/views/flashcards/tts_widget.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/util_provider.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: must_be_immutable
 class QuizFlashCard extends StatefulWidget {
   final BuildContext quizContext;
+
+  /// : if parameter [empty] is true, card draws empty
   bool empty;
   QuizFlashCard({this.empty = false, required this.quizContext, super.key});
   String swipeRight = 'Swipe right\nif you know';
@@ -27,12 +30,14 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
         .state
         .quizModel
         .currentFCard;
+
     var firstText = SwapWordsProvider.swap
         ? currentFcard?.answer ?? widget.swipeRight
         : currentFcard?.question ?? widget.swipeLeft;
     var firstLanguage = SwapWordsProvider.swap
         ? currentFcard?.answerLanguage ?? 'en'
         : currentFcard?.questionLanguage ?? 'en';
+
     var first = Container(
       height: SizeConfig.getMediaHeight(context, p: 0.3),
       padding: const EdgeInsets.all(8.0),
@@ -48,6 +53,7 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                       firstText,
                       style: FontConfigs.cardQuestionTextStyle,
                       textAlign: TextAlign.center,
+                      maxLines: 3,
                     ),
                     SizedBox(
                       height: SizeConfig.getMediaHeight(context, p: 0.05),
@@ -105,22 +111,25 @@ class _QuizFlashCardState extends State<QuizFlashCard> {
                         SizedBox(
                           height: SizeConfig.getMediaHeight(context, p: 0.05),
                         ),
-                        ImageFiltered(
-                          imageFilter: BlurProvider.blurred
-                              ? ImageFilter.blur(
-                                  sigmaX: 5,
-                                  sigmaY: 5,
-                                  tileMode: TileMode.decal)
-                              : ImageFilter.blur(
-                                  sigmaX: 0,
-                                  sigmaY: 0,
-                                  tileMode: TileMode.decal),
-                          child: Text(
-                            secondText,
-                            style: FontConfigs.cardQuestionTextStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        BlurProvider.blurred
+                            ? ImageFiltered(
+                                imageFilter: ImageFilter.blur(
+                                    sigmaX: 5,
+                                    sigmaY: 5,
+                                    tileMode: TileMode.decal),
+                                child: Text(
+                                  secondText,
+                                  style: FontConfigs.cardQuestionTextStyle,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 3,
+                                ),
+                              )
+                            : Text(
+                                secondText,
+                                style: FontConfigs.cardQuestionTextStyle,
+                                textAlign: TextAlign.center,
+                                maxLines: 3,
+                              ),
                       ],
                     ),
                   ),

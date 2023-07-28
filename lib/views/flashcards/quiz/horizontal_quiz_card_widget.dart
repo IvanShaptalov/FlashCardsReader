@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
+import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/util_provider.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class HorizontalQuizFlashCard extends StatefulWidget {
 }
 
 class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
+
   @override
   Widget build(BuildContext context) {
     // if landscape mode
@@ -27,11 +29,11 @@ class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
       widget.swipeRight = 'Swipe up if you know';
       widget.swipeLeft = 'Swipe down if you don\'t';
     }
-
-    var currentFcard = BlocProvider.of<QuizBloc>(widget.quizContext)
+  var currentFcard = BlocProvider.of<QuizBloc>(widget.quizContext)
         .state
         .quizModel
         .currentFCard;
+    
     var firstText = SwapWordsProvider.swap
         ? currentFcard?.answer ?? widget.swipeRight
         : currentFcard?.question ?? widget.swipeLeft;
@@ -80,22 +82,25 @@ class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ImageFiltered(
-                          imageFilter: BlurProvider.blurred
-                              ? ImageFilter.blur(
-                                  sigmaX: 5,
-                                  sigmaY: 5,
-                                  tileMode: TileMode.decal)
-                              : ImageFilter.blur(
-                                  sigmaX: 0,
-                                  sigmaY: 0,
-                                  tileMode: TileMode.decal),
-                          child: Text(
-                            secondText,
-                            style: FontConfigs.cardQuestionTextStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        BlurProvider.blurred
+                            ? ImageFiltered(
+                                imageFilter: ImageFilter.blur(
+                                    sigmaX: 5,
+                                    sigmaY: 5,
+                                    tileMode: TileMode.decal),
+                                child: Text(
+                                  secondText,
+                                  style: FontConfigs.cardQuestionTextStyle,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 3,
+                                ),
+                              )
+                            : Text(
+                                secondText,
+                                style: FontConfigs.cardQuestionTextStyle,
+                                textAlign: TextAlign.center,
+                                maxLines: 3,
+                              ),
                       ],
                     ),
                   ),
@@ -119,6 +124,7 @@ class _HorizontalQuizFlashCardState extends State<HorizontalQuizFlashCard> {
         ),
         child: Card(
           shadowColor: Palette.black.withOpacity(0.2),
+          color: Palette.amber50,
           child: SizedBox(
             height: SizeConfig.getMediaHeight(context, p: 0.55),
             width: SizeConfig.getMediaWidth(context, p: 0.8),
