@@ -208,7 +208,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                           ),
                         ),
                       ),
-                      guideText: 'Use this card to create new collections',
+                      guideText: 'Use this card\nto create\nnew collections',
                       onHighlightTap: () {
                         GuideProvider.introController.next();
                       },
@@ -217,7 +217,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                     );
                   } else {
                     return GuideProvider.wrapInGuideIfNeeded(
-                      guideText: 'tap on FlashCard',
+                      guideText: 'Open\ncollection',
                       onHighlightTap: () {
                         FlashCardProvider.fc = flashCardCollection[index - 1];
                         FlashCardViewBottomSheet(

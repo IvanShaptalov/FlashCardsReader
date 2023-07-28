@@ -1,4 +1,3 @@
-import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_scanner.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
@@ -10,7 +9,6 @@ import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/reader/screens/reading_homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 
 // ignore: must_be_immutable
@@ -18,25 +16,10 @@ class HelpPage extends ParentStatefulWidget {
   HelpPage({super.key});
 
   @override
-  ParentState<HelpPage> createState() => _FeedbackSupportPageState();
+  ParentState<HelpPage> createState() => _MyHomePageState();
 }
 
-class _FeedbackSupportPageState extends ParentState<HelpPage> {
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(create: (_) => BookBloc(), child: HelpPageView());
-  }
-}
-
-// ignore: must_be_immutable
-class HelpPageView extends ParentStatefulWidget {
-  HelpPageView({super.key});
-
-  @override
-  ParentState<HelpPageView> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends ParentState<HelpPageView> {
+class _MyHomePageState extends ParentState<HelpPage> {
   double appBarHeight = 0;
 
   @override
@@ -58,7 +41,7 @@ class _MyHomePageState extends ParentState<HelpPageView> {
       body: Center(
           child: SizedBox(
         height: SizeConfig.getMediaHeight(context),
-        child: AppIntroduceStepper(),
+        child: const AppIntroduceStepper(),
       )),
       drawer: SideMenu(appBarHeight),
     ));
@@ -70,18 +53,17 @@ class _MyHomePageState extends ParentState<HelpPageView> {
 }
 
 // ignore: must_be_immutable
-class AppIntroduceStepper extends ParentStatefulWidget {
-  AppIntroduceStepper({
+class AppIntroduceStepper extends StatefulWidget {
+  const AppIntroduceStepper({
     super.key,
   });
 
   @override
-  ParentState<AppIntroduceStepper> createState() => _AppIntroduceStepperState();
+  State<AppIntroduceStepper> createState() => _AppIntroduceStepperState();
 }
 
-class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
+class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
   final int _stepCount = GuideProvider.helpPageStepCount;
-  static ValueNotifier<int> oldBooksCount = ValueNotifier(0);
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +77,7 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
               TextButton(
                 onPressed: details.onStepContinue,
                 child: Icon(
-                  Icons.arrow_downward,
+                  Icons.arrow_downward_rounded,
                   color: Palette.white,
                 ),
               )
@@ -115,11 +97,11 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
                           isTutorial: true,
                         ));
                   },
-                  child: Icon(Icons.play_circle, color: Palette.white)),
+                  child: Icon(Icons.play_arrow_rounded, color: Palette.white)),
             if (details.stepIndex > 0)
               TextButton(
                 onPressed: details.onStepCancel,
-                child: Icon(Icons.arrow_upward, color: Palette.white),
+                child: Icon(Icons.arrow_upward_rounded, color: Palette.white),
               ),
           ],
         );
@@ -282,11 +264,6 @@ class _AppIntroduceStepperState extends ParentState<AppIntroduceStepper> {
                                 Widget? child) {
                               if (percent == 1 || percent == 0) {
                                 debugPrintIt('update book count');
-                                oldBooksCount.value =
-                                    BlocProvider.of<BookBloc>(context)
-                                        .state
-                                        .books
-                                        .length;
                               }
                               return LiquidLinearProgressIndicator(
                                 value: percent, // Defaults to 0.5.

@@ -139,7 +139,7 @@ class ViewTextState extends ParentState<ViewTextBook> {
                         ViewTextBook.textLoaded = true;
                         return widget.isTutorial
                             ? Text(
-                                "\n\n\nSELECT TEXT AND TAP TRANSLATE BUTTON \n\n\n${snapshot.data!}")
+                                "SELECT TEXT\nTAP TRANSLATE BUTTON\nTHEN SAVE WORD\n\n${snapshot.data!}", style: FontConfigs.h2TextStyleBlack,)
                             : Text(snapshot.data!);
                       } else {
                         return Center(

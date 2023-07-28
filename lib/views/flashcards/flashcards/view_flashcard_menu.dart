@@ -475,7 +475,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         ),
                                       ),
                                     ),
-                                    guideText: 'tap to start quiz',
+                                    guideText: 'start quiz',
                                     onHighlightTap: () {
                                       GuideProvider.introController
                                           .close()
