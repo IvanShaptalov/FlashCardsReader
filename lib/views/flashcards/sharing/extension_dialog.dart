@@ -11,7 +11,7 @@ class ExtensionDialog {
     showPlatformDialog(
       context: context,
       builder: (_) => BasicDialogAlert(
-        title: const Text("Select export extension"),
+        title: const Text("Export"),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -51,7 +51,7 @@ class ExtensionDialog {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Expanded(child: Text(ext)),
+                Expanded(child: Text(convertExtensionToTitle(ext))),
               ],
             ),
           ),
@@ -65,7 +65,7 @@ class ExtensionDialog {
     showPlatformDialog(
       context: context,
       builder: (_) => BasicDialogAlert(
-        title: const Text("Select export extension"),
+        title: const Text("Export"),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -90,6 +90,19 @@ class ExtensionDialog {
     );
   }
 
+  static String convertExtensionToTitle(String ext) {
+    switch (ext) {
+      case jsonExt:
+      case 'json':
+        return 'as json';
+      case textExt:
+      case 'txt':
+        return 'as text';
+      default:
+        return 'as text.';
+    }
+  }
+
   static Widget _buildListItemBulk(
       String ext, BuildContext context, Function updateCallback) {
     return Column(
@@ -112,7 +125,7 @@ class ExtensionDialog {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Expanded(child: Text(ext)),
+                Expanded(child: Text(convertExtensionToTitle(ext))),
               ],
             ),
           ),
