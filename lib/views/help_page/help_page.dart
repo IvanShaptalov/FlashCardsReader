@@ -30,7 +30,7 @@ class _MyHomePageState extends ParentState<HelpPage> {
     );
     appBarHeight = appBar.preferredSize.height;
     bindPage(Scaffold(
-      backgroundColor: Palette.lightBlue,
+      backgroundColor: Palette.lightGreen,
       appBar: appBar,
       body: Center(
           child: SizedBox(

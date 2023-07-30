@@ -9,6 +9,7 @@ class Palette {
   static Color green300Primary = Colors.green.shade300;
   static Color green600 = Colors.green.shade600;
   static Color green = Colors.green;
+  static Color lightGreen = const Color(0XFF9ad29f);
 
   static Color red300 = Colors.red.shade300;
 
@@ -18,7 +19,6 @@ class Palette {
   static Color descriptionIconColor = Colors.blueGrey.shade700;
 
   static Color blueAccent = Colors.blueAccent;
-  static Color lightBlue = const Color(0XFF5ce1e6);
 
   static Color grey200 = Colors.grey.shade200;
   static Color grey300 = Colors.grey.shade300;

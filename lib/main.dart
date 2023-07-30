@@ -12,15 +12,25 @@ import 'package:overlay_support/overlay_support.dart';
 
 import 'database/core/core.dart';
 
+void initTts() async {
+  TextToSpeechService.initTtsEngineAsync().then((value) {
+    debugPrintIt('tts engine inited: $value');
+    // if not inited, try again
+    if (!value) {
+      debugPrintIt('tts not inited, try again');
+      initTts();
+    }
+  });
+}
+
 Future<bool> initAsync() async {
   bool ioInit = await LocalManager.initAsync();
   bool dbInit = await DataBase.initAsync();
 
   BookScanner.init();
-  debugPrint('db inited: $dbInit');
+  debugPrintIt('db inited: $dbInit');
 
-  TextToSpeechService.initTtsEngineAsync()
-      .then((value) => debugPrint('tts engine inited: $value'));
+  initTts();
 
   // start checking internet connection
   debugPrintIt('start checking internet connection');

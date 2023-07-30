@@ -4,23 +4,35 @@ import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 class TextToSpeechService {
-  static final TextToSpeechService _instance = TextToSpeechService._internal();
-  factory TextToSpeechService() => _instance;
+  // static final TextToSpeechService _instance = TextToSpeechService._internal();
+  // factory TextToSpeechService() => _instance;
+  static FlutterTts flutterTts = FlutterTts();
+
+  static final completer = Completer<void>();
   TextToSpeechService._internal();
 
   static Future<bool> initTtsEngineAsync() async {
     try {
-      flutterTts.setInitHandler(() {
-        debugPrintIt('tts engine initialized');
-      });
-      await flutterTts.getEngines;
-      await flutterTts.getLanguages;
-      await flutterTts.setEngine(await flutterTts.getDefaultEngine);
+     
+      await flutterTts.awaitSpeakCompletion(true);
 
-      await flutterTts.setPitch(pitch);
-      await flutterTts.setVolume(volume);
-      await flutterTts.setSpeechRate(rate);
-      debugPrintIt(await flutterTts.getLanguages);
+      // await flutterTts.getEngines;
+      // await flutterTts.getLanguages;
+      // String? engine = await flutterTts.getDefaultEngine;
+      // if (engine != null && engine.isNotEmpty) {
+      //   await flutterTts.setEngine(engine);
+        await flutterTts.setPitch(pitch);
+        await flutterTts.setVolume(volume);
+        await flutterTts.setSpeechRate(rate);
+      // } else {
+      //   return false;
+      // }
+
+      //  flutterTts.setInitHandler(() {
+      //   debugPrintIt('tts engine initialized');
+      // });
+
+      // debugPrintIt(await flutterTts.getLanguages);
 
       return true;
     } catch (e) {
@@ -28,8 +40,6 @@ class TextToSpeechService {
       return false;
     }
   }
-
-  static FlutterTts flutterTts = FlutterTts();
 
   static Future<void> speak(String text, String language) async {
     try {
@@ -47,9 +57,12 @@ class TextToSpeechService {
       }
       await flutterTts.setLanguage(code);
 
-      await flutterTts
-          .speak(text)
-          .then((value) => debugPrintIt('ready to speak'));
+      await flutterTts.speak(text).then((value) {
+        debugPrintIt('ready to speak');
+        flutterTts.setCompletionHandler(() {
+          completer.complete();
+        });
+      });
       return;
     } catch (e) {
       await initTtsEngineAsync();

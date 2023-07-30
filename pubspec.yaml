@@ -23,6 +23,7 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   bloc: ^8.1.1
   flutter_tts: ^3.6.3
+
   flutter_bloc: ^8.1.2
   overlay_support: ^2.1.0
   intl: ^0.18.1
