@@ -2,6 +2,7 @@ import 'dart:async';
 // import 'dart:ffi';
 import 'dart:io';
 
+import 'package:device_information/device_information.dart';
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/epub.dart';
@@ -26,20 +27,52 @@ class BookScanner {
   static double scanStep = 0;
 
   static Future<void> getStatus() async {
-    manageExternalStoragePermission.value =
-        await Permission.manageExternalStorage.status.isGranted;
+    if (await getApiVersion() >= 29) {
+      manageStorage.value =
+          await Permission.manageExternalStorage.status.isGranted;
+    } else {
+      manageStorage.value = await Permission.storage.status.isGranted;
+    }
   }
 
-  static ValueNotifier<bool> manageExternalStoragePermission =
-      ValueNotifier(false);
+  static ValueNotifier<bool> manageStorage = ValueNotifier(false);
+
+  /// check app/src/AndroidManifest.xml to explanation
+  static Future<int> getApiVersion() async {
+    int apiLevel = 30;
+    try {
+      apiLevel = await DeviceInformation.apiLevel;
+    } catch (e) {
+      debugPrintIt('error while checkApiVersion -> book_scanner.dart');
+    }
+    return apiLevel;
+  }
 
   static Future<bool> getFilePermission() async {
-    var status = await Permission.manageExternalStorage.status;
-    if (!status.isGranted) {
-      await Permission.manageExternalStorage.request();
+    PermissionStatus status;
+    int apiLevel = await getApiVersion();
+    // https://pub.dev/packages/permission_handler
+    // Starting from Android SDK 29 (Android 10) the READ_EXTERNAL_STORAGE and
+    // WRITE_EXTERNAL_STORAGE permissions have been marked deprecated and have
+    // been fully removed/ disabled since Android SDK 33 (Android 13).
+    if (apiLevel >= 29) {
+      debugPrintIt('>= 29 api scenario');
+      status = await Permission.manageExternalStorage.status;
+      if (!status.isGranted) {
+        await Permission.manageExternalStorage.request();
+      }
+      manageStorage.value = status.isGranted;
+      return status.isGranted;
+    } else {
+      debugPrintIt('< 29 api scenario');
+
+      status = await Permission.storage.status;
+      if (!status.isGranted) {
+        await Permission.storage.request();
+      }
+      manageStorage.value = status.isGranted;
+      return status.isGranted;
     }
-    manageExternalStoragePermission.value = status.isGranted;
-    return status.isGranted;
   }
 
   static Future<void> scan() async {

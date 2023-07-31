@@ -165,7 +165,7 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
                     alignment: Alignment.centerLeft,
                     child: ValueListenableBuilder(
                         valueListenable:
-                            BookScanner.manageExternalStoragePermission,
+                            BookScanner.manageStorage,
                         builder: (BuildContext context, bool isGranted,
                             Widget? child) {
                           return GestureDetector(
@@ -202,7 +202,7 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
                 const Divider(),
                 ValueListenableBuilder(
                     valueListenable:
-                        BookScanner.manageExternalStoragePermission,
+                        BookScanner.manageStorage,
                     builder:
                         (BuildContext context, bool isGranted, Widget? child) {
                       return SizedBox(
@@ -249,7 +249,7 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
                       : lineHeight,
                   child: ValueListenableBuilder(
                       valueListenable:
-                          BookScanner.manageExternalStoragePermission,
+                          BookScanner.manageStorage,
                       builder: (BuildContext context, bool isGranted,
                           Widget? child) {
                         return ValueListenableBuilder(

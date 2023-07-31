@@ -10,6 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  device_information: ^0.0.4
+  # <uses-permission android:name="android.permission.READ_PHONE_STATE" /> need to device_information correct work
+
   intro: ^1.2.3
   path: ^1.8.3
   external_path: ^1.0.3

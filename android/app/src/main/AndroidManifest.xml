@@ -4,10 +4,39 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION " />
+    <!-- On Android the Permission.storage permission is linked to the Android READ_EXTERNAL_STORAGE 
+        and WRITE_EXTERNAL_STORAGE permissions. Starting from Android SDK 29 (Android 10) the 
+        READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE permissions have been marked deprecated 
+        and have been fully removed/ disabled since Android SDK 33 (Android 13).
+        If your application needs access to media files Google recommends using the READ_MEDIA_IMAGES,
+        READ_MEDIA_VIDEOS or READ_MEDIA_AUDIO permissions instead. These can be requested using the 
+        Permission.photos, Permission.videos and Permission.audio respectively. To request these 
+        permissions make sure the compileSdkVersion in the android/app/build.gradle file is set to 33.
+        MANAGE_EXTERNAL_STORAGE permission (using Permission.manageExternalStorage). 
+        If your application needs access to Androids file system it is possible to request the 
+        considered a high-risk or sensitive permission. There for it is required 
+        As of Android SDK 30 (Android 11) the MANAGE_EXTERNAL_STORAGE permission is 
+        the application via the Google Play Store. 
+        to declare the use of these permissions if you intend to release -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
+    />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" tools:ignore="ScopedStorage" />
+
+
+    <uses-permission android:name="android.permission.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION" />
+    <uses-permission android:name="android.permission.ACTION_CREATE_DOCUMENT" />
+    <uses-permission android:name="android.permission.ACTION_OPEN_DOCUMENT" />
+    <uses-permission android:name="android.permission.ACTION_OPEN_DOCUMENT_TREE" />
+    <uses-permission android:name="android.permission.ACTION_CREATE_DOCUMENT" />
+
+
+    <!-- need to device_information: ^0.0.4 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 
     <queries>
