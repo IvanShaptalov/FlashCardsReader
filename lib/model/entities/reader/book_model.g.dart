@@ -55,23 +55,23 @@ class BookStatusAdapter extends TypeAdapter<BookStatus> {
           typeId == other.typeId;
 }
 
-class BookSettingsAdapter extends TypeAdapter<BookSettings> {
+class BookSettingsAdapter extends TypeAdapter<BookSettingsToDelete> {
   @override
   final int typeId = 5;
 
   @override
-  BookSettings read(BinaryReader reader) {
+  BookSettingsToDelete read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return BookSettings(
+    return BookSettingsToDelete(
       theme: fields[0] as BookThemes,
     );
   }
 
   @override
-  void write(BinaryWriter writer, BookSettings obj) {
+  void write(BinaryWriter writer, BookSettingsToDelete obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
@@ -154,7 +154,7 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       isBinded: fields[8] as bool,
       flashCardId: fields[13] as String?,
       status: fields[9] as BookStatus,
-      settings: fields[10] as BookSettings,
+      settings: fields[10] as BookSettingsToDelete,
       file: fields[11] as BookFileMeta,
       lastAccess: fields[12] as DateTime,
     );

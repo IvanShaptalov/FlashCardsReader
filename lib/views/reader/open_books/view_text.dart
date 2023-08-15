@@ -7,7 +7,9 @@ import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
+import 'package:flashcards_reader/views/reader/open_books/page_counter.dart';
 import 'package:flashcards_reader/views/reader/screens/reading_homepage.dart';
+import 'package:flashcards_reader/views/reader/tabs/settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +27,20 @@ class TextBookProvider extends StatefulWidget {
 }
 
 class _TextBookProviderState extends State<TextBookProvider> {
+  Future<String>? textFuture;
+  int pages = 0;
+  // TODO merge book settings (2 classes exists now)
+  BookSettings bookSettings = BookSettings();
+
+  @override
+  void initState() {
+    textFuture = widget.book.getAllTextAsync().then((value) {
+      pages = PageCounter.calculatePages(value, bookSettings);
+      return value;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -33,7 +49,9 @@ class _TextBookProviderState extends State<TextBookProvider> {
         create: (_) => TranslatorBloc(),
         child: ViewTextBook(
           book: widget.book,
+          textFuture: textFuture,
           isTutorial: widget.isTutorial,
+          bookSettings: bookSettings,
         ),
       ),
     );
@@ -42,11 +60,19 @@ class _TextBookProviderState extends State<TextBookProvider> {
 
 // ignore: must_be_immutable
 class ViewTextBook extends ParentStatefulWidget {
-  ViewTextBook({super.key, required this.book, required this.isTutorial});
+  final BookSettings bookSettings;
+  Future<String>? textFuture;
   final BookModel book;
   static bool showBar = false;
   final bool isTutorial;
   static bool textLoaded = false;
+
+  ViewTextBook(
+      {super.key,
+      required this.book,
+      required this.isTutorial,
+      required this.textFuture,
+      required this.bookSettings});
 
   @override
   ViewTextState createState() => ViewTextState();
@@ -56,6 +82,7 @@ class ViewTextState extends ParentState<ViewTextBook> {
   @override
   void initState() {
     ViewTextBook.showBar = true;
+
     super.initState();
     if (kIsWeb) {
       BrowserContextMenu.disableContextMenu();
@@ -76,29 +103,30 @@ class ViewTextState extends ParentState<ViewTextBook> {
 
   @override
   Widget build(BuildContext context) {
-    Future<String> textFuture = widget.book.getAllTextAsync();
-
     debugPrintIt(
         'title of selected flashcard : ======================${FlashCardProvider.fc.title}');
+    var appBar = ViewTextBook.showBar
+        ? AppBar(
+            title: Text(
+              widget.book.title,
+              style: FontConfigs.pageNameTextStyle,
+            ),
+            actions: const [
+              Offstage(),
+            ],
+            leading: BackButton(
+              onPressed: () => MyRouter.pushPageReplacement(
+                  context, ReadingHomePage(isTutorial: widget.isTutorial)),
+            ),
+            backgroundColor: Palette.green300Primary,
+            elevation: 0,
+            iconTheme: IconThemeData(color: Palette.blueGrey),
+          )
+        : null;
+
+    double appBarHeight = appBar != null ? appBar.preferredSize.height : 0;
     bindPage(Scaffold(
-        appBar: ViewTextBook.showBar
-            ? AppBar(
-                title: Text(
-                  widget.book.title,
-                  style: FontConfigs.pageNameTextStyle,
-                ),
-                actions: const [
-                  Offstage(),
-                ],
-                leading: BackButton(
-                  onPressed: () => MyRouter.pushPageReplacement(
-                      context, const ReadingHomePage(isTutorial: true)),
-                ),
-                backgroundColor: Palette.green300Primary,
-                elevation: 0,
-                iconTheme: IconThemeData(color: Palette.blueGrey),
-              )
-            : null,
+        appBar: appBar,
         body: Stack(children: [
           GestureDetector(
               // behavior: HitTestBehavior.,
@@ -123,9 +151,8 @@ class ViewTextState extends ParentState<ViewTextBook> {
                     SelectableRegionState selectableRegionState,
                   ) =>
                       FlashReaderAdaptiveContextSelectionMenu(
-                    selectableRegionState: selectableRegionState,
-                    isTutorial: widget.isTutorial
-                  ),
+                          selectableRegionState: selectableRegionState,
+                          isTutorial: widget.isTutorial),
                   onSelectionChanged: (value) {
                     if (value != null) {
                       WordCreatingUIProvider.tmpFlashCard.question =
@@ -134,13 +161,25 @@ class ViewTextState extends ParentState<ViewTextBook> {
                   },
                   child: FutureBuilder(
                     builder: (context, snapshot) {
+                      TextStyle style = widget.bookSettings.calculateStyle();
+
+                      var maxLines = PageCounter.maxLines(context, appBarHeight,
+                          widget.bookSettings.fontSize.round(),
+                          lineHeight: widget.bookSettings.lineHeight);
                       if (snapshot.hasData && snapshot.data != null) {
                         // start from 4 step
                         ViewTextBook.textLoaded = true;
                         return widget.isTutorial
                             ? Text(
-                                "SELECT TEXT\nTAP TRANSLATE BUTTON\nTHEN SAVE WORD\n\n${snapshot.data!}", style: FontConfigs.h2TextStyleBlack,)
-                            : Text(snapshot.data!);
+                                """SELECT TEXT\nTAP TRANSLATE BUTTON\nTHEN SAVE WORD\n\n${snapshot.data!}""",
+                                style: style,
+                                maxLines: maxLines,
+                              )
+                            : Text(
+                                snapshot.data!,
+                                style: style,
+                                maxLines: maxLines,
+                              );
                       } else {
                         return Center(
                           child: SpinKitWave(
@@ -149,7 +188,7 @@ class ViewTextState extends ParentState<ViewTextBook> {
                         );
                       }
                     },
-                    future: textFuture,
+                    future: widget.textFuture,
                   ),
                 ),
               )),

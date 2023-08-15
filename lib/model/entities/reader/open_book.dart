@@ -124,19 +124,16 @@ class OpenBookState extends ParentState<OpenBook> {
         Center(
           child: Column(
             children: [
-              Hero(
-                tag: widget.book.id(),
-                child: Container(
-                  margin: const EdgeInsets.fromLTRB(0, 45, 0, 0),
-                  height: 340,
-                  width: 250,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(widget.book == BookModel.asset()
-                              ? 'assets/book/quotes_skin.png'
-                              : 'assets/images/empty.png'),
-                          fit: BoxFit.fill)),
-                ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 45, 0, 0),
+                height: 340,
+                width: 250,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(widget.book == BookModel.asset()
+                            ? 'assets/book/quotes_skin.png'
+                            : 'assets/images/empty.png'),
+                        fit: BoxFit.fill)),
               ),
               const SizedBox(
                 height: 15,
@@ -173,8 +170,8 @@ class OpenBookState extends ParentState<OpenBook> {
         ),
         SlidingUpPanel(
           color: Palette.green300Primary,
-          minHeight: SizeConfig.getMediaHeight(context, p: 0.7),
           maxHeight: SizeConfig.getMediaHeight(context, p: 0.7),
+          defaultPanelState: PanelState.OPEN,
           backdropEnabled: true,
           panel: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,

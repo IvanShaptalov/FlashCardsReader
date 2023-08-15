@@ -25,7 +25,8 @@ class BookStatus {
 
   @override
   String toString() {
-    return 'reading: $readingPrivate readPrivate: $readPrivate toRead: $toRead favourite $favourite inTrash :$inTrash page: $onPage';
+    return '''reading: $readingPrivate readPrivate: $readPrivate toRead: $toRead 
+    favourite $favourite inTrash :$inTrash page: $onPage''';
   }
 
   @override
@@ -93,11 +94,11 @@ class BookStatus {
 }
 
 @HiveType(typeId: 5)
-class BookSettings {
+class BookSettingsToDelete {
   @HiveField(0)
   BookThemes theme = BookThemes.light;
 
-  BookSettings({
+  BookSettingsToDelete({
     required this.theme,
   });
 
@@ -108,15 +109,15 @@ class BookSettings {
 
   @override
   bool operator ==(Object other) =>
-      other is BookSettings &&
+      other is BookSettingsToDelete &&
       other.runtimeType == runtimeType &&
       other.hashCode == hashCode;
 
   @override
   int get hashCode => toString().hashCode;
 
-  factory BookSettings.fromJson(Map<String, dynamic> json) {
-    return BookSettings(
+  factory BookSettingsToDelete.fromJson(Map<String, dynamic> json) {
+    return BookSettingsToDelete(
       theme: json['theme'],
     );
   }
@@ -214,7 +215,7 @@ class BookModel {
         path: 'assets/book/quotes.txt',
         isBinded: true,
         status: BookStatus.falseStatus(),
-        settings: BookSettings(theme: BookThemes.light),
+        settings: BookSettingsToDelete(theme: BookThemes.light),
         file: BookFileMeta(
             extension: textExt,
             name: 'Live once',
@@ -244,7 +245,7 @@ class BookModel {
   @HiveField(9)
   BookStatus status;
   @HiveField(10)
-  BookSettings settings;
+  BookSettingsToDelete settings;
   @HiveField(11)
   BookFileMeta file;
   @HiveField(12)
@@ -283,7 +284,7 @@ class BookModel {
         coverPath: json['coverPath'],
         isBinded: json['isBinded'],
         status: BookStatus.fromJson(json['status']),
-        settings: BookSettings.fromJson(json['settings']),
+        settings: BookSettingsToDelete.fromJson(json['settings']),
         file: BookFileMeta.fromJson(json['file']),
         flashCardId: json['flashCardId'],
         lastAccess: DateTime.parse(json['lastAccess']));

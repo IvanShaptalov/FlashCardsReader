@@ -108,7 +108,7 @@ class BookCatalogState extends State<BookCatalog> {
   }
 
   void openBook(BookModel book, {bool isTutorial = false}) {
-    MyRouter.pushPageReplacement(
+    MyRouter.pushPage(
         context,
         OpenBook(
           book: book,
@@ -155,29 +155,26 @@ class BookCatalogState extends State<BookCatalog> {
                             onTap: () {
                               openBook(book);
                             },
-                            child: Hero(
-                              tag: book.id(),
-                              child: Container(
-                                height: MediaQuery.of(context).size.height,
-                                width: MediaQuery.of(context).size.width * 0.25,
-                                margin:
-                                    const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                decoration: BoxDecoration(
-                                    image: book.coverPath.isNotEmpty &&
-                                            File(book.coverPath).existsSync()
-                                        ? DecorationImage(
-                                            image:
-                                                FileImage(File(book.coverPath)),
-                                            fit: BoxFit.fill,
-                                          )
-                                        : DecorationImage(
-                                            image: AssetImage(book ==
-                                                    BookModel.asset()
-                                                ? 'assets/book/quotes_skin.png'
-                                                : 'assets/images/empty.png'),
-                                            fit: BoxFit.fill),
-                                    borderRadius: BorderRadius.circular(5)),
-                              ),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              margin:
+                                  const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              decoration: BoxDecoration(
+                                  image: book.coverPath.isNotEmpty &&
+                                          File(book.coverPath).existsSync()
+                                      ? DecorationImage(
+                                          image:
+                                              FileImage(File(book.coverPath)),
+                                          fit: BoxFit.fill,
+                                        )
+                                      : DecorationImage(
+                                          image: AssetImage(book ==
+                                                  BookModel.asset()
+                                              ? 'assets/book/quotes_skin.png'
+                                              : 'assets/images/empty.png'),
+                                          fit: BoxFit.fill),
+                                  borderRadius: BorderRadius.circular(5)),
                             ),
                           ),
                           GestureDetector(

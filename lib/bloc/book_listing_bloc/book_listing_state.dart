@@ -11,7 +11,7 @@ class BookState {
   factory BookState.initial() =>
       BookState(books: BookDatabaseProvider.getAll());
 
-  /// ===============================================================[PROVIDER METHODS]===============================================================
+  /// =======================================================[PROVIDER METHODS]
   BookState copyWith({List<BookModel>? books}) {
     return BookState(books: BookDatabaseProvider.getAll());
   }

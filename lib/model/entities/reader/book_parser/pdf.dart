@@ -43,7 +43,7 @@ class BinderPdf {
           inTrash: false,
           onPage: 0,
         ),
-        settings: BookSettings(
+        settings: BookSettingsToDelete(
           theme: BookThemes.light,
         ),
         file: BookFileMeta(
