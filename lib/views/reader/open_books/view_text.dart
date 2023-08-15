@@ -2,17 +2,10 @@ import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
-import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
-import 'package:flashcards_reader/views/parent_screen.dart';
-import 'package:flashcards_reader/views/reader/open_books/page_counter.dart';
-import 'package:flashcards_reader/views/reader/screens/reading_homepage.dart';
 import 'package:flashcards_reader/views/reader/tabs/settings.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -34,10 +27,7 @@ class _TextBookProviderState extends State<TextBookProvider> {
 
   @override
   void initState() {
-    textFuture = widget.book.getAllTextAsync().then((value) {
-      pages = PageCounter.calculatePages(value, bookSettings);
-      return value;
-    });
+    textFuture = widget.book.getAllTextAsync();
     super.initState();
   }
 
@@ -49,151 +39,151 @@ class _TextBookProviderState extends State<TextBookProvider> {
         create: (_) => TranslatorBloc(),
         child: ViewTextBook(
           book: widget.book,
-          textFuture: textFuture,
+          bookText: textFuture,
+
           isTutorial: widget.isTutorial,
-          bookSettings: bookSettings,
+          // bookSettings: bookSettings,
         ),
       ),
     );
   }
 }
 
-// ignore: must_be_immutable
-class ViewTextBook extends ParentStatefulWidget {
-  final BookSettings bookSettings;
-  Future<String>? textFuture;
-  final BookModel book;
-  static bool showBar = false;
-  final bool isTutorial;
-  static bool textLoaded = false;
+class ViewTextBook extends StatefulWidget {
+  final Future<String>? bookText;
 
-  ViewTextBook(
-      {super.key,
-      required this.book,
-      required this.isTutorial,
-      required this.textFuture,
-      required this.bookSettings});
+  final BookModel book;
+
+  final bool isTutorial;
+
+  const ViewTextBook({
+    Key? key,
+    required this.book,
+    required this.bookText,
+    required this.isTutorial,
+    /*  required this.settingsController */
+  }) : super(key: key);
+  // final SettingsController settingsController;
 
   @override
-  ViewTextState createState() => ViewTextState();
+  State<ViewTextBook> createState() => _ViewTextBookState();
 }
 
-class ViewTextState extends ParentState<ViewTextBook> {
-  @override
-  void initState() {
-    ViewTextBook.showBar = true;
-
-    super.initState();
-    if (kIsWeb) {
-      BrowserContextMenu.disableContextMenu();
-    }
-  }
-
-  @override
-  void dispose() {
-    if (kIsWeb) {
-      BrowserContextMenu.enableContextMenu();
-    }
-    super.dispose();
-  }
-
-  void callback() {
-    setState(() {});
-  }
+class _ViewTextBookState extends State<ViewTextBook> {
+  bool show = false;
+  TextStyle font = const TextStyle(
+      fontSize: 16, fontWeight: FontWeight.normal, fontFamily: 'Roboto');
 
   @override
   Widget build(BuildContext context) {
-    debugPrintIt(
-        'title of selected flashcard : ======================${FlashCardProvider.fc.title}');
-    var appBar = ViewTextBook.showBar
-        ? AppBar(
-            title: Text(
-              widget.book.title,
-              style: FontConfigs.pageNameTextStyle,
-            ),
-            actions: const [
-              Offstage(),
-            ],
-            leading: BackButton(
-              onPressed: () => MyRouter.pushPageReplacement(
-                  context, ReadingHomePage(isTutorial: widget.isTutorial)),
-            ),
-            backgroundColor: Palette.green300Primary,
-            elevation: 0,
-            iconTheme: IconThemeData(color: Palette.blueGrey),
-          )
-        : null;
-
-    double appBarHeight = appBar != null ? appBar.preferredSize.height : 0;
-    bindPage(Scaffold(
-        appBar: appBar,
-        body: Stack(children: [
-          GestureDetector(
-              // behavior: HitTestBehavior.,
-              onDoubleTap: () {
-                ViewTextBook.showBar = !ViewTextBook.showBar;
-                debugPrintIt('on tap');
-                setState(() {});
-              },
-              child: Container(
-                padding: EdgeInsets.only(
-                    top: SizeConfig.getMediaHeight(context,
-                        p: !ViewTextBook.showBar ? 0.05 : 0),
-                    left: 8,
-                    right: 8,
-                    bottom: 8),
-                color: Palette.amber50,
-                height: SizeConfig.getMediaHeight(context),
-                width: SizeConfig.getMediaWidth(context),
-                child: SelectionArea(
-                  contextMenuBuilder: (
-                    BuildContext context,
-                    SelectableRegionState selectableRegionState,
-                  ) =>
-                      FlashReaderAdaptiveContextSelectionMenu(
-                          selectableRegionState: selectableRegionState,
-                          isTutorial: widget.isTutorial),
-                  onSelectionChanged: (value) {
-                    if (value != null) {
-                      WordCreatingUIProvider.tmpFlashCard.question =
-                          value.plainText;
-                    }
-                  },
-                  child: FutureBuilder(
-                    builder: (context, snapshot) {
-                      TextStyle style = widget.bookSettings.calculateStyle();
-
-                      var maxLines = PageCounter.maxLines(context, appBarHeight,
-                          widget.bookSettings.fontSize.round(),
-                          lineHeight: widget.bookSettings.lineHeight);
-                      if (snapshot.hasData && snapshot.data != null) {
-                        // start from 4 step
-                        ViewTextBook.textLoaded = true;
-                        return widget.isTutorial
-                            ? Text(
-                                """SELECT TEXT\nTAP TRANSLATE BUTTON\nTHEN SAVE WORD\n\n${snapshot.data!}""",
-                                style: style,
-                                maxLines: maxLines,
-                              )
-                            : Text(
-                                snapshot.data!,
-                                style: style,
-                                maxLines: maxLines,
-                              );
-                      } else {
-                        return Center(
-                          child: SpinKitWave(
-                            color: Palette.green600,
-                          ),
-                        );
-                      }
+    return Scaffold(
+      body: Scrollbar(
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        show == true ? show = false : show = true;
+                      });
                     },
-                    future: widget.textFuture,
-                  ),
+                    icon: const Icon(Icons.more_vert)),
+                const SizedBox(
+                  width: 12,
                 ),
-              )),
-        ])));
+              ],
+              floating: true,
+              elevation: 0,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.book.title.toString(),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(widget.book.author.toString(),
+                      style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Roboto')),
+                ],
+              ),
+            ),
+            _buildContent(context),
+          ],
+        ),
+      ),
+      // bottomSheet: show == true
+      //     ? BottomSheet(
+      //         enableDrag: false,
+      //         builder: (context) => BottomSheetWidget(
+      //           settingsController: widget.settingsController,
+      //           settings: {
+      //             'size': font.fontSize,
+      //             'theme': widget.settingsController.themeMode == ThemeMode.dark
+      //                 ? true
+      //                 : false,
+      //             'font_name': font.fontFamily,
+      //           },
+      //           onClickedClose: () => setState(() {
+      //             show = false;
+      //           }),
+      //           onClickedConfirm: (value) => setState(() {
+      //             font = value;
+      //             show = false;
+      //           }),
+      //         ),
+      //         onClosing: () {},
+      //       )
+      //     : null,
+    );
+  }
 
-    return super.build(context);
+  Widget _buildContent(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: FutureBuilder(
+              future: widget.bookText,
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  return SelectionArea(
+                      contextMenuBuilder: (
+                        BuildContext context,
+                        SelectableRegionState selectableRegionState,
+                      ) =>
+                          FlashReaderAdaptiveContextSelectionMenu(
+                              selectableRegionState: selectableRegionState,
+                              isTutorial: widget.isTutorial),
+                      onSelectionChanged: (value) {
+                        if (value != null) {
+                          WordCreatingUIProvider.tmpFlashCard.question =
+                              value.plainText;
+                        }
+                      },
+                      child: Text(
+                        snapshot.data,
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.justify,
+                        style: font,
+                      ));
+                } else {
+                  return SpinKitWave(
+                    color: Palette.green300Primary,
+                  );
+                }
+              },
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

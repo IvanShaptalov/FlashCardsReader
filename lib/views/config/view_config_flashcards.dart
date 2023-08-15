@@ -10,6 +10,10 @@ class SizeConfig {
   static double getMediaWidth(context, {double p = 1.0}) {
     return MediaQuery.of(context).size.width * p;
   }
+
+  static size(BuildContext context) {
+    return MediaQuery.sizeOf(context);
+  }
 }
 
 class ViewColumnCalculator {
