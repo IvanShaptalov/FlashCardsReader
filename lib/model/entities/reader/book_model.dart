@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/enums.dart';
@@ -190,17 +191,22 @@ class BookModel {
   }
 
   Future<String> getAllTextAsync() async {
+    var result = await Isolate.run(getText);
+    debugPrintIt('а оно то давно уже загрузилось))');
+    debugPrintIt(result);
+    return result;
+  }
+
+  Future<String> getText() async {
+    var result = (await getFile()).readAsString();
+    return result;
+  }
+
+  Future<File> getFile() async {
     if (File(path).existsSync()) {
-      return File(path).readAsStringSync();
-    } else {
-      try {
-        var file = await getFileFromAssets(path);
-        return file.readAsStringSync();
-      } catch (e) {
-        debugPrintIt(e);
-        return 'file empty';
-      }
+      return File(path);
     }
+    return await getFileFromAssets(path);
   }
 
   static BookModel asset() {

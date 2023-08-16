@@ -4,7 +4,8 @@ import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
-import 'package:flashcards_reader/views/reader/tabs/settings.dart';
+import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_widget.dart';
+import 'package:flashcards_reader/views/reader/tabs/settings_book.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -24,10 +25,12 @@ class _TextBookProviderState extends State<TextBookProvider> {
   int pages = 0;
   // TODO merge book settings (2 classes exists now)
   BookSettings bookSettings = BookSettings();
-
+  Future<String>? fString;
   @override
   void initState() {
     textFuture = widget.book.getAllTextAsync();
+
+    debugPrint('work on isolate');
     super.initState();
   }
 
@@ -40,9 +43,8 @@ class _TextBookProviderState extends State<TextBookProvider> {
         child: ViewTextBook(
           book: widget.book,
           bookText: textFuture,
-
           isTutorial: widget.isTutorial,
-          // bookSettings: bookSettings,
+          settingsController: SettingsControllerViewText(SettingsService()),
         ),
       ),
     );
@@ -55,15 +57,16 @@ class ViewTextBook extends StatefulWidget {
   final BookModel book;
 
   final bool isTutorial;
+  final SettingsControllerViewText settingsController;
 
   const ViewTextBook({
     Key? key,
     required this.book,
     required this.bookText,
     required this.isTutorial,
+    required this.settingsController,
     /*  required this.settingsController */
   }) : super(key: key);
-  // final SettingsController settingsController;
 
   @override
   State<ViewTextBook> createState() => _ViewTextBookState();
@@ -73,6 +76,10 @@ class _ViewTextBookState extends State<ViewTextBook> {
   bool show = false;
   TextStyle font = const TextStyle(
       fontSize: 16, fontWeight: FontWeight.normal, fontFamily: 'Roboto');
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,29 +125,27 @@ class _ViewTextBookState extends State<ViewTextBook> {
           ],
         ),
       ),
-      // bottomSheet: show == true
-      //     ? BottomSheet(
-      //         enableDrag: false,
-      //         builder: (context) => BottomSheetWidget(
-      //           settingsController: widget.settingsController,
-      //           settings: {
-      //             'size': font.fontSize,
-      //             'theme': widget.settingsController.themeMode == ThemeMode.dark
-      //                 ? true
-      //                 : false,
-      //             'font_name': font.fontFamily,
-      //           },
-      //           onClickedClose: () => setState(() {
-      //             show = false;
-      //           }),
-      //           onClickedConfirm: (value) => setState(() {
-      //             font = value;
-      //             show = false;
-      //           }),
-      //         ),
-      //         onClosing: () {},
-      //       )
-      //     : null,
+      bottomSheet: show == true
+          ? BottomSheet(
+              enableDrag: false,
+              builder: (context) => BottomSheetWidget(
+                settingsController: widget.settingsController,
+                settings: {
+                  'size': font.fontSize,
+                  'theme': false,
+                  'font_name': font.fontFamily,
+                },
+                onClickedClose: () => setState(() {
+                  show = false;
+                }),
+                onClickedConfirm: (value) => setState(() {
+                  font = value;
+                  show = false;
+                }),
+              ),
+              onClosing: () {},
+            )
+          : null,
     );
   }
 
@@ -169,7 +174,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
                         }
                       },
                       child: Text(
-                        snapshot.data,
+                        snapshot.data.toString().substring(0, 100),
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.justify,
                         style: font,
