@@ -81,50 +81,47 @@ class _ViewTextBookState extends State<ViewTextBook> {
     super.initState();
   }
 
+  double appBarHeigth = 0;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Scrollbar(
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              actions: [
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        show == true ? show = false : show = true;
-                      });
-                    },
-                    icon: const Icon(Icons.more_vert)),
-                const SizedBox(
-                  width: 12,
-                ),
-              ],
-              floating: true,
-              elevation: 0,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.book.title.toString(),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(widget.book.author.toString(),
-                      style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'Roboto')),
-                ],
-              ),
-            ),
-            _buildContent(context),
-          ],
+    var appBar = AppBar(
+      actions: [
+        IconButton(
+            onPressed: () {
+              setState(() {
+                show == true ? show = false : show = true;
+              });
+            },
+            icon: const Icon(Icons.more_vert)),
+        const SizedBox(
+          width: 12,
         ),
+      ],
+      elevation: 0,
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.book.title.toString(),
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(widget.book.author.toString(),
+              style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                  fontFamily: 'Roboto')),
+        ],
       ),
+    );
+    appBarHeigth = appBar.preferredSize.height;
+    return Scaffold(
+      appBar: appBar,
+      body: _buildContent(context),
       bottomSheet: show == true
           ? BottomSheet(
               enableDrag: false,
@@ -150,45 +147,120 @@ class _ViewTextBookState extends State<ViewTextBook> {
   }
 
   Widget _buildContent(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: FutureBuilder(
-              future: widget.bookText,
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.hasData) {
-                  return SelectionArea(
-                      contextMenuBuilder: (
-                        BuildContext context,
-                        SelectableRegionState selectableRegionState,
-                      ) =>
-                          FlashReaderAdaptiveContextSelectionMenu(
-                              selectableRegionState: selectableRegionState,
-                              isTutorial: widget.isTutorial),
-                      onSelectionChanged: (value) {
-                        if (value != null) {
-                          WordCreatingUIProvider.tmpFlashCard.question =
-                              value.plainText;
-                        }
-                      },
-                      child: Text(
-                        snapshot.data.toString().substring(0, 100),
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.justify,
-                        style: font,
-                      ));
-                } else {
-                  return SpinKitWave(
-                    color: Palette.green300Primary,
-                  );
-                }
-              },
+    return Column(
+      children: [
+        FutureBuilder(
+          future: widget.bookText,
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasData) {
+              return SelectionArea(
+                  contextMenuBuilder: (
+                    BuildContext context,
+                    SelectableRegionState selectableRegionState,
+                  ) =>
+                      FlashReaderAdaptiveContextSelectionMenu(
+                          selectableRegionState: selectableRegionState,
+                          isTutorial: widget.isTutorial),
+                  onSelectionChanged: (value) {
+                    if (value != null) {
+                      WordCreatingUIProvider.tmpFlashCard.question =
+                          value.plainText;
+                    }
+                  },
+                  // TODO widget here
+
+                  child: Paginator(font: font, appBarHeigth: appBarHeigth));
+            } else {
+              return SpinKitWave(
+                color: Palette.green300Primary,
+              );
+            }
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class Paginator extends StatefulWidget {
+  final TextStyle font;
+  final int pagesCount = 10;
+  final int startPage = 0;
+  final List<String> content = const [];
+  final double appBarHeigth;
+
+  const Paginator({super.key, required this.font, required this.appBarHeigth});
+
+  @override
+  State<Paginator> createState() => _PaginatorState();
+}
+
+class _PaginatorState extends State<Paginator> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+  @override
+  void initState() {
+    _pageController.addListener(() {
+      setState(() {
+        _currentPage = _pageController.page?.toInt() ?? 0;
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(
+          height: SizeConfig.getMediaHeight(context) - widget.appBarHeigth * 3,
+          width: SizeConfig.getMediaWidth(context),
+          child: PageView.builder(
+            controller: _pageController,
+            scrollDirection: Axis.horizontal,
+            physics: const PageScrollPhysics(),
+            itemCount: widget.pagesCount,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                color: Palette.white,
+                child: Text(
+                  'page: ${index + 1}',
+                  textDirection: TextDirection.ltr,
+                  textAlign: TextAlign.justify,
+                  style: widget.font,
+                ),
+              );
+            },
+          ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: widget.appBarHeigth / 2),
+              child: Text('${_currentPage + 1} of ${widget.pagesCount}',
+                  style: FontConfigs.h3TextStyle.copyWith(fontSize: 10)),
             ),
-          )
-        ],
-      ),
+            Slider(
+              
+                value: _currentPage.toDouble(),
+                min: 0,
+                max: widget.pagesCount.toDouble() - 1,
+                onChanged: (value) {
+                  setState(() {
+                    // validate value, -1 because starts from 0
+                    value = value < 1
+                        ? 0
+                        : value > widget.pagesCount
+                            ? widget.pagesCount.toDouble()
+                            : value;
+                    _pageController.jumpToPage(value.round());
+                  });
+                })
+          ],
+        ),
+      ],
     );
   }
 }
