@@ -130,19 +130,7 @@ class BookFileMeta {
 
 @HiveType(typeId: 7)
 class BookModel {
-  Future<Stream<List<String>>> getContentStream() async {
-    if (File(path).existsSync()) {
-      return Stream.fromFuture(File(path).readAsLines());
-    } else {
-      try {
-        var file = await getFileFromAssets(path);
-        return Stream.fromFuture(file.readAsLines());
-      } catch (e) {
-        debugPrintIt(e);
-        return Stream.value(['file empty']);
-      }
-    }
-  }
+
 
   Future<File> getFileFromAssets(String path) async {
     final byteData = await rootBundle.load(path);
