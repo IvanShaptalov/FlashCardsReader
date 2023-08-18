@@ -6,7 +6,7 @@ import 'package:flashcards_reader/util/checker.dart';
 
 class BinderTxt {
   static Future<BookModel> bind(File file) async {
-    String extension = Checker.getExtension(file.path);
+    String ext = Checker.getExtension(file.path);
     StringBuffer buffer = StringBuffer();
     file.openRead();
     int counter = 0;
@@ -38,7 +38,7 @@ class BinderTxt {
       ),
       file: BookFileMeta(
           size: file.lengthSync(),
-          ext: extension,
+          ext: ext,
           lastModified: DateTime.now().toIso8601String(),
           name: Checker.getName(file.path)),
       author: '',

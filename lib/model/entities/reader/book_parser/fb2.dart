@@ -46,7 +46,7 @@ class BinderFB2 {
       if (fb2BookRaw.images.isNotEmpty) {
         var image = fb2BookRaw.images.first;
         coverPath =
-            '${(await getExternalStorageDirectory())!.path}${uuid.v4()}jpg';
+            '${(await getExternalStorageDirectory())!.path}${uuid.v4()}.jpg';
         if (!File(coverPath).existsSync()) {
           File(coverPath).create().then((value) => value
               .writeAsString(image.bytes)
@@ -56,7 +56,7 @@ class BinderFB2 {
 
       // todo bind pdf file
     }
-    String extension = Checker.getExtension(file.path);
+    String exten = Checker.getExtension(file.path);
     BookModel fb2Book = BookModel(
         author: author,
         description: '',
@@ -77,7 +77,7 @@ class BinderFB2 {
         ),
         file: BookFileMeta(
           size: file.lengthSync(),
-          ext: extension,
+          ext: exten,
           lastModified: DateTime.now().toIso8601String(),
           name: Checker.getName(file.path),
         ));

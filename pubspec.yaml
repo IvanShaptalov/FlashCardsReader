@@ -86,3 +86,10 @@ flutter:
     - assets/guide/1.png
     - assets/guide/2.png
     - assets/guide/3.png
+    - assets/test/test.epub
+    - assets/test/test.mobi
+    - assets/test/test.pdf
+    - assets/test/test.fb2
+    # fb 2 on zip
+    - assets/test/test.zip
+

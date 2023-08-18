@@ -34,6 +34,7 @@ class DataBase {
       testBooksSession = await Hive.openBox<BookModel>('testBooks');
 
       settingsTestSession = await Hive.openBox<BookThemes>('testSettings');
+      settingsSession = await Hive.openBox<BookThemes>('settings');
 
       // database initialized
       dbInitialized = true;
