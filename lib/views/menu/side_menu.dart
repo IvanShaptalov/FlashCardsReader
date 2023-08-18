@@ -46,11 +46,7 @@ class SideMenu extends StatelessWidget {
             leading: Icon(Icons.book_sharp, size: ConfigMenu.iconSize),
             title: const Text(BookCatalog.booksTitle),
             onTap: () {
-              MyRouter.pushPageReplacement(
-                  context,
-                  const ReadingHomePage(
-                    isTutorial: false,
-                  ));
+              MyRouter.pushPageReplacement(context, const ReadingHomePage());
             },
           ),
           ListTile(

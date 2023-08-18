@@ -87,11 +87,9 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
             if (details.stepIndex == 3)
               TextButton(
                   onPressed: () {
+                    GuideProvider.init();
                     MyRouter.pushPageReplacement(
-                        context,
-                        const ReadingHomePage(
-                          isTutorial: true,
-                        ));
+                        context, const ReadingHomePage());
                   },
                   child: Icon(Icons.play_arrow_rounded, color: Palette.white)),
             if (details.stepIndex > 0)
@@ -166,8 +164,7 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
                 Align(
                     alignment: Alignment.centerLeft,
                     child: ValueListenableBuilder(
-                        valueListenable:
-                            BookScanner.manageStorage,
+                        valueListenable: BookScanner.manageStorage,
                         builder: (BuildContext context, bool isGranted,
                             Widget? child) {
                           return GestureDetector(
@@ -203,8 +200,7 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
                         })),
                 const Divider(),
                 ValueListenableBuilder(
-                    valueListenable:
-                        BookScanner.manageStorage,
+                    valueListenable: BookScanner.manageStorage,
                     builder:
                         (BuildContext context, bool isGranted, Widget? child) {
                       return SizedBox(
@@ -250,8 +246,7 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
                       ? lineHeight / 2
                       : lineHeight,
                   child: ValueListenableBuilder(
-                      valueListenable:
-                          BookScanner.manageStorage,
+                      valueListenable: BookScanner.manageStorage,
                       builder: (BuildContext context, bool isGranted,
                           Widget? child) {
                         return ValueListenableBuilder(

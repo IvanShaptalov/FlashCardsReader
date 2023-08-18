@@ -39,7 +39,6 @@ class FlashCardViewBottomSheet {
             return FlashCardViewWall(
               specialContext,
               flashCardCollection,
-              isTutorial: isTutorial,
             );
           });
         });
@@ -51,10 +50,9 @@ class FlashCardViewWall extends StatefulWidget {
   FlashCardViewWall(
     this.specialContext,
     this.flashCardCollection, {
-    this.isTutorial = false,
     super.key,
   });
-  final bool isTutorial;
+
   BuildContext specialContext;
 
   FlashCardCollection flashCardCollection;
@@ -66,7 +64,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
   @override
   void initState() {
     super.initState();
-    if (widget.isTutorial) {
+    if (GuideProvider.isTutorial) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         GuideProvider.introController.next();
 
@@ -482,11 +480,9 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                     onHighlightTap: () {
                                       GuideProvider.introController
                                           .close()
-                                          .then((value) => openQuiz(
-                                              isTutorial: widget.isTutorial));
+                                          .then((value) => openQuiz());
                                     },
                                     step: 6,
-                                    toWrap: widget.isTutorial,
                                   ),
                                 ],
                               ),
@@ -800,8 +796,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
             numberOfFlashCards: widget.flashCardCollection.flashCardSet.length,
             mode: QuizMode.learned,
             fCollection: widget.flashCardCollection,
-            fromPage: 'collection',
-            isTutorial: isTutorial),
+            fromPage: 'collection'),
       );
     } else if (widget.flashCardCollection.isEmpty) {
       OverlayNotificationProvider.showOverlayNotification(
@@ -814,8 +809,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
             numberOfFlashCards: widget.flashCardCollection.flashCardSet.length,
             mode: QuizMode.all,
             fCollection: widget.flashCardCollection,
-            fromPage: 'collection',
-            isTutorial: isTutorial),
+            fromPage: 'collection'),
       );
     }
   }

@@ -21,7 +21,7 @@ class ShortcutsProvider {
     } else if (shortcut == books) {
       shortcut = 'no action set';
       return const ReadingHomePage(
-        isTutorial: false,
+        
       );
     } else {
       return child;

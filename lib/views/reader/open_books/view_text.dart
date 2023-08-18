@@ -33,10 +33,11 @@ class TextBookViewProvider {
 }
 
 class TextBookProvider extends StatefulWidget {
-  const TextBookProvider(
-      {super.key, required this.book, this.isTutorial = false});
+  const TextBookProvider({
+    super.key,
+    required this.book,
+  });
   final BookModel book;
-  final bool isTutorial;
 
   @override
   State<TextBookProvider> createState() => _TextBookProviderState();
@@ -63,7 +64,6 @@ class _TextBookProviderState extends State<TextBookProvider> {
         child: ViewTextBook(
           book: widget.book,
           bookText: textFuture,
-          isTutorial: widget.isTutorial,
           settingsController: SettingsControllerViewText(SettingsService()),
         ),
       ),
@@ -76,14 +76,12 @@ class ViewTextBook extends StatefulWidget {
 
   final BookModel book;
 
-  final bool isTutorial;
   final SettingsControllerViewText settingsController;
 
   const ViewTextBook({
     Key? key,
     required this.book,
     required this.bookText,
-    required this.isTutorial,
     required this.settingsController,
     /*  required this.settingsController */
   }) : super(key: key);
@@ -191,8 +189,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
                       SelectableRegionState selectableRegionState,
                     ) =>
                         FlashReaderAdaptiveContextSelectionMenu(
-                            selectableRegionState: selectableRegionState,
-                            isTutorial: widget.isTutorial),
+                            selectableRegionState: selectableRegionState),
                     onSelectionChanged: (value) {
                       if (value != null) {
                         WordCreatingUIProvider.tmpFlashCard.question =

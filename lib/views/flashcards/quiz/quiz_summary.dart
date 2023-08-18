@@ -140,7 +140,7 @@ List<Widget> loadListItems(BuildContext context) {
   return list;
 }
 
-Widget loadEndQuiz(BuildContext context, String fromPage, bool isTutorial) {
+Widget loadEndQuiz(BuildContext context, String fromPage) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -186,7 +186,7 @@ Widget loadEndQuiz(BuildContext context, String fromPage, bool isTutorial) {
             ),
           ),
           onTap: () {
-            if (isTutorial) {
+            if (GuideProvider.isTutorial) {
               GuideProvider.pushToLastStep();
 
               MyRouter.pushPage(context, HelpPage());

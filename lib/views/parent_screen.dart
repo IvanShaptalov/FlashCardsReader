@@ -71,8 +71,6 @@ class ParentState<T extends ParentStatefulWidget> extends State<T> {
     super.initState();
   }
 
-  
-
   void bindPage(Widget page) {
     widget.page = page;
   }
@@ -83,7 +81,7 @@ class ParentState<T extends ParentStatefulWidget> extends State<T> {
     } else if (widget.shortcut == quizAction) {
       return const QuizMenu();
     } else if (widget.shortcut == books) {
-      return const ReadingHomePage(isTutorial: false,);
+      return const ReadingHomePage();
     } else {
       return widget.page ??
           const Center(child: Text('no page set, use bindPage() method'));

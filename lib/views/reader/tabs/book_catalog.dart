@@ -18,17 +18,16 @@ enum DotsMenu { share, trash, edit }
 enum BookStatus { favourites, haveRead, reading, toRead, allBooks, inTrash }
 
 class BookCatalog extends StatefulWidget {
-  const BookCatalog(
-      {required this.bookStatus,
-      super.key,
-      required this.upperContext,
-      this.isTutorial = false});
+  const BookCatalog({
+    required this.bookStatus,
+    super.key,
+    required this.upperContext,
+  });
   final BuildContext upperContext;
   final BookStatus bookStatus;
   static const icon = Icon(Icons.book_sharp);
   static const String booksTitle = 'Books';
   static const String tabTitle = 'Reading';
-  final bool isTutorial;
 
   @override
   BookCatalogState createState() => BookCatalogState();
@@ -87,7 +86,7 @@ class BookCatalogState extends State<BookCatalog> {
             .where((element) => !element.status.inTrash)
             .toList();
 
-        if (widget.isTutorial && data is List<BookModel>) {
+        if (GuideProvider.isTutorial && data is List<BookModel>) {
           debugPrintIt('is tutorial, added book');
           data!.remove(BookModel.asset());
           data!.insert(0, BookModel.asset());
@@ -104,8 +103,9 @@ class BookCatalogState extends State<BookCatalog> {
     super.initState();
     fetchData();
     // start tutorial if it is
-    if (widget.isTutorial) {
+    if (GuideProvider.isTutorial) {
       GuideProvider.startStep(context, updateCallback, 1);
+      GuideProvider.isTutorial = true;
     }
   }
 
@@ -115,7 +115,6 @@ class BookCatalogState extends State<BookCatalog> {
         OpenBook(
           book: book,
           upperContext: widget.upperContext,
-          isTutorial: isTutorial,
         ));
   }
 
@@ -142,7 +141,7 @@ class BookCatalogState extends State<BookCatalog> {
                   guideText: 'Click on book',
                   step: 1,
                   // if element is first - wrap
-                  toWrap: index == 0 && widget.isTutorial,
+                  toWrap: index == 0 && GuideProvider.isTutorial,
                   child: Container(
                       height: ScreenIdentifier.isNormal(context)
                           ? SizeConfig.getMediaHeight(context, p: 0.21)

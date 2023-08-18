@@ -10,9 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
 class VerticalQuiz extends StatefulWidget {
-  bool isTutorial;
+  
 
-  VerticalQuiz({required this.fromPage, super.key, required this.isTutorial});
+  VerticalQuiz({required this.fromPage, super.key});
   String fromPage;
 
   @override
@@ -43,7 +43,7 @@ class _VerticalQuizState extends State<VerticalQuiz> {
               ),
             ),
           BlocProvider.of<QuizBloc>(context).state.quizModel.isQuizFinished
-              ? loadEndQuiz(context, widget.fromPage, widget.isTutorial)
+              ? loadEndQuiz(context, widget.fromPage)
               : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

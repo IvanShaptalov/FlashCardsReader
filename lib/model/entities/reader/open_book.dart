@@ -25,13 +25,12 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class OpenBook extends ParentStatefulWidget {
   final BookModel book;
   final BuildContext upperContext;
-  final bool isTutorial;
 
-  OpenBook(
-      {required this.book,
-      super.key,
-      required this.upperContext,
-      this.isTutorial = false});
+  OpenBook({
+    required this.book,
+    super.key,
+    required this.upperContext,
+  });
 
   @override
   OpenBookState createState() => OpenBookState();
@@ -62,7 +61,9 @@ class OpenBookState extends ParentState<OpenBook> {
 
     super.initState();
 
-    if (widget.isTutorial) {
+    if (GuideProvider.isTutorial &&
+        GuideProvider.stepRendered(2) &&
+        GuideProvider.stepRendered(3)) {
       debugPrintIt('start tutorial step 2');
 
       GuideProvider.startStep(context, updateCallback, 2);
@@ -71,7 +72,8 @@ class OpenBookState extends ParentState<OpenBook> {
 
   @override
   void dispose() {
-    
+    GuideProvider.setStepRendered(2, false);
+
     super.dispose();
   }
 
@@ -207,7 +209,7 @@ class OpenBookState extends ParentState<OpenBook> {
                               child: GuideProvider.wrapInGuideIfNeeded(
                                 step: 2,
                                 // only first card
-                                toWrap: index == 0 && widget.isTutorial,
+                                toWrap: index == 0 && GuideProvider.isTutorial,
                                 guideText:
                                     'Select flashCard to save words from book',
                                 onHighlightTap: () {
@@ -231,7 +233,6 @@ class OpenBookState extends ParentState<OpenBook> {
               ),
               GuideProvider.wrapInGuideIfNeeded(
                 step: 3,
-                toWrap: widget.isTutorial,
                 guideText: 'Open book',
                 onHighlightTap: () {
                   GuideProvider.introController.close();
@@ -247,11 +248,7 @@ class OpenBookState extends ParentState<OpenBook> {
                     case '.txt':
                       // check that collection has selected flashCard
                       MyRouter.pushPageReplacement(
-                          context,
-                          TextBookProvider(
-                            book: widget.book,
-                            isTutorial: true,
-                          ));
+                          context, TextBookProvider(book: widget.book));
 
                       break;
                     case '.pdf':

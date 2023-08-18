@@ -12,10 +12,8 @@ import 'package:share_plus/share_plus.dart';
 class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
   final SelectableRegionState selectableRegionState;
   const FlashReaderAdaptiveContextSelectionMenu(
-      {Key? key, required this.selectableRegionState, this.isTutorial = false})
+      {Key? key, required this.selectableRegionState})
       : super(key: key);
-
-  final bool isTutorial;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +41,7 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                           BaseNewWordWidgetService.wordFormController
                               .setUp(WordCreatingUIProvider.tmpFlashCard);
 
-                          showUpdateFlashCardMenu(context, isTutorial);
+                          showUpdateFlashCardMenu(context);
                         },
                         icon: const Icon(Icons.translate)),
                     IconButton(
@@ -58,7 +56,7 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
             )));
   }
 
-  void showUpdateFlashCardMenu(BuildContext context, bool isTutorial) async {
+  void showUpdateFlashCardMenu(BuildContext context) async {
     return showModalBottomSheet(
         useSafeArea: true,
         isScrollControlled: true,
@@ -78,7 +76,7 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                         create: (_) => FlashCardBloc(),
                         child: BlocProvider(
                             create: (_) => TranslatorBloc(),
-                            child: BaseNewWordWrapper(isTutorial: isTutorial))),
+                            child: const BaseNewWordWrapper())),
                   ),
                 ],
               ),
@@ -89,9 +87,8 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
 }
 
 class BaseNewWordWrapper extends StatefulWidget {
-  const BaseNewWordWrapper({super.key, required this.isTutorial});
+  const BaseNewWordWrapper({super.key});
 
-  final bool isTutorial;
   @override
   State<BaseNewWordWrapper> createState() => _BaseNewWordWrapperState();
 }
@@ -116,6 +113,6 @@ class _BaseNewWordWrapperState extends State<BaseNewWordWrapper> {
         fromLan: FlashCardProvider.fc.questionLanguage,
         toLan: FlashCardProvider.fc.answerLanguage));
     return BaseNewWordWidgetService.addWordMenu(
-        context: context, callback: callback, isTutorial: widget.isTutorial);
+        context: context, callback: callback);
   }
 }

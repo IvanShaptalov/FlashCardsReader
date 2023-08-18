@@ -25,7 +25,7 @@ class Checker {
         isConnected = true;
         return true;
       }
-    } on SocketException catch (e) {
+    } on Exception catch (e) {
       debugPrintIt(e.toString());
       isConnected = false;
       return false;

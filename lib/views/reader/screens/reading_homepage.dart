@@ -8,8 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ReadingHomePage extends StatefulWidget {
-  const ReadingHomePage({Key? key, required this.isTutorial}) : super(key: key);
-  final bool isTutorial;
+  const ReadingHomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -22,17 +23,13 @@ class _ReadingHomePageState extends State<ReadingHomePage> {
     return BlocProvider(
         create: (_) => FlashCardBloc(),
         child: BlocProvider(
-            create: (_) => BookBloc(),
-            child: ReadingHomePageView(
-              isTutorial: widget.isTutorial,
-            )));
+            create: (_) => BookBloc(), child: ReadingHomePageView()));
   }
 }
 
 // ignore: must_be_immutable
 class ReadingHomePageView extends ParentStatefulWidget {
-  ReadingHomePageView({super.key, required this.isTutorial});
-  final bool isTutorial;
+  ReadingHomePageView({super.key});
 
   @override
   ReadingHomePageState createState() => ReadingHomePageState();
@@ -70,7 +67,6 @@ class ReadingHomePageState extends ParentState<ReadingHomePageView> {
         BookCatalog(
           bookStatus: BookStatus.allBooks,
           upperContext: context,
-          isTutorial: widget.isTutorial,
         ),
         BookCatalog(
           bookStatus: BookStatus.reading,

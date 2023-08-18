@@ -15,7 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
 class QuizTrainer extends ParentStatefulWidget {
-  bool isTutorial;
   final FlashCardCollection fCollection;
   final QuizMode mode;
   final int numberOfFlashCards;
@@ -26,8 +25,7 @@ class QuizTrainer extends ParentStatefulWidget {
       required this.mode,
       required this.fCollection,
       required this.fromPage,
-      super.key,
-      this.isTutorial = false});
+      super.key});
 
   @override
   ParentState<QuizTrainer> createState() => _QuizTrainerState();
@@ -42,8 +40,7 @@ class _QuizTrainerState extends ParentState<QuizTrainer> {
           numberOfFlashCards: widget.numberOfFlashCards,
           mode: widget.mode,
           fCollection: widget.fCollection,
-          fromPage: widget.fromPage,
-          isTutorial: widget.isTutorial),
+          fromPage: widget.fromPage),
     ));
 
     return super.build(context);
@@ -51,7 +48,6 @@ class _QuizTrainerState extends ParentState<QuizTrainer> {
 }
 
 class QuizTrainerView extends StatefulWidget {
-  final bool isTutorial;
   final FlashCardCollection fCollection;
   final QuizMode mode;
   final int numberOfFlashCards;
@@ -62,8 +58,7 @@ class QuizTrainerView extends StatefulWidget {
       required this.mode,
       required this.fCollection,
       required this.fromPage,
-      super.key,
-      required this.isTutorial});
+      super.key});
 
   @override
   State<QuizTrainerView> createState() => _QuizTrainerViewState();
@@ -101,7 +96,7 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
             appBar: AppBar(
               leading: IconButton(
                   onPressed: () {
-                    if (widget.isTutorial) {
+                    if (GuideProvider.isTutorial) {
                       GuideProvider.pushToLastStep();
                       MyRouter.pushPage(context, HelpPage());
                       return;
@@ -122,9 +117,9 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
             ),
             body: ScreenIdentifier.isPortraitRelative(context)
                 ? VerticalQuiz(
-                    fromPage: widget.fromPage, isTutorial: widget.isTutorial)
-                : HorizontalQuiz(
-                    fromPage: widget.fromPage, isTutorial: widget.isTutorial));
+                    fromPage: widget.fromPage,
+                  )
+                : HorizontalQuiz(fromPage: widget.fromPage));
       },
     );
   }

@@ -19,8 +19,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:quick_actions/quick_actions.dart';
 
 class FlashCardScreen extends StatefulWidget {
-  const FlashCardScreen({super.key, this.isTutorial = false});
-  final bool isTutorial;
+  const FlashCardScreen({super.key});
 
   @override
   State<FlashCardScreen> createState() => _FlashCardScreenState();
@@ -61,7 +60,7 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
       create: (_) => FlashCardBloc(),
       child: BlocProvider(
         create: (_) => TranslatorBloc(),
-        child: FlashCardView(isTutorial: widget.isTutorial),
+        child: FlashCardView(),
       ),
     );
   }
@@ -69,8 +68,10 @@ class _FlashCardScreenState extends State<FlashCardScreen> {
 
 // ignore: must_be_immutable
 class FlashCardView extends ParentStatefulWidget {
-  FlashCardView({super.key, this.isTutorial = false});
-  final bool isTutorial;
+  FlashCardView({
+    super.key,
+  });
+
   Duration cardAppearDuration = const Duration(milliseconds: 375);
 
   @override
@@ -163,7 +164,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
   @override
   void initState() {
     super.initState();
-    if (widget.isTutorial) {
+    if (GuideProvider.isTutorial) {
       GuideProvider.startStep(context, updateCallback, 4);
     }
   }
@@ -212,7 +213,6 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                         GuideProvider.introController.next();
                       },
                       step: 4,
-                      toWrap: widget.isTutorial,
                     );
                   } else {
                     return GuideProvider.wrapInGuideIfNeeded(
@@ -222,10 +222,9 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                         FlashCardViewBottomSheet(
                                 creatingFlashC: flashCardCollection[index - 1])
                             .showFlashCardViewMenu(context,
-                                isTutorial: widget.isTutorial);
+                                isTutorial: GuideProvider.isTutorial);
                       },
                       step: 5,
-                      toWrap: widget.isTutorial,
                       child: Transform.scale(
                         scale: 0.85,
                         child: AnimationConfiguration.staggeredGrid(
@@ -250,7 +249,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                /// icon buttons, analog 
+                /// icon buttons, analog
                 /// of bottom navigation bar with flashcards, merge if merge
                 /// mode is on and quiz
                 children: bottomNavigationBarItems()),

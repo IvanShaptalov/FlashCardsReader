@@ -1,6 +1,7 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
+import 'package:flashcards_reader/util/checker.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/add_flashcard_menu.dart';
@@ -67,7 +68,7 @@ class BaseNewWordWidgetService {
                     text: WordCreatingUIProvider.tmpFlashCard.question,
                     context: context,
                     oldWord: state.source);
-              } else {
+              } else if (Checker.isConnected) {
                 wordFormController.answerController.text = state.result;
                 WordCreatingUIProvider.setAnswer(state.result);
                 debugPrintIt(
@@ -155,18 +156,14 @@ class BaseNewWordWidgetService {
     return GuideProvider.wrapInGuideIfNeeded(
       child: GestureDetector(
         onTap: () {
-          saveCollectionFromWord(
+          bool saved = saveCollectionFromWord(
             onSubmitted: false,
             callback: callback,
             context: context,
           );
           BlocProvider.of<TranslatorBloc>(context).add(ClearTranslateEvent());
-          if (isTutorial) {
-            MyRouter.pushPage(
-                context,
-                FlashCardScreen(
-                  isTutorial: isTutorial,
-                ));
+          if (isTutorial && saved) {
+            MyRouter.pushPage(context, const FlashCardScreen());
           }
         },
         child: Container(
@@ -204,7 +201,6 @@ class BaseNewWordWidgetService {
       guideText: 'tap to save word in collection',
       onHighlightTap: () {},
       step: 4,
-      toWrap: isTutorial,
     );
   }
 
@@ -234,7 +230,7 @@ class BaseNewWordWidgetService {
     });
   }
 
-  static void saveCollectionFromWord(
+  static bool saveCollectionFromWord(
       {required bool onSubmitted,
       required BuildContext context,
       required Function callback}) {
@@ -243,10 +239,15 @@ class BaseNewWordWidgetService {
       context
           .read<FlashCardBloc>()
           .add(UpdateFlashCardEvent(flashCardCollection: FlashCardProvider.fc));
+      callback();
+
+      return true;
     } else {
       showValidatorMessage();
+      callback();
+
+      return false;
     }
-    callback();
   }
 
   static void showValidatorMessage() {

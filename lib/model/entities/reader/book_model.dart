@@ -205,7 +205,7 @@ class BookModel {
   @HiveField(7)
   String path;
 
-  bool get isBinded => File(path).existsSync();
+  bool get isBinded => File(path).existsSync() || path.contains('asset');
   @HiveField(9)
   BookStatus status;
 
