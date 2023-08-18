@@ -20,6 +20,11 @@ class GuideProvider {
     GuideProvider.initIndex = 0;
   }
 
+  static void endTutorial() {
+    GuideProvider.isTutorial = false;
+    GuideProvider.initIndex = 0;
+  }
+
   static bool step1Rendered = false;
   static bool step2Rendered = false;
   static bool step3Rendered = false;
@@ -40,7 +45,7 @@ class GuideProvider {
       case 5:
         return step5Rendered;
       case 6:
-        return step5Rendered;
+        return step6Rendered;
       default:
         throw Exception('only from 1 to 6');
     }
@@ -58,8 +63,10 @@ class GuideProvider {
         return step4Rendered = rendered;
       case 5:
         return step5Rendered = rendered;
+      case 6:
+        return step6Rendered = rendered;
       default:
-        throw Exception('only from 1 to 5');
+        throw Exception('only from 1 to 6');
     }
   }
 

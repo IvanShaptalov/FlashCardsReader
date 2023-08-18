@@ -109,7 +109,7 @@ class BookCatalogState extends State<BookCatalog> {
     }
   }
 
-  void openBook(BookModel book, {bool isTutorial = false}) {
+  void openBook(BookModel book) {
     MyRouter.pushPage(
         context,
         OpenBook(
@@ -133,7 +133,7 @@ class BookCatalogState extends State<BookCatalog> {
                 final book = data![index];
                 return GuideProvider.wrapInGuideIfNeeded(
                   onHighlightTap: () async {
-                    openBook(book, isTutorial: true);
+                    openBook(book);
                     await Future.delayed(const Duration(milliseconds: 400))
                         .then(
                             (value) => GuideProvider.introController.jumpTo(2));

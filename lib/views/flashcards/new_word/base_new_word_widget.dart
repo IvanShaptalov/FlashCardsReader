@@ -34,7 +34,9 @@ class BaseNewWordWidgetService {
           callback: callback,
         ),
         addWordsButton(
-            context: context, callback: callback, isTutorial: isTutorial),
+          context: context,
+          callback: callback,
+        ),
       ],
     );
   }
@@ -149,10 +151,10 @@ class BaseNewWordWidgetService {
     );
   }
 
-  static Widget addWordsButton(
-      {required BuildContext context,
-      required Function callback,
-      required bool isTutorial}) {
+  static Widget addWordsButton({
+    required BuildContext context,
+    required Function callback,
+  }) {
     return GuideProvider.wrapInGuideIfNeeded(
       child: GestureDetector(
         onTap: () {
@@ -162,7 +164,7 @@ class BaseNewWordWidgetService {
             context: context,
           );
           BlocProvider.of<TranslatorBloc>(context).add(ClearTranslateEvent());
-          if (isTutorial && saved) {
+          if (GuideProvider.isTutorial && saved) {
             MyRouter.pushPage(context, const FlashCardScreen());
           }
         },

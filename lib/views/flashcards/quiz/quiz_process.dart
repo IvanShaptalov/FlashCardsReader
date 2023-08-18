@@ -97,6 +97,8 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
               leading: IconButton(
                   onPressed: () {
                     if (GuideProvider.isTutorial) {
+                      GuideProvider.endTutorial();
+
                       GuideProvider.pushToLastStep();
                       MyRouter.pushPage(context, HelpPage());
                       return;

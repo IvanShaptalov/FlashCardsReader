@@ -174,12 +174,10 @@ Widget loadEndQuiz(BuildContext context, String fromPage) {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Icon(Icons.arrow_downward_rounded, color: Palette.white),
                     Text(
-                      'Quiz Finished',
+                      'Finish Quiz',
                       style: FontConfigs.backFromQuizTextStyle,
                     ),
-                    Icon(Icons.arrow_downward_rounded, color: Palette.white)
                   ],
                 ),
               ),
@@ -187,8 +185,8 @@ Widget loadEndQuiz(BuildContext context, String fromPage) {
           ),
           onTap: () {
             if (GuideProvider.isTutorial) {
+              GuideProvider.endTutorial();
               GuideProvider.pushToLastStep();
-
               MyRouter.pushPage(context, HelpPage());
               return;
             }

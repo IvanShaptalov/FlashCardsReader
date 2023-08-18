@@ -788,7 +788,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
         ]));
   }
 
-  void openQuiz({bool isTutorial = false}) {
+  void openQuiz() {
     if (widget.flashCardCollection.isLearned) {
       MyRouter.pushPage(
         context,
