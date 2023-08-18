@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/reader/tabs/book_catalog.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
@@ -95,14 +96,20 @@ class ReadingHomePageState extends ParentState<ReadingHomePageView> {
       );
       widget.page = DefaultTabController(
         length: _kTabs.length,
-        child: Scaffold(
-          drawer: Drawer(
-            child: SideMenu(appbar.preferredSize.height),
-          ),
-          appBar: appbar,
-          body: TabBarView(
-            physics: const BouncingScrollPhysics(),
-            children: kTabPages,
+        child: WillPopScope(
+          onWillPop: () { 
+            return Future.value(!GuideProvider.isTutorial);
+           },
+          child: Scaffold(
+            drawer: Drawer(
+              child: SideMenu(appbar.preferredSize.height),
+            ),
+            
+            appBar: appbar,
+            body: TabBarView(
+              physics: const BouncingScrollPhysics(),
+              children: kTabPages,
+            ),
           ),
         ),
       );

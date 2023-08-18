@@ -7,7 +7,7 @@ import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
-import 'package:flashcards_reader/model/entities/reader/open_book.dart';
+import 'package:flashcards_reader/views/reader/open_books/open_book.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

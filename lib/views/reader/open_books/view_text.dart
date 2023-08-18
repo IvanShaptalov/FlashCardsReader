@@ -3,6 +3,7 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
 import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_widget.dart';
 import 'package:flashcards_reader/views/reader/tabs/settings_book.dart';
@@ -143,30 +144,35 @@ class _ViewTextBookState extends State<ViewTextBook> {
     if (appBar != null) {
       appBarHeigth = appBar.preferredSize.height;
     }
-    return Scaffold(
-      appBar: appBar,
-      body: _buildContent(context),
-      bottomSheet: show == true
-          ? BottomSheet(
-              enableDrag: false,
-              builder: (context) => BottomSheetWidget(
-                settingsController: widget.settingsController,
-                settings: {
-                  'size': font.fontSize,
-                  'theme': false,
-                  'font_name': font.fontFamily,
-                },
-                onClickedClose: () => setState(() {
-                  show = false;
-                }),
-                onClickedConfirm: (value) => setState(() {
-                  font = value;
-                  show = false;
-                }),
-              ),
-              onClosing: () {},
-            )
-          : null,
+    return WillPopScope(
+      onWillPop: () {
+        return Future.value(!GuideProvider.isTutorial);
+      },
+      child: Scaffold(
+        appBar: appBar,
+        body: _buildContent(context),
+        bottomSheet: show == true
+            ? BottomSheet(
+                enableDrag: false,
+                builder: (context) => BottomSheetWidget(
+                  settingsController: widget.settingsController,
+                  settings: {
+                    'size': font.fontSize,
+                    'theme': false,
+                    'font_name': font.fontFamily,
+                  },
+                  onClickedClose: () => setState(() {
+                    show = false;
+                  }),
+                  onClickedConfirm: (value) => setState(() {
+                    font = value;
+                    show = false;
+                  }),
+                ),
+                onClosing: () {},
+              )
+            : null,
+      ),
     );
   }
 

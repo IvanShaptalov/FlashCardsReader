@@ -177,83 +177,89 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
       columnCount = ViewColumnCalculator.calculateColumnCount(builderContext);
       var appBar = getAppBar(flashCardCollection);
       appBarHeight = appBar.preferredSize.height;
-      return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: appBar,
-          body: AnimationLimiter(
-            child: GridView.count(
-                mainAxisSpacing:
-                    SizeConfig.getMediaHeight(builderContext, p: 0.04),
-                crossAxisSpacing:
-                    ViewColumnCalculator.calculateCrossSpacing(builderContext),
-                crossAxisCount: columnCount,
-                childAspectRatio: ViewConfig.getCardForm(builderContext),
-                children:
-                    List.generate(flashCardCollection.length + 1, (index) {
-                  /// ===============================[FlashCardCollectionWidget]
-                  // add flashcards
-                  if (index == 0) {
-                    return GuideProvider.wrapInGuideIfNeeded(
-                      child: Transform.scale(
-                        scale: 0.85,
-                        child: AnimationConfiguration.staggeredGrid(
-                          position: index,
-                          duration: DurationConfig.cardAppearDuration,
-                          columnCount: columnCount,
-                          child: SlideAnimation(
-                            child: FadeInAnimation(
-                              child: AddFlashCardWidget(
-                                  updateCallbackCrunch: updateCallback),
+      return WillPopScope(
+        onWillPop: () {
+          return Future.value(!GuideProvider.isTutorial);
+        },
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: appBar,
+            body: AnimationLimiter(
+              child: GridView.count(
+                  mainAxisSpacing:
+                      SizeConfig.getMediaHeight(builderContext, p: 0.04),
+                  crossAxisSpacing: ViewColumnCalculator.calculateCrossSpacing(
+                      builderContext),
+                  crossAxisCount: columnCount,
+                  childAspectRatio: ViewConfig.getCardForm(builderContext),
+                  children:
+                      List.generate(flashCardCollection.length + 1, (index) {
+                    /// ===============================[FlashCardCollectionWidget]
+                    // add flashcards
+                    if (index == 0) {
+                      return GuideProvider.wrapInGuideIfNeeded(
+                        child: Transform.scale(
+                          scale: 0.85,
+                          child: AnimationConfiguration.staggeredGrid(
+                            position: index,
+                            duration: DurationConfig.cardAppearDuration,
+                            columnCount: columnCount,
+                            child: SlideAnimation(
+                              child: FadeInAnimation(
+                                child: AddFlashCardWidget(
+                                    updateCallbackCrunch: updateCallback),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      guideText: 'Use this card\nto create\nnew collections',
-                      onHighlightTap: () {
-                        GuideProvider.introController.next();
-                      },
-                      step: 4,
-                    );
-                  } else {
-                    return GuideProvider.wrapInGuideIfNeeded(
-                      guideText: 'Open\ncollection',
-                      onHighlightTap: () {
-                        FlashCardProvider.fc = flashCardCollection[index - 1];
-                        FlashCardViewBottomSheet(
-                                creatingFlashC: flashCardCollection[index - 1])
-                            .showFlashCardViewMenu(context,
-                                isTutorial: GuideProvider.isTutorial);
-                      },
-                      step: 5,
-                      child: Transform.scale(
-                        scale: 0.85,
-                        child: AnimationConfiguration.staggeredGrid(
-                          position: index,
-                          duration: widget.cardAppearDuration,
-                          columnCount: columnCount,
-                          child: SlideAnimation(
-                            child: FadeInAnimation(
-                              child: FlashCardCollectionWidget(
-                                  flashCardCollection[index - 1],
-                                  updateCallback),
+                        guideText: 'Use this card\nto create\nnew collections',
+                        onHighlightTap: () {
+                          GuideProvider.introController.next();
+                        },
+                        step: 4,
+                      );
+                    } else {
+                      return GuideProvider.wrapInGuideIfNeeded(
+                        guideText: 'Open\ncollection',
+                        onHighlightTap: () {
+                          FlashCardProvider.fc = flashCardCollection[index - 1];
+                          FlashCardViewBottomSheet(
+                                  creatingFlashC:
+                                      flashCardCollection[index - 1])
+                              .showFlashCardViewMenu(context,
+                                  isTutorial: GuideProvider.isTutorial);
+                        },
+                        step: 5,
+                        child: Transform.scale(
+                          scale: 0.85,
+                          child: AnimationConfiguration.staggeredGrid(
+                            position: index,
+                            duration: widget.cardAppearDuration,
+                            columnCount: columnCount,
+                            child: SlideAnimation(
+                              child: FadeInAnimation(
+                                child: FlashCardCollectionWidget(
+                                    flashCardCollection[index - 1],
+                                    updateCallback),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }
-                })),
-          ),
-          drawer: getDrawer(),
-          bottomNavigationBar: BottomAppBar(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      );
+                    }
+                  })),
+            ),
+            drawer: getDrawer(),
+            bottomNavigationBar: BottomAppBar(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                /// icon buttons, analog
-                /// of bottom navigation bar with flashcards, merge if merge
-                /// mode is on and quiz
-                children: bottomNavigationBarItems()),
-          ));
+                  /// icon buttons, analog
+                  /// of bottom navigation bar with flashcards, merge if merge
+                  /// mode is on and quiz
+                  children: bottomNavigationBarItems()),
+            )),
+      );
     });
 
     return super.build(upperContext);

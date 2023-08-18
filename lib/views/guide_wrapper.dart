@@ -96,23 +96,6 @@ class GuideProvider {
     return child;
   }
 
-  static Widget wrapInGuideNote(
-      {required Widget child, required int step, required String guideText}) {
-    if (isTutorial) {
-      return IntroStepTarget(
-        cardDecoration: const IntroCardDecoration(
-            showCloseButton: true, padding: EdgeInsets.all(8)),
-        step: step,
-        controller: introController,
-        cardContents: TextSpan(
-          text: guideText,
-        ),
-        child: child,
-      );
-    }
-    return child;
-  }
-
   static void startStep(
       BuildContext context, Function updateCallback, int step) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
