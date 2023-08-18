@@ -241,8 +241,6 @@ class OpenBookState extends ParentState<OpenBook> {
                   step: 3,
                   guideText: 'Open book',
                   onHighlightTap: () {
-                    GuideProvider.introController.close();
-
                     if (collection != null &&
                         widget.book.flashCardId != null &&
                         collection!
@@ -252,9 +250,9 @@ class OpenBookState extends ParentState<OpenBook> {
                     }
                     switch (widget.book.file.ext) {
                       case '.txt':
+                        debugPrintIt('close step 3 then open new page');
                         // check that collection has selected flashCard
-                        MyRouter.pushPageReplacement(
-                            context, TextBookProvider(book: widget.book));
+                        GuideProvider.introController.close();
 
                         break;
                       case '.pdf':
@@ -278,6 +276,7 @@ class OpenBookState extends ParentState<OpenBook> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)))),
                     onPressed: () {
+                      debugPrintIt(' it not work in tutorial');
                       // check that flashcard selected
                       if (collection != null &&
                           widget.book.flashCardId != null &&
