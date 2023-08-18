@@ -141,7 +141,7 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
                         childAspectRatio: ViewConfig.getCardForm(context),
                         children:
                             List.generate(flashCardCollection.length, (index) {
-                          /// ====================================================================[FlashCardCollectionWidget]
+                          /// ====================[FlashCardCollectionWidget]
                           // add flashcards
                           return Transform.scale(
                             scale: 0.9,
@@ -163,7 +163,8 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                  /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
+                  /// icon buttons, analog of bottom navigation bar with 
+                  /// flashcards, merge if merge mode is on and quiz
                   children: bottomNavigationBarItems(flashCardCollection)),
             ));
 
@@ -177,7 +178,7 @@ class _DeletedFlashCardViewState extends ParentState<DeletedFlashCardView> {
       },
     ));
 
-    /// ===============================================[Select design via context]===============================
+    /// ==============================[Select design via context]=====
 
     return super.build(context);
   }

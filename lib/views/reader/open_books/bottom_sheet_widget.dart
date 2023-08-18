@@ -15,10 +15,10 @@ class BottomSheetWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _BottomSheetWidgetState createState() => _BottomSheetWidgetState();
+  BottomSheetWidgetState createState() => BottomSheetWidgetState();
 }
 
-class _BottomSheetWidgetState extends State<BottomSheetWidget> {
+class BottomSheetWidgetState extends State<BottomSheetWidget> {
   double _rating = 16;
   bool isSwitched = false;
   String _dropDownValue = 'Roboto';
@@ -45,9 +45,9 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Icon(
                 Icons.settings,
                 size: 22,
@@ -170,8 +170,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
         width: 150,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              elevation: 0,
-              primary: color,
+              elevation: 0, backgroundColor: color,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10))),
           onPressed: () => action(),

@@ -27,7 +27,7 @@ class QuizTrainer extends ParentStatefulWidget {
       required this.fCollection,
       required this.fromPage,
       super.key,
-      bool this.isTutorial = false});
+      this.isTutorial = false});
 
   @override
   ParentState<QuizTrainer> createState() => _QuizTrainerState();

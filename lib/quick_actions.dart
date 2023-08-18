@@ -11,7 +11,7 @@ class ShortcutsProvider {
 
   static Widget wrapper({required Widget child}) {
     debugPrintIt(
-        ' ========================================== $shortcut ==========================================');
+        ' ========================================== $shortcut ====');
     if (shortcut == addWordAction) {
       shortcut = 'no action set';
       return AddWordFastScreen();

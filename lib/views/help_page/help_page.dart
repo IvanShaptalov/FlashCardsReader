@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flashcards_reader/model/entities/reader/book_scanner.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
@@ -24,7 +26,7 @@ class _MyHomePageState extends ParentState<HelpPage> {
 
   @override
   Widget build(BuildContext context, {Widget? page}) {
-    /// ===============================================[Create page]===============================
+    /// ===============================================[Create page]======
     var appBar = AppBar(
       title: const Text('Settings and help'),
     );
@@ -40,7 +42,7 @@ class _MyHomePageState extends ParentState<HelpPage> {
       drawer: SideMenu(appBarHeight),
     ));
 
-    /// ===============================================[Select design via context]===============================
+    /// =======================================[Select design via context]==
 
     return super.build(context);
   }
@@ -153,7 +155,7 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
           ),
         ),
 
-        /// =========================================================[STEP 3 - scanning]
+        /// =======================================[STEP 3 - scanning]
         Step(
           title: Text('Scanning',
               style: FontConfigs.h2TextStyle.copyWith(color: Palette.white)),
@@ -186,7 +188,7 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    '${!isGranted ? "tap to grant \n'Read Storage' " : "granted: 'Read Storage'"} ',
+                                    '''${!isGranted ? "tap to grant \n'Read Storage' " : "granted: 'Read Storage'"} ''',
                                     style: FontConfigs.h2TextStyle
                                         .copyWith(color: Palette.white),
                                   ),

@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'dart:io';
 
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
@@ -158,8 +160,7 @@ class BookCatalogState extends State<BookCatalog> {
                             child: Container(
                               height: MediaQuery.of(context).size.height,
                               width: MediaQuery.of(context).size.width * 0.25,
-                              margin:
-                                  const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                               decoration: BoxDecoration(
                                   image: book.coverPath.isNotEmpty &&
                                           File(book.coverPath).existsSync()

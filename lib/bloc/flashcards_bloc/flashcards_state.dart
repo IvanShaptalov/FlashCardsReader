@@ -12,7 +12,7 @@ class FlashcardsState {
   factory FlashcardsState.initial() => FlashcardsState(
       isDeleted: false, flashCards: FlashcardDatabaseProvider.getAll());
 
-  /// ===============================================================[PROVIDER METHODS]===============================================================
+  /// ====================================================[PROVIDER METHODS]==
   FlashcardsState copyWith(
       {List<FlashCardCollection>? flashCards, bool fromTrash = false}) {
     return FlashcardsState(

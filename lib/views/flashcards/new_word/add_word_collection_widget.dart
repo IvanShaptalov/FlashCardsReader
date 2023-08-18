@@ -57,7 +57,8 @@ class _FastAddWordFCcWidgetState extends State<FastAddWordFCcWidget> {
           } else if (widget.book is BookModel ||
               widget.bookContext is BuildContext) {
             throw Exception(
-                'for book menu must provided book, bookContext to work with bloc');
+                '''for book menu must provided book,
+                 bookContext to work with bloc''');
           }
           widget.updateCallback();
           FastCardListProvider.backElementToStart();

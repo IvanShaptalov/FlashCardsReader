@@ -4,8 +4,6 @@ import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 class TextToSpeechService {
-  // static final TextToSpeechService _instance = TextToSpeechService._internal();
-  // factory TextToSpeechService() => _instance;
   static FlutterTts flutterTts = FlutterTts();
 
   static final completer = Completer<void>();

@@ -19,8 +19,8 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
   Duration deleteDuration = const Duration(milliseconds: 170);
   @override
   Widget build(BuildContext context) {
-    debugPrintIt(
-        'bloc provider exists in add flash widget ${BlocProvider.of<TranslatorBloc>(context).state.result}');
+    debugPrintIt('''bloc provider exists in add flash widget 
+        ${BlocProvider.of<TranslatorBloc>(context).state.result}''');
     return AnimatedOpacity(
       opacity: /* widget.toDelete ? 0 : */ 1,
       duration: deleteDuration,
@@ -71,7 +71,7 @@ class AddFlashCardWidgetState extends State<AddFlashCardWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        /// ============================[ADD FLASHCARD MENU OPEN]============================
+                        /// ===========[ADD FLASHCARD MENU OPEN]=============
                         Transform.scale(
                           scale: 3,
                           child: const Padding(

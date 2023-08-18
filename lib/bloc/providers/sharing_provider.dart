@@ -14,7 +14,7 @@ class SharingProvider {
   static File? file;
   static String? saveFolderPath;
 
-  /// ============================================[Export]============================================
+  /// ============================================[Export]=========
 
   static Future<bool> selectPathThenSave(BuildContext context,
       List<FlashCardCollection> collections, String ext) async {
@@ -69,7 +69,7 @@ class SharingProvider {
     }
   }
 
-  /// ============================================[Import]============================================
+  /// ============================================[Import]========
 
   static Future<String?> _pickFile(BuildContext context) async {
     List<String>? result = await PickOrSave().filePicker(
@@ -93,8 +93,9 @@ class SharingProvider {
     } else {
       String ext = Checker.getExtension(filePath!);
 
-      if (![jsonExt, textExt].contains(ext)){
-        OverlayNotificationProvider.showOverlayNotification('Extension $ext not allowed');
+      if (![jsonExt, textExt].contains(ext)) {
+        OverlayNotificationProvider.showOverlayNotification(
+            'Extension $ext not allowed');
         return [];
       }
 

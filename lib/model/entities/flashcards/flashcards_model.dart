@@ -68,7 +68,7 @@ class FlashCard {
 
   @override
   String toString() {
-    return 'FlashCard{fromLanguage: $questionLanguage, toLanguage: $answerLanguage, questionWords: $question, answerWords: $answer}';
+    return '''FlashCard{fromLanguage: $questionLanguage, toLanguage: $answerLanguage, questionWords: $question, answerWords: $answer}''';
   }
 
   @override
@@ -196,18 +196,15 @@ class FlashCardCollection {
   String answerLanguage;
   @override
   String toString() {
-    return 'FlashCardCollection{title: $title, flashCards: $flashCardSet , createdAt: $createdAt}, isDeleted: $isDeleted';
+    return '''FlashCardCollection{title: $title, flashCards: $flashCardSet , createdAt: $createdAt}, isDeleted: $isDeleted''';
   }
 
-  // ignore: unnecessary_null_comparison
   bool get isValid =>
       title.isNotEmpty &&
-      flashCardSet.isNotEmpty && //TODO check it 
+      flashCardSet.isNotEmpty && 
       id.isNotEmpty &&
       questionLanguage.isNotEmpty &&
-      answerLanguage.isNotEmpty &&
-      // ignore: unnecessary_null_comparison
-      createdAt != null;
+      answerLanguage.isNotEmpty;
 
   static List<FlashCardCollection> sortedByDate(
       Set<FlashCardCollection> setFlashcards) {
@@ -216,7 +213,7 @@ class FlashCardCollection {
     return flist;
   }
 
-  /// ====================================================[SORTING TO TRAINING]====================================================
+  /// ====================================================[SORTING TO TRAINING]=
   ///
   List<FlashCard> sortedByDateAscending() {
     List<FlashCard> flist = flashCardSet.toList();

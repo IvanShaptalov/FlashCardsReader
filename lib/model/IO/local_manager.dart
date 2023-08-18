@@ -10,7 +10,7 @@ class LocalManager {
 
   static Directory? deviceRootDirectory;
 
-  /// ============================[UTIL]=========================================
+  /// ============================[UTIL]========================================
   static bool dirExists(String? dirPath) {
     if (dirPath == null) {
       return false;
@@ -36,7 +36,7 @@ class LocalManager {
     return newPath;
   }
 
-  /// ==========================[INITIALIZATION]=================================
+  /// ==========================[INITIALIZATION]============================
 
   static bool get initialized {
     return
@@ -72,7 +72,7 @@ class LocalManager {
     return initialized;
   }
 
-  /// ===========================[CRUD]===========================================
+  /// ===========================[CRUD]=====================================
   static bool createDirectory(String path) {
     var dir = Directory(path);
     if (!dir.existsSync()) {

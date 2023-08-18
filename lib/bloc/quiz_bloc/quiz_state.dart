@@ -47,7 +47,7 @@ class QuizInitial extends QuizState {
         flashList: flashList);
   }
 
-  /// ==============================================[METHODS]==============================================
+  /// ==============================================[METHODS]===========
   QuizInitial changeCollection(FlashCardCollection fCollection) {
     return copyWith(
         stateId: uuid.v4(),

@@ -44,7 +44,7 @@ class FlashCardMock {
 
   @override
   String toString() {
-    return 'FlashCardMock{question: $question, answer: $answer, isCorrect: $isCorrect}';
+    return '''FlashCardMock{question: $question, answer: $answer, isCorrect: $isCorrect}''';
   }
 
   @override

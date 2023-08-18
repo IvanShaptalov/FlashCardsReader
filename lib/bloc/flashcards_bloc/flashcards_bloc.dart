@@ -10,7 +10,6 @@ part 'flashcards_state.dart';
 class FlashCardBloc extends Bloc<FlashCardsEvent, FlashcardsState> {
   FlashCardBloc() : super(FlashcardsState.initial()) {
     on<GetFlashCardsEvent>((event, emit) => getFlashCards(event, emit));
-    // on<DeletePermanentlyEvent>((event, emit) => incrementCounter(event, emit));
     on<MoveToTrashEvent>((event, emit) => moveToTrash(event, emit));
     on<DeleteAllTrashPermanentlyEvent>(
         (event, emit) => deleteAllTrash(event, emit));

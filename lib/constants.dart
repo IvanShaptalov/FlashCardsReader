@@ -195,7 +195,7 @@ String convertLangToTextToSpeechCode(String lang) {
 }
 
 const String langUnsupported = 'Language not supported : ';
-const String checkInternetConnection = 'Check internet connection';
+const String checkInternetConnection = '';
 
 const int ttsMaxLength = 400;
 

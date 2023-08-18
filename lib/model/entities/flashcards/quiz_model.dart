@@ -4,19 +4,21 @@ import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 
 class QuizModel {
-  /// ==============================================[FIELDS AND CONSTRUCTOR]============================================
+  /// ==============================================[FIELDS AND CONSTRUCTOR]===
   final FlashCardCollection flashCardsCollection;
   List<FlashCard> flashList = [];
   int flashIndex;
   FlashCard? currentFCard;
   final QuizMode mode;
 
-  // training is finished when the current flash card index is greater than the number of flash cards in the collection
+  // training is finished when the current flash card index is greater than the 
+  // number of flash cards in the collection
   bool get isQuizFinished => flashIndex > flashList.length;
 
   bool get isEmpty => flashCardsCollection.flashCardSet.isEmpty;
 
-  /// level of learned flash cards, if upper than this value, the flash card considered as learned
+  /// level of learned flash cards, if upper than 
+  /// this value, the flash card considered as learned
 
   QuizModel(
       {required this.flashCardsCollection,
@@ -56,10 +58,10 @@ class QuizModel {
 
   @override
   String toString() {
-    return 'FlashCardTrainingModel{flashCards: $flashCardsCollection, currentFlashCardIndex: $flashIndex, isTrainingFinished: $isQuizFinished}';
+    return '''FlashCardTrainingModel{flashCards: $flashCardsCollection, currentFlashCardIndex: $flashIndex, isTrainingFinished: $isQuizFinished}''';
   }
 
-  /// ================================================[TRAINIG METHODS]================================================
+  /// ================================================[TRAINIG METHODS]=======
   void selectQuizMode() {
     debugPrintIt('now select mode $mode');
     switch (mode) {
@@ -163,7 +165,7 @@ class QuizModel {
     return result;
   }
 
-  /// ================================================[HELPER METHODS]================================================
+  /// ================================================[HELPER METHODS]=====
 
   bool _isFlashCardLearned(FlashCard flashCard) {
     return flashCard.isLearned;

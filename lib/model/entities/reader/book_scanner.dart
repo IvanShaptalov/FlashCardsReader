@@ -17,7 +17,6 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'book_model.dart';
 
-// TODO test on old android device
 class BookScanner {
   static Future<void> init() async {
     getStatus();
@@ -155,7 +154,6 @@ class BookScanner {
       await progressScan();
 
       File file = File(fileEntity.path);
-      // TODO scan in c++ for performance in the future
       String extension = Checker.getExtension(file.path);
       BookModel? model;
       switch (extension) {

@@ -162,7 +162,6 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (widget.isTutorial) {
       GuideProvider.startStep(context, updateCallback, 4);
@@ -190,7 +189,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                 childAspectRatio: ViewConfig.getCardForm(builderContext),
                 children:
                     List.generate(flashCardCollection.length + 1, (index) {
-                  /// ====================================================================[FlashCardCollectionWidget]
+                  /// ===============================[FlashCardCollectionWidget]
                   // add flashcards
                   if (index == 0) {
                     return GuideProvider.wrapInGuideIfNeeded(
@@ -251,7 +250,9 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                /// icon buttons, analog of bottom navigation bar with flashcards, merge if merge mode is on and quiz
+                /// icon buttons, analog 
+                /// of bottom navigation bar with flashcards, merge if merge
+                /// mode is on and quiz
                 children: bottomNavigationBarItems()),
           ));
     });

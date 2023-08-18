@@ -40,7 +40,7 @@ class _SharingPageViewState extends ParentState<SharingPageView> {
 
   @override
   Widget build(BuildContext context, {Widget? page}) {
-    /// ===============================================[Create page]===============================
+    /// ===============================================[Create page]==========
     return BlocBuilder<FlashCardBloc, FlashcardsState>(
         builder: (context, state) {
       var appBar = AppBar(
@@ -134,7 +134,7 @@ class _SharingPageViewState extends ParentState<SharingPageView> {
         drawer: SideMenu(appBarHeight),
       ));
 
-      /// ===============================================[Select design via context]===============================
+      /// ====================[Select design via context]==================
 
       return super.build(context);
     });

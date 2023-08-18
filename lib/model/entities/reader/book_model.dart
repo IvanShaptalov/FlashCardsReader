@@ -284,7 +284,7 @@ class BookModel {
 
   @override
   String toString() {
-    return 'BookModel{title: $title, author: $author, description: $description, cover: $coverPath, language: $language, pageCount: $pageCount, textSnippet: $textSnippet, path: $path, isBinded: $isBinded';
+    return '''BookModel{title: $title, author: $author, description: $description, cover: $coverPath, language: $language, pageCount: $pageCount, textSnippet: $textSnippet, path: $path, isBinded: $isBinded''';
   }
 
   @override

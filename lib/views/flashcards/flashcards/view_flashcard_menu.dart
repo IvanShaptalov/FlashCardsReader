@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
@@ -63,7 +65,6 @@ class FlashCardViewWall extends StatefulWidget {
 class _FlashCardViewWallState extends State<FlashCardViewWall> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (widget.isTutorial) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -389,7 +390,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                     alignment: Alignment.center,
                                     child: GestureDetector(
                                       onTap: () {
-                                        /// ===================================[Export]===========
+                                        /// =============[Export]===========
                                         ExtensionDialog.showExportDialog(
                                             context);
                                       },

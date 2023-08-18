@@ -49,7 +49,7 @@ void main() {
       if (internet) {
         expect(result.toString(), 'Day');
       } else {
-        expect(result.toString(), checkInternetConnection);
+        expect(result.toString(), '');
       }
     });
   });

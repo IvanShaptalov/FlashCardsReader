@@ -44,7 +44,6 @@ class TextBookProvider extends StatefulWidget {
 class _TextBookProviderState extends State<TextBookProvider> {
   Future<String>? textFuture;
   int pages = 0;
-  // TODO merge book settings (2 classes exists now)
   BookSettings bookSettings = BookSettings();
   Future<String>? fString;
   @override
@@ -203,7 +202,6 @@ class _ViewTextBookState extends State<ViewTextBook> {
                             value.plainText;
                       }
                     },
-                    // TODO widget here
 
                     child: Paginator(
                       font: font,

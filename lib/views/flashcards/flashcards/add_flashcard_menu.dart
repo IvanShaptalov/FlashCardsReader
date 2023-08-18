@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
@@ -115,7 +117,7 @@ class FlashCardCreatingWallView extends StatefulWidget {
 class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
   String oldWord = '';
 
-  /// =====================================[WALL]==[BUILD]=====================================
+  /// =====================================[WALL]==[BUILD]=================
   @override
   Widget build(BuildContext context) {
     widget.flashCardFormController.setUp(FlashCardProvider.fc);
