@@ -7,8 +7,29 @@ import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dar
 import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_widget.dart';
 import 'package:flashcards_reader/views/reader/tabs/settings_book.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+class TextBookViewProvider {
+  static bool _hideBar = false;
+  static get hideBar => _hideBar;
+  static void switchBar() {
+    _hideBar = !_hideBar;
+    if (_hideBar) {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    } else {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: SystemUiOverlay.values);
+    }
+  }
+
+  static void dispose() {
+    _hideBar = false;
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+  }
+}
 
 class TextBookProvider extends StatefulWidget {
   const TextBookProvider(
@@ -30,7 +51,6 @@ class _TextBookProviderState extends State<TextBookProvider> {
   void initState() {
     textFuture = widget.book.getAllTextAsync();
 
-    debugPrint('work on isolate');
     super.initState();
   }
 
@@ -81,44 +101,54 @@ class _ViewTextBookState extends State<ViewTextBook> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    TextBookViewProvider.dispose();
+    super.dispose();
+  }
+
   double appBarHeigth = 0;
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
-      actions: [
-        IconButton(
-            onPressed: () {
-              setState(() {
-                show == true ? show = false : show = true;
-              });
-            },
-            icon: const Icon(Icons.more_vert)),
-        const SizedBox(
-          width: 12,
-        ),
-      ],
-      elevation: 0,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            widget.book.title.toString(),
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+    var appBar = !TextBookViewProvider.hideBar
+        ? AppBar(
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      show == true ? show = false : show = true;
+                    });
+                  },
+                  icon: const Icon(Icons.more_vert)),
+              const SizedBox(
+                width: 12,
+              ),
+            ],
+            elevation: 0,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.book.title.toString(),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(widget.book.author.toString(),
+                    style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'Roboto')),
+              ],
             ),
-          ),
-          Text(widget.book.author.toString(),
-              style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.normal,
-                  fontFamily: 'Roboto')),
-        ],
-      ),
-    );
-    appBarHeigth = appBar.preferredSize.height;
+          )
+        : null;
+    if (appBar != null) {
+      appBarHeigth = appBar.preferredSize.height;
+    }
     return Scaffold(
       appBar: appBar,
       body: _buildContent(context),
@@ -149,33 +179,44 @@ class _ViewTextBookState extends State<ViewTextBook> {
   Widget _buildContent(BuildContext context) {
     return Column(
       children: [
-        FutureBuilder(
-          future: widget.bookText,
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.hasData) {
-              return SelectionArea(
-                  contextMenuBuilder: (
-                    BuildContext context,
-                    SelectableRegionState selectableRegionState,
-                  ) =>
-                      FlashReaderAdaptiveContextSelectionMenu(
-                          selectableRegionState: selectableRegionState,
-                          isTutorial: widget.isTutorial),
-                  onSelectionChanged: (value) {
-                    if (value != null) {
-                      WordCreatingUIProvider.tmpFlashCard.question =
-                          value.plainText;
-                    }
-                  },
-                  // TODO widget here
-
-                  child: Paginator(font: font, appBarHeigth: appBarHeigth));
-            } else {
-              return SpinKitWave(
-                color: Palette.green300Primary,
-              );
-            }
+        GestureDetector(
+          onDoubleTap: () {
+            setState(() {
+              TextBookViewProvider.switchBar();
+            });
           },
+          child: FutureBuilder(
+            future: widget.bookText,
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.hasData) {
+                return SelectionArea(
+                    contextMenuBuilder: (
+                      BuildContext context,
+                      SelectableRegionState selectableRegionState,
+                    ) =>
+                        FlashReaderAdaptiveContextSelectionMenu(
+                            selectableRegionState: selectableRegionState,
+                            isTutorial: widget.isTutorial),
+                    onSelectionChanged: (value) {
+                      if (value != null) {
+                        WordCreatingUIProvider.tmpFlashCard.question =
+                            value.plainText;
+                      }
+                    },
+                    // TODO widget here
+
+                    child: Paginator(
+                      font: font,
+                      appBarHeigth: appBarHeigth,
+                      hideBar: TextBookViewProvider.hideBar,
+                    ));
+              } else {
+                return SpinKitWave(
+                  color: Palette.green300Primary,
+                );
+              }
+            },
+          ),
         ),
       ],
     );
@@ -188,8 +229,13 @@ class Paginator extends StatefulWidget {
   final int startPage = 0;
   final List<String> content = const [];
   final double appBarHeigth;
+  final bool hideBar;
 
-  const Paginator({super.key, required this.font, required this.appBarHeigth});
+  const Paginator(
+      {super.key,
+      required this.font,
+      required this.appBarHeigth,
+      required this.hideBar});
 
   @override
   State<Paginator> createState() => _PaginatorState();
@@ -198,6 +244,7 @@ class Paginator extends StatefulWidget {
 class _PaginatorState extends State<Paginator> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+
   @override
   void initState() {
     _pageController.addListener(() {
@@ -209,12 +256,19 @@ class _PaginatorState extends State<Paginator> {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(
-          height: SizeConfig.getMediaHeight(context) - widget.appBarHeigth * 3,
+          height: SizeConfig.getMediaHeight(context) -
+              (widget.hideBar ? 0 : widget.appBarHeigth * 3),
           width: SizeConfig.getMediaWidth(context),
           child: PageView.builder(
             controller: _pageController,
@@ -224,42 +278,45 @@ class _PaginatorState extends State<Paginator> {
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 color: Palette.white,
-                child: Text(
-                  'page: ${index + 1}',
-                  textDirection: TextDirection.ltr,
-                  textAlign: TextAlign.justify,
-                  style: widget.font,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'page: ${index + 1}',
+                    textDirection: TextDirection.ltr,
+                    textAlign: TextAlign.justify,
+                    style: widget.font,
+                  ),
                 ),
               );
             },
           ),
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: widget.appBarHeigth / 2),
-              child: Text('${_currentPage + 1} of ${widget.pagesCount}',
-                  style: FontConfigs.h3TextStyle.copyWith(fontSize: 10)),
-            ),
-            Slider(
-              
-                value: _currentPage.toDouble(),
-                min: 0,
-                max: widget.pagesCount.toDouble() - 1,
-                onChanged: (value) {
-                  setState(() {
-                    // validate value, -1 because starts from 0
-                    value = value < 1
-                        ? 0
-                        : value > widget.pagesCount
-                            ? widget.pagesCount.toDouble()
-                            : value;
-                    _pageController.jumpToPage(value.round());
-                  });
-                })
-          ],
-        ),
+        if (!TextBookViewProvider.hideBar)
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text('${_currentPage + 1} of ${widget.pagesCount}',
+                    style: FontConfigs.h3TextStyle.copyWith(fontSize: 10)),
+              ),
+              Slider(
+                  value: _currentPage.toDouble(),
+                  min: 0,
+                  max: widget.pagesCount.toDouble() - 1,
+                  onChanged: (value) {
+                    setState(() {
+                      // validate value, -1 because starts from 0
+                      value = value < 1
+                          ? 0
+                          : value > widget.pagesCount
+                              ? widget.pagesCount.toDouble()
+                              : value;
+                      _pageController.jumpToPage(value.round());
+                    });
+                  })
+            ],
+          ),
       ],
     );
   }

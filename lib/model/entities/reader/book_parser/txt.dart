@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
-import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/checker.dart';
 
 class BinderTxt {
@@ -37,18 +36,14 @@ class BinderTxt {
         inTrash: false,
         onPage: 0,
       ),
-      settings: BookSettingsToDelete(
-        theme: BookThemes.light,
-      ),
       file: BookFileMeta(
           size: file.lengthSync(),
-          extension: extension,
+          ext: extension,
           lastModified: DateTime.now().toIso8601String(),
           name: Checker.getName(file.path)),
       author: '',
       coverPath: 'assets/images/empty.png',
       description: snippet,
-      isBinded: true,
       language: '',
       pageCount: 0,
     );

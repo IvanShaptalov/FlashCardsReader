@@ -63,7 +63,6 @@ class BinderFB2 {
         coverPath: coverPath,
         language: language,
         pageCount: 0,
-        isBinded: true,
         title: Checker.getName(file.path),
         path: file.path,
         lastAccess: DateTime.now(),
@@ -76,12 +75,9 @@ class BinderFB2 {
           inTrash: false,
           onPage: 0,
         ),
-        settings: BookSettingsToDelete(
-          theme: BookThemes.light,
-        ),
         file: BookFileMeta(
           size: file.lengthSync(),
-          extension: extension,
+          ext: extension,
           lastModified: DateTime.now().toIso8601String(),
           name: Checker.getName(file.path),
         ));

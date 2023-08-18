@@ -8,6 +8,7 @@ import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
+import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_pdf.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
@@ -241,7 +242,7 @@ class OpenBookState extends ParentState<OpenBook> {
                           .contains(widget.book.flashCardId)) {
                     widget.book.flashCardId = FlashCardProvider.fc.id;
                   }
-                  switch (widget.book.file.extension) {
+                  switch (widget.book.file.ext) {
                     case '.txt':
                       // check that collection has selected flashCard
                       MyRouter.pushPageReplacement(
@@ -281,26 +282,31 @@ class OpenBookState extends ParentState<OpenBook> {
                             .contains(widget.book.flashCardId)) {
                       widget.book.flashCardId = FlashCardProvider.fc.id;
                     }
-                    switch (widget.book.file.extension) {
-                      case '.txt':
-                        // check that collection has selected flashCard
-                        MyRouter.pushPageReplacement(
-                            context,
-                            TextBookProvider(
-                              book: widget.book,
-                            ));
+                    if (widget.book.isBinded) {
+                      switch (widget.book.file.ext) {
+                        case '.txt':
+                          // check that collection has selected flashCard
+                          MyRouter.pushPageReplacement(
+                              context,
+                              TextBookProvider(
+                                book: widget.book,
+                              ));
 
-                        break;
-                      case '.pdf':
-                        MyRouter.pushPageReplacement(context,
-                            ViewPDF(widget.book.title, widget.book.path));
+                          break;
+                        case '.pdf':
+                          MyRouter.pushPageReplacement(context,
+                              ViewPDF(widget.book.title, widget.book.path));
 
-                        break;
-                      case '.epub':
-                        break;
-                      case '.fb2':
-                        break;
-                      default:
+                          break;
+                        case '.epub':
+                          break;
+                        case '.fb2':
+                          break;
+                        default:
+                      }
+                    } else {
+                      OverlayNotificationProvider.showOverlayNotification(
+                          'Book not found');
                     }
                   },
                   child: Text("Read Book", style: FontConfigs.h1TextStyle),

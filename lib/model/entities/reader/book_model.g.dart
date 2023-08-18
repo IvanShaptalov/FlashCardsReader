@@ -55,40 +55,6 @@ class BookStatusAdapter extends TypeAdapter<BookStatus> {
           typeId == other.typeId;
 }
 
-class BookSettingsAdapter extends TypeAdapter<BookSettingsToDelete> {
-  @override
-  final int typeId = 5;
-
-  @override
-  BookSettingsToDelete read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return BookSettingsToDelete(
-      theme: fields[0] as BookThemes,
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, BookSettingsToDelete obj) {
-    writer
-      ..writeByte(1)
-      ..writeByte(0)
-      ..write(obj.theme);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is BookSettingsAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
 class BookFileMetaAdapter extends TypeAdapter<BookFileMeta> {
   @override
   final int typeId = 6;
@@ -101,7 +67,7 @@ class BookFileMetaAdapter extends TypeAdapter<BookFileMeta> {
     };
     return BookFileMeta(
       name: fields[0] as String,
-      extension: fields[1] as String,
+      ext: fields[1] as String,
       size: fields[2] as int,
       lastModified: fields[3] as String,
     );
@@ -114,7 +80,7 @@ class BookFileMetaAdapter extends TypeAdapter<BookFileMeta> {
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.extension)
+      ..write(obj.ext)
       ..writeByte(2)
       ..write(obj.size)
       ..writeByte(3)
@@ -151,19 +117,17 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       pageCount: fields[5] as int,
       textSnippet: fields[6] as String,
       path: fields[7] as String,
-      isBinded: fields[8] as bool,
-      flashCardId: fields[13] as String?,
+      flashCardId: fields[12] as String?,
       status: fields[9] as BookStatus,
-      settings: fields[10] as BookSettingsToDelete,
-      file: fields[11] as BookFileMeta,
-      lastAccess: fields[12] as DateTime,
+      file: fields[10] as BookFileMeta,
+      lastAccess: fields[11] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookModel obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -180,17 +144,13 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       ..write(obj.textSnippet)
       ..writeByte(7)
       ..write(obj.path)
-      ..writeByte(8)
-      ..write(obj.isBinded)
       ..writeByte(9)
       ..write(obj.status)
       ..writeByte(10)
-      ..write(obj.settings)
-      ..writeByte(11)
       ..write(obj.file)
-      ..writeByte(12)
+      ..writeByte(11)
       ..write(obj.lastAccess)
-      ..writeByte(13)
+      ..writeByte(12)
       ..write(obj.flashCardId);
   }
 

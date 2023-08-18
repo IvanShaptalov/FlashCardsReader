@@ -6,7 +6,6 @@ import 'dart:io';
 
 import 'package:archive/archive.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
-import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/checker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -25,7 +24,6 @@ class BinderEpub {
     String extension = Checker.getExtension(file.path);
     await _unzip(file);
     BookModel epubBook = BookModel(
-      isBinded: true,
       pageCount: 0,
       title: title.isEmpty ? Checker.getName(file.path) : title,
       path: file.path,
@@ -40,13 +38,10 @@ class BinderEpub {
         inTrash: false,
         onPage: 0,
       ),
-      settings: BookSettingsToDelete(
-        theme: BookThemes.light,
-      ),
       file: BookFileMeta(
           name: Checker.getName(file.path),
           size: file.lengthSync(),
-          extension: extension,
+          ext: extension,
           lastModified: DateTime.now().toIso8601String()),
       coverPath: coverPath,
       language: language,

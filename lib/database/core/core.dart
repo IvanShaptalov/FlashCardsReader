@@ -51,7 +51,6 @@ class DataBase {
       Hive.registerAdapter<FlashCard>(FlashCardAdapter());
       Hive.registerAdapter<BookModel>(BookModelAdapter());
       Hive.registerAdapter<BookStatus>(BookStatusAdapter());
-      Hive.registerAdapter<BookSettingsToDelete>(BookSettingsAdapter());
       Hive.registerAdapter<BookFileMeta>(BookFileMetaAdapter());
       Hive.registerAdapter<BookThemes>(BookThemesAdapter());
       debugPrintIt('Hive adapters registered');

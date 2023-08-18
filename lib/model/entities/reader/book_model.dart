@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:isolate';
 
 import 'package:flashcards_reader/constants.dart';
-import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -94,46 +93,12 @@ class BookStatus {
       };
 }
 
-@HiveType(typeId: 5)
-class BookSettingsToDelete {
-  @HiveField(0)
-  BookThemes theme = BookThemes.light;
-
-  BookSettingsToDelete({
-    required this.theme,
-  });
-
-  @override
-  String toString() {
-    return 'theme: ${theme.toString()}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      other is BookSettingsToDelete &&
-      other.runtimeType == runtimeType &&
-      other.hashCode == hashCode;
-
-  @override
-  int get hashCode => toString().hashCode;
-
-  factory BookSettingsToDelete.fromJson(Map<String, dynamic> json) {
-    return BookSettingsToDelete(
-      theme: json['theme'],
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'theme': theme,
-      };
-}
-
 @HiveType(typeId: 6)
 class BookFileMeta {
   @HiveField(0)
   String name;
   @HiveField(1)
-  String extension;
+  String ext;
   @HiveField(2)
   int size;
   @HiveField(3)
@@ -141,7 +106,7 @@ class BookFileMeta {
 
   BookFileMeta({
     required this.name,
-    required this.extension,
+    required this.ext,
     required this.size,
     required this.lastModified,
   });
@@ -149,7 +114,7 @@ class BookFileMeta {
   factory BookFileMeta.fromJson(Map<String, dynamic> json) {
     return BookFileMeta(
       name: json['name'],
-      extension: json['extension'],
+      ext: json['extension'],
       size: json['size'],
       lastModified: json['lastModified'],
     );
@@ -157,7 +122,7 @@ class BookFileMeta {
 
   Map<String, dynamic> toJson() => {
         'name': name,
-        'extension': extension,
+        'extension': ext,
         'size': size,
         'lastModified': lastModified,
       };
@@ -191,6 +156,13 @@ class BookModel {
   }
 
   Future<String> getAllTextAsync() async {
+    if (path.toLowerCase().contains('asset')) {
+      var file = await getFileFromAssets(path);
+      if (file.existsSync()) {
+        return file.readAsString();
+      }
+    }
+
     var result = await Isolate.run(getText);
     debugPrintIt('а оно то давно уже загрузилось))');
     debugPrintIt(result);
@@ -206,7 +178,7 @@ class BookModel {
     if (File(path).existsSync()) {
       return File(path);
     }
-    return await getFileFromAssets(path);
+    return File(path)..writeAsString('book not found');
   }
 
   static BookModel asset() {
@@ -219,11 +191,9 @@ class BookModel {
         pageCount: 1,
         textSnippet: 'We need much less than we think we need',
         path: 'assets/book/quotes.txt',
-        isBinded: true,
         status: BookStatus.falseStatus(),
-        settings: BookSettingsToDelete(theme: BookThemes.light),
         file: BookFileMeta(
-            extension: textExt,
+            ext: textExt,
             name: 'Live once',
             size: 0,
             lastModified: DateTime.now().toIso8601String()),
@@ -246,17 +216,16 @@ class BookModel {
   String textSnippet;
   @HiveField(7)
   String path;
-  @HiveField(8)
-  bool isBinded;
+
+  bool get isBinded => File(path).existsSync();
   @HiveField(9)
   BookStatus status;
+
   @HiveField(10)
-  BookSettingsToDelete settings;
-  @HiveField(11)
   BookFileMeta file;
-  @HiveField(12)
+  @HiveField(11)
   DateTime lastAccess = DateTime.now();
-  @HiveField(13)
+  @HiveField(12)
   String? flashCardId;
 
   int id() => "$title $description $author $path".hashCode;
@@ -270,10 +239,8 @@ class BookModel {
     required this.pageCount,
     required this.textSnippet,
     required this.path,
-    required this.isBinded,
     this.flashCardId,
     required this.status,
-    required this.settings,
     required this.file,
     required this.lastAccess,
   });
@@ -288,9 +255,7 @@ class BookModel {
         textSnippet: json['textSnippet'],
         path: json['path'],
         coverPath: json['coverPath'],
-        isBinded: json['isBinded'],
         status: BookStatus.fromJson(json['status']),
-        settings: BookSettingsToDelete.fromJson(json['settings']),
         file: BookFileMeta.fromJson(json['file']),
         flashCardId: json['flashCardId'],
         lastAccess: DateTime.parse(json['lastAccess']));
@@ -306,7 +271,6 @@ class BookModel {
         'path': path,
         'isBinded': isBinded,
         'status': status.toJson(),
-        'settings': settings.toJson(),
         'file': file.toJson(),
         'lastAccess': lastAccess.toIso8601String(),
         'flashCardId': flashCardId,
