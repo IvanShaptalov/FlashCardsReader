@@ -71,6 +71,8 @@ class ParentState<T extends ParentStatefulWidget> extends State<T> {
     super.initState();
   }
 
+  
+
   void bindPage(Widget page) {
     widget.page = page;
   }

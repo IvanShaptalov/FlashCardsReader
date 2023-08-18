@@ -196,6 +196,7 @@ String convertLangToTextToSpeechCode(String lang) {
 
 const String langUnsupported = 'Language not supported : ';
 const String checkInternetConnection = '';
+const String googlePlayLink = '';
 
 const int ttsMaxLength = 400;
 

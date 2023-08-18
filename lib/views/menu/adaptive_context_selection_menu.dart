@@ -1,10 +1,13 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
+import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
+import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 
 class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
   final SelectableRegionState selectableRegionState;
@@ -43,7 +46,12 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                           showUpdateFlashCardMenu(context, isTutorial);
                         },
                         icon: const Icon(Icons.translate)),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
+                    IconButton(
+                        onPressed: () {
+                          Share.share('''${TextBookViewProvider.selectedText}
+                              Read, translate and learn with flashReader! $googlePlayLink''');
+                        },
+                        icon: const Icon(Icons.share)),
                   ],
                 )
               ],
@@ -108,9 +116,6 @@ class _BaseNewWordWrapperState extends State<BaseNewWordWrapper> {
         fromLan: FlashCardProvider.fc.questionLanguage,
         toLan: FlashCardProvider.fc.answerLanguage));
     return BaseNewWordWidgetService.addWordMenu(
-      context: context,
-      callback: callback,
-      isTutorial: widget.isTutorial
-    );
+        context: context, callback: callback, isTutorial: widget.isTutorial);
   }
 }

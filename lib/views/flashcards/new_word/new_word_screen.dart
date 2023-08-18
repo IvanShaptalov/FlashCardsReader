@@ -18,26 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quick_actions/quick_actions.dart';
 
-class WordFormContoller {
-  TextEditingController questionController = TextEditingController();
-  TextEditingController answerController = TextEditingController();
-
-  void setUp(FlashCard flashCard, context) {
-    // update controller text
-    questionController.text = flashCard.question;
-    // answerController.text =
-    //     BlocProvider.of<TranslatorBloc>(context).state.result;
-    answerController.text = flashCard.answer;
-
-    // set cursor to the end of the text
-
-    questionController.selection = TextSelection.fromPosition(
-        TextPosition(offset: flashCard.question.length));
-    answerController.selection = TextSelection.fromPosition(
-        TextPosition(offset: flashCard.answer.length));
-  }
-}
-
 class AddWordFastScreen extends ParentStatefulWidget {
   AddWordFastScreen({super.key});
   GoogleTranslatorApiWrapper translator = GoogleTranslatorApiWrapper();

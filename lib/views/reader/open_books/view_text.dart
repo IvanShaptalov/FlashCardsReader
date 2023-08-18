@@ -14,6 +14,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class TextBookViewProvider {
   static bool _hideBar = false;
   static get hideBar => _hideBar;
+  static String selectedText = '';
   static void switchBar() {
     _hideBar = !_hideBar;
     if (_hideBar) {
@@ -95,10 +96,6 @@ class _ViewTextBookState extends State<ViewTextBook> {
   bool show = false;
   TextStyle font = const TextStyle(
       fontSize: 16, fontWeight: FontWeight.normal, fontFamily: 'Roboto');
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -200,9 +197,9 @@ class _ViewTextBookState extends State<ViewTextBook> {
                       if (value != null) {
                         WordCreatingUIProvider.tmpFlashCard.question =
                             value.plainText;
+                        TextBookViewProvider.selectedText = value.plainText;
                       }
                     },
-
                     child: Paginator(
                       font: font,
                       appBarHeigth: appBarHeigth,
