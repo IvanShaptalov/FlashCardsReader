@@ -22,13 +22,13 @@ void main() async {
       expect(model.title, 'quotes.txt');
       expect(model.coverPath, 'assets/images/empty.png');
       expect(model.author, '');
-      expect(model.path,
+      expect(model.fileMeta.path,
           '/data/user/0/com.example.flashcards_reader/cache/assets/book/quotes.txt');
-      expect(model.file.ext, '.txt');
-      expect(File(model.path).existsSync(), true);
+      expect(model.fileMeta.ext, '.txt');
+      expect(File(model.fileMeta.path).existsSync(), true);
 
-      File(model.path).deleteSync();
-      expect(File(model.path).existsSync(), false);
+      File(model.fileMeta.path).deleteSync();
+      expect(File(model.fileMeta.path).existsSync(), false);
     });
 
     testWidgets('fb2 format', (tester) async {
@@ -38,13 +38,13 @@ void main() async {
       expect(model.title, 'test.fb2');
       expect(model.coverPath.endsWith('.jpg'), true);
       expect(model.author, 'Андрей Первухин;');
-      expect(model.path,
+      expect(model.fileMeta.path,
           '/data/user/0/com.example.flashcards_reader/cache/assets/test/test.fb2');
-      expect(model.file.ext, '.fb2');
-      expect(File(model.path).existsSync(), true);
+      expect(model.fileMeta.ext, '.fb2');
+      expect(File(model.fileMeta.path).existsSync(), true);
 
-      File(model.path).deleteSync();
-      expect(File(model.path).existsSync(), false);
+      File(model.fileMeta.path).deleteSync();
+      expect(File(model.fileMeta.path).existsSync(), false);
     });
 
     testWidgets('pdf format', (tester) async {
@@ -54,13 +54,13 @@ void main() async {
       expect(model.title, 'test.pdf');
       expect(model.coverPath.endsWith('.png'), true);
       expect(model.author, '');
-      expect(model.path,
+      expect(model.fileMeta.path,
           '/data/user/0/com.example.flashcards_reader/cache/assets/test/test.pdf');
-      expect(model.file.ext, '.pdf');
-      expect(File(model.path).existsSync(), true);
+      expect(model.fileMeta.ext, '.pdf');
+      expect(File(model.fileMeta.path).existsSync(), true);
 
-      File(model.path).deleteSync();
-      expect(File(model.path).existsSync(), false);
+      File(model.fileMeta.path).deleteSync();
+      expect(File(model.fileMeta.path).existsSync(), false);
     });
 
     testWidgets('epub format', (tester) async {
@@ -70,13 +70,13 @@ void main() async {
       expect(model.title, 'Thus Spake Zarathustra: A Book for All and None');
       expect(model.coverPath.endsWith('jpg'), true);
       expect(model.author, 'Friedrich Wilhelm Nietzsche');
-      expect(model.path,
+      expect(model.fileMeta.path,
           '/data/user/0/com.example.flashcards_reader/cache/assets/test/test.epub');
-      expect(model.file.ext, '.epub');
-      expect(File(model.path).existsSync(), true);
+      expect(model.fileMeta.ext, '.epub');
+      expect(File(model.fileMeta.path).existsSync(), true);
 
-      File(model.path).deleteSync();
-      expect(File(model.path).existsSync(), false);
+      File(model.fileMeta.path).deleteSync();
+      expect(File(model.fileMeta.path).existsSync(), false);
     });
   });
 }

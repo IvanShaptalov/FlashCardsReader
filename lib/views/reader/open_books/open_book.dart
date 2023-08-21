@@ -252,7 +252,7 @@ class OpenBookState extends ParentState<OpenBook> {
                         widget.book.flashCardId = FlashCardProvider.fc.id;
                       }
                       if (widget.book.isBinded) {
-                        switch (widget.book.file.ext) {
+                        switch (widget.book.fileMeta.ext) {
                           case '.txt':
                             // check that collection has selected flashCard
                             MyRouter.pushPageReplacement(
@@ -263,8 +263,10 @@ class OpenBookState extends ParentState<OpenBook> {
 
                             break;
                           case '.pdf':
-                            MyRouter.pushPageReplacement(context,
-                                ViewPDF(widget.book.title, widget.book.path));
+                            MyRouter.pushPageReplacement(
+                                context,
+                                ViewPDF(widget.book.title,
+                                    widget.book.fileMeta.path));
 
                             break;
                           case '.epub':

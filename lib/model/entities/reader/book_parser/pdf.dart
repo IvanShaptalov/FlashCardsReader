@@ -31,21 +31,13 @@ class BinderPdf {
         description: '',
         title: Checker.getName(file.path),
         coverPath: coverPath,
-        path: file.path,
         textSnippet: '',
         lastAccess: DateTime.now(),
-        status: BookStatus(
-          readingPrivate: false,
-          readPrivate: false,
-          toRead: false,
-          favourite: false,
-          inTrash: false,
-          onPage: 0,
-        ),
-        file: BookFileMeta(
+        status: BookStatus.falseStatus(),
+        fileMeta: BookFileMeta(
             size: file.lengthSync(),
             ext: ext,
-            name: Checker.getName(file.path),
+            path: file.path,
             lastModified: DateTime.now().toIso8601String()),
         language: '',
         pageCount: 0);

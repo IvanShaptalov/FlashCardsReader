@@ -66,7 +66,7 @@ class BookFileMetaAdapter extends TypeAdapter<BookFileMeta> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return BookFileMeta(
-      name: fields[0] as String,
+      path: fields[0] as String,
       ext: fields[1] as String,
       size: fields[2] as int,
       lastModified: fields[3] as String,
@@ -78,7 +78,7 @@ class BookFileMetaAdapter extends TypeAdapter<BookFileMeta> {
     writer
       ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.path)
       ..writeByte(1)
       ..write(obj.ext)
       ..writeByte(2)
@@ -116,18 +116,17 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       language: fields[4] as String,
       pageCount: fields[5] as int,
       textSnippet: fields[6] as String,
-      path: fields[7] as String,
-      flashCardId: fields[12] as String?,
-      status: fields[9] as BookStatus,
-      file: fields[10] as BookFileMeta,
-      lastAccess: fields[11] as DateTime,
+      flashCardId: fields[10] as String?,
+      status: fields[7] as BookStatus,
+      fileMeta: fields[8] as BookFileMeta,
+      lastAccess: fields[9] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookModel obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -143,14 +142,12 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       ..writeByte(6)
       ..write(obj.textSnippet)
       ..writeByte(7)
-      ..write(obj.path)
-      ..writeByte(9)
       ..write(obj.status)
-      ..writeByte(10)
-      ..write(obj.file)
-      ..writeByte(11)
+      ..writeByte(8)
+      ..write(obj.fileMeta)
+      ..writeByte(9)
       ..write(obj.lastAccess)
-      ..writeByte(12)
+      ..writeByte(10)
       ..write(obj.flashCardId);
   }
 

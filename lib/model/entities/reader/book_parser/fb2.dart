@@ -64,22 +64,15 @@ class BinderFB2 {
         language: language,
         pageCount: 0,
         title: Checker.getName(file.path),
-        path: file.path,
         lastAccess: DateTime.now(),
         textSnippet: '',
-        status: BookStatus(
-          readingPrivate: false,
-          readPrivate: false,
-          toRead: false,
-          favourite: false,
-          inTrash: false,
-          onPage: 0,
-        ),
-        file: BookFileMeta(
+        status: BookStatus.falseStatus(),
+        fileMeta: BookFileMeta(
           size: file.lengthSync(),
           ext: exten,
           lastModified: DateTime.now().toIso8601String(),
-          name: Checker.getName(file.path),
+                  path: file.path,
+
         ));
     return fb2Book;
 

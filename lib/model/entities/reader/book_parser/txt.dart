@@ -25,22 +25,15 @@ class BinderTxt {
     // model binding to ram
     BookModel txtBook = BookModel(
       title: Checker.getName(file.path),
-      path: file.path,
       lastAccess: DateTime.now(),
       textSnippet: snippet,
-      status: BookStatus(
-        readingPrivate: false,
-        readPrivate: false,
-        toRead: false,
-        favourite: false,
-        inTrash: false,
-        onPage: 0,
+      status: BookStatus.falseStatus(),
+      fileMeta: BookFileMeta(
+        size: file.lengthSync(),
+        ext: ext,
+        lastModified: DateTime.now().toIso8601String(),
+        path: file.path,
       ),
-      file: BookFileMeta(
-          size: file.lengthSync(),
-          ext: ext,
-          lastModified: DateTime.now().toIso8601String(),
-          name: Checker.getName(file.path)),
       author: '',
       coverPath: 'assets/images/empty.png',
       description: snippet,

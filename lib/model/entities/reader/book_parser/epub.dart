@@ -26,20 +26,13 @@ class BinderEpub {
     BookModel epubBook = BookModel(
       pageCount: 0,
       title: title.isEmpty ? Checker.getName(file.path) : title,
-      path: file.path,
       textSnippet: '',
       description: '',
       lastAccess: DateTime.now(),
-      status: BookStatus(
-        readingPrivate: false,
-        readPrivate: false,
-        toRead: false,
-        favourite: false,
-        inTrash: false,
-        onPage: 0,
-      ),
-      file: BookFileMeta(
-          name: Checker.getName(file.path),
+      status: BookStatus.falseStatus(),
+      fileMeta: BookFileMeta(
+                path: file.path,
+
           size: file.lengthSync(),
           ext: extension,
           lastModified: DateTime.now().toIso8601String()),

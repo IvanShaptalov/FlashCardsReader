@@ -96,7 +96,9 @@ class BookStatus {
 @HiveType(typeId: 6)
 class BookFileMeta {
   @HiveField(0)
-  String name;
+  String path;
+
+  /// extension
   @HiveField(1)
   String ext;
   @HiveField(2)
@@ -105,7 +107,7 @@ class BookFileMeta {
   String lastModified;
 
   BookFileMeta({
-    required this.name,
+    required this.path,
     required this.ext,
     required this.size,
     required this.lastModified,
@@ -113,7 +115,7 @@ class BookFileMeta {
 
   factory BookFileMeta.fromJson(Map<String, dynamic> json) {
     return BookFileMeta(
-      name: json['name'],
+      path: json['path'],
       ext: json['extension'],
       size: json['size'],
       lastModified: json['lastModified'],
@@ -121,7 +123,7 @@ class BookFileMeta {
   }
 
   Map<String, dynamic> toJson() => {
-        'name': name,
+        'path': path,
         'extension': ext,
         'size': size,
         'lastModified': lastModified,
@@ -130,7 +132,63 @@ class BookFileMeta {
 
 @HiveType(typeId: 7)
 class BookModel {
+  @HiveField(0)
+  String title;
+  @HiveField(1)
+  String author;
+  @HiveField(2)
+  String description;
+  @HiveField(3)
+  String coverPath;
+  @HiveField(4)
+  String language;
+  @HiveField(5)
+  int pageCount;
+  @HiveField(6)
+  String textSnippet;
 
+  bool get isBinded =>
+      File(fileMeta.path).existsSync() || fileMeta.path.contains('asset');
+  @HiveField(7)
+  BookStatus status;
+
+  @HiveField(8)
+  BookFileMeta fileMeta;
+  @HiveField(9)
+  DateTime lastAccess = DateTime.now();
+  @HiveField(10)
+  String? flashCardId;
+
+  int id() => "$title $description $author ${fileMeta.path}".hashCode;
+
+  BookModel({
+    required this.title,
+    required this.author,
+    required this.description,
+    required this.coverPath,
+    required this.language,
+    required this.pageCount,
+    required this.textSnippet,
+    this.flashCardId,
+    required this.status,
+    required this.fileMeta,
+    required this.lastAccess,
+  });
+
+  factory BookModel.fromJson(Map<String, dynamic> json) {
+    return BookModel(
+        title: json['title'],
+        author: json['author'],
+        description: json['description'],
+        language: json['language'],
+        pageCount: json['pageCount'],
+        textSnippet: json['textSnippet'],
+        coverPath: json['coverPath'],
+        status: BookStatus.fromJson(json['status']),
+        fileMeta: BookFileMeta.fromJson(json['file']),
+        flashCardId: json['flashCardId'],
+        lastAccess: DateTime.parse(json['lastAccess']));
+  }
 
   Future<File> getFileFromAssets(String path) async {
     final byteData = await rootBundle.load(path);
@@ -144,8 +202,8 @@ class BookModel {
   }
 
   Future<String> getAllTextAsync() async {
-    if (path.toLowerCase().contains('asset')) {
-      var file = await getFileFromAssets(path);
+    if (fileMeta.path.toLowerCase().contains('asset')) {
+      var file = await getFileFromAssets(fileMeta.path);
       if (file.existsSync()) {
         return file.readAsString();
       }
@@ -163,10 +221,10 @@ class BookModel {
   }
 
   Future<File> getFile() async {
-    if (File(path).existsSync()) {
-      return File(path);
+    if (File(fileMeta.path).existsSync()) {
+      return File(fileMeta.path);
     }
-    return File(path)..writeAsString('book not found');
+    return File(fileMeta.path)..writeAsString('book not found');
   }
 
   static BookModel asset() {
@@ -178,75 +236,13 @@ class BookModel {
         language: 'en',
         pageCount: 1,
         textSnippet: 'We need much less than we think we need',
-        path: 'assets/book/quotes.txt',
         status: BookStatus.falseStatus(),
-        file: BookFileMeta(
+        fileMeta: BookFileMeta(
             ext: textExt,
-            name: 'Live once',
+            path: 'assets/book/quotes.txt',
             size: 0,
             lastModified: DateTime.now().toIso8601String()),
         lastAccess: DateTime.now());
-  }
-
-  @HiveField(0)
-  String title;
-  @HiveField(1)
-  String author;
-  @HiveField(2)
-  String description;
-  @HiveField(3)
-  String coverPath;
-  @HiveField(4)
-  String language;
-  @HiveField(5)
-  int pageCount;
-  @HiveField(6)
-  String textSnippet;
-  @HiveField(7)
-  String path;
-
-  bool get isBinded => File(path).existsSync() || path.contains('asset');
-  @HiveField(9)
-  BookStatus status;
-
-  @HiveField(10)
-  BookFileMeta file;
-  @HiveField(11)
-  DateTime lastAccess = DateTime.now();
-  @HiveField(12)
-  String? flashCardId;
-
-  int id() => "$title $description $author $path".hashCode;
-
-  BookModel({
-    required this.title,
-    required this.author,
-    required this.description,
-    required this.coverPath,
-    required this.language,
-    required this.pageCount,
-    required this.textSnippet,
-    required this.path,
-    this.flashCardId,
-    required this.status,
-    required this.file,
-    required this.lastAccess,
-  });
-
-  factory BookModel.fromJson(Map<String, dynamic> json) {
-    return BookModel(
-        title: json['title'],
-        author: json['author'],
-        description: json['description'],
-        language: json['language'],
-        pageCount: json['pageCount'],
-        textSnippet: json['textSnippet'],
-        path: json['path'],
-        coverPath: json['coverPath'],
-        status: BookStatus.fromJson(json['status']),
-        file: BookFileMeta.fromJson(json['file']),
-        flashCardId: json['flashCardId'],
-        lastAccess: DateTime.parse(json['lastAccess']));
   }
 
   Map<String, dynamic> toJson() => {
@@ -256,10 +252,9 @@ class BookModel {
         'language': language,
         'pageCount': pageCount,
         'textSnippet': textSnippet,
-        'path': path,
         'isBinded': isBinded,
         'status': status.toJson(),
-        'file': file.toJson(),
+        'file': fileMeta.toJson(),
         'lastAccess': lastAccess.toIso8601String(),
         'flashCardId': flashCardId,
       };
@@ -272,7 +267,7 @@ class BookModel {
 
   @override
   String toString() {
-    return '''BookModel{title: $title, author: $author, description: $description, cover: $coverPath, language: $language, pageCount: $pageCount, textSnippet: $textSnippet, path: $path, isBinded: $isBinded''';
+    return '''BookModel{title: $title, author: $author, description: $description, cover: $coverPath, language: $language, pageCount: $pageCount, textSnippet: $textSnippet, path: ${fileMeta.path}, isBinded: $isBinded''';
   }
 
   @override
