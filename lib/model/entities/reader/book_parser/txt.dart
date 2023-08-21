@@ -24,22 +24,23 @@ class BinderTxt {
 
     // model binding to ram
     BookModel txtBook = BookModel(
-      title: Checker.getName(file.path),
-      lastAccess: DateTime.now(),
-      textSnippet: snippet,
-      status: BookStatus.falseStatus(),
-      fileMeta: BookFileMeta(
-        size: file.lengthSync(),
-        ext: ext,
-        lastModified: DateTime.now().toIso8601String(),
-        path: file.path,
-      ),
-      author: '',
-      coverPath: 'assets/images/empty.png',
-      description: snippet,
-      language: '',
-      pageCount: 0,
-    );
+        title: Checker.getName(file.path),
+        lastAccess: DateTime.now(),
+        textSnippet: snippet,
+        status: BookStatus.falseStatus(),
+        pdfSettings: PDFSettings.asset(),
+        fileMeta: BookFileMeta(
+          size: file.lengthSync(),
+          ext: ext,
+          lastModified: DateTime.now(),
+          path: file.path,
+        ),
+        author: '',
+        coverPath: 'assets/images/empty.png',
+        description: snippet,
+        language: '',
+        pageCount: 0,
+        bookSettings: BookSettings.asset());
     return txtBook;
   }
 }

@@ -67,12 +67,13 @@ class BinderFB2 {
         lastAccess: DateTime.now(),
         textSnippet: '',
         status: BookStatus.falseStatus(),
+        bookSettings: BookSettings.asset(),
+        pdfSettings: PDFSettings.asset(),
         fileMeta: BookFileMeta(
           size: file.lengthSync(),
           ext: exten,
-          lastModified: DateTime.now().toIso8601String(),
-                  path: file.path,
-
+          lastModified: DateTime.now(),
+          path: file.path,
         ));
     return fb2Book;
 

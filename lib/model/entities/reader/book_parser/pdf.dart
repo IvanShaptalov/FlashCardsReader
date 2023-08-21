@@ -34,13 +34,16 @@ class BinderPdf {
         textSnippet: '',
         lastAccess: DateTime.now(),
         status: BookStatus.falseStatus(),
+        pdfSettings: PDFSettings.asset(),
         fileMeta: BookFileMeta(
             size: file.lengthSync(),
             ext: ext,
             path: file.path,
-            lastModified: DateTime.now().toIso8601String()),
+            lastModified: DateTime.now()),
         language: '',
-        pageCount: 0);
+        
+        pageCount: 0,
+        bookSettings: BookSettings.asset(),);
     return pdfBook;
   }
 }

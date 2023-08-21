@@ -29,13 +29,14 @@ class BinderEpub {
       textSnippet: '',
       description: '',
       lastAccess: DateTime.now(),
+      bookSettings: BookSettings.asset(),
+      pdfSettings: PDFSettings.asset(),
       status: BookStatus.falseStatus(),
       fileMeta: BookFileMeta(
-                path: file.path,
-
+          path: file.path,
           size: file.lengthSync(),
           ext: extension,
-          lastModified: DateTime.now().toIso8601String()),
+          lastModified: DateTime.now()),
       coverPath: coverPath,
       language: language,
       author: author,

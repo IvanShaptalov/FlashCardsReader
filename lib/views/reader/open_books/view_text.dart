@@ -46,8 +46,7 @@ class TextBookProvider extends StatefulWidget {
 
 class _TextBookProviderState extends State<TextBookProvider> {
   Future<String>? textFuture;
-  int pages = 0;
-  BookSettings bookSettings = BookSettings();
+  BookSettings bookSettings = BookSettings.asset();
   Future<String>? fString;
   @override
   void initState() {
@@ -207,6 +206,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
                       font: font,
                       appBarHeigth: appBarHeigth,
                       hideBar: TextBookViewProvider.hideBar,
+                      pagesCount: widget.book.bookSettings.pagesCount,
                     ));
               } else {
                 return SpinKitWave(
@@ -223,7 +223,8 @@ class _ViewTextBookState extends State<ViewTextBook> {
 
 class Paginator extends StatefulWidget {
   final TextStyle font;
-  final int pagesCount = 10;
+  final int pagesCount;
+
   final int startPage = 0;
   final List<String> content = const [];
   final double appBarHeigth;
@@ -233,7 +234,8 @@ class Paginator extends StatefulWidget {
       {super.key,
       required this.font,
       required this.appBarHeigth,
-      required this.hideBar});
+      required this.hideBar,
+      required this.pagesCount});
 
   @override
   State<Paginator> createState() => _PaginatorState();

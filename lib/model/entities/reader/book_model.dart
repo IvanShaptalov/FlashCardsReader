@@ -9,6 +9,133 @@ import 'package:path_provider/path_provider.dart';
 part 'book_model.g.dart';
 
 @HiveType(typeId: 4)
+class BookSettings {
+  @HiveField(0)
+  int fontSize;
+  @HiveField(1)
+  String fontColor;
+  @HiveField(2)
+  double lineHeight;
+  @HiveField(3)
+  double wordSpacing;
+  @HiveField(4)
+  double letterSpacing;
+  @HiveField(5)
+  String fontFamily;
+  @HiveField(6)
+  String backgroundColor;
+  @HiveField(7)
+  int currentPage;
+  @HiveField(8)
+  int pagesCount;
+
+  @override
+  String toString() {
+    return '$fontSize, current Page: $currentPage, pagesCount: $pagesCount';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is BookSettings &&
+      other.runtimeType == runtimeType &&
+      other.hashCode == hashCode;
+
+  @override
+  int get hashCode => toString().hashCode;
+
+  BookSettings({
+    required this.fontSize,
+    required this.fontColor,
+    required this.lineHeight,
+    required this.wordSpacing,
+    required this.letterSpacing,
+    required this.fontFamily,
+    required this.backgroundColor,
+    required this.currentPage,
+    required this.pagesCount,
+  });
+
+  factory BookSettings.asset() {
+    return BookSettings(
+        fontSize: 14,
+        fontColor: '#000000',
+        lineHeight: 1.0,
+        wordSpacing: 1.0,
+        letterSpacing: 0.2,
+        fontFamily: 'Roboto',
+        backgroundColor: '#ffffff',
+        currentPage: 0,
+        pagesCount: 0);
+  }
+
+  factory BookSettings.fromJson(Map<String, dynamic> json) {
+    return BookSettings(
+      fontSize: json['fontSize'],
+      fontColor: json['fontColor'],
+      lineHeight: json['lineHeight'],
+      wordSpacing: json['wordSpacing'],
+      letterSpacing: json['letterSpacing'],
+      fontFamily: json['fontFamily'],
+      backgroundColor: json['backgroundColor'],
+      currentPage: json['currentPage'],
+      pagesCount: json['pagesCount'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'fontSize': fontSize,
+        'fontColor': fontColor,
+        'lineHeight': lineHeight,
+        'wordSpacing': wordSpacing,
+        'letterSpacing': letterSpacing,
+        'fontFamily': fontFamily,
+        'backgroundColor': backgroundColor,
+        'currentPage': currentPage,
+        'pagesCount': pagesCount,
+      };
+}
+
+@HiveType(typeId: 5)
+class PDFSettings {
+  @HiveField(0)
+  int scaling = 1;
+  @HiveField(1)
+  int currentPage = 0;
+
+  @override
+  String toString() {
+    return 'scaling $scaling x, current Page: $currentPage';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is PDFSettings &&
+      other.runtimeType == runtimeType &&
+      other.hashCode == hashCode;
+
+  @override
+  int get hashCode => toString().hashCode;
+
+  PDFSettings({required this.scaling, required this.currentPage});
+
+  factory PDFSettings.asset() {
+    return PDFSettings(scaling: 1, currentPage: 0);
+  }
+
+  factory PDFSettings.fromJson(Map<String, dynamic> json) {
+    return PDFSettings(
+      scaling: json['scaling'],
+      currentPage: json['currentPage'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'currentPage': currentPage,
+        'scaling': scaling,
+      };
+}
+
+@HiveType(typeId: 6)
 class BookStatus {
   @HiveField(0)
   bool readingPrivate = false;
@@ -93,7 +220,7 @@ class BookStatus {
       };
 }
 
-@HiveType(typeId: 6)
+@HiveType(typeId: 7)
 class BookFileMeta {
   @HiveField(0)
   String path;
@@ -104,7 +231,7 @@ class BookFileMeta {
   @HiveField(2)
   int size;
   @HiveField(3)
-  String lastModified;
+  DateTime lastModified;
 
   BookFileMeta({
     required this.path,
@@ -113,12 +240,20 @@ class BookFileMeta {
     required this.lastModified,
   });
 
+  factory BookFileMeta.asset() {
+    return BookFileMeta(
+        path: 'assets/book/quotes.txt',
+        ext: textExt,
+        size: 1,
+        lastModified: DateTime.now());
+  }
+
   factory BookFileMeta.fromJson(Map<String, dynamic> json) {
     return BookFileMeta(
       path: json['path'],
       ext: json['extension'],
       size: json['size'],
-      lastModified: json['lastModified'],
+      lastModified: DateTime.parse(json['lastModified']),
     );
   }
 
@@ -126,11 +261,25 @@ class BookFileMeta {
         'path': path,
         'extension': ext,
         'size': size,
-        'lastModified': lastModified,
+        'lastModified': lastModified.toIso8601String(),
       };
+
+  @override
+  String toString() {
+    return 'path $path , Extension: $ext';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is BookFileMeta &&
+      other.runtimeType == runtimeType &&
+      other.hashCode == hashCode;
+
+  @override
+  int get hashCode => toString().hashCode;
 }
 
-@HiveType(typeId: 7)
+@HiveType(typeId: 8)
 class BookModel {
   @HiveField(0)
   String title;
@@ -158,22 +307,27 @@ class BookModel {
   DateTime lastAccess = DateTime.now();
   @HiveField(10)
   String? flashCardId;
+  @HiveField(11)
+  BookSettings bookSettings;
+  @HiveField(12)
+  PDFSettings pdfSettings;
 
   int id() => "$title $description $author ${fileMeta.path}".hashCode;
 
-  BookModel({
-    required this.title,
-    required this.author,
-    required this.description,
-    required this.coverPath,
-    required this.language,
-    required this.pageCount,
-    required this.textSnippet,
-    this.flashCardId,
-    required this.status,
-    required this.fileMeta,
-    required this.lastAccess,
-  });
+  BookModel(
+      {required this.title,
+      required this.author,
+      required this.description,
+      required this.coverPath,
+      required this.language,
+      required this.pageCount,
+      required this.textSnippet,
+      this.flashCardId,
+      required this.status,
+      required this.fileMeta,
+      required this.lastAccess,
+      required this.bookSettings,
+      required this.pdfSettings});
 
   factory BookModel.fromJson(Map<String, dynamic> json) {
     return BookModel(
@@ -187,7 +341,9 @@ class BookModel {
         status: BookStatus.fromJson(json['status']),
         fileMeta: BookFileMeta.fromJson(json['file']),
         flashCardId: json['flashCardId'],
-        lastAccess: DateTime.parse(json['lastAccess']));
+        lastAccess: DateTime.parse(json['lastAccess']),
+        pdfSettings: PDFSettings.fromJson(json['pdfSettings']),
+        bookSettings: BookSettings.fromJson(json['bookSettings']));
   }
 
   Future<File> getFileFromAssets(String path) async {
@@ -237,12 +393,10 @@ class BookModel {
         pageCount: 1,
         textSnippet: 'We need much less than we think we need',
         status: BookStatus.falseStatus(),
-        fileMeta: BookFileMeta(
-            ext: textExt,
-            path: 'assets/book/quotes.txt',
-            size: 0,
-            lastModified: DateTime.now().toIso8601String()),
-        lastAccess: DateTime.now());
+        fileMeta: BookFileMeta.asset(),
+        lastAccess: DateTime.now(),
+        bookSettings: BookSettings.asset(),
+        pdfSettings: PDFSettings.asset());
   }
 
   Map<String, dynamic> toJson() => {
@@ -252,11 +406,14 @@ class BookModel {
         'language': language,
         'pageCount': pageCount,
         'textSnippet': textSnippet,
+        'coverPath': coverPath,
         'isBinded': isBinded,
         'status': status.toJson(),
         'file': fileMeta.toJson(),
         'lastAccess': lastAccess.toIso8601String(),
         'flashCardId': flashCardId,
+        'bookSettings': bookSettings.toJson(),
+        'pdfSettings': pdfSettings.toJson()
       };
 
   static List<BookModel> sortedByDate(List<BookModel> listBook) {
