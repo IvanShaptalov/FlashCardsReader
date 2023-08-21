@@ -1,6 +1,7 @@
 import 'package:flashcards_reader/database/core/core.dart';
 import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
+import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -270,6 +271,15 @@ void main() async {
       await ThemeDatabaseProvider.deleteAsync(isTest: true);
       var theme = await ThemeDatabaseProvider.getAsync(isTest: true);
       expect(theme, BookThemes.light);
+    });
+  });
+
+  group('Database books', () {
+    testWidgets('theme from hive database', (widgetTester) async {
+      BookModel book = BookModel.asset();
+      await BookDatabaseProvider.writeEditAsync(book, isTest: true);
+      BookModel bookFromDb = BookDatabaseProvider.getAll(isTest: true).first;
+      expect(bookFromDb, book);
     });
   });
 }

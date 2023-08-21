@@ -164,7 +164,7 @@ class BookFileMetaAdapter extends TypeAdapter<BookFileMeta> {
       path: fields[0] as String,
       ext: fields[1] as String,
       size: fields[2] as int,
-      lastModified: fields[3],
+      lastModified: fields[3] as DateTime,
     );
   }
 

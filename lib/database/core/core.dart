@@ -54,6 +54,8 @@ class DataBase {
       Hive.registerAdapter<BookStatus>(BookStatusAdapter());
       Hive.registerAdapter<BookFileMeta>(BookFileMetaAdapter());
       Hive.registerAdapter<BookThemes>(BookThemesAdapter());
+      Hive.registerAdapter<PDFSettings>(PDFSettingsAdapter());
+      Hive.registerAdapter<BookSettings>(BookSettingsAdapter());
       debugPrintIt('Hive adapters registered');
     } catch (e) {
       debugPrintIt('Error registering Hive adapters: $e');
