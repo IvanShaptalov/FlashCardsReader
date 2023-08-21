@@ -89,11 +89,14 @@ class BaseNewWordWidgetService {
                 debugPrintIt('answer changed to $text');
               },
               onSubmitted: (value) {
-                saveCollectionFromWord(
+                bool saved = saveCollectionFromWord(
                     onSubmitted: true, callback: callback, context: context);
 
                 BlocProvider.of<TranslatorBloc>(context)
                     .add(ClearTranslateEvent());
+                if (GuideProvider.isTutorial && saved) {
+                  MyRouter.pushPage(context, const FlashCardScreen());
+                }
               },
             ),
           ),
@@ -132,10 +135,13 @@ class BaseNewWordWidgetService {
                 // update the word
               },
               onSubmitted: (value) {
-                saveCollectionFromWord(
+                bool saved = saveCollectionFromWord(
                     onSubmitted: true, callback: callback, context: context);
                 BlocProvider.of<TranslatorBloc>(context)
                     .add(ClearTranslateEvent());
+                if (GuideProvider.isTutorial && saved) {
+                  MyRouter.pushPage(context, const FlashCardScreen());
+                }
               },
             ),
           ),
