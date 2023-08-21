@@ -62,12 +62,10 @@ class BinderFB2 {
         description: '',
         coverPath: coverPath,
         language: language,
-        pageCount: 0,
         title: Checker.getName(file.path),
         lastAccess: DateTime.now(),
-        textSnippet: '',
         status: BookStatus.falseStatus(),
-        bookSettings: BookSettings.asset(),
+        settings: BookSettings.asset(),
         pdfSettings: PDFSettings.asset(),
         fileMeta: BookFileMeta(
           size: file.lengthSync(),

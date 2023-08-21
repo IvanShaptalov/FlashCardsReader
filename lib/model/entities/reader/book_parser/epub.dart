@@ -24,12 +24,10 @@ class BinderEpub {
     String extension = Checker.getExtension(file.path);
     await _unzip(file);
     BookModel epubBook = BookModel(
-      pageCount: 0,
       title: title.isEmpty ? Checker.getName(file.path) : title,
-      textSnippet: '',
       description: '',
       lastAccess: DateTime.now(),
-      bookSettings: BookSettings.asset(),
+      settings: BookSettings.asset(),
       pdfSettings: PDFSettings.asset(),
       status: BookStatus.falseStatus(),
       fileMeta: BookFileMeta(

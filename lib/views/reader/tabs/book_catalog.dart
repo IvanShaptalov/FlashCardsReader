@@ -86,11 +86,12 @@ class BookCatalogState extends State<BookCatalog> {
             .where((element) => !element.status.inTrash)
             .toList();
 
+        
+        }
         if (GuideProvider.isTutorial && data is List<BookModel>) {
           debugPrintIt('is tutorial, added book');
           data!.remove(BookModel.asset());
           data!.insert(0, BookModel.asset());
-        }
     }
   }
 

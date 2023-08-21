@@ -26,7 +26,6 @@ class BinderTxt {
     BookModel txtBook = BookModel(
         title: Checker.getName(file.path),
         lastAccess: DateTime.now(),
-        textSnippet: snippet,
         status: BookStatus.falseStatus(),
         pdfSettings: PDFSettings.asset(),
         fileMeta: BookFileMeta(
@@ -35,12 +34,12 @@ class BinderTxt {
           lastModified: DateTime.now(),
           path: file.path,
         ),
+
         author: '',
         coverPath: 'assets/images/empty.png',
         description: snippet,
         language: '',
-        pageCount: 0,
-        bookSettings: BookSettings.asset());
+        settings: BookSettings.asset());
     return txtBook;
   }
 }

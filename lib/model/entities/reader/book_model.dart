@@ -65,7 +65,7 @@ class BookSettings {
         fontFamily: 'Roboto',
         backgroundColor: '#ffffff',
         currentPage: 0,
-        pagesCount: 0);
+        pagesCount: 2);
   }
 
   factory BookSettings.fromJson(Map<String, dynamic> json) {
@@ -291,10 +291,8 @@ class BookModel {
   String coverPath;
   @HiveField(4)
   String language;
-  @HiveField(5)
-  int pageCount;
-  @HiveField(6)
-  String textSnippet;
+
+
 
   bool get isBinded =>
       File(fileMeta.path).existsSync() || fileMeta.path.contains('asset');
@@ -308,7 +306,7 @@ class BookModel {
   @HiveField(10)
   String? flashCardId;
   @HiveField(11)
-  BookSettings bookSettings;
+  BookSettings settings;
   @HiveField(12)
   PDFSettings pdfSettings;
 
@@ -320,13 +318,11 @@ class BookModel {
       required this.description,
       required this.coverPath,
       required this.language,
-      required this.pageCount,
-      required this.textSnippet,
       this.flashCardId,
       required this.status,
       required this.fileMeta,
       required this.lastAccess,
-      required this.bookSettings,
+      required this.settings,
       required this.pdfSettings});
 
   factory BookModel.fromJson(Map<String, dynamic> json) {
@@ -335,15 +331,13 @@ class BookModel {
         author: json['author'],
         description: json['description'],
         language: json['language'],
-        pageCount: json['pageCount'],
-        textSnippet: json['textSnippet'],
         coverPath: json['coverPath'],
         status: BookStatus.fromJson(json['status']),
         fileMeta: BookFileMeta.fromJson(json['file']),
         flashCardId: json['flashCardId'],
         lastAccess: DateTime.parse(json['lastAccess']),
         pdfSettings: PDFSettings.fromJson(json['pdfSettings']),
-        bookSettings: BookSettings.fromJson(json['bookSettings']));
+        settings: BookSettings.fromJson(json['bookSettings']));
   }
 
   Future<File> getFileFromAssets(String path) async {
@@ -390,12 +384,10 @@ class BookModel {
         description: 'Die hard',
         coverPath: 'assets/book/quotes_skin.png',
         language: 'en',
-        pageCount: 1,
-        textSnippet: 'We need much less than we think we need',
         status: BookStatus.falseStatus(),
         fileMeta: BookFileMeta.asset(),
         lastAccess: DateTime.now(),
-        bookSettings: BookSettings.asset(),
+        settings: BookSettings.asset(),
         pdfSettings: PDFSettings.asset());
   }
 
@@ -404,15 +396,13 @@ class BookModel {
         'author': author,
         'description': description,
         'language': language,
-        'pageCount': pageCount,
-        'textSnippet': textSnippet,
         'coverPath': coverPath,
         'isBinded': isBinded,
         'status': status.toJson(),
         'file': fileMeta.toJson(),
         'lastAccess': lastAccess.toIso8601String(),
         'flashCardId': flashCardId,
-        'bookSettings': bookSettings.toJson(),
+        'bookSettings': settings.toJson(),
         'pdfSettings': pdfSettings.toJson()
       };
 
@@ -424,7 +414,7 @@ class BookModel {
 
   @override
   String toString() {
-    return '''BookModel{title: $title, author: $author, description: $description, cover: $coverPath, language: $language, pageCount: $pageCount, textSnippet: $textSnippet, path: ${fileMeta.path}, isBinded: $isBinded''';
+    return '''BookModel{title: $title, author: $author, description: $description, cover: $coverPath, language: $language, path: ${fileMeta.path}, isBinded: $isBinded''';
   }
 
   @override

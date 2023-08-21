@@ -31,7 +31,6 @@ class BinderPdf {
         description: '',
         title: Checker.getName(file.path),
         coverPath: coverPath,
-        textSnippet: '',
         lastAccess: DateTime.now(),
         status: BookStatus.falseStatus(),
         pdfSettings: PDFSettings.asset(),
@@ -42,8 +41,7 @@ class BinderPdf {
             lastModified: DateTime.now()),
         language: '',
         
-        pageCount: 0,
-        bookSettings: BookSettings.asset(),);
+        settings: BookSettings.asset(),);
     return pdfBook;
   }
 }

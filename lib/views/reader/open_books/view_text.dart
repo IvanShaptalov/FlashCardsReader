@@ -1,16 +1,21 @@
+import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
+import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_widget.dart';
 import 'package:flashcards_reader/views/reader/tabs/settings_book.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/number_symbols_data.dart';
 
 class TextBookViewProvider {
   static bool _hideBar = false;
@@ -33,20 +38,20 @@ class TextBookViewProvider {
   }
 }
 
-class TextBookProvider extends StatefulWidget {
-  const TextBookProvider({
+// ignore: must_be_immutable
+class TextBookProvider extends ParentStatefulWidget {
+  TextBookProvider({
     super.key,
     required this.book,
   });
   final BookModel book;
 
   @override
-  State<TextBookProvider> createState() => _TextBookProviderState();
+  ParentState<TextBookProvider> createState() => _TextBookProviderState();
 }
 
-class _TextBookProviderState extends State<TextBookProvider> {
+class _TextBookProviderState extends ParentState<TextBookProvider> {
   Future<String>? textFuture;
-  BookSettings bookSettings = BookSettings.asset();
   Future<String>? fString;
   @override
   void initState() {
@@ -57,17 +62,21 @@ class _TextBookProviderState extends State<TextBookProvider> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => FlashCardBloc(),
+    widget.page = BlocProvider(
+      create: (_) => BookBloc(),
       child: BlocProvider(
-        create: (_) => TranslatorBloc(),
-        child: ViewTextBook(
-          book: widget.book,
-          bookText: textFuture,
-          settingsController: SettingsControllerViewText(SettingsService()),
+        create: (_) => FlashCardBloc(),
+        child: BlocProvider(
+          create: (_) => TranslatorBloc(),
+          child: ViewTextBook(
+            book: widget.book,
+            bookText: textFuture,
+            settingsController: SettingsControllerViewText(SettingsService()),
+          ),
         ),
       ),
     );
+    return super.build(context);
   }
 }
 
@@ -177,6 +186,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
 
   Widget _buildContent(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         GestureDetector(
           onDoubleTap: () {
@@ -203,11 +213,10 @@ class _ViewTextBookState extends State<ViewTextBook> {
                       }
                     },
                     child: Paginator(
-                      font: font,
-                      appBarHeigth: appBarHeigth,
-                      hideBar: TextBookViewProvider.hideBar,
-                      pagesCount: widget.book.bookSettings.pagesCount,
-                    ));
+                        font: font,
+                        appBarHeigth: appBarHeigth,
+                        hideBar: TextBookViewProvider.hideBar,
+                        book: widget.book));
               } else {
                 return SpinKitWave(
                   color: Palette.green300Primary,
@@ -223,19 +232,18 @@ class _ViewTextBookState extends State<ViewTextBook> {
 
 class Paginator extends StatefulWidget {
   final TextStyle font;
-  final int pagesCount;
 
-  final int startPage = 0;
   final List<String> content = const [];
   final double appBarHeigth;
   final bool hideBar;
+  final BookModel book;
 
   const Paginator(
       {super.key,
       required this.font,
       required this.appBarHeigth,
       required this.hideBar,
-      required this.pagesCount});
+      required this.book});
 
   @override
   State<Paginator> createState() => _PaginatorState();
@@ -243,15 +251,23 @@ class Paginator extends StatefulWidget {
 
 class _PaginatorState extends State<Paginator> {
   final PageController _pageController = PageController();
-  int _currentPage = 0;
+  double _currentPage = 0;
+
+  void changePage(int page) {
+    _pageController.jumpToPage(page);
+  }
 
   @override
   void initState() {
-    _pageController.addListener(() {
-      setState(() {
-        _currentPage = _pageController.page?.toInt() ?? 0;
-      });
-    });
+    _currentPage = widget.book.settings.currentPage.toDouble();
+
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) {
+        setState(() {
+          changePage(_currentPage.round());
+        });
+      },
+    );
     super.initState();
   }
 
@@ -263,18 +279,19 @@ class _PaginatorState extends State<Paginator> {
 
   @override
   Widget build(BuildContext context) {
+    int pagesCount = widget.book.settings.pagesCount;
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
           height: SizeConfig.getMediaHeight(context) -
-              (widget.hideBar ? 0 : widget.appBarHeigth * 3),
+              (widget.hideBar ? 0 : widget.appBarHeigth * 2.5),
           width: SizeConfig.getMediaWidth(context),
           child: PageView.builder(
             controller: _pageController,
             scrollDirection: Axis.horizontal,
             physics: const PageScrollPhysics(),
-            itemCount: widget.pagesCount,
+            itemCount: widget.book.settings.pagesCount,
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 color: Palette.white,
@@ -295,24 +312,28 @@ class _PaginatorState extends State<Paginator> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text('${_currentPage + 1} of ${widget.pagesCount}',
-                    style: FontConfigs.h3TextStyle.copyWith(fontSize: 10)),
-              ),
               Slider(
                   value: _currentPage.toDouble(),
                   min: 0,
-                  max: widget.pagesCount.toDouble() - 1,
+                  max: pagesCount - 1 > 1 ? pagesCount - 1 : 1,
+                  label: '${_currentPage + 1} of $pagesCount',
                   onChanged: (value) {
                     setState(() {
+                      _currentPage = value;
                       // validate value, -1 because starts from 0
-                      value = value < 1
-                          ? 0
-                          : value > widget.pagesCount
-                              ? widget.pagesCount.toDouble()
-                              : value;
-                      _pageController.jumpToPage(value.round());
+
+                      changePage(value.round());
+
+                      if (widget.book.settings.currentPage != value.round()) {
+                        debugPrintIt(
+                            'save current page $_currentPage to book : ${widget.book.title}');
+
+                        BlocProvider.of<BookBloc>(context).add(UpdateBookEvent(
+                            bookModel: widget.book
+                              ..settings.currentPage = _currentPage.round()
+                              // TODO detete it after calculate pages fr
+                              ..settings.pagesCount = 10));
+                      }
                     });
                   })
             ],
