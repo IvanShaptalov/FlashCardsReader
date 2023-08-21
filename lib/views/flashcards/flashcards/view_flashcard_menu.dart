@@ -28,13 +28,14 @@ class FlashCardViewBottomSheet {
 
   late FlashCardCollection flashCardCollection;
 
-  showFlashCardViewMenu(BuildContext specialContext,
-      {bool isTutorial = false}) async {
+  showFlashCardViewMenu(BuildContext specialContext) async {
     showModalBottomSheet(
         isScrollControlled: true,
+        
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
         context: specialContext,
+        
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (BuildContext context, setState) {
             return FlashCardViewWall(
@@ -66,8 +67,9 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
   void initState() {
     super.initState();
     if (GuideProvider.isTutorial) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {});
-      // TODO deleted from here
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        GuideProvider.introController.next();
+      });
     }
   }
 

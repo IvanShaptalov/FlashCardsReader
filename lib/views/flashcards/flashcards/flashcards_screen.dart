@@ -221,13 +221,13 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                     } else {
                       return GuideProvider.wrapInGuideIfNeeded(
                         guideText: 'Open\ncollection',
+                        toWrap: index == 1 && GuideProvider.isTutorial,
                         onHighlightTap: () {
                           FlashCardProvider.fc = flashCardCollection[index - 1];
                           FlashCardViewBottomSheet(
                                   creatingFlashC:
                                       flashCardCollection[index - 1])
-                              .showFlashCardViewMenu(context,
-                                  isTutorial: GuideProvider.isTutorial);
+                              .showFlashCardViewMenu(context);
                         },
                         step: 6,
                         child: Transform.scale(
