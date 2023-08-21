@@ -103,6 +103,10 @@ class _BaseNewWordWrapperState extends State<BaseNewWordWrapper> {
     super.initState();
   }
 
+    @override
+  void dispose() {
+    BaseNewWordWidgetService.dispose();}
+
   @override
   Widget build(BuildContext context) {
     BaseNewWordWidgetService.wordFormController

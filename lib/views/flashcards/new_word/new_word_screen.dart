@@ -7,6 +7,7 @@ import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dar
 import 'package:flashcards_reader/model/entities/translator/api.dart';
 import 'package:flashcards_reader/quick_actions.dart';
 import 'package:flashcards_reader/constants.dart';
+import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
 
 import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/landscape_small.dart';
@@ -105,6 +106,12 @@ class _AddWordViewState extends State<AddWordView> {
       selected = collection.first;
       FlashCardProvider.fc = selected;
     }
+  }
+
+  @override
+  void dispose() {
+    BaseNewWordWidgetService.dispose();
+    super.dispose();
   }
 
   @override

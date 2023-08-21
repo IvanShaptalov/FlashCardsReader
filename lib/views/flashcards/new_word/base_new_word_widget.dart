@@ -47,6 +47,11 @@ class BaseNewWordWidgetService {
   /// method
   static WordFormController wordFormController = WordFormController();
 
+  static void dispose() {
+    wordFormController.dispose();
+    wordFormController = WordFormController();
+  }
+
   static Widget translateListenerWidget(
       {required BuildContext context, required Function callback}) {
     return Row(

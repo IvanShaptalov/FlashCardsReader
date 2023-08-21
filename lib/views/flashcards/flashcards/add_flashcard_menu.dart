@@ -56,6 +56,11 @@ class WordFormController {
     answerController.selection = TextSelection.fromPosition(
         TextPosition(offset: flashCard.answer.length));
   }
+
+  void dispose() {
+    questionController.dispose();
+    answerController.dispose();
+  }
 }
 
 class UpdateFlashCardBottomSheet {
@@ -177,18 +182,19 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
             ),
           Expanded(
               child: Container(
-                color: Palette.amber50,
-                child: SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
+            color: Palette.amber50,
+            child: SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
                   Padding(
                     padding: EdgeInsets.only(
                         top: SizeConfig.getMediaHeight(context, p: 0.03),
                         left: SizeConfig.getMediaWidth(context, p: 0.03),
                         right: SizeConfig.getMediaWidth(context, p: 0.03)),
                     child: TextField(
-                      controller: widget.flashCardFormController.titleController,
+                      controller:
+                          widget.flashCardFormController.titleController,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         labelText: 'Flashcard Collection Name',
@@ -227,10 +233,10 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                     TranslateEvent(
                                         text: WordCreatingUIProvider
                                             .tmpFlashCard.question,
-                                        fromLan:
-                                            FlashCardProvider.fc.questionLanguage,
-                                        toLan:
-                                            FlashCardProvider.fc.answerLanguage));
+                                        fromLan: FlashCardProvider
+                                            .fc.questionLanguage,
+                                        toLan: FlashCardProvider
+                                            .fc.answerLanguage));
                               },
                               icon: const Icon(Icons.swap_horiz_rounded)),
                         ),
@@ -249,38 +255,41 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                       ],
                     ),
                   ),
-              
+
                   Divider(
                     color: Palette.grey,
                     thickness: 1,
                   ),
-              
+
                   /// =================== [Flashcard List] ===================
-              
+
                   Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: 32.0,
                         horizontal: SizeConfig.getMediaWidth(context, p: 0.05)),
                     child: Column(children: [
-                      for (var flashCard
-                          in FlashCardProvider.fc.flashCardSet.toList().reversed)
+                      for (var flashCard in FlashCardProvider.fc.flashCardSet
+                          .toList()
+                          .reversed)
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Align(
                             alignment: Alignment.center,
                             child: SizedBox(
                               height:
-              
+
                                   /// [portrait mode]
                                   ScreenIdentifier.isPortraitRelative(context)
                                       ? SizeConfig.getMediaHeight(context,
-                                          p: ScreenIdentifier.isPortrait(context)
+                                          p: ScreenIdentifier.isPortrait(
+                                                  context)
                                               ? 0.3
                                               : 0.4)
                                       :
-              
+
                                       /// [landscape mode]
-                                      SizeConfig.getMediaHeight(context, p: 0.7),
+                                      SizeConfig.getMediaHeight(context,
+                                          p: 0.7),
                               width: SizeConfig.getMediaWidth(context, p: 0.89),
                               child: Container(
                                   decoration: BoxDecoration(
@@ -309,7 +318,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                   children: [
                                                     SizedBox(
                                                       width: SizeConfig
-                                                          .getMediaWidth(context,
+                                                          .getMediaWidth(
+                                                              context,
                                                               p: 0.6),
                                                       child:
                                                           SingleChildScrollView(
@@ -364,7 +374,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                   children: [
                                                     SizedBox(
                                                       width: SizeConfig
-                                                          .getMediaWidth(context,
+                                                          .getMediaWidth(
+                                                              context,
                                                               p: 0.6),
                                                       child:
                                                           SingleChildScrollView(
@@ -407,7 +418,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                   MainAxisAlignment.spaceAround,
                                               children: [
                                                 RichText(
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   text: TextSpan(
                                                     style: TextStyle(
                                                         fontSize: 12,
@@ -421,10 +433,11 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                                   horizontal:
                                                                       2.0),
                                                           child: Icon(
-                                                              Icons.check_circle,
+                                                              Icons
+                                                                  .check_circle,
                                                               size: 16,
-                                                              color:
-                                                                  Palette.green),
+                                                              color: Palette
+                                                                  .green),
                                                         ),
                                                       ),
                                                       TextSpan(
@@ -451,11 +464,10 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                               PlaceholderAlignment
                                                                   .middle,
                                                           child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          2.0),
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      2.0),
                                                               child: flashCard.wrongAnswers ==
                                                                           0 &&
                                                                       flashCard
@@ -515,16 +527,17 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                               size: 16,
                                                               color: flashCard
                                                                       .isLearned
-                                                                  ? Palette.green
+                                                                  ? Palette
+                                                                      .green
                                                                   : Palette
                                                                       .deepPurple),
                                                         ),
                                                       ),
                                                       TextSpan(
-                                                          text:
-                                                              flashCard.isLearned
-                                                                  ? 'Learned'
-                                                                  : 'Unlearned',
+                                                          text: flashCard
+                                                                  .isLearned
+                                                              ? 'Learned'
+                                                              : 'Unlearned',
                                                           style: FontConfigs
                                                               .h2TextStyle),
                                                     ],
@@ -549,22 +562,24 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                 child: Container(
                                                   height: SizeConfig.getMediaHeight(
                                                       context,
-              
+
                                                       /// [landscape mode]
                                                       p: ScreenIdentifier
                                                               .isPortraitRelative(
                                                                   context)
                                                           ? 0.05
-              
+
                                                           /// [portrait mode]
                                                           : 0.14),
-                                                  width: SizeConfig.getMediaWidth(
-                                                      context,
-                                                      p: 0.3),
+                                                  width:
+                                                      SizeConfig.getMediaWidth(
+                                                          context,
+                                                          p: 0.3),
                                                   decoration: BoxDecoration(
                                                       color: Palette.green200,
                                                       border: Border.all(
-                                                          color: Palette.grey400,
+                                                          color:
+                                                              Palette.grey400,
                                                           width: 1),
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -581,7 +596,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                                       .only(
                                                                   right: 4.0),
                                                           child: Icon(
-                                                            Icons.delete_forever,
+                                                            Icons
+                                                                .delete_forever,
                                                             color:
                                                                 Palette.grey800,
                                                           ),
@@ -605,22 +621,24 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                 child: Container(
                                                   height: SizeConfig.getMediaHeight(
                                                       context,
-              
+
                                                       /// [landscape mode]
                                                       p: ScreenIdentifier
                                                               .isPortraitRelative(
                                                                   context)
                                                           ? 0.05
-              
+
                                                           /// [portrait mode]
                                                           : 0.14),
-                                                  width: SizeConfig.getMediaWidth(
-                                                      context,
-                                                      p: 0.3),
+                                                  width:
+                                                      SizeConfig.getMediaWidth(
+                                                          context,
+                                                          p: 0.3),
                                                   decoration: BoxDecoration(
                                                       color: Palette.green200,
                                                       border: Border.all(
-                                                          color: Palette.grey400,
+                                                          color:
+                                                              Palette.grey400,
                                                           width: 1),
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -637,7 +655,8 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                                                                       .only(
                                                                   right: 4.0),
                                                           child: Icon(
-                                                            Icons.school_outlined,
+                                                            Icons
+                                                                .school_outlined,
                                                             color:
                                                                 Palette.grey800,
                                                           ),
@@ -674,7 +693,7 @@ class _FlashCardCreatingWallViewState extends State<FlashCardCreatingWallView> {
                     ]),
                   ),
                 ])),
-              )),
+          )),
           if (ScreenIdentifier.isPortraitRelative(context))
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
