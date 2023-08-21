@@ -35,4 +35,6 @@ class Palette {
   static Color transparent = Colors.transparent;
 
   static Color white = Colors.white;
+
+  static Color grey600 = Colors.grey.shade600;
 }

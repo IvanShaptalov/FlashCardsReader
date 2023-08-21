@@ -52,7 +52,23 @@ class BaseNewWordWidgetService {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.translate)),
+        ValueListenableBuilder(
+          builder: (BuildContext context, connected, Widget? child) {
+            if (connected) {
+              BlocProvider.of<TranslatorBloc>(context).add(TranslateEvent(
+                  text: WordCreatingUIProvider.tmpFlashCard.question,
+                  fromLan: FlashCardProvider.fc.questionLanguage,
+                  toLan: FlashCardProvider.fc.answerLanguage));
+            }
+            return IconButton(
+                onPressed: () {},
+                icon: connected
+                    ? const Icon(Icons.translate)
+                    : const Icon(
+                        Icons.signal_wifi_connected_no_internet_4_rounded));
+          },
+          valueListenable: Checker.isConnected,
+        ),
         Expanded(
           child: BlocListener<TranslatorBloc, TranslatorState>(
             listener: (context, state) {
@@ -70,34 +86,51 @@ class BaseNewWordWidgetService {
                     text: WordCreatingUIProvider.tmpFlashCard.question,
                     context: context,
                     oldWord: state.source);
-              } else if (Checker.isConnected) {
+              } else if (Checker.isConnected.value) {
                 wordFormController.answerController.text = state.result;
                 WordCreatingUIProvider.setAnswer(state.result);
                 debugPrintIt(
                     'answer changed to ${state.result} from translate');
               }
             },
-            child: TextField(
-              controller: wordFormController.answerController,
-              decoration: InputDecoration(
-                labelText: 'Add Translation',
-                labelStyle: FontConfigs.h3TextStyle,
-              ),
-              onChanged: (text) {
-                WordCreatingUIProvider.setAnswer(text);
-                debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
-                debugPrintIt('answer changed to $text');
-              },
-              onSubmitted: (value) {
-                bool saved = saveCollectionFromWord(
-                    onSubmitted: true, callback: callback, context: context);
-
-                BlocProvider.of<TranslatorBloc>(context)
-                    .add(ClearTranslateEvent());
-                if (GuideProvider.isTutorial && saved) {
-                  MyRouter.pushPage(context, const FlashCardScreen());
+            child: ValueListenableBuilder(
+              builder: (BuildContext context, connected, Widget? child) {
+                if (connected) {
+                  BlocProvider.of<TranslatorBloc>(context).add(TranslateEvent(
+                      text: WordCreatingUIProvider.tmpFlashCard.question,
+                      fromLan: FlashCardProvider.fc.questionLanguage,
+                      toLan: FlashCardProvider.fc.answerLanguage));
                 }
+                return TextField(
+                  controller: wordFormController.answerController,
+                  decoration: InputDecoration(
+                    labelText: 'Add Translation',
+                    hintText: Checker.isConnected.value
+                        ? null
+                        : 'no connection, add translate manually',
+                    hintStyle: const TextStyle(fontSize: 14),
+                    labelStyle: FontConfigs.h3TextStyle,
+                  ),
+                  onChanged: (text) {
+                    WordCreatingUIProvider.setAnswer(text);
+                    debugPrintIt(WordCreatingUIProvider.tmpFlashCard);
+                    debugPrintIt('answer changed to $text');
+                  },
+                  onSubmitted: (value) {
+                    bool saved = saveCollectionFromWord(
+                        onSubmitted: true,
+                        callback: callback,
+                        context: context);
+
+                    BlocProvider.of<TranslatorBloc>(context)
+                        .add(ClearTranslateEvent());
+                    if (GuideProvider.isTutorial && saved) {
+                      MyRouter.pushPage(context, const FlashCardScreen());
+                    }
+                  },
+                );
               },
+              valueListenable: Checker.isConnected,
             ),
           ),
         ),

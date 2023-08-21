@@ -1,4 +1,5 @@
 import 'package:flashcards_reader/model/entities/reader/book_scanner.dart';
+import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 
@@ -16,21 +17,21 @@ class Checker {
   }
 
   /// =========================[Internet]========================
-  static bool isConnected = true;
+  static ValueNotifier<bool> isConnected = ValueNotifier(true);
 
   static Future<bool> connected() async {
     try {
       final response = await InternetAddress.lookup('www.kindacode.com');
       if (response.isNotEmpty) {
-        isConnected = true;
+        isConnected.value = true;
         return true;
       }
     } on Exception catch (e) {
       debugPrintIt(e.toString());
-      isConnected = false;
+      isConnected.value = false;
       return false;
     }
-    isConnected = false;
+    isConnected.value = false;
     return false;
   }
 
@@ -45,7 +46,7 @@ class Checker {
       if (await Checker.connected() && connectionIsLost) {
         debugPrintIt('internet connection is back');
         OverlayNotificationProvider.backOnline();
-        isConnected = true;
+        isConnected.value = true;
         connectionIsLost = false;
       }
       // send once notification about internet connection lost
@@ -53,7 +54,7 @@ class Checker {
           connectionIsLost == false) {
         debugPrintIt('no internet connection');
         OverlayNotificationProvider.showInternetError();
-        isConnected = false;
+        isConnected.value = false;
         connectionIsLost = true;
       }
     }

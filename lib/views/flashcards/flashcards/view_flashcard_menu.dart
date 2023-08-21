@@ -11,6 +11,7 @@ import 'package:flashcards_reader/views/flashcards/quiz/quiz_process.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/widgets/hide_bottom_sheet_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -65,11 +66,8 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
   void initState() {
     super.initState();
     if (GuideProvider.isTutorial) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        GuideProvider.introController.next();
-
-        setState(() {});
-      });
+      WidgetsBinding.instance.addPostFrameCallback((_) async {});
+      // TODO deleted from here
     }
   }
 
@@ -87,27 +85,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
           ),
           height: SizeConfig.getMediaHeight(context, p: 0.85),
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: SizeConfig.getMediaHeight(context, p: 0.03)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.arrow_drop_down,
-                    color: Palette.descriptionIconColor,
-                  ),
-                  Text(
-                    'drag to hide menu',
-                    style: FontConfigs.h2TextStyle,
-                  ),
-                  Icon(
-                    Icons.arrow_drop_down,
-                    color: Palette.descriptionIconColor,
-                  ),
-                ],
-              ),
-            ),
+            const HideBottomSheet(),
             Divider(
               color: Palette.grey,
               thickness: 1,

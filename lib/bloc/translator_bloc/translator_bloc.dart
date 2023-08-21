@@ -11,7 +11,7 @@ part 'translator_state.dart';
 class TranslatorBloc extends Bloc<TranslatorEvent, TranslatorState> {
   TranslatorBloc() : super(TranslatorState(result: '', source: '')) {
     on<TranslateEvent>((event, emit) async {
-      if (Checker.isConnected) {
+      if (Checker.isConnected.value) {
         emit(await state.translate(event.text, event.fromLan, event.toLan));
       }
     });
