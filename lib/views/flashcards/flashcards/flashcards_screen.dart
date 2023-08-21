@@ -165,7 +165,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
   void initState() {
     super.initState();
     if (GuideProvider.isTutorial) {
-      GuideProvider.startStep(context, updateCallback, 4);
+      GuideProvider.startStep(context, updateCallback, 5);
     }
   }
 
@@ -194,7 +194,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                   childAspectRatio: ViewConfig.getCardForm(builderContext),
                   children:
                       List.generate(flashCardCollection.length + 1, (index) {
-                    /// ===============================[FlashCardCollectionWidget]
+                    /// ==========================[FlashCardCollectionWidget]
                     // add flashcards
                     if (index == 0) {
                       return GuideProvider.wrapInGuideIfNeeded(
@@ -216,7 +216,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                         onHighlightTap: () {
                           GuideProvider.introController.next();
                         },
-                        step: 4,
+                        step: 5,
                       );
                     } else {
                       return GuideProvider.wrapInGuideIfNeeded(
@@ -229,7 +229,7 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
                               .showFlashCardViewMenu(context,
                                   isTutorial: GuideProvider.isTutorial);
                         },
-                        step: 5,
+                        step: 6,
                         child: Transform.scale(
                           scale: 0.85,
                           child: AnimationConfiguration.staggeredGrid(

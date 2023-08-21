@@ -445,7 +445,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                       color: Palette.grey,
                                       thickness: 1,
                                     ),
-                                    GuideProvider.wrapInGuideIfNeeded(
+                                    GuideProvider.wrapInIntroIfNeeded(
                                       child: Align(
                                         alignment: Alignment.center,
                                         child: GestureDetector(
@@ -489,12 +489,7 @@ class _FlashCardViewWallState extends State<FlashCardViewWall> {
                                         ),
                                       ),
                                       guideText: 'start quiz',
-                                      onHighlightTap: () {
-                                        GuideProvider.introController
-                                            .close()
-                                            .then((value) => openQuiz());
-                                      },
-                                      step: 6,
+                                      step: 7,
                                     ),
                                   ],
                                 ),

@@ -1,9 +1,11 @@
+import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:intro/intro.dart';
 
 class GuideProvider {
-  static int interactiveStepCount = 6;
+  static int interactiveStepCount = 7;
   static int helpPageStepCount = 4; // five steps from 0
   static IntroController introController =
       IntroController(stepCount: interactiveStepCount);
@@ -32,44 +34,6 @@ class GuideProvider {
   static bool step5Rendered = false;
   static bool step6Rendered = false;
 
-  static bool stepRendered(int step) {
-    switch (step) {
-      case 1:
-        return step1Rendered;
-      case 2:
-        return step2Rendered;
-      case 3:
-        return step3Rendered;
-      case 4:
-        return step4Rendered;
-      case 5:
-        return step5Rendered;
-      case 6:
-        return step6Rendered;
-      default:
-        throw Exception('only from 1 to 6');
-    }
-  }
-
-  static bool setStepRendered(int step, bool rendered) {
-    switch (step) {
-      case 1:
-        return step1Rendered = rendered;
-      case 2:
-        return step2Rendered = rendered;
-      case 3:
-        return step3Rendered = rendered;
-      case 4:
-        return step4Rendered = rendered;
-      case 5:
-        return step5Rendered = rendered;
-      case 6:
-        return step6Rendered = rendered;
-      default:
-        throw Exception('only from 1 to 6');
-    }
-  }
-
   static Widget wrapInGuideIfNeeded(
       {required Widget child,
       required VoidCallback? onHighlightTap,
@@ -77,14 +41,43 @@ class GuideProvider {
       required String guideText,
       bool toWrap = true}) {
     if (isTutorial && toWrap) {
-      setStepRendered(step, true);
       return IntroStepTarget(
+        key: Key(uuid.v4()),
         cardDecoration: const IntroCardDecoration(
             showCloseButton: false,
             showNextButton: false,
             showPreviousButton: false,
             padding: EdgeInsets.all(8)),
         onHighlightTap: onHighlightTap,
+        step: step,
+        controller: introController,
+        cardContents: TextSpan(
+          text: guideText,
+        ),
+        child: child,
+      );
+    }
+    return child;
+  }
+
+  static Widget wrapInIntroIfNeeded(
+      {required Widget child,
+      required int step,
+      required String guideText,
+      bool toWrap = true}) {
+    if (isTutorial && toWrap) {
+      return IntroStepTarget(
+        key: Key(uuid.v4()),
+        cardDecoration: IntroCardDecoration(
+            closeButtonStyle: ButtonStyle(
+                iconColor: MaterialStatePropertyAll(Palette.green300Primary),
+                backgroundColor:
+                    MaterialStatePropertyAll(Palette.green300Primary)),
+            closeButtonLabel: 'ok',
+            showCloseButton: true,
+            showNextButton: false,
+            showPreviousButton: false,
+            padding: const EdgeInsets.all(8)),
         step: step,
         controller: introController,
         cardContents: TextSpan(

@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'dart:io';
 
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
@@ -61,20 +63,11 @@ class OpenBookState extends ParentState<OpenBook> {
 
     super.initState();
 
-    if (GuideProvider.isTutorial &&
-        GuideProvider.stepRendered(2) &&
-        GuideProvider.stepRendered(3)) {
+    if (GuideProvider.isTutorial) {
       debugPrintIt('start tutorial step 2');
 
       GuideProvider.startStep(context, updateCallback, 2);
     }
-  }
-
-  @override
-  void dispose() {
-    GuideProvider.setStepRendered(2, false);
-
-    super.dispose();
   }
 
   void updateCallback() {
@@ -219,7 +212,7 @@ class OpenBookState extends ParentState<OpenBook> {
                                   guideText:
                                       'Select flashCard to save words from book',
                                   onHighlightTap: () {
-                                    GuideProvider.introController.jumpTo(3);
+                                    GuideProvider.introController.next();
                                   },
                                   child: FastAddWordFCcWidget(
                                     collection!.isEmpty
@@ -237,36 +230,9 @@ class OpenBookState extends ParentState<OpenBook> {
                     ),
                   ),
                 ),
-                GuideProvider.wrapInGuideIfNeeded(
+                GuideProvider.wrapInIntroIfNeeded(
                   step: 3,
                   guideText: 'Open book',
-                  onHighlightTap: () {
-                    if (collection != null &&
-                        widget.book.flashCardId != null &&
-                        collection!
-                            .map((e) => e.id)
-                            .contains(widget.book.flashCardId)) {
-                      widget.book.flashCardId = FlashCardProvider.fc.id;
-                    }
-                    switch (widget.book.file.ext) {
-                      case '.txt':
-                        debugPrintIt('close step 3 then open new page');
-                        // check that collection has selected flashCard
-                        GuideProvider.introController.close();
-
-                        break;
-                      case '.pdf':
-                        MyRouter.pushPageReplacement(context,
-                            ViewPDF(widget.book.title, widget.book.path));
-
-                        break;
-                      case '.epub':
-                        break;
-                      case '.fb2':
-                        break;
-                      default:
-                    }
-                  },
                   child: ElevatedButton(
                     style: ButtonStyle(
                         padding:
