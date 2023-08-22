@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
@@ -11,49 +12,60 @@ import 'package:share_plus/share_plus.dart';
 
 class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
   final SelectableRegionState selectableRegionState;
+
+  final void Function() addNoteCallback;
+
   const FlashReaderAdaptiveContextSelectionMenu(
-      {Key? key, required this.selectableRegionState})
+      {Key? key,
+      required this.selectableRegionState,
+      required this.addNoteCallback})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => FlashCardBloc(),
+        create: (_) => BookBloc(),
         child: BlocProvider(
-            create: (_) => TranslatorBloc(),
-            child: AdaptiveTextSelectionToolbar(
-              anchors: selectableRegionState.contextMenuAnchors,
-              children: [
-                Wrap(
-                  spacing: 5,
+            create: (_) => FlashCardBloc(),
+            child: BlocProvider(
+                create: (_) => TranslatorBloc(),
+                child: AdaptiveTextSelectionToolbar(
+                  anchors: selectableRegionState.contextMenuAnchors,
                   children: [
-                    IconButton(
-                        onPressed: selectableRegionState.contextMenuButtonItems
-                            .firstWhere((element) =>
-                                element.type == ContextMenuButtonType.copy)
-                            .onPressed,
-                        icon: const Icon(Icons.copy)),
-                    IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.format_quote_rounded)),
-                    IconButton(
-                        onPressed: () {
-                          BaseNewWordWidgetService.wordFormController
-                              .setUp(WordCreatingUIProvider.tmpFlashCard);
+                    Wrap(
+                      spacing: 5,
+                      children: [
+                        IconButton(
+                            onPressed: selectableRegionState
+                                .contextMenuButtonItems
+                                .firstWhere((element) =>
+                                    element.type == ContextMenuButtonType.copy)
+                                .onPressed,
+                            icon: const Icon(Icons.copy)),
+                        IconButton(
+                            onPressed: () {
+                              addNoteCallback();
+                            },
+                            icon: const Icon(Icons.format_quote_rounded)),
+                        IconButton(
+                            onPressed: () {
+                              BaseNewWordWidgetService.wordFormController
+                                  .setUp(WordCreatingUIProvider.tmpFlashCard);
 
-                          showUpdateFlashCardMenu(context);
-                        },
-                        icon: const Icon(Icons.translate)),
-                    IconButton(
-                        onPressed: () {
-                          Share.share('''${TextBookViewProvider.selectedText}
+                              showUpdateFlashCardMenu(context);
+                            },
+                            icon: const Icon(Icons.translate)),
+                        IconButton(
+                            onPressed: () {
+                              Share.share(
+                                  '''${TextBookViewProvider.selectedText}
                               Read, translate and learn with flashReader! $googlePlayLink''');
-                        },
-                        icon: const Icon(Icons.share)),
+                            },
+                            icon: const Icon(Icons.share)),
+                      ],
+                    )
                   ],
-                )
-              ],
-            )));
+                ))));
   }
 
   void showUpdateFlashCardMenu(BuildContext context) async {

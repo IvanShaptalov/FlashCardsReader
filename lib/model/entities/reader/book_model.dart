@@ -141,6 +141,8 @@ class BookNotes {
   @HiveField(0)
   Map<String, dynamic> notes;
 
+  int get lenght => notes.length;
+
   @override
   String toString() {
     return 'notes $notes\n, count: ${notes.length}';

@@ -68,7 +68,7 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
           ),
           Divider(
             thickness: 1,
-            color: Colors.grey[800],
+            color: Palette.grey800,
             height: 35,
           ),
           const Text(

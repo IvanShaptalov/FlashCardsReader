@@ -4,10 +4,13 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
+import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_notes.dart';
 import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_widget.dart';
 import 'package:flashcards_reader/views/reader/tabs/settings_book.dart';
 import 'package:flutter/material.dart';
@@ -103,7 +106,13 @@ class ViewTextBook extends StatefulWidget {
 }
 
 class _ViewTextBookState extends State<ViewTextBook> {
-  bool show = false;
+  bool showSettings = false;
+  bool showNotes = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -117,35 +126,68 @@ class _ViewTextBookState extends State<ViewTextBook> {
   Widget build(BuildContext context) {
     var appBar = !TextBookViewProvider.hideBar
         ? AppBar(
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      show == true ? show = false : show = true;
-                    });
-                  },
-                  icon: const Icon(Icons.more_vert)),
-              const SizedBox(
-                width: 12,
-              ),
-            ],
             elevation: 0,
             backgroundColor: Theme.of(context).colorScheme.primary,
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  widget.book.title.toString(),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                SizedBox(
+                  width: SizeConfig.getMediaWidth(context, p: 0.3),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.book.title.toString(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                            widget.book.author.isNotEmpty
+                                ? widget.book.author
+                                : 'no author',
+                            style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'Roboto')),
+                      ],
+                    ),
                   ),
                 ),
-                Text(widget.book.author.toString(),
-                    style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Roboto')),
+                IconButton(
+                  onPressed: () {
+                    MyRouter.pushPage(context, const FlashCardScreen());
+                  },
+                  icon: const Icon(Icons.web_stories_outlined),
+                  color: Palette.grey800,
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      showNotes == true ? showNotes = false : showNotes = true;
+
+                      showSettings = false;
+                    });
+                  },
+                  icon: const Icon(Icons.notes),
+                  color: Palette.grey800,
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      showSettings == true
+                          ? showSettings = false
+                          : showSettings = true;
+
+                      showNotes = false;
+                    });
+                  },
+                  icon: const Icon(Icons.settings),
+                  color: Palette.grey800,
+                ),
               ],
             ),
           )
@@ -160,25 +202,45 @@ class _ViewTextBookState extends State<ViewTextBook> {
       child: Scaffold(
         appBar: appBar,
         body: _buildContent(context),
-        bottomSheet: show == true
+        bottomSheet: showSettings
             ? BottomSheet(
                 enableDrag: false,
                 builder: (context) => BottomSheetWidget(
                   settingsController: widget.settingsController,
                   book: widget.book,
                   onClickedClose: () => setState(() {
-                    show = false;
+                    setState(() {
+                      showSettings = false;
+                    });
                   }),
                   onClickedConfirm: (value) => setState(() {
                     FontProvider.font = value;
-                    show = false;
+                    showSettings = false;
                   }),
                 ),
                 onClosing: () {},
               )
-            : null,
+            : showNotes
+                ? BottomSheetNotes(
+                    book: widget.book,
+                    onClickedClose: () {
+                      setState(() {
+                        showNotes = false;
+                      });
+                    })
+                : null,
       ),
     );
+  }
+
+  static String note = '';
+
+  void addNoteCallback() {
+    setState(() {
+      widget.book.bookNotes.notes.addAll({note: 'add your comment'});
+      BlocProvider.of<BookBloc>(context)
+          .add(UpdateBookEvent(bookModel: widget.book));
+    });
   }
 
   Widget _buildContent(BuildContext context) {
@@ -201,12 +263,14 @@ class _ViewTextBookState extends State<ViewTextBook> {
                       SelectableRegionState selectableRegionState,
                     ) =>
                         FlashReaderAdaptiveContextSelectionMenu(
-                            selectableRegionState: selectableRegionState),
+                            selectableRegionState: selectableRegionState,
+                            addNoteCallback: addNoteCallback),
                     onSelectionChanged: (value) {
                       if (value != null) {
                         WordCreatingUIProvider.tmpFlashCard.question =
                             value.plainText;
                         TextBookViewProvider.selectedText = value.plainText;
+                        note = value.plainText;
                       }
                     },
                     child: Paginator(
