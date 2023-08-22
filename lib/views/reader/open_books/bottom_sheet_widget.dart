@@ -1,16 +1,21 @@
+import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
+import 'package:flashcards_reader/model/entities/reader/book_model.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/reader/tabs/settings_book.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BottomSheetWidget extends StatefulWidget {
   final Function(TextStyle) onClickedConfirm;
   final Function onClickedClose;
-  final Map settings;
+  final BookModel book;
   final SettingsControllerViewText settingsController;
   const BottomSheetWidget(
       {Key? key,
       required this.onClickedClose,
       required this.onClickedConfirm,
-      required this.settings,
+      required this.book,
       required this.settingsController})
       : super(key: key);
 
@@ -19,20 +24,19 @@ class BottomSheetWidget extends StatefulWidget {
 }
 
 class BottomSheetWidgetState extends State<BottomSheetWidget> {
-  double _rating = 16;
+  double _fontSize = 16;
   bool isSwitched = false;
   String _dropDownValue = 'Roboto';
-  String _fontFamily = 'Roboto';
 
   getSetting() {
-    _rating = widget.settings['size'];
-    isSwitched = widget.settings['theme'];
-    _dropDownValue = _getFontFamilyName(widget.settings['font_name']);
-    _fontFamily = _getFontFamily(widget.settings['font_name']);
+    _fontSize = widget.book.settings.fontSize.toDouble();
+    isSwitched = false;
+    _dropDownValue = widget.book.settings.fontFamily;
   }
 
   @override
   void initState() {
+    _dropDownValue = widget.book.settings.fontFamily;
     super.initState();
     getSetting();
   }
@@ -80,15 +84,14 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
                 onChanged: (String? newValue) {
                   setState(() {
                     _dropDownValue = newValue!;
-                    _fontFamily = _getFontFamily(newValue);
                   });
                 },
-                items: <String>[
+                items: <String>{
                   'Roboto',
-                  'Gideon Roman',
-                  'Noto Serif',
+                  'Gideon_Roman',
+                  'Noto_Serif',
                   'Redressed'
-                ].map<DropdownMenuItem<String>>((String value) {
+                }.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                       value: value, child: _builditemText(value));
                 }).toList()),
@@ -98,16 +101,16 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
             textAlign: TextAlign.center,
           ),
           Slider(
-            value: _rating,
+            value: _fontSize,
             onChanged: (newRating) {
               setState(() {
-                _rating = newRating;
+                _fontSize = newRating;
               });
             },
             min: 12,
             max: 32,
-            divisions: 12,
-            label: '${_rating.floor()}',
+            divisions: 20,
+            label: '${_fontSize.floor()}',
           ),
           Divider(
             thickness: 1,
@@ -143,19 +146,23 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildEvelatedButton(Icons.cancel, "Close", Colors.grey.shade800,
+              _buildEvelatedButton(Icons.cancel, "Close", Palette.grey800,
                   () => widget.onClickedClose()),
               const SizedBox(
                 width: 15,
               ),
-              _buildEvelatedButton(
-                  Icons.save,
-                  "Save",
-                  const Color(0xFF6741FF),
-                  () => widget.onClickedConfirm(TextStyle(
-                      fontSize: _rating,
-                      fontWeight: FontWeight.normal,
-                      fontFamily: _fontFamily))),
+              _buildEvelatedButton(Icons.save, "Save", Palette.green600, () {
+                widget.onClickedConfirm(TextStyle(
+                    fontSize: _fontSize,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: _dropDownValue));
+                widget.book.settings.fontFamily =
+                    _dropDownValue.replaceAll(' ', '_');
+                debugPrintIt('saved: ${widget.book.settings.fontFamily}');
+                widget.book.settings.fontSize = _fontSize.toInt();
+                BlocProvider.of<BookBloc>(context)
+                    .add(UpdateBookEvent(bookModel: widget.book));
+              }),
             ],
           )
         ],
@@ -170,7 +177,8 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
         width: 150,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              elevation: 0, backgroundColor: color,
+              elevation: 0,
+              backgroundColor: color,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10))),
           onPressed: () => action(),
@@ -198,68 +206,10 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
       );
 
   Widget _builditemText(String value) {
-    switch (value) {
-      case 'Roboto':
-        return Text(
-          value,
-          style: const TextStyle(fontFamily: 'Roboto'),
-        );
-      case 'Gideon Roman':
-        return Text(
-          value,
-          style: const TextStyle(fontFamily: 'Gideon_Roman'),
-        );
-      case 'Noto Serif':
-        return Text(
-          value,
-          style: const TextStyle(fontFamily: 'Noto_Serif'),
-        );
-      case 'Redressed':
-        return Text(
-          value,
-          style: const TextStyle(fontFamily: 'Redressed'),
-        );
-
-      default:
-        return const Text('null');
-    }
-  }
-}
-
-String _getFontFamily(String fontName) {
-  switch (fontName) {
-    case 'Roboto':
-      return 'Roboto';
-
-    case 'Gideon Roman':
-      return 'Gideon_Roman';
-
-    case 'Noto Serif':
-      return 'Noto_Serif';
-
-    case 'Redressed':
-      return 'Redressed';
-
-    default:
-      return 'Roboto';
-  }
-}
-
-String _getFontFamilyName(String fontName) {
-  switch (fontName) {
-    case 'Roboto':
-      return 'Roboto';
-
-    case 'Gideon_Roman':
-      return 'Gideon Roman';
-
-    case 'Noto_Serif':
-      return 'Noto Serif';
-
-    case 'Redressed':
-      return 'Redressed';
-
-    default:
-      return 'Roboto';
+    var nValue = value.replaceAll('_', ' ');
+    return Text(
+      nValue,
+      style: TextStyle(fontFamily: value),
+    );
   }
 }

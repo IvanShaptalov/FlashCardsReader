@@ -16,6 +16,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+class FontProvider {
+  static TextStyle font = const TextStyle();
+}
+
 class TextBookViewProvider {
   static bool _hideBar = false;
   static get hideBar => _hideBar;
@@ -100,8 +104,6 @@ class ViewTextBook extends StatefulWidget {
 
 class _ViewTextBookState extends State<ViewTextBook> {
   bool show = false;
-  TextStyle font = const TextStyle(
-      fontSize: 16, fontWeight: FontWeight.normal, fontFamily: 'Roboto');
 
   @override
   void dispose() {
@@ -163,16 +165,12 @@ class _ViewTextBookState extends State<ViewTextBook> {
                 enableDrag: false,
                 builder: (context) => BottomSheetWidget(
                   settingsController: widget.settingsController,
-                  settings: {
-                    'size': font.fontSize,
-                    'theme': false,
-                    'font_name': font.fontFamily,
-                  },
+                  book: widget.book,
                   onClickedClose: () => setState(() {
                     show = false;
                   }),
                   onClickedConfirm: (value) => setState(() {
-                    font = value;
+                    FontProvider.font = value;
                     show = false;
                   }),
                 ),
@@ -212,7 +210,6 @@ class _ViewTextBookState extends State<ViewTextBook> {
                       }
                     },
                     child: Paginator(
-                        font: font,
                         appBarHeigth: appBarHeigth,
                         hideBar: TextBookViewProvider.hideBar,
                         book: widget.book));
@@ -230,8 +227,6 @@ class _ViewTextBookState extends State<ViewTextBook> {
 }
 
 class Paginator extends StatefulWidget {
-  final TextStyle font;
-
   final List<String> content = const [];
   final double appBarHeigth;
   final bool hideBar;
@@ -239,7 +234,6 @@ class Paginator extends StatefulWidget {
 
   const Paginator(
       {super.key,
-      required this.font,
       required this.appBarHeigth,
       required this.hideBar,
       required this.book});
@@ -258,8 +252,10 @@ class _PaginatorState extends State<Paginator> {
 
   @override
   void initState() {
+    FontProvider.font = TextStyle(
+        fontFamily: widget.book.settings.fontFamily,
+        fontSize: widget.book.settings.fontSize.toDouble());
     _currentPage = widget.book.settings.currentPage.toDouble();
-
     SchedulerBinding.instance.addPostFrameCallback(
       (_) {
         setState(() {
@@ -300,7 +296,7 @@ class _PaginatorState extends State<Paginator> {
                     'page: ${index + 1}',
                     textDirection: TextDirection.ltr,
                     textAlign: TextAlign.justify,
-                    style: widget.font,
+                    style: FontProvider.font,
                   ),
                 ),
               );
@@ -315,7 +311,8 @@ class _PaginatorState extends State<Paginator> {
                   value: _currentPage.toDouble(),
                   min: 0,
                   max: pagesCount - 1 > 1 ? pagesCount - 1 : 1,
-                  label: '${_currentPage + 1} of $pagesCount',
+                  divisions: pagesCount - 1 > 1 ? pagesCount - 1 : 1,
+                  label: '${(_currentPage + 1).toInt()} of $pagesCount',
                   onChanged: (value) {
                     setState(() {
                       _currentPage = value;
