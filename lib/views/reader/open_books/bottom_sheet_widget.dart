@@ -112,34 +112,34 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
             divisions: 20,
             label: '${_fontSize.floor()}',
           ),
-          Divider(
-            thickness: 1,
-            color: Colors.grey[800],
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-                const Text('Dark theme'),
-                const Spacer(),
-                Switch(
-                  value: isSwitched,
-                  onChanged: (value) {
-                    setState(() {
-                      isSwitched = value;
-                      widget.settingsController.updateThemeMode(
-                          widget.settingsController.themeMode == ThemeMode.light
-                              ? ThemeMode.dark
-                              : ThemeMode.light);
-                    });
-                  },
-                  activeTrackColor: const Color(0xFF6741FF),
-                  activeColor: Theme.of(context).colorScheme.primary,
-                ),
-              ],
-            ),
-          ),
+          // Divider(
+          //   thickness: 1,
+          //   color: Colors.grey[800],
+          //   height: 20,
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 20),
+          //   child: Row(
+          //     children: [
+          //       const Text('Dark theme'),
+          //       const Spacer(),
+          //       Switch(
+          //         value: isSwitched,
+          //         onChanged: (value) {
+          //           setState(() {
+          //             isSwitched = value;
+          //             widget.settingsController.updateThemeMode(
+          //                 widget.settingsController.themeMode == ThemeMode.light
+          //                     ? ThemeMode.dark
+          //                     : ThemeMode.light);
+          //           });
+          //         },
+          //         activeTrackColor: const Color(0xFF6741FF),
+          //         activeColor: Theme.of(context).colorScheme.primary,
+          //       ),
+          //     ],
+          //   ),
+          // ),
           const SizedBox(
             height: 15,
           ),

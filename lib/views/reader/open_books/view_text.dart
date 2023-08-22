@@ -256,6 +256,11 @@ class _PaginatorState extends State<Paginator> {
         fontFamily: widget.book.settings.fontFamily,
         fontSize: widget.book.settings.fontSize.toDouble());
     _currentPage = widget.book.settings.currentPage.toDouble();
+    _pageController.addListener(() {
+      _currentPage = _pageController.page ?? _currentPage;
+
+      setState(() {});
+    });
     SchedulerBinding.instance.addPostFrameCallback(
       (_) {
         setState(() {
