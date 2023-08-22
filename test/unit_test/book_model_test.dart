@@ -26,6 +26,14 @@ void main() {
           BookFileMeta.fromJson(jsonDecode(jsonFileMeta));
       expect(fileMeta, newFileMeta);
     });
+
+    test('notes json', () async {
+      BookNotes notes = BookNotes.asset();
+      String jsonNotes = jsonEncode(notes.toJson());
+      BookNotes newNotes = BookNotes.fromJson(jsonDecode(jsonNotes));
+      expect(notes, newNotes);
+    });
+
     test('book json', () async {
       BookModel book = BookModel.asset();
       String jsonBook = jsonEncode(book.toJson());

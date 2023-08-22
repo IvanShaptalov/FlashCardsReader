@@ -65,6 +65,8 @@ class BinderFB2 {
         title: Checker.getName(file.path),
         lastAccess: DateTime.now(),
         status: BookStatus.falseStatus(),
+        bookNotes: BookNotes.asset(),
+
         settings: BookSettings.asset(),
         pdfSettings: PDFSettings.asset(),
         fileMeta: BookFileMeta(

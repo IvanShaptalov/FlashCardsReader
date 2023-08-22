@@ -34,7 +34,7 @@ class BinderTxt {
           lastModified: DateTime.now(),
           path: file.path,
         ),
-
+        bookNotes: BookNotes.asset(),
         author: '',
         coverPath: 'assets/images/empty.png',
         description: snippet,

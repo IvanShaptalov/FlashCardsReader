@@ -27,6 +27,7 @@ class BinderEpub {
       title: title.isEmpty ? Checker.getName(file.path) : title,
       description: '',
       lastAccess: DateTime.now(),
+      bookNotes: BookNotes.asset(),
       settings: BookSettings.asset(),
       pdfSettings: PDFSettings.asset(),
       status: BookStatus.falseStatus(),

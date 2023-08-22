@@ -32,6 +32,8 @@ class BinderPdf {
         title: Checker.getName(file.path),
         coverPath: coverPath,
         lastAccess: DateTime.now(),
+        bookNotes: BookNotes.asset(),
+
         status: BookStatus.falseStatus(),
         pdfSettings: PDFSettings.asset(),
         fileMeta: BookFileMeta(

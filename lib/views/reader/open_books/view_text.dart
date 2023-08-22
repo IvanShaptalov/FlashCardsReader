@@ -15,7 +15,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:intl/number_symbols_data.dart';
 
 class TextBookViewProvider {
   static bool _hideBar = false;

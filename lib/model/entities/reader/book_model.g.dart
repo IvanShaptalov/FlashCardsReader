@@ -101,9 +101,43 @@ class PDFSettingsAdapter extends TypeAdapter<PDFSettings> {
           typeId == other.typeId;
 }
 
-class BookStatusAdapter extends TypeAdapter<BookStatus> {
+class BookNotesAdapter extends TypeAdapter<BookNotes> {
   @override
   final int typeId = 6;
+
+  @override
+  BookNotes read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return BookNotes(
+      notes: (fields[0] as Map).cast<String, dynamic>(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, BookNotes obj) {
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.notes);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BookNotesAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class BookStatusAdapter extends TypeAdapter<BookStatus> {
+  @override
+  final int typeId = 7;
 
   @override
   BookStatus read(BinaryReader reader) {
@@ -152,7 +186,7 @@ class BookStatusAdapter extends TypeAdapter<BookStatus> {
 
 class BookFileMetaAdapter extends TypeAdapter<BookFileMeta> {
   @override
-  final int typeId = 7;
+  final int typeId = 8;
 
   @override
   BookFileMeta read(BinaryReader reader) {
@@ -195,7 +229,7 @@ class BookFileMetaAdapter extends TypeAdapter<BookFileMeta> {
 
 class BookModelAdapter extends TypeAdapter<BookModel> {
   @override
-  final int typeId = 8;
+  final int typeId = 9;
 
   @override
   BookModel read(BinaryReader reader) {
@@ -215,13 +249,14 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       lastAccess: fields[9] as DateTime,
       settings: fields[11] as BookSettings,
       pdfSettings: fields[12] as PDFSettings,
+      bookNotes: fields[13] as BookNotes,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookModel obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -243,7 +278,9 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       ..writeByte(11)
       ..write(obj.settings)
       ..writeByte(12)
-      ..write(obj.pdfSettings);
+      ..write(obj.pdfSettings)
+      ..writeByte(13)
+      ..write(obj.bookNotes);
   }
 
   @override

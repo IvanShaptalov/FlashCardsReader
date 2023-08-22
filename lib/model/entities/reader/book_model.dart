@@ -136,6 +136,46 @@ class PDFSettings {
 }
 
 @HiveType(typeId: 6)
+class BookNotes {
+  // first note, second comment to it
+  @HiveField(0)
+  Map<String, dynamic> notes;
+
+  @override
+  String toString() {
+    return 'notes $notes\n, count: ${notes.length}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is BookNotes &&
+      other.runtimeType == runtimeType &&
+      other.hashCode == hashCode;
+
+  @override
+  int get hashCode => toString().hashCode;
+
+  BookNotes({required this.notes});
+
+  factory BookNotes.asset() {
+    return BookNotes(
+        notes: {'note': 'comment to note', 'note 2': 'comment to note 2'});
+  }
+
+  factory BookNotes.fromJson(Map<String, dynamic> json) {
+    var notesFromJson = json['notes'];
+    var notes = Map<String, dynamic>.from(notesFromJson);
+    return BookNotes(
+      notes: notes,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'notes': notes,
+      };
+}
+
+@HiveType(typeId: 7)
 class BookStatus {
   @HiveField(0)
   bool readingPrivate = false;
@@ -220,7 +260,7 @@ class BookStatus {
       };
 }
 
-@HiveType(typeId: 7)
+@HiveType(typeId: 8)
 class BookFileMeta {
   @HiveField(0)
   String path;
@@ -279,7 +319,7 @@ class BookFileMeta {
   int get hashCode => toString().hashCode;
 }
 
-@HiveType(typeId: 8)
+@HiveType(typeId: 9)
 class BookModel {
   @HiveField(0)
   String title;
@@ -291,8 +331,6 @@ class BookModel {
   String coverPath;
   @HiveField(4)
   String language;
-
-
 
   bool get isBinded =>
       File(fileMeta.path).existsSync() || fileMeta.path.contains('asset');
@@ -309,6 +347,8 @@ class BookModel {
   BookSettings settings;
   @HiveField(12)
   PDFSettings pdfSettings;
+  @HiveField(13)
+  BookNotes bookNotes;
 
   int id() => "$title $description $author ${fileMeta.path}".hashCode;
 
@@ -323,7 +363,8 @@ class BookModel {
       required this.fileMeta,
       required this.lastAccess,
       required this.settings,
-      required this.pdfSettings});
+      required this.pdfSettings,
+      required this.bookNotes});
 
   factory BookModel.fromJson(Map<String, dynamic> json) {
     return BookModel(
@@ -337,7 +378,8 @@ class BookModel {
         flashCardId: json['flashCardId'],
         lastAccess: DateTime.parse(json['lastAccess']),
         pdfSettings: PDFSettings.fromJson(json['pdfSettings']),
-        settings: BookSettings.fromJson(json['bookSettings']));
+        settings: BookSettings.fromJson(json['bookSettings']),
+        bookNotes: BookNotes.fromJson(json['bookNotes']));
   }
 
   Future<File> getFileFromAssets(String path) async {
@@ -388,7 +430,8 @@ class BookModel {
         fileMeta: BookFileMeta.asset(),
         lastAccess: DateTime.now(),
         settings: BookSettings.asset(),
-        pdfSettings: PDFSettings.asset());
+        pdfSettings: PDFSettings.asset(),
+        bookNotes: BookNotes.asset());
   }
 
   Map<String, dynamic> toJson() => {
@@ -403,7 +446,8 @@ class BookModel {
         'lastAccess': lastAccess.toIso8601String(),
         'flashCardId': flashCardId,
         'bookSettings': settings.toJson(),
-        'pdfSettings': pdfSettings.toJson()
+        'pdfSettings': pdfSettings.toJson(),
+        'bookNotes': bookNotes.toJson(),
       };
 
   static List<BookModel> sortedByDate(List<BookModel> listBook) {
