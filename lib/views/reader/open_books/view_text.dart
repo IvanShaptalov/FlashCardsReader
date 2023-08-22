@@ -202,6 +202,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
       child: Scaffold(
         appBar: appBar,
         body: _buildContent(context),
+        resizeToAvoidBottomInset: true,
         bottomSheet: showSettings
             ? BottomSheet(
                 enableDrag: false,
