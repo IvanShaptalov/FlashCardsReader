@@ -165,7 +165,8 @@ class _FlashCardViewState extends ParentState<FlashCardView> {
   void initState() {
     super.initState();
     if (GuideProvider.isTutorial) {
-      GuideProvider.startStep(context, updateCallback, 5);
+      GuideProvider.startStep(context, 5);
+      GuideProvider.isTutorial = true;
     }
   }
 

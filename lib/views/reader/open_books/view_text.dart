@@ -157,13 +157,14 @@ class _ViewTextBookState extends State<ViewTextBook> {
                     ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    MyRouter.pushPage(context, const FlashCardScreen());
-                  },
-                  icon: const Icon(Icons.web_stories_outlined),
-                  color: Palette.grey800,
-                ),
+                if (!GuideProvider.isTutorial)
+                  IconButton(
+                    onPressed: () {
+                      MyRouter.pushPage(context, const FlashCardScreen());
+                    },
+                    icon: const Icon(Icons.web_stories_outlined),
+                    color: Palette.grey800,
+                  ),
                 IconButton(
                   onPressed: () {
                     setState(() {

@@ -85,13 +85,11 @@ class BookCatalogState extends State<BookCatalog> {
             .books
             .where((element) => !element.status.inTrash)
             .toList();
-
-        
-        }
-        if (GuideProvider.isTutorial && data is List<BookModel>) {
-          debugPrintIt('is tutorial, added book');
-          data!.remove(BookModel.asset());
-          data!.insert(0, BookModel.asset());
+    }
+    if (GuideProvider.isTutorial && data is List<BookModel>) {
+      debugPrintIt('is tutorial, added book');
+      data!.remove(BookModel.asset());
+      data!.insert(0, BookModel.asset());
     }
   }
 
@@ -105,7 +103,7 @@ class BookCatalogState extends State<BookCatalog> {
     fetchData();
     // start tutorial if it is
     if (GuideProvider.isTutorial) {
-      GuideProvider.startStep(context, updateCallback, 1);
+      GuideProvider.startStep(context, 1);
       GuideProvider.isTutorial = true;
     }
   }

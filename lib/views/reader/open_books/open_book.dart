@@ -64,9 +64,8 @@ class OpenBookState extends ParentState<OpenBook> {
     super.initState();
 
     if (GuideProvider.isTutorial) {
-      debugPrintIt('start tutorial step 2');
-
-      GuideProvider.startStep(context, updateCallback, 2);
+      GuideProvider.startStep(context, 2);
+      GuideProvider.isTutorial = true;
     }
   }
 

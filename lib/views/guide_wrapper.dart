@@ -89,12 +89,10 @@ class GuideProvider {
     return child;
   }
 
-  static void startStep(
-      BuildContext context, Function updateCallback, int step) {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      debugPrintIt('tutorial starts now...');
+  static void startStep(BuildContext context, int step) {
+    debugPrintIt('tutorial starts now...');
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
       introController.start(context, initStep: step);
-      updateCallback();
     });
   }
 }
