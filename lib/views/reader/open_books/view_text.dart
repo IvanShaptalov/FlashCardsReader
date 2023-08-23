@@ -48,9 +48,7 @@ class _TextBookProviderState extends ParentState<TextBookProvider> {
         create: (_) => FlashCardBloc(),
         child: BlocProvider(
           create: (_) => TranslatorBloc(),
-          child: ViewTextBook(
-            book: widget.book,
-          ),
+          child: ViewTextBook(),
         ),
       ),
     );
@@ -59,11 +57,8 @@ class _TextBookProviderState extends ParentState<TextBookProvider> {
 }
 
 class ViewTextBook extends StatefulWidget {
-  final BookModel book;
-
   const ViewTextBook({
     Key? key,
-    required this.book,
   }) : super(key: key);
 
   @override
@@ -111,16 +106,13 @@ class _ViewTextBookState extends State<ViewTextBook> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.book.title.toString(),
+                          PagePaginatorProvider.book.title.toString(),
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
-                            widget.book.author.isNotEmpty
-                                ? widget.book.author
-                                : 'no author',
+                        Text(PagePaginatorProvider.getAuthor,
                             style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.normal,
@@ -188,15 +180,13 @@ class _ViewTextBookState extends State<ViewTextBook> {
                   }),
                   onClickedConfirm: (value) => setState(() {
                     PagePaginatorProvider.font = value;
-
-                    showSettings = false;
                   }),
                 ),
                 onClosing: () {},
               )
             : showNotes
                 ? BottomSheetNotes(
-                    book: widget.book,
+                    book: PagePaginatorProvider.book,
                     onClickedClose: () {
                       setState(() {
                         showNotes = false;
@@ -211,9 +201,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
 
   void addNoteCallback() {
     setState(() {
-      widget.book.bookNotes.notes.addAll({note: 'add your comment'});
-      BlocProvider.of<BookBloc>(context)
-          .add(UpdateBookEvent(bookModel: widget.book));
+      PagePaginatorProvider.updateNotes(note: note, context: context);
     });
   }
 
@@ -233,10 +221,10 @@ class _ViewTextBookState extends State<ViewTextBook> {
               if (snapshot.hasData) {
                 /// =====================[SETUP PAGES]
 
-                widget.book.settings.pagesCount =
+                PagePaginatorProvider.book.settings.pagesCount =
                     PagePaginatorProvider.setupPages(context, appBarHeigth);
-                BlocProvider.of<BookBloc>(context)
-                    .add(UpdateBookEvent(bookModel: widget.book));
+                BlocProvider.of<BookBloc>(context).add(
+                    UpdateBookEvent(bookModel: PagePaginatorProvider.book));
                 return SelectionArea(
                     contextMenuBuilder: (
                       BuildContext context,
@@ -256,7 +244,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
                     child: Paginator(
                         appBarHeigth: appBarHeigth,
                         hideBar: PagePaginatorProvider.hideBar,
-                        book: widget.book));
+                        book: PagePaginatorProvider.book));
               } else {
                 return SpinKitWave(
                   color: Palette.green300Primary,
@@ -357,14 +345,13 @@ class _PaginatorState extends State<Paginator> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (PagePaginatorProvider.maxPage > 0)
+              if (PagePaginatorProvider.upperBoundPage > 0)
                 Slider(
                     value: PagePaginatorProvider.currentPage.toDouble(),
-                    min: PagePaginatorProvider.minPage.toDouble(),
-                    max: PagePaginatorProvider.maxPage.toDouble(),
-                    divisions: PagePaginatorProvider.maxPage,
-                    label:
-                        '''${(PagePaginatorProvider.currentPage + 1).toInt()} of ${PagePaginatorProvider.maxPage + 1}''',
+                    min: PagePaginatorProvider.lowerBoundPage,
+                    max: PagePaginatorProvider.upperBoundPage.toDouble(),
+                    divisions: PagePaginatorProvider.upperBoundPage,
+                    label: PagePaginatorProvider.label,
                     onChanged: (value) {
                       setState(() {
                         changePage(value.round());

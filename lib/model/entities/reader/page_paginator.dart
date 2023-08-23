@@ -16,10 +16,30 @@ class Page {
 }
 
 class PagePaginatorProvider {
+  /// check that context has BookBloc
+  static void updateNotes(
+      {required String note, required BuildContext context}) {
+    PagePaginatorProvider.book.bookNotes.notes
+        .addAll({note: 'add your comment'});
+    BlocProvider.of<BookBloc>(context)
+        .add(UpdateBookEvent(bookModel: PagePaginatorProvider.book));
+  }
+
+  static String get getAuthor => PagePaginatorProvider.book.author.isNotEmpty
+      ? PagePaginatorProvider.book.author
+      : 'no author';
+  static String get label =>
+      '''${(_currentPage + 1).toInt()} of ${upperBoundPage + 1}''';
   static BookModel book = BookModel.asset();
-  static int currentPage = 1;
-  static int get maxPage => pages.length-1;
-  static double minPage = 0;
+  static int _currentPage = 1;
+  static set currentPage(value) {
+    _currentPage = validatePageNumber(value);
+  }
+
+  static get currentPage => _currentPage;
+
+  static int get upperBoundPage => pages.length - 1;
+  static double lowerBoundPage = 0;
   static BookSettings get bookSettings => book.settings;
   static List<Page> pages = [];
   static String bookText = '';
@@ -40,30 +60,45 @@ class PagePaginatorProvider {
 
   static DateTime lastPageUpdate = DateTime.now();
 
+  static int validatePageNumber(int pageNumber) {
+    return pageNumber = (pageNumber > upperBoundPage
+            ? upperBoundPage
+            : pageNumber < lowerBoundPage
+                ? lowerBoundPage
+                : pageNumber)
+        .toInt();
+  }
+
   static void updateCurrentPageWithMultiplier(
       double fontSize, double previousFontSize, BuildContext context) {
     double multiplier = (fontSize.toInt() / previousFontSize).abs();
     if (multiplier > 1) {
       multiplier = (previousFontSize / fontSize.toInt()).abs();
     }
-    PagePaginatorProvider.updateBookPage(
-        (PagePaginatorProvider.bookSettings.currentPage * multiplier).round(),
-        context);
+    int newPageNumber =
+        (PagePaginatorProvider.bookSettings.currentPage * multiplier).round();
+
+    int validatedPageNumber = validatePageNumber(newPageNumber);
+
+    PagePaginatorProvider.updateBookPage(validatedPageNumber, context,
+        ignoreDuration: true);
   }
 
   /// use context that contains <BookBloc>
-  static void updateBookPage(int value, context) {
+  static void updateBookPage(int value, context,
+      {bool ignoreDuration = false}) {
     // if update lesser than 1 second - wait for database
-    if (PagePaginatorProvider.currentPage != value.round()) {
-      PagePaginatorProvider.currentPage = value.round();
+    if (PagePaginatorProvider._currentPage != value.round()) {
+      PagePaginatorProvider._currentPage = validatePageNumber(value.round());
     }
 
     if (lastPageUpdate.difference(DateTime.now()).abs() >
-        const Duration(seconds: 1)) {
+            const Duration(seconds: 1) &&
+        !ignoreDuration) {
       debugPrintIt('request updated');
       lastPageUpdate = DateTime.now();
       debugPrintIt(
-          '''save current page ${PagePaginatorProvider.currentPage} to book : ${book.title}''');
+          '''save current page ${PagePaginatorProvider._currentPage} to book : ${book.title}''');
       BlocProvider.of<BookBloc>(context)
           .add(UpdateBookEvent(bookModel: PagePaginatorProvider.book));
     }
