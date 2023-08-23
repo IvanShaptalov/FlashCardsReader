@@ -9,6 +9,7 @@ import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
+import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_notes.dart';
 import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_widget.dart';
@@ -112,6 +113,13 @@ class _ViewTextBookState extends State<ViewTextBook> {
   @override
   void initState() {
     super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      if (GuideProvider.isTutorial) {
+        OverlayNotificationProvider.showOverlayNotification(
+            'select text and tap translate',
+            duration: const Duration(seconds: 5));
+      }
+    });
   }
 
   @override

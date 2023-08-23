@@ -21,7 +21,8 @@ class OverlayNotificationProvider {
   }
 
   static void showOverlayNotification(String message,
-      {NotificationStatus status = NotificationStatus.info}) {
+      {NotificationStatus status = NotificationStatus.info,
+      Duration duration = const Duration(milliseconds: 1600)}) {
     showSimpleNotification(
         Text(
           message,
@@ -29,7 +30,7 @@ class OverlayNotificationProvider {
         ),
         slideDismissDirection: DismissDirection.up,
         background: _setColor(status),
-        duration: const Duration(milliseconds: 1600));
+        duration: duration);
   }
 
   static void showInternetError() {

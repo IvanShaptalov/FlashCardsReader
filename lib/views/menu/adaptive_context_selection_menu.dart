@@ -5,6 +5,8 @@ import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
+import 'package:flashcards_reader/views/guide_wrapper.dart';
+import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,6 +51,11 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                             icon: const Icon(Icons.format_quote_rounded)),
                         IconButton(
                             onPressed: () {
+                              if (GuideProvider.isTutorial) {
+                                OverlayNotificationProvider.showOverlayNotification(
+                                    'wait to translate, then tap save word button',
+                                    duration: const Duration(seconds: 5));
+                              }
                               BaseNewWordWidgetService.wordFormController
                                   .setUp(WordCreatingUIProvider.tmpFlashCard);
 
