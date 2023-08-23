@@ -1,22 +1,15 @@
-import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
-import 'package:flashcards_reader/model/entities/reader/book_model.dart';
+// ignore_for_file: lines_longer_than_80_chars
+
+import 'package:flashcards_reader/model/entities/reader/page_paginator.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
-import 'package:flashcards_reader/views/reader/tabs/settings_book.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BottomSheetWidget extends StatefulWidget {
   final Function(TextStyle) onClickedConfirm;
   final Function onClickedClose;
-  final BookModel book;
-  final SettingsControllerViewText settingsController;
   const BottomSheetWidget(
-      {Key? key,
-      required this.onClickedClose,
-      required this.onClickedConfirm,
-      required this.book,
-      required this.settingsController})
+      {Key? key, required this.onClickedClose, required this.onClickedConfirm})
       : super(key: key);
 
   @override
@@ -29,14 +22,14 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
   String _dropDownValue = 'Roboto';
 
   getSetting() {
-    _fontSize = widget.book.settings.fontSize.toDouble();
+    _fontSize = PagePaginatorProvider.bookSettings.fontSize.toDouble();
     isSwitched = false;
-    _dropDownValue = widget.book.settings.fontFamily;
+    _dropDownValue = PagePaginatorProvider.bookSettings.fontFamily;
   }
 
   @override
   void initState() {
-    _dropDownValue = widget.book.settings.fontFamily;
+    _dropDownValue = PagePaginatorProvider.bookSettings.fontFamily;
     super.initState();
     getSetting();
   }
@@ -156,12 +149,15 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
                     fontSize: _fontSize,
                     fontWeight: FontWeight.normal,
                     fontFamily: _dropDownValue));
-                widget.book.settings.fontFamily =
+                PagePaginatorProvider.bookSettings.fontFamily =
                     _dropDownValue.replaceAll(' ', '_');
-                debugPrintIt('saved: ${widget.book.settings.fontFamily}');
-                widget.book.settings.fontSize = _fontSize.toInt();
-                BlocProvider.of<BookBloc>(context)
-                    .add(UpdateBookEvent(bookModel: widget.book));
+                debugPrintIt(
+                    'saved: ${PagePaginatorProvider.bookSettings.fontFamily}');
+                int previousFontSize =
+                    PagePaginatorProvider.bookSettings.fontSize;
+                PagePaginatorProvider.bookSettings.fontSize = _fontSize.toInt();
+                PagePaginatorProvider.updateCurrentPageWithMultiplier(
+                    _fontSize, previousFontSize.toDouble(), context);
               }),
             ],
           )

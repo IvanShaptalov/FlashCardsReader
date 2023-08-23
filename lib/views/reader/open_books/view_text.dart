@@ -4,7 +4,6 @@ import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/model/entities/reader/page_paginator.dart';
-import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
@@ -14,37 +13,12 @@ import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
 import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_notes.dart';
 import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_widget.dart';
-import 'package:flashcards_reader/views/reader/tabs/settings_book.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class FontProvider {
-  static TextStyle font = const TextStyle();
-}
-
-class TextBookViewProvider {
-  static bool _hideBar = false;
-  static get hideBar => _hideBar;
-  static String selectedText = '';
-  static void switchBar() {
-    _hideBar = !_hideBar;
-    if (_hideBar) {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-    } else {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-          overlays: SystemUiOverlay.values);
-    }
-  }
-
-  static void dispose() {
-    _hideBar = false;
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
-  }
-}
+class FontProvider {}
 
 // ignore: must_be_immutable
 class TextBookProvider extends ParentStatefulWidget {
@@ -59,13 +33,9 @@ class TextBookProvider extends ParentStatefulWidget {
 }
 
 class _TextBookProviderState extends ParentState<TextBookProvider> {
-  Future<String>? textFuture;
-  Future<String>? fString;
   @override
   void initState() {
-    PagePaginator.book = widget.book;
-
-    textFuture = PagePaginator.loadBook(context);
+    PagePaginatorProvider.book = widget.book;
 
     super.initState();
   }
@@ -80,8 +50,6 @@ class _TextBookProviderState extends ParentState<TextBookProvider> {
           create: (_) => TranslatorBloc(),
           child: ViewTextBook(
             book: widget.book,
-            bookText: textFuture,
-            settingsController: SettingsControllerViewText(SettingsService()),
           ),
         ),
       ),
@@ -91,18 +59,11 @@ class _TextBookProviderState extends ParentState<TextBookProvider> {
 }
 
 class ViewTextBook extends StatefulWidget {
-  final Future<String>? bookText;
-
   final BookModel book;
-
-  final SettingsControllerViewText settingsController;
 
   const ViewTextBook({
     Key? key,
     required this.book,
-    required this.bookText,
-    required this.settingsController,
-    /*  required this.settingsController */
   }) : super(key: key);
 
   @override
@@ -127,7 +88,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
 
   @override
   void dispose() {
-    TextBookViewProvider.dispose();
+    PagePaginatorProvider.dispose();
     super.dispose();
   }
 
@@ -135,7 +96,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = !TextBookViewProvider.hideBar
+    var appBar = !PagePaginatorProvider.hideBar
         ? AppBar(
             elevation: 0,
             backgroundColor: Theme.of(context).colorScheme.primary,
@@ -220,15 +181,14 @@ class _ViewTextBookState extends State<ViewTextBook> {
             ? BottomSheet(
                 enableDrag: false,
                 builder: (context) => BottomSheetWidget(
-                  settingsController: widget.settingsController,
-                  book: widget.book,
                   onClickedClose: () => setState(() {
                     setState(() {
                       showSettings = false;
                     });
                   }),
                   onClickedConfirm: (value) => setState(() {
-                    FontProvider.font = value;
+                    PagePaginatorProvider.font = value;
+
                     showSettings = false;
                   }),
                 ),
@@ -264,16 +224,19 @@ class _ViewTextBookState extends State<ViewTextBook> {
         GestureDetector(
           onDoubleTap: () {
             setState(() {
-              TextBookViewProvider.switchBar();
+              PagePaginatorProvider.switchBar();
             });
           },
           child: FutureBuilder(
-            future: widget.bookText,
+            future: PagePaginatorProvider.loadBook(context),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 /// =====================[SETUP PAGES]
 
-                PagePaginator.setupPages(context, appBarHeigth);
+                widget.book.settings.pagesCount =
+                    PagePaginatorProvider.setupPages(context, appBarHeigth);
+                BlocProvider.of<BookBloc>(context)
+                    .add(UpdateBookEvent(bookModel: widget.book));
                 return SelectionArea(
                     contextMenuBuilder: (
                       BuildContext context,
@@ -286,13 +249,13 @@ class _ViewTextBookState extends State<ViewTextBook> {
                       if (value != null) {
                         WordCreatingUIProvider.tmpFlashCard.question =
                             value.plainText;
-                        TextBookViewProvider.selectedText = value.plainText;
+                        PagePaginatorProvider.selectedText = value.plainText;
                         note = value.plainText;
                       }
                     },
                     child: Paginator(
                         appBarHeigth: appBarHeigth,
-                        hideBar: TextBookViewProvider.hideBar,
+                        hideBar: PagePaginatorProvider.hideBar,
                         book: widget.book));
               } else {
                 return SpinKitWave(
@@ -325,7 +288,6 @@ class Paginator extends StatefulWidget {
 
 class _PaginatorState extends State<Paginator> {
   final PageController _pageController = PageController();
-  double _currentPage = 0;
 
   void changePage(int page) {
     _pageController.jumpToPage(page);
@@ -333,20 +295,22 @@ class _PaginatorState extends State<Paginator> {
 
   @override
   void initState() {
-    FontProvider.font = TextStyle(
+    PagePaginatorProvider.font = TextStyle(
         fontFamily: widget.book.settings.fontFamily,
         fontSize: widget.book.settings.fontSize.toDouble());
-    _currentPage = widget.book.settings.currentPage.toDouble();
+    PagePaginatorProvider.currentPage = widget.book.settings.currentPage;
     _pageController.addListener(() {
-      _currentPage = _pageController.page ?? _currentPage;
-      updateBookPage(_currentPage);
+      PagePaginatorProvider.updateBookPage(
+          (_pageController.page ?? PagePaginatorProvider.currentPage).toInt(),
+          context);
 
       setState(() {});
     });
+
     SchedulerBinding.instance.addPostFrameCallback(
       (_) {
         setState(() {
-          changePage(_currentPage.round());
+          changePage(PagePaginatorProvider.currentPage);
         });
       },
     );
@@ -361,7 +325,6 @@ class _PaginatorState extends State<Paginator> {
 
   @override
   Widget build(BuildContext context) {
-    int pagesCount = widget.book.settings.pagesCount;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -380,49 +343,36 @@ class _PaginatorState extends State<Paginator> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'page: ${index + 1}',
+                    PagePaginatorProvider.pages[index].toString(),
                     textDirection: TextDirection.ltr,
                     textAlign: TextAlign.justify,
-                    style: FontProvider.font,
+                    style: PagePaginatorProvider.font,
                   ),
                 ),
               );
             },
           ),
         ),
-        if (!TextBookViewProvider.hideBar)
+        if (!PagePaginatorProvider.hideBar)
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Slider(
-                  value: _currentPage.toDouble(),
-                  min: 0,
-                  max: pagesCount - 1 > 1 ? pagesCount - 1 : 1,
-                  divisions: pagesCount - 1 > 1 ? pagesCount - 1 : 1,
-                  label: '${(_currentPage + 1).toInt()} of $pagesCount',
-                  onChanged: (value) {
-                    setState(() {
-                      _currentPage = value;
-                      // validate value, -1 because starts from 0
-
-                      changePage(value.round());
-
-                      updateBookPage(value);
-                    });
-                  })
+              if (PagePaginatorProvider.maxPage > 0)
+                Slider(
+                    value: PagePaginatorProvider.currentPage.toDouble(),
+                    min: PagePaginatorProvider.minPage.toDouble(),
+                    max: PagePaginatorProvider.maxPage.toDouble(),
+                    divisions: PagePaginatorProvider.maxPage,
+                    label:
+                        '''${(PagePaginatorProvider.currentPage + 1).toInt()} of ${PagePaginatorProvider.maxPage + 1}''',
+                    onChanged: (value) {
+                      setState(() {
+                        changePage(value.round());
+                      });
+                    })
             ],
           ),
       ],
     );
-  }
-
-  void updateBookPage(double value) {
-    if (widget.book.settings.currentPage != value.round()) {
-      debugPrintIt(
-          'save current page ${_currentPage.round()} to book : ${widget.book.title}');
-
-      BlocProvider.of<BookBloc>(context).add(UpdateBookEvent(
-          bookModel: widget.book..settings.currentPage = _currentPage.round()));
-    }
   }
 }
