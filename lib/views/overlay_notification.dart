@@ -22,7 +22,7 @@ class OverlayNotificationProvider {
 
   static void showOverlayNotification(String message,
       {NotificationStatus status = NotificationStatus.info,
-      Duration duration = const Duration(milliseconds: 1600)}) {
+      Duration? duration = const Duration(milliseconds: 1600)}) {
     showSimpleNotification(
         Text(
           message,

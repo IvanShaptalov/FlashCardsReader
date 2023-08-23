@@ -3,6 +3,7 @@ import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
+import 'package:flashcards_reader/model/entities/reader/page_paginator.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
@@ -62,7 +63,9 @@ class _TextBookProviderState extends ParentState<TextBookProvider> {
   Future<String>? fString;
   @override
   void initState() {
-    textFuture = widget.book.getAllTextAsync();
+    PagePaginator.book = widget.book;
+
+    textFuture = PagePaginator.loadBook(context);
 
     super.initState();
   }
@@ -117,7 +120,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
       if (GuideProvider.isTutorial) {
         OverlayNotificationProvider.showOverlayNotification(
             'select text and tap translate',
-            duration: const Duration(seconds: 5));
+            duration: null);
       }
     });
   }
@@ -204,6 +207,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
     if (appBar != null) {
       appBarHeigth = appBar.preferredSize.height;
     }
+
     return WillPopScope(
       onWillPop: () {
         return Future.value(!GuideProvider.isTutorial);
@@ -267,6 +271,9 @@ class _ViewTextBookState extends State<ViewTextBook> {
             future: widget.bookText,
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
+                /// =====================[SETUP PAGES]
+
+                PagePaginator.setupPages(context, appBarHeigth);
                 return SelectionArea(
                     contextMenuBuilder: (
                       BuildContext context,
@@ -332,6 +339,7 @@ class _PaginatorState extends State<Paginator> {
     _currentPage = widget.book.settings.currentPage.toDouble();
     _pageController.addListener(() {
       _currentPage = _pageController.page ?? _currentPage;
+      updateBookPage(_currentPage);
 
       setState(() {});
     });
@@ -399,21 +407,22 @@ class _PaginatorState extends State<Paginator> {
 
                       changePage(value.round());
 
-                      if (widget.book.settings.currentPage != value.round()) {
-                        debugPrintIt(
-                            'save current page $_currentPage to book : ${widget.book.title}');
-
-                        BlocProvider.of<BookBloc>(context).add(UpdateBookEvent(
-                            bookModel: widget.book
-                              ..settings.currentPage = _currentPage.round()
-                              // TODO detete it after calculate pages fr
-                              ..settings.pagesCount = 10));
-                      }
+                      updateBookPage(value);
                     });
                   })
             ],
           ),
       ],
     );
+  }
+
+  void updateBookPage(double value) {
+    if (widget.book.settings.currentPage != value.round()) {
+      debugPrintIt(
+          'save current page ${_currentPage.round()} to book : ${widget.book.title}');
+
+      BlocProvider.of<BookBloc>(context).add(UpdateBookEvent(
+          bookModel: widget.book..settings.currentPage = _currentPage.round()));
+    }
   }
 }
