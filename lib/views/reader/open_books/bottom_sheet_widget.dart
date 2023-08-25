@@ -145,6 +145,7 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
                 width: 15,
               ),
               _buildEvelatedButton(Icons.save, "Save", Palette.green600, () {
+                PagePaginatorProvider.needToSetupPages = true;
                 widget.onClickedConfirm(TextStyle(
                     fontSize: _fontSize,
                     fontWeight: FontWeight.normal,

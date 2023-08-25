@@ -71,6 +71,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
   @override
   void initState() {
     super.initState();
+    PagePaginatorProvider.needToSetupPages = true;
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       if (GuideProvider.isTutorial) {
         OverlayNotificationProvider.showOverlayNotification(
@@ -178,7 +179,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
                     });
                   }),
                   onClickedConfirm: (value) => setState(() {
-                    PagePaginatorProvider.font = value;
+                    PagePaginatorProvider.textStyle = value;
                   }),
                 ),
                 onClosing: () {},
@@ -219,9 +220,15 @@ class _ViewTextBookState extends State<ViewTextBook> {
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 /// =====================[SETUP PAGES]
+                if (PagePaginatorProvider.needToSetupPages) {
+                  PagePaginatorProvider.needToSetupPages = false;
+                  PagePaginatorProvider.book.settings.pagesCount =
+                      PagePaginatorProvider.setupPages(Size(
+                          SizeConfig.getMediaWidth(context),
+                          SizeConfig.getMediaHeight(context) -
+                              appBarHeigth * 2));
+                }
 
-                PagePaginatorProvider.book.settings.pagesCount =
-                    PagePaginatorProvider.setupPages(context, appBarHeigth);
                 BlocProvider.of<BookBloc>(context).add(
                     UpdateBookEvent(bookModel: PagePaginatorProvider.book));
                 return SelectionArea(
@@ -284,7 +291,7 @@ class _PaginatorState extends State<Paginator> {
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
-    PagePaginatorProvider.font = TextStyle(
+    PagePaginatorProvider.textStyle = TextStyle(
         fontFamily: widget.book.settings.fontFamily,
         fontSize: widget.book.settings.fontSize.toDouble());
     PagePaginatorProvider.currentPage = widget.book.settings.currentPage;
@@ -334,13 +341,10 @@ class _PaginatorState extends State<Paginator> {
                 color: Palette.white,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    child: Text(
-                      PagePaginatorProvider.pages[index].toString(),
-                      textDirection: TextDirection.ltr,
-                      textAlign: TextAlign.justify,
-                      style: PagePaginatorProvider.font,
-                    ),
+                  child: Text(
+                    PagePaginatorProvider.pages[index].toString(),
+                    textDirection: TextDirection.ltr,
+                    style: PagePaginatorProvider.getTextStyle,
                   ),
                 ),
               );
@@ -349,7 +353,7 @@ class _PaginatorState extends State<Paginator> {
         ),
         if (!PagePaginatorProvider.hideBar)
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               if (PagePaginatorProvider.upperBoundPage > 0)
                 Slider(
@@ -362,7 +366,8 @@ class _PaginatorState extends State<Paginator> {
                       setState(() {
                         changePage(value.round());
                       });
-                    })
+                    }),
+              Text(PagePaginatorProvider.label)
             ],
           ),
       ],

@@ -1,21 +1,27 @@
+import 'dart:ui';
+
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Page {
-  final String text;
-
-  const Page(this.text);
-
-  @override
-  String toString() => text;
-}
-
 class PagePaginatorProvider {
+  static bool needToSetupPages = false;
+  static TextStyle get getTextStyle => TextStyle(
+      fontSize: bookSettings.fontSize.toDouble(),
+      fontFamily: bookSettings.fontFamily);
+
+  static set textStyle(TextStyle style) {
+    if (style.fontSize != null) {
+      bookSettings.fontSize = style.fontSize!.toInt();
+    }
+    if (style.fontSize != null) {
+      bookSettings.fontFamily = style.fontFamily!;
+    }
+  }
+
   /// check that context has BookBloc
   static void updateNotes(
       {required String note, required BuildContext context}) {
@@ -42,9 +48,8 @@ class PagePaginatorProvider {
   static int get upperBoundPage => pages.length - 1;
   static double lowerBoundPage = 0;
   static BookSettings get bookSettings => book.settings;
-  static List<Page> pages = [];
+  static List<String> pages = [];
   static String bookText = '';
-  static TextStyle font = const TextStyle();
 
   static bool _hideBar = false;
   static get hideBar => _hideBar;
@@ -106,51 +111,53 @@ class PagePaginatorProvider {
         overlays: SystemUiOverlay.values);
   }
 
-  static int setupPages(BuildContext context, appBarHeigth) {
-    int charCount = bookText.length;
-    double pageWidgth = SizeConfig.getMediaWidth(context);
-    double pageHeigth = SizeConfig.getMediaHeight(context) -
-        SizeConfig.getMediaHeight(context, p: 0.3) -
-        appBarHeigth;
-    double fontSize = bookSettings.fontSize.toDouble();
-    debugPrintIt('''
-        PAGEWIDTH: $pageWidgth
-        PAGEHEIGTH: $pageHeigth
-        CHARS: $charCount
-        fontSize: $fontSize''');
-
-    final characterHeight = fontSize;
-    final characterWidth = characterHeight * 0.66;
-    int charOnPage =
-        ((pageHeigth * pageWidgth) / (characterHeight * characterWidth)).ceil();
-
-    debugPrintIt('''
-        charOnPage: $charOnPage
-    ''');
-    int pages = createPages(charOnPage);
-    return pages;
-  }
-
-  static int createPages(int charOnPage) {
+  static int setupPages(Size pageSize) {
     pages = [];
-    int pagesCount = (bookText.length / charOnPage).ceil();
-    if (pagesCount <= 1) {
-      pagesCount = 1;
-      pages.add(Page(bookText));
-      return pagesCount.toInt();
-    }
-    for (int i = 0; i < pagesCount; i++) {
-      int start = i * charOnPage;
-      int end = start + charOnPage;
-      if (end > bookText.length) {
-        String tmpBookText = bookText.substring(start);
-        pages.add(Page(tmpBookText));
-      } else {
-        String tmpBookText = bookText.substring(start, end);
-        pages.add(Page(tmpBookText));
+
+    final textSpan = TextSpan(
+      text: bookText,
+      style: getTextStyle,
+    );
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout(
+      minWidth: 0,
+      maxWidth: pageSize.width,
+    );
+
+    // https://medium.com/swlh/flutter-line-metrics-fd98ab180a64
+    List<LineMetrics> lines = textPainter.computeLineMetrics();
+    double currentPageBottom = pageSize.height;
+    int currentPageStartIndex = 0;
+    int currentPageEndIndex = 0;
+
+    for (int i = 0; i < lines.length; i++) {
+      final line = lines[i];
+
+      final left = line.left;
+      final top = line.baseline - line.ascent;
+      final bottom = line.baseline + line.descent;
+
+      // Current line overflow page
+      if (currentPageBottom < bottom) {
+        // https://stackoverflow.com/questions/56943994/how-to-get-the-raw-text-from-a-flutter-textbox/56943995#56943995
+        currentPageEndIndex =
+            textPainter.getPositionForOffset(Offset(left, top)).offset;
+        final pageText =
+            bookText.substring(currentPageStartIndex, currentPageEndIndex);
+        pages.add(pageText);
+
+        currentPageStartIndex = currentPageEndIndex;
+        currentPageBottom = top + pageSize.height;
       }
     }
-    return pagesCount.ceil();
+
+    final lastPageText = bookText.substring(currentPageStartIndex);
+    pages.add(lastPageText);
+
+    return pages.length;
   }
 
   static Future<String>? loadBook(BuildContext context) {
