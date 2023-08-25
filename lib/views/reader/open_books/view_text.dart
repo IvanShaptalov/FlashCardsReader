@@ -15,10 +15,9 @@ import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_notes.dar
 import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-class FontProvider {}
 
 // ignore: must_be_immutable
 class TextBookProvider extends ParentStatefulWidget {
@@ -283,6 +282,8 @@ class _PaginatorState extends State<Paginator> {
 
   @override
   void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+
     PagePaginatorProvider.font = TextStyle(
         fontFamily: widget.book.settings.fontFamily,
         fontSize: widget.book.settings.fontSize.toDouble());
@@ -308,6 +309,9 @@ class _PaginatorState extends State<Paginator> {
   @override
   void dispose() {
     _pageController.dispose();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+
     super.dispose();
   }
 
@@ -330,11 +334,13 @@ class _PaginatorState extends State<Paginator> {
                 color: Palette.white,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    PagePaginatorProvider.pages[index].toString(),
-                    textDirection: TextDirection.ltr,
-                    textAlign: TextAlign.justify,
-                    style: PagePaginatorProvider.font,
+                  child: SingleChildScrollView(
+                    child: Text(
+                      PagePaginatorProvider.pages[index].toString(),
+                      textDirection: TextDirection.ltr,
+                      textAlign: TextAlign.justify,
+                      style: PagePaginatorProvider.font,
+                    ),
                   ),
                 ),
               );

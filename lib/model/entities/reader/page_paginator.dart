@@ -31,7 +31,8 @@ class PagePaginatorProvider {
   static String get label =>
       '''${(_currentPage + 1).toInt()} of ${upperBoundPage + 1}''';
   static BookModel book = BookModel.asset();
-  static int _currentPage = 1;
+  static int get _currentPage => bookSettings.currentPage;
+  static set _currentPage(value) => bookSettings.currentPage = value;
   static set currentPage(value) {
     _currentPage = validatePageNumber(value);
   }
@@ -50,12 +51,6 @@ class PagePaginatorProvider {
   static String selectedText = '';
   static void switchBar() {
     _hideBar = !_hideBar;
-    if (_hideBar) {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-    } else {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-          overlays: SystemUiOverlay.values);
-    }
   }
 
   static DateTime lastPageUpdate = DateTime.now();
@@ -97,6 +92,7 @@ class PagePaginatorProvider {
         !ignoreDuration) {
       debugPrintIt('request updated');
       lastPageUpdate = DateTime.now();
+
       debugPrintIt(
           '''save current page ${PagePaginatorProvider._currentPage} to book : ${book.title}''');
       BlocProvider.of<BookBloc>(context)
@@ -110,12 +106,12 @@ class PagePaginatorProvider {
         overlays: SystemUiOverlay.values);
   }
 
-  static int setupPages(BuildContext context, double appBarHeigth) {
-    debugPrintIt('appbarHeight: $appBarHeigth');
+  static int setupPages(BuildContext context, appBarHeigth) {
     int charCount = bookText.length;
     double pageWidgth = SizeConfig.getMediaWidth(context);
     double pageHeigth = SizeConfig.getMediaHeight(context) -
-        SizeConfig.getMediaHeight(context, p: 0.3);
+        SizeConfig.getMediaHeight(context, p: 0.3) -
+        appBarHeigth;
     double fontSize = bookSettings.fontSize.toDouble();
     debugPrintIt('''
         PAGEWIDTH: $pageWidgth
@@ -124,7 +120,7 @@ class PagePaginatorProvider {
         fontSize: $fontSize''');
 
     final characterHeight = fontSize;
-    final characterWidth = characterHeight * 0.75;
+    final characterWidth = characterHeight * 0.66;
     int charOnPage =
         ((pageHeigth * pageWidgth) / (characterHeight * characterWidth)).ceil();
 
