@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'dart:ui';
 
+import 'package:flashcards_reader/bloc/providers/book_interaction_provider.dart';
+import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/epub.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/fb2.dart';
@@ -80,5 +83,52 @@ void main() async {
     });
   });
 
-  
+  group('book paginator', () {
+    testWidgets('initialization', (tester) async {
+      var bookModel = await BinderTxt.bind(
+          await BookModel.asset().getFileFromAssets('assets/book/quotes.txt'));
+
+      BookDatabaseProvider.writeEditAsync(bookModel, isTest: true);
+
+      BookPaginationProvider.setUpTextBook(bookModel);
+
+      expect(BookPaginationProvider.book, bookModel);
+    });
+
+    testWidgets('setUp pages', (tester) async {
+      Size pageSize = const Size(50, 20);
+      BookPaginationProvider.book.settings.currentPage = 10;
+
+      await BookPaginationProvider.loadBook();
+      BookPaginationProvider.book.settings.fontSize = 10;
+
+      BookPaginationProvider.initPages(pageSize, null, isTest: true);
+      expect(BookPaginationProvider.upperBoundPage, 57);
+      expect(BookPaginationProvider.currentPage, 10);
+
+      debugPrintIt(BookPaginationProvider.pages.length);
+
+      debugPrintIt(BookPaginationProvider.book.settings.currentPage);
+
+      BookPaginationProvider.updatePageFont(
+          newFontFamily: BookPaginationProvider.book.settings.fontFamily,
+          newFontSize: 20,
+          context: null,
+          pageSize: pageSize,
+          isTest: true);
+
+      expect(BookPaginationProvider.currentPage, 20);
+      expect(BookPaginationProvider.upperBoundPage, 105);
+
+      BookPaginationProvider.updatePageFont(
+          newFontFamily: BookPaginationProvider.book.settings.fontFamily,
+          newFontSize: 10,
+          context: null,
+          pageSize: pageSize,
+          isTest: true);
+
+      expect(BookPaginationProvider.currentPage, 10);
+      expect(BookPaginationProvider.upperBoundPage, 57);
+    });
+  });
 }

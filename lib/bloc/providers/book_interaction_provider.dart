@@ -1,45 +1,45 @@
 import 'dart:ui';
 
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
+import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BookInteractivityProvider {
+class BookPaginationProvider {
   /// ===================================[HELPING FIELDS]
   static set textStyle(TextStyle style) {
-    _book.settings.fontSize = style.fontSize!;
-    _book.settings.fontFamily = style.fontFamily!;
+    book.settings.fontSize = style.fontSize!;
+    book.settings.fontFamily = style.fontFamily!;
   }
 
   static TextStyle get getBookTextStyle => TextStyle(
-      fontSize: _book.settings.fontSize.toDouble(),
-      fontFamily: _book.settings.fontFamily);
+      fontSize: book.settings.fontSize.toDouble(),
+      fontFamily: book.settings.fontFamily);
 
   static bool needToUpdatePagesFromUI = false;
 
   static DateTime lastPageUpdate = DateTime.now();
 
   static String get getAuthor =>
-      _book.author.isNotEmpty ? _book.author : 'no author';
+      book.author.isNotEmpty ? book.author : 'no author';
   static String get label =>
       '''${(_currentPage + 1).toInt()} of ${upperBoundPage + 1}''';
 
   /// ====================================[BOOK INITIALIZATION]
-  static BookModel _book = BookModel.asset();
-  static BookModel get getBook => _book;
+  static BookModel book = BookModel.asset();
 
   static String _loadedBookText = '';
   static String get loadedBookText => _loadedBookText;
 
   static void setUpTextBook(BookModel book) {
-    _book = book;
+    book = book;
   }
 
-  static Future<String>? loadBook(BuildContext context) {
-    return _book.getAllTextAsync().then((value) {
+  static Future<String>? loadBook() {
+    return book.getAllTextAsync().then((value) {
       _loadedBookText = value;
 
       return value;
@@ -47,18 +47,23 @@ class BookInteractivityProvider {
   }
 
   /// ====================================[WORK WITH PAGES]
-  static num lowerBoundPage = 0;
-  static num upperBoundPage = _pages.length;
+  static double lowerBoundPage = 0;
+  static double get upperBoundPage => _pages.length.toDouble();
 
-  static num _currentPage = 0;
-  static num get currentPage => _currentPage;
+  static int get _currentPage => book.settings.currentPage;
+  static int get currentPage => _currentPage;
 
   // loaded pages
   static List<String> _pages = [];
-  static get pages => _pages;
+  static List<String> get pages => _pages;
 
-  /// ====================================[SETUPS PAGES]
-  static void setupPages(Size pageSize, BuildContext context) {
+  /// ====================================[SETUP PAGES]
+  /// run [loadBook()] method to setup book pages
+  static void initPages(Size pageSize, BuildContext? context,
+      {isTest = false}) {
+    if (!isTest) {
+      assert(context != null, 'context must not be null in real session');
+    }
     needToUpdatePagesFromUI = false;
 
     _pages = [];
@@ -105,62 +110,91 @@ class BookInteractivityProvider {
 
     final lastPageText = loadedBookText.substring(currentPageStartIndex);
     _pages.add(lastPageText);
-    saveBookToDB(context);
+    _saveBookToDB(context: context, isTest: isTest);
   }
 
-  /// for example
-  /// current page 100
-  /// font 10
-  /// new font 20
-  /// 100 * 10 = 20 * x
-  /// 20x = 1000
-  /// x = (10 * 100) / 20
-  /// x = (oldFontSize * currentPage) / fontSize
-  /// x = 50
-  /// new page = 50
-  static void updateBookPage(
-      {required double fontSize,
+  /// page 10 font 10, x page font 20
+  /// 10x = 10 * 20
+  /// x = (10 * 20) / 10
+  /// x = (currentPage10 * pageFont20) / oldFont10
+  /// x = 200 / 10
+  /// x = 20
+  /// newPage = 20;
+  static void jumpToPageWithFont(
+      {required double newFontSize,
       required double oldFontSize,
-      required BuildContext context}) {
-    if (fontSize != oldFontSize) {
-      int newPageNumber = ((_currentPage * oldFontSize) / fontSize).round();
+      required BuildContext? context,
+      isTest = false}) {
+    if (!isTest) {
+      assert(context != null, "context must not be null in real session");
+    }
+    if (newFontSize != oldFontSize) {
+      int newPageNumber =
+          (((_currentPage == 0 ? _currentPage + 1 : currentPage) *
+                      newFontSize) /
+                  oldFontSize)
+              .round();
 
-      int validatedPageNumber = validatePageNumber(newPageNumber);
-      if (_currentPage != validatedPageNumber.round()) {
-        _currentPage = validatePageNumber(validatedPageNumber.round());
-      }
+      jumpToPage(context: context, pageNumber: newPageNumber, isTest: isTest);
     }
 
-    saveBookToDB(context);
+    _saveBookToDB(context: context, isTest: isTest);
   }
 
-  static void saveBookToDB(BuildContext context) {
-    debugPrintIt('request updated');
-    lastPageUpdate = DateTime.now();
-
-    debugPrintIt(
-        '''save current page $_currentPage to book : ${_book.title}''');
-    BlocProvider.of<BookBloc>(context).add(UpdateBookEvent(bookModel: _book));
+  static void jumpToPage(
+      {required BuildContext? context,
+      required int pageNumber,
+      isTest = false}) {
+    int validatedPageNumber = validatePageNumber(pageNumber);
+    if (_currentPage != validatedPageNumber.round()) {
+      book.settings.currentPage =
+          validatePageNumber(validatedPageNumber.round());
+    }
+    _saveBookToDB(context: context, isTest: isTest);
   }
 
   static void updatePageFont(
       {required String newFontFamily,
       required double newFontSize,
-      required oldFontSize,
-      required BuildContext context}) {
+      required BuildContext? context,
+      required Size pageSize,
+      isTest = false}) {
+    if (!isTest) {
+      assert(context != null, 'context must not be null is real session');
+    }
     needToUpdatePagesFromUI = true;
+    double oldFontSize = book.settings.fontSize.toDouble();
+    book.settings.fontFamily = newFontFamily;
+    book.settings.fontSize = newFontSize.toDouble();
+    debugPrintIt('saved: ${book.settings.fontFamily}');
+    debugPrintIt('font size: ${book.settings.fontSize}');
 
-    _book.settings.fontFamily = newFontFamily;
-    debugPrintIt('saved: ${_book.settings.fontFamily}');
-    _book.settings.fontSize = newFontSize;
+    initPages(pageSize, context, isTest: isTest);
 
-    updateBookPage(
-        fontSize: newFontSize, oldFontSize: oldFontSize, context: context);
+    jumpToPageWithFont(
+        newFontSize: newFontSize,
+        oldFontSize: oldFontSize,
+        context: context,
+        isTest: isTest);
   }
 
   /// use context that contains <BookBloc>
 
   /// ===============================================[UTIL METHODS]
+  static void _saveBookToDB({BuildContext? context, isTest = false}) {
+    if (!isTest) {
+      assert(context != null, 'context must not be null in real session');
+      debugPrintIt('request updated');
+      lastPageUpdate = DateTime.now();
+
+      debugPrintIt(
+          '''save current page $_currentPage to book : ${book.title}''');
+      BlocProvider.of<BookBloc>(context!).add(UpdateBookEvent(bookModel: book));
+    } else if (isTest) {
+      BookDatabaseProvider.writeEditAsync(book);
+    }
+  }
+
   static int validatePageNumber(int pageNumber) {
     return pageNumber = (pageNumber > upperBoundPage
             ? upperBoundPage
@@ -169,8 +203,6 @@ class BookInteractivityProvider {
                 : pageNumber)
         .toInt();
   }
-
-  static void changeCurrentPage(int page) => _currentPage = page;
 }
 
 class TextSelectorProvider {

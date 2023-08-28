@@ -23,15 +23,15 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
   double oldFontSize = 1;
 
   getSetting() {
-    _fontSize = BookInteractivityProvider.getBook.settings.fontSize.toDouble();
+    _fontSize = BookPaginationProvider.book.settings.fontSize.toDouble();
     oldFontSize = _fontSize;
     isSwitched = false;
-    _dropDownValue = BookInteractivityProvider.getBook.settings.fontFamily;
+    _dropDownValue = BookPaginationProvider.book.settings.fontFamily;
   }
 
   @override
   void initState() {
-    _dropDownValue = BookInteractivityProvider.getBook.settings.fontFamily;
+    _dropDownValue = BookPaginationProvider.book.settings.fontFamily;
     super.initState();
     getSetting();
   }
@@ -123,11 +123,11 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
                     fontSize: _fontSize,
                     fontWeight: FontWeight.normal,
                     fontFamily: _dropDownValue));
-                BookInteractivityProvider.updatePageFont(
+                BookPaginationProvider.updatePageFont(
                   newFontFamily: _dropDownValue.replaceAll(' ', '_'),
                   newFontSize: _fontSize,
                   context: context,
-                  oldFontSize: oldFontSize,
+                  pageSize: SizeConfig.size(context),
                 );
               }),
             ],

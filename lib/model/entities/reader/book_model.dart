@@ -390,14 +390,19 @@ class BookModel {
   }
 
   Future<String> getAllTextAsync() async {
-    if (fileMeta.path.toLowerCase().contains('asset')) {
+    if (fileMeta.path.toLowerCase() == 'assets/book/quotes.txt') {
       var file = await getFileFromAssets(fileMeta.path);
       if (file.existsSync()) {
         return file.readAsString();
       }
     }
-
-    var result = await Isolate.run(getText);
+    var result;
+    try {
+      result = await Isolate.run(getText);
+    } catch (e) {
+      debugPrintIt('exception while run ISOLATE');
+      result = await getText();
+    }
     debugPrintIt('а оно то давно уже загрузилось))');
     debugPrintIt(result);
     return result;
