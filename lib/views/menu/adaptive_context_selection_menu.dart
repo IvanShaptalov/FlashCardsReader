@@ -5,7 +5,7 @@ import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/constants.dart';
-import 'package:flashcards_reader/model/entities/reader/page_paginator.dart';
+import 'package:flashcards_reader/bloc/providers/book_interaction_provider.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/base_new_word_widget.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
@@ -67,7 +67,7 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                         IconButton(
                             onPressed: () {
                               Share.share(
-                                  '''${PagePaginatorProvider.selectedText}
+                                  '''${TextSelectorProvider.selectedText}
                               Read, translate and learn with flashReader! $googlePlayLink''');
                             },
                             icon: const Icon(Icons.share)),

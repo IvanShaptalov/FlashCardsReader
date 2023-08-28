@@ -11,7 +11,7 @@ part 'book_model.g.dart';
 @HiveType(typeId: 4)
 class BookSettings {
   @HiveField(0)
-  int fontSize;
+  double fontSize;
   @HiveField(1)
   String fontColor;
   @HiveField(2)
@@ -26,12 +26,10 @@ class BookSettings {
   String backgroundColor;
   @HiveField(7)
   int currentPage;
-  @HiveField(8)
-  int pagesCount;
 
   @override
   String toString() {
-    return '$fontSize, current Page: $currentPage, pagesCount: $pagesCount';
+    return '$fontSize, current Page: $currentPage';
   }
 
   @override
@@ -52,7 +50,6 @@ class BookSettings {
     required this.fontFamily,
     required this.backgroundColor,
     required this.currentPage,
-    required this.pagesCount,
   });
 
   factory BookSettings.asset() {
@@ -64,8 +61,7 @@ class BookSettings {
         letterSpacing: 0.2,
         fontFamily: 'Roboto',
         backgroundColor: '#ffffff',
-        currentPage: 0,
-        pagesCount: 2);
+        currentPage: 0);
   }
 
   factory BookSettings.fromJson(Map<String, dynamic> json) {
@@ -78,7 +74,6 @@ class BookSettings {
       fontFamily: json['fontFamily'],
       backgroundColor: json['backgroundColor'],
       currentPage: json['currentPage'],
-      pagesCount: json['pagesCount'],
     );
   }
 
@@ -91,7 +86,6 @@ class BookSettings {
         'fontFamily': fontFamily,
         'backgroundColor': backgroundColor,
         'currentPage': currentPage,
-        'pagesCount': pagesCount,
       };
 }
 

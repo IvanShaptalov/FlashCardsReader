@@ -17,7 +17,7 @@ class BookSettingsAdapter extends TypeAdapter<BookSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return BookSettings(
-      fontSize: fields[0] as int,
+      fontSize: fields[0] as double,
       fontColor: fields[1] as String,
       lineHeight: fields[2] as double,
       wordSpacing: fields[3] as double,
@@ -25,14 +25,13 @@ class BookSettingsAdapter extends TypeAdapter<BookSettings> {
       fontFamily: fields[5] as String,
       backgroundColor: fields[6] as String,
       currentPage: fields[7] as int,
-      pagesCount: fields[8] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookSettings obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.fontSize)
       ..writeByte(1)
@@ -48,9 +47,7 @@ class BookSettingsAdapter extends TypeAdapter<BookSettings> {
       ..writeByte(6)
       ..write(obj.backgroundColor)
       ..writeByte(7)
-      ..write(obj.currentPage)
-      ..writeByte(8)
-      ..write(obj.pagesCount);
+      ..write(obj.currentPage);
   }
 
   @override

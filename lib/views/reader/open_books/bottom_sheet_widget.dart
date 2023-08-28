@@ -1,7 +1,6 @@
 // ignore_for_file: lines_longer_than_80_chars
 
-import 'package:flashcards_reader/model/entities/reader/page_paginator.dart';
-import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/bloc/providers/book_interaction_provider.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 
@@ -21,15 +20,18 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
   bool isSwitched = false;
   String _dropDownValue = 'Roboto';
 
+  double oldFontSize = 1;
+
   getSetting() {
-    _fontSize = PagePaginatorProvider.bookSettings.fontSize.toDouble();
+    _fontSize = BookInteractivityProvider.getBook.settings.fontSize.toDouble();
+    oldFontSize = _fontSize;
     isSwitched = false;
-    _dropDownValue = PagePaginatorProvider.bookSettings.fontFamily;
+    _dropDownValue = BookInteractivityProvider.getBook.settings.fontFamily;
   }
 
   @override
   void initState() {
-    _dropDownValue = PagePaginatorProvider.bookSettings.fontFamily;
+    _dropDownValue = BookInteractivityProvider.getBook.settings.fontFamily;
     super.initState();
     getSetting();
   }
@@ -105,34 +107,6 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
             divisions: 20,
             label: '${_fontSize.floor()}',
           ),
-          // Divider(
-          //   thickness: 1,
-          //   color: Colors.grey[800],
-          //   height: 20,
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 20),
-          //   child: Row(
-          //     children: [
-          //       const Text('Dark theme'),
-          //       const Spacer(),
-          //       Switch(
-          //         value: isSwitched,
-          //         onChanged: (value) {
-          //           setState(() {
-          //             isSwitched = value;
-          //             widget.settingsController.updateThemeMode(
-          //                 widget.settingsController.themeMode == ThemeMode.light
-          //                     ? ThemeMode.dark
-          //                     : ThemeMode.light);
-          //           });
-          //         },
-          //         activeTrackColor: const Color(0xFF6741FF),
-          //         activeColor: Theme.of(context).colorScheme.primary,
-          //       ),
-          //     ],
-          //   ),
-          // ),
           const SizedBox(
             height: 15,
           ),
@@ -145,20 +119,16 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
                 width: 15,
               ),
               _buildEvelatedButton(Icons.save, "Save", Palette.green600, () {
-                PagePaginatorProvider.needToSetupPages = true;
                 widget.onClickedConfirm(TextStyle(
                     fontSize: _fontSize,
                     fontWeight: FontWeight.normal,
                     fontFamily: _dropDownValue));
-                PagePaginatorProvider.bookSettings.fontFamily =
-                    _dropDownValue.replaceAll(' ', '_');
-                debugPrintIt(
-                    'saved: ${PagePaginatorProvider.bookSettings.fontFamily}');
-                int previousFontSize =
-                    PagePaginatorProvider.bookSettings.fontSize;
-                PagePaginatorProvider.bookSettings.fontSize = _fontSize.toInt();
-                PagePaginatorProvider.updateCurrentPageWithMultiplier(
-                    _fontSize, previousFontSize.toDouble(), context);
+                BookInteractivityProvider.updatePageFont(
+                  newFontFamily: _dropDownValue.replaceAll(' ', '_'),
+                  newFontSize: _fontSize,
+                  context: context,
+                  oldFontSize: oldFontSize,
+                );
               }),
             ],
           )
