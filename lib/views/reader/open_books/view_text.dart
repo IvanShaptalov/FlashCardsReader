@@ -336,11 +336,11 @@ class _PaginatorState extends State<Paginator> {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              if (BookPaginationProvider.upperBoundPage > 0)
+              if (!BookPaginationProvider.isOnePage)
                 Slider(
                     value: BookPaginationProvider.currentPage.toDouble(),
                     min: BookPaginationProvider.lowerBoundPage.toDouble(),
-                    max: BookPaginationProvider.upperBoundPage.toDouble(),
+                    max: BookPaginationProvider.upperBoundPage.toDouble() - 1,
                     divisions: BookPaginationProvider.upperBoundPage.toInt(),
                     label: BookPaginationProvider.label,
                     onChanged: (value) {

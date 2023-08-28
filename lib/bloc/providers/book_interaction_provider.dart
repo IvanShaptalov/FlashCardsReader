@@ -15,6 +15,8 @@ class BookPaginationProvider {
     book.settings.fontFamily = style.fontFamily!;
   }
 
+  static bool get isOnePage => upperBoundPage <= 1;
+
   static TextStyle get getBookTextStyle => TextStyle(
       fontSize: book.settings.fontSize.toDouble(),
       fontFamily: book.settings.fontFamily);
@@ -26,7 +28,7 @@ class BookPaginationProvider {
   static String get getAuthor =>
       book.author.isNotEmpty ? book.author : 'no author';
   static String get label =>
-      '''${(_currentPage + 1).toInt()} of ${upperBoundPage + 1}''';
+      '''${(_currentPage + 1).toInt()} of ${upperBoundPage.toInt() + 1}''';
 
   /// ====================================[BOOK INITIALIZATION]
   static BookModel book = BookModel.asset();
@@ -34,8 +36,8 @@ class BookPaginationProvider {
   static String _loadedBookText = '';
   static String get loadedBookText => _loadedBookText;
 
-  static void setUpTextBook(BookModel book) {
-    book = book;
+  static void setUpTextBook(BookModel paramBook) {
+    book = paramBook;
   }
 
   static Future<String>? loadBook() {
