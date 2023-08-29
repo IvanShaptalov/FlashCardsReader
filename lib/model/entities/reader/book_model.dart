@@ -396,7 +396,7 @@ class BookModel {
         return file.readAsString();
       }
     }
-    var result;
+    String result;
     try {
       result = await Isolate.run(getText);
     } catch (e) {

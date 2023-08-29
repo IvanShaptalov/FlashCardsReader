@@ -199,7 +199,7 @@ class BookCatalogState extends State<BookCatalog> {
                                 ),
                                 Container(
                                   height:
-                                      MediaQuery.of(context).size.height * 0.06,
+                                      MediaQuery.of(context).size.height * 0.03,
                                   width:
                                       MediaQuery.of(context).size.width * 0.67,
                                   margin:

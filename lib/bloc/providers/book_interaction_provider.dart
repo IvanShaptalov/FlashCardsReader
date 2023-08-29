@@ -21,14 +21,14 @@ class BookPaginationProvider {
       fontSize: book.settings.fontSize.toDouble(),
       fontFamily: book.settings.fontFamily);
 
-  static bool needToUpdatePagesFromUI = false;
+  static bool needToUpdatePagesFromUI = true;
 
   static DateTime lastPageUpdate = DateTime.now();
 
   static String get getAuthor =>
       book.author.isNotEmpty ? book.author : 'no author';
   static String get label =>
-      '''${(_currentPage + 1).toInt()} of ${upperBoundPage.toInt() + 1}''';
+      '''${(_currentPage + 1).toInt()} of ${upperBoundPage.toInt()}''';
 
   /// ====================================[BOOK INITIALIZATION]
   static BookModel book = BookModel.asset();
@@ -36,11 +36,12 @@ class BookPaginationProvider {
   static String _loadedBookText = '';
   static String get loadedBookText => _loadedBookText;
 
-  static void setUpTextBook(BookModel paramBook) {
+  static void setUpBook(BookModel paramBook) {
     book = paramBook;
   }
 
   static Future<String>? loadBook() {
+    BookPaginationProvider.needToUpdatePagesFromUI = true;
     return book.getAllTextAsync().then((value) {
       _loadedBookText = value;
 
@@ -149,10 +150,9 @@ class BookPaginationProvider {
       isTest = false}) {
     int validatedPageNumber = validatePageNumber(pageNumber);
     if (_currentPage != validatedPageNumber.round()) {
-      book.settings.currentPage =
-          validatePageNumber(validatedPageNumber.round());
+      book.settings.currentPage = validatedPageNumber;
+      _saveBookToDB(context: context, isTest: isTest);
     }
-    _saveBookToDB(context: context, isTest: isTest);
   }
 
   static void updatePageFont(
@@ -198,9 +198,9 @@ class BookPaginationProvider {
   }
 
   static int validatePageNumber(int pageNumber) {
-    return pageNumber = (pageNumber > upperBoundPage
-            ? upperBoundPage
-            : pageNumber < lowerBoundPage
+    return pageNumber = (pageNumber >= upperBoundPage
+            ? upperBoundPage-1
+            : pageNumber <= lowerBoundPage
                 ? lowerBoundPage
                 : pageNumber)
         .toInt();

@@ -90,7 +90,7 @@ void main() async {
 
       BookDatabaseProvider.writeEditAsync(bookModel, isTest: true);
 
-      BookPaginationProvider.setUpTextBook(bookModel);
+      BookPaginationProvider.setUpBook(bookModel);
 
       expect(BookPaginationProvider.book, bookModel);
     });
@@ -129,6 +129,40 @@ void main() async {
 
       expect(BookPaginationProvider.currentPage, 10);
       expect(BookPaginationProvider.upperBoundPage, 57);
+
+      BookPaginationProvider.book.settings.currentPage = 57;
+
+      BookPaginationProvider.updatePageFont(
+          newFontFamily: BookPaginationProvider.book.settings.fontFamily,
+          newFontSize: 20,
+          context: null,
+          pageSize: pageSize,
+          isTest: true);
+
+      expect(BookPaginationProvider.currentPage, 104);
+      expect(BookPaginationProvider.upperBoundPage, 105);
+    });
+
+    testWidgets('upperBound and lowerBound', (tester) async {
+      Size pageSize = const Size(50, 20);
+      BookPaginationProvider.book.settings.currentPage = 40;
+
+      await BookPaginationProvider.loadBook();
+      BookPaginationProvider.book.settings.fontSize = 10;
+
+      BookPaginationProvider.initPages(pageSize, null, isTest: true);
+      expect(BookPaginationProvider.upperBoundPage, 57);
+      expect(BookPaginationProvider.currentPage, 40);
+
+      BookPaginationProvider.updatePageFont(
+          newFontFamily: BookPaginationProvider.book.settings.fontFamily,
+          newFontSize: 5,
+          context: null,
+          pageSize: pageSize,
+          isTest: true);
+
+      expect(BookPaginationProvider.currentPage,
+          BookPaginationProvider.upperBoundPage-1);
     });
   });
 }

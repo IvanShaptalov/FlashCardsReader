@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart';
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/bloc/providers/book_interaction_provider.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
@@ -254,11 +255,10 @@ class OpenBookState extends ParentState<OpenBook> {
                         switch (widget.book.fileMeta.ext) {
                           case '.txt':
                             // check that collection has selected flashCard
+                            BookPaginationProvider.setUpBook(widget.book);
+
                             MyRouter.pushPageReplacement(
-                                context,
-                                TextBookProvider(
-                                  book: widget.book,
-                                ));
+                                context, TextBookProvider());
 
                             break;
                           case '.pdf':

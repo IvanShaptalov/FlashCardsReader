@@ -2,8 +2,8 @@ import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart'
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
-import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/bloc/providers/book_interaction_provider.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
@@ -23,22 +23,13 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class TextBookProvider extends ParentStatefulWidget {
   TextBookProvider({
     super.key,
-    required this.book,
   });
-  final BookModel book;
 
   @override
   ParentState<TextBookProvider> createState() => _TextBookProviderState();
 }
 
 class _TextBookProviderState extends ParentState<TextBookProvider> {
-  @override
-  void initState() {
-    BookPaginationProvider.setUpTextBook(widget.book);
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     widget.page = BlocProvider(
@@ -47,7 +38,7 @@ class _TextBookProviderState extends ParentState<TextBookProvider> {
         create: (_) => FlashCardBloc(),
         child: BlocProvider(
           create: (_) => TranslatorBloc(),
-          child: ViewTextBook(),
+          child: const ViewTextBook(),
         ),
       ),
     );
@@ -71,11 +62,8 @@ class _ViewTextBookState extends State<ViewTextBook> {
   @override
   void initState() {
     super.initState();
-    BookPaginationProvider.needToUpdatePagesFromUI = true;
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      BookPaginationProvider.initPages(SizeConfig.size(context), context);
-
       if (GuideProvider.isTutorial) {
         OverlayNotificationProvider.showOverlayNotification(
             'select text and tap translate',
@@ -94,6 +82,11 @@ class _ViewTextBookState extends State<ViewTextBook> {
 
   @override
   Widget build(BuildContext context) {
+    /// =====================[SETUP PAGES]
+    if (BookPaginationProvider.needToUpdatePagesFromUI) {
+      BookPaginationProvider.initPages(SizeConfig.size(context), context);
+      setState(() {});
+    }
     var appBar = !AppBarProvider.hideBar
         ? AppBar(
             elevation: 0,
@@ -187,9 +180,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
                       showSettings = false;
                     });
                   }),
-                  onClickedConfirm: (value) => setState(() {
-                    BookPaginationProvider.textStyle = value;
-                  }),
+                  onClickedConfirm: () => setState(() {}),
                 ),
                 onClosing: () {},
               )
@@ -223,7 +214,6 @@ class _ViewTextBookState extends State<ViewTextBook> {
           /// =====================[SETUP PAGES]
           if (BookPaginationProvider.needToUpdatePagesFromUI) {
             BookPaginationProvider.initPages(SizeConfig.size(context), context);
-            setState(() {});
           }
 
           BlocProvider.of<BookBloc>(context)
@@ -279,14 +269,14 @@ class _PaginatorState extends State<Paginator> {
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-
+    print('rebuild paginator');
     _pageController.addListener(() {
-      double fontSize = (_pageController.page ??
-          BookPaginationProvider.currentPage.toDouble());
-
-      BookPaginationProvider.jumpToPageWithFont(
-          newFontSize: fontSize, oldFontSize: fontSize, context: context);
-
+      BookPaginationProvider.jumpToPage(
+          context: context,
+          pageNumber:
+              (_pageController.page ?? BookPaginationProvider.currentPage)
+                  .toInt());
+      debugPrintIt('listen page builder');
       setState(() {});
     });
 
@@ -302,6 +292,7 @@ class _PaginatorState extends State<Paginator> {
 
   @override
   void dispose() {
+    debugPrintIt('dispose page Controller');
     _pageController.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);

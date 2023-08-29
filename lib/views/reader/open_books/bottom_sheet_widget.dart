@@ -1,11 +1,12 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:flashcards_reader/bloc/providers/book_interaction_provider.dart';
+import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 
 class BottomSheetWidget extends StatefulWidget {
-  final Function(TextStyle) onClickedConfirm;
+  final Function() onClickedConfirm;
   final Function onClickedClose;
   const BottomSheetWidget(
       {Key? key, required this.onClickedClose, required this.onClickedConfirm})
@@ -119,16 +120,28 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
                 width: 15,
               ),
               _buildEvelatedButton(Icons.save, "Save", Palette.green600, () {
-                widget.onClickedConfirm(TextStyle(
-                    fontSize: _fontSize,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: _dropDownValue));
+                debugPrintIt('FROM');
+                debugPrintIt('${BookPaginationProvider.currentPage}');
+                debugPrintIt('${BookPaginationProvider.upperBoundPage}');
+                debugPrintIt(
+                    '${BookPaginationProvider.book.settings.fontSize}');
                 BookPaginationProvider.updatePageFont(
                   newFontFamily: _dropDownValue.replaceAll(' ', '_'),
                   newFontSize: _fontSize,
                   context: context,
                   pageSize: SizeConfig.size(context),
                 );
+                debugPrintIt('TO');
+                debugPrintIt('${BookPaginationProvider.currentPage}');
+                debugPrintIt('${BookPaginationProvider.upperBoundPage}');
+                debugPrintIt(
+                    '${BookPaginationProvider.book.settings.fontSize}');
+                BookPaginationProvider.textStyle = TextStyle(
+                    fontSize: _fontSize,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: _dropDownValue);
+                widget.onClickedConfirm();
+                
               }),
             ],
           )
