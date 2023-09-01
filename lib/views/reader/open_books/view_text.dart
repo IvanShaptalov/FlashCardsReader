@@ -19,6 +19,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+class FutureStringProvider {
+  static Future<String>? loadingText;
+}
+
 // ignore: must_be_immutable
 class TextBookProvider extends ParentStatefulWidget {
   TextBookProvider({
@@ -62,6 +66,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
   @override
   void initState() {
     super.initState();
+    FutureStringProvider.loadingText = BookPaginationProvider.loadBook();
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       if (GuideProvider.isTutorial) {
@@ -75,19 +80,14 @@ class _ViewTextBookState extends State<ViewTextBook> {
   @override
   void dispose() {
     super.dispose();
+    FutureStringProvider.loadingText = null;
+    BookPaginationProvider.needToUpdatePagesFromUI = true;
   }
 
   double appBarHeigth = 0;
 
   @override
   Widget build(BuildContext context) {
-    /// =====================[SETUP PAGES]
-    if (BookPaginationProvider.needToUpdatePagesFromUI) {
-      BookPaginationProvider.initPages(
-          SizeConfig.size(context, edgeInsets: const EdgeInsets.all(0)),
-          context);
-      setState(() {});
-    }
     var appBar = !AppBarProvider.hideBar
         ? AppBar(
             elevation: 0,
@@ -209,13 +209,15 @@ class _ViewTextBookState extends State<ViewTextBook> {
 
   Widget _buildTextContent(BuildContext context) {
     return FutureBuilder(
-      future: BookPaginationProvider.loadBook(),
+      future: FutureStringProvider.loadingText,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData && snapshot.data.toString().isNotEmpty) {
           /// =====================[SETUP PAGES]
           if (BookPaginationProvider.needToUpdatePagesFromUI) {
             BookPaginationProvider.initPages(
-                SizeConfig.size(context, edgeInsets: const EdgeInsets.all(0)),
+                SizeConfig.size(
+                  context,
+                ),
                 context);
           }
 
@@ -327,7 +329,6 @@ class _PaginatorState extends State<Paginator> {
                     BookPaginationProvider.pages[index].toString(),
                     textAlign: TextAlign.justify,
                     textDirection: TextDirection.ltr,
-                    softWrap: true,
                     style: BookPaginationProvider.getBookTextStyle,
                   ),
                 ),

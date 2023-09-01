@@ -1,9 +1,15 @@
 SELECT TEXT, TRANSLATE IT AND SAVE WORD
 
 Life shrinks or expands in proportion to one’s courage. Anais Nin
+
 Nothing is impossible. The word itself says I’m possible! Audrey Hepburn
+
 We need much less than we think we need. Maya Angelou
+
 If things go wrong, don’t go with them. Roger Babson
+
 Everything has beauty, but not everyone sees it. Confucius
+
 There is no way to happiness – happiness is the way. Thich Nhat Hanh
+
 Be yourself; everyone else is already taken. Oscar Wilde

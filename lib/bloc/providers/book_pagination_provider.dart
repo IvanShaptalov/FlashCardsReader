@@ -42,6 +42,8 @@ class BookPaginationProvider {
   }
 
   static Future<String>? loadBook() {
+    debugPrintIt(
+        'only one load!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     BookPaginationProvider.needToUpdatePagesFromUI = true;
     return book.getAllTextAsync().then((value) {
       _loadedBookText = regexFixParagraph(value);
@@ -77,6 +79,7 @@ class BookPaginationProvider {
       style: getBookTextStyle,
     );
     final textPainter = TextPainter(
+      textAlign: TextAlign.justify,
       text: textSpan,
       textDirection: TextDirection.ltr,
     );

@@ -212,7 +212,7 @@ const String textExt = '.txt';
 const String jsonExt = '.js';
 
 RegExp textBookRegex = RegExp(
-  r"(?<=\w)\n(?=\w)",
+  r"(?<!\n)\n(?!\n)",
   caseSensitive: false,
 );
 
