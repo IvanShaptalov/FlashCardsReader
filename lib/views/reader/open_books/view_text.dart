@@ -74,7 +74,6 @@ class _ViewTextBookState extends State<ViewTextBook> {
 
   @override
   void dispose() {
-    AppBarProvider.dispose();
     super.dispose();
   }
 
@@ -84,7 +83,9 @@ class _ViewTextBookState extends State<ViewTextBook> {
   Widget build(BuildContext context) {
     /// =====================[SETUP PAGES]
     if (BookPaginationProvider.needToUpdatePagesFromUI) {
-      BookPaginationProvider.initPages(SizeConfig.size(context), context);
+      BookPaginationProvider.initPages(
+          SizeConfig.size(context, edgeInsets: const EdgeInsets.all(12)),
+          context);
       setState(() {});
     }
     var appBar = !AppBarProvider.hideBar
@@ -213,7 +214,9 @@ class _ViewTextBookState extends State<ViewTextBook> {
         if (snapshot.hasData) {
           /// =====================[SETUP PAGES]
           if (BookPaginationProvider.needToUpdatePagesFromUI) {
-            BookPaginationProvider.initPages(SizeConfig.size(context), context);
+            BookPaginationProvider.initPages(
+                SizeConfig.size(context, edgeInsets: const EdgeInsets.all(12)),
+                context);
           }
 
           BlocProvider.of<BookBloc>(context)
@@ -305,43 +308,44 @@ class _PaginatorState extends State<Paginator> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          height: SizeConfig.getMediaHeight(context) -
-              (AppBarProvider.hideBar ? 0 : widget.appBarHeigth * 2),
-          width: SizeConfig.getMediaWidth(context),
-          child: PageView.builder(
-            controller: _pageController,
-            scrollDirection: Axis.horizontal,
-            physics: const PageScrollPhysics(),
-            itemCount: BookPaginationProvider.upperBoundPage.toInt(),
-            itemBuilder: (BuildContext context, int index) {
-              return Text(
-                BookPaginationProvider.pages[index].toString(),
-                textDirection: TextDirection.ltr,
-                style: BookPaginationProvider.getBookTextStyle,
-              );
-            },
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: SizedBox(
+            height: SizeConfig.getMediaHeight(context) -
+                (AppBarProvider.hideBar ? 16 : widget.appBarHeigth * 2.5),
+            width: SizeConfig.getMediaWidth(context),
+            child: PageView.builder(
+              controller: _pageController,
+              scrollDirection: Axis.horizontal,
+              physics: const PageScrollPhysics(),
+              itemCount: BookPaginationProvider.upperBoundPage.toInt(),
+              itemBuilder: (BuildContext context, int index) {
+                return Text(
+                  BookPaginationProvider.pages[index].toString(),
+                  textDirection: TextDirection.ltr,
+                  style: BookPaginationProvider.getBookTextStyle,
+                );
+              },
+            ),
           ),
         ),
         if (!AppBarProvider.hideBar)
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              Text(BookPaginationProvider.label,
+                  style: FontConfigs.h3TextStyleBlack),
               if (!BookPaginationProvider.isOnePage)
                 Slider(
                     value: BookPaginationProvider.currentPage.toDouble(),
                     min: BookPaginationProvider.lowerBoundPage.toDouble(),
                     max: BookPaginationProvider.upperBoundPage.toDouble() - 1,
                     divisions: BookPaginationProvider.upperBoundPage.toInt(),
-                    label: BookPaginationProvider.label,
                     onChanged: (value) {
                       setState(() {
                         changePage(value.round());
                       });
-                    })
-              else
-                Text(BookPaginationProvider.label,
-                    style: FontConfigs.h2TextStyleBlack),
+                    }),
             ],
           )
       ],
