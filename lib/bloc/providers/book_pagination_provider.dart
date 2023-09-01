@@ -79,7 +79,7 @@ class BookPaginationProvider {
       style: getBookTextStyle,
     );
     final textPainter = TextPainter(
-      textAlign: TextAlign.justify,
+      // textAlign: TextAlign.justify,
       text: textSpan,
       textDirection: TextDirection.ltr,
     );

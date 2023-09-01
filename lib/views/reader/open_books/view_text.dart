@@ -216,7 +216,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
           if (BookPaginationProvider.needToUpdatePagesFromUI) {
             BookPaginationProvider.initPages(
                 SizeConfig.size(
-                  context,
+                  context,edgeInsets: EdgeInsets.all(8)
                 ),
                 context);
           }
