@@ -130,7 +130,7 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
                   newFontSize: _fontSize,
                   context: context,
                   pageSize:
-                      SizeConfig.size(context, edgeInsets: EdgeInsets.all(10)),
+                      SizeConfig.size(context, edgeInsets: EdgeInsets.all(8)),
                 );
                 debugPrintIt('TO');
                 debugPrintIt('${BookPaginationProvider.currentPage}');

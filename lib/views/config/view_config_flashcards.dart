@@ -11,14 +11,13 @@ class SizeConfig {
     return MediaQuery.of(context).size.width * p;
   }
 
-  static Size size(BuildContext context,
-      {EdgeInsetsGeometry? edgeInsets}) {
+  static Size size(BuildContext context, {EdgeInsetsGeometry? edgeInsets}) {
     var size = MediaQuery.sizeOf(context);
     if (edgeInsets == null) {
       return size;
     }
     return Size(
-        size.height - edgeInsets.vertical, size.width - edgeInsets.horizontal);
+        size.width - edgeInsets.horizontal, size.height - edgeInsets.vertical);
   }
 }
 

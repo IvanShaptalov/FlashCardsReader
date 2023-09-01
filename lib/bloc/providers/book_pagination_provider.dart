@@ -70,6 +70,11 @@ class BookPaginationProvider {
     if (!isTest) {
       assert(context != null, 'context must not be null in real session');
     }
+
+    if (_loadedBookText.isEmpty) {
+      debugPrintIt('empty book');
+      return;
+    }
     needToUpdatePagesFromUI = false;
 
     _pages = [];
@@ -84,7 +89,7 @@ class BookPaginationProvider {
       textDirection: TextDirection.ltr,
     );
     textPainter.layout(
-      minWidth: pageSize.width,
+      minWidth: 0,
       maxWidth: pageSize.width,
     );
 
