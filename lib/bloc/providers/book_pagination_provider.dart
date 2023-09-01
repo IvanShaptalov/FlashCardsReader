@@ -79,12 +79,12 @@ class BookPaginationProvider {
       style: getBookTextStyle,
     );
     final textPainter = TextPainter(
-      // textAlign: TextAlign.justify,
+      textAlign: TextAlign.start,
       text: textSpan,
       textDirection: TextDirection.ltr,
     );
     textPainter.layout(
-      minWidth: 0,
+      minWidth: pageSize.width,
       maxWidth: pageSize.width,
     );
 
@@ -102,7 +102,7 @@ class BookPaginationProvider {
       final bottom = line.baseline + line.descent;
 
       // Current line overflow page
-      if (currentPageBottom < bottom) {
+      if (currentPageBottom <= bottom) {
         // https://stackoverflow.com/questions/56943994/how-to-get-the-raw-text-from-a-flutter-textbox/56943995#56943995
         currentPageEndIndex =
             textPainter.getPositionForOffset(Offset(left, top)).offset;

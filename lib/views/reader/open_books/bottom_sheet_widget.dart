@@ -129,7 +129,8 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
                   newFontFamily: _dropDownValue.replaceAll(' ', '_'),
                   newFontSize: _fontSize,
                   context: context,
-                  pageSize: SizeConfig.size(context),
+                  pageSize:
+                      SizeConfig.size(context, edgeInsets: EdgeInsets.all(10)),
                 );
                 debugPrintIt('TO');
                 debugPrintIt('${BookPaginationProvider.currentPage}');
@@ -141,7 +142,6 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
                     fontWeight: FontWeight.normal,
                     fontFamily: _dropDownValue);
                 widget.onClickedConfirm();
-                
               }),
             ],
           )

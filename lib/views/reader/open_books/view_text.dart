@@ -215,9 +215,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
           /// =====================[SETUP PAGES]
           if (BookPaginationProvider.needToUpdatePagesFromUI) {
             BookPaginationProvider.initPages(
-                SizeConfig.size(
-                  context,edgeInsets: EdgeInsets.all(8)
-                ),
+                SizeConfig.size(context, edgeInsets: EdgeInsets.all(10)),
                 context);
           }
 
@@ -320,17 +318,13 @@ class _PaginatorState extends State<Paginator> {
             physics: const PageScrollPhysics(),
             itemCount: BookPaginationProvider.upperBoundPage.toInt(),
             itemBuilder: (BuildContext context, int index) {
-              return LimitedBox(
-                maxWidth: 100,
-                maxHeight: 10,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    BookPaginationProvider.pages[index].toString(),
-                    textAlign: TextAlign.justify,
-                    textDirection: TextDirection.ltr,
-                    style: BookPaginationProvider.getBookTextStyle,
-                  ),
+              return Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  BookPaginationProvider.pages[index].toString(),
+                  textAlign: TextAlign.justify,
+                  textDirection: TextDirection.ltr,
+                  style: BookPaginationProvider.getBookTextStyle,
                 ),
               );
             },
