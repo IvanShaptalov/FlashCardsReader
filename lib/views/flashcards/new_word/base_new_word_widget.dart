@@ -1,4 +1,5 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
+import 'package:flashcards_reader/bloc/providers/book_pagination_provider.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
 import 'package:flashcards_reader/util/checker.dart';
@@ -130,6 +131,7 @@ class BaseNewWordWidgetService {
                     BlocProvider.of<TranslatorBloc>(context)
                         .add(ClearTranslateEvent());
                     if (GuideProvider.isTutorial && saved) {
+                      AppBarProvider.dispose();
                       MyRouter.pushPage(context, const FlashCardScreen());
                     }
                   },
@@ -178,6 +180,7 @@ class BaseNewWordWidgetService {
                 BlocProvider.of<TranslatorBloc>(context)
                     .add(ClearTranslateEvent());
                 if (GuideProvider.isTutorial && saved) {
+                  AppBarProvider.dispose();
                   MyRouter.pushPage(context, const FlashCardScreen());
                 }
               },

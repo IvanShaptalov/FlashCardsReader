@@ -1,6 +1,6 @@
 // ignore_for_file: lines_longer_than_80_chars
 
-import 'package:flashcards_reader/bloc/providers/book_interaction_provider.dart';
+import 'package:flashcards_reader/bloc/providers/book_pagination_provider.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';

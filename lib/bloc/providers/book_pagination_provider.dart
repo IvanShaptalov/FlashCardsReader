@@ -4,6 +4,7 @@ import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart'
 import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
+import 'package:flashcards_reader/util/regex_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,7 +44,7 @@ class BookPaginationProvider {
   static Future<String>? loadBook() {
     BookPaginationProvider.needToUpdatePagesFromUI = true;
     return book.getAllTextAsync().then((value) {
-      _loadedBookText = value;
+      _loadedBookText = regexFixParagraph(value);
 
       return value;
     });
@@ -111,7 +112,7 @@ class BookPaginationProvider {
       }
     }
 
-    final lastPageText = loadedBookText.substring(currentPageStartIndex);
+    final lastPageText = _loadedBookText.substring(currentPageStartIndex);
     _pages.add(lastPageText);
     _saveBookToDB(context: context, isTest: isTest);
   }
@@ -199,7 +200,7 @@ class BookPaginationProvider {
 
   static int validatePageNumber(int pageNumber) {
     return pageNumber = (pageNumber >= upperBoundPage
-            ? upperBoundPage-1
+            ? upperBoundPage - 1
             : pageNumber <= lowerBoundPage
                 ? lowerBoundPage
                 : pageNumber)

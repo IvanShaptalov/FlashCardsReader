@@ -211,6 +211,13 @@ const String books = 'books';
 const String textExt = '.txt';
 const String jsonExt = '.js';
 
+RegExp textBookRegex = RegExp(
+  r"(?<=\w)\n(?=\w)",
+  caseSensitive: false,
+);
+
+
+
 const List<String> allowedExtensions = [textExt, jsonExt];
 
 List<String> allowedBookExtensions = [

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:flashcards_reader/bloc/providers/book_interaction_provider.dart';
+import 'package:flashcards_reader/bloc/providers/book_pagination_provider.dart';
 import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/epub.dart';

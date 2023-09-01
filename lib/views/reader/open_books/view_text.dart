@@ -2,7 +2,7 @@ import 'package:flashcards_reader/bloc/book_listing_bloc/book_listing_bloc.dart'
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/bloc/translator_bloc/translator_bloc.dart';
-import 'package:flashcards_reader/bloc/providers/book_interaction_provider.dart';
+import 'package:flashcards_reader/bloc/providers/book_pagination_provider.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
@@ -308,25 +308,31 @@ class _PaginatorState extends State<Paginator> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: SizedBox(
-            height: SizeConfig.getMediaHeight(context) -
-                (AppBarProvider.hideBar ? 16 : widget.appBarHeigth * 2.5),
-            width: SizeConfig.getMediaWidth(context),
-            child: PageView.builder(
-              controller: _pageController,
-              scrollDirection: Axis.horizontal,
-              physics: const PageScrollPhysics(),
-              itemCount: BookPaginationProvider.upperBoundPage.toInt(),
-              itemBuilder: (BuildContext context, int index) {
-                return Text(
-                  BookPaginationProvider.pages[index].toString(),
-                  textDirection: TextDirection.ltr,
-                  style: BookPaginationProvider.getBookTextStyle,
-                );
-              },
-            ),
+        SizedBox(
+          height: SizeConfig.getMediaHeight(context) -
+              (AppBarProvider.hideBar ? 16 : widget.appBarHeigth * 2.5),
+          width: SizeConfig.getMediaWidth(context),
+          child: PageView.builder(
+            controller: _pageController,
+            scrollDirection: Axis.horizontal,
+            physics: const PageScrollPhysics(),
+            itemCount: BookPaginationProvider.upperBoundPage.toInt(),
+            itemBuilder: (BuildContext context, int index) {
+              return LimitedBox(
+                maxWidth: 100,
+                maxHeight: 10,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    BookPaginationProvider.pages[index].toString(),
+                    textAlign: TextAlign.justify,
+                    textDirection: TextDirection.ltr,
+                    softWrap: true,
+                    style: BookPaginationProvider.getBookTextStyle,
+                  ),
+                ),
+              );
+            },
           ),
         ),
         if (!AppBarProvider.hideBar)

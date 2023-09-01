@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MyRouter {
+
+  
   static Future pushPageDialog(BuildContext context, Widget page) {
     var val = Navigator.push(
       context,
