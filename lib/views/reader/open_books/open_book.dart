@@ -242,6 +242,10 @@ class OpenBookState extends ParentState<OpenBook> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)))),
                     onPressed: () {
+                      widget.book.status.setReading = true;
+
+                      BlocProvider.of<BookBloc>(widget.upperContext).add(UpdateBookEvent(
+                          bookModel: widget.book..lastAccess = DateTime.now()));
                       debugPrintIt(' it not work in tutorial');
                       // check that flashcard selected
                       if (collection != null &&

@@ -52,7 +52,7 @@ class BookCatalogState extends State<BookCatalog> {
             .state
             .books
             .where(
-                (element) => element.status.haveRead && !element.status.inTrash)
+                (element) => element.status.setHaveRead && !element.status.inTrash)
             .toList();
         break;
       case BookStatus.toRead:
@@ -69,7 +69,7 @@ class BookCatalogState extends State<BookCatalog> {
             .state
             .books
             .where(
-                (element) => element.status.reading && !element.status.inTrash)
+                (element) => element.status.setReading && !element.status.inTrash)
             .toList();
         break;
       case BookStatus.inTrash:
@@ -255,7 +255,7 @@ class BookCatalogState extends State<BookCatalog> {
                                               child: Icon(
                                                 Icons
                                                     .library_add_check_outlined,
-                                                color: book.status.haveRead
+                                                color: book.status.setHaveRead
                                                     ? Palette.green
                                                     : null,
                                               ),
@@ -263,9 +263,9 @@ class BookCatalogState extends State<BookCatalog> {
                                                 context.read<BookBloc>().add(
                                                     UpdateBookEvent(
                                                         bookModel: book
-                                                          ..status.haveRead =
+                                                          ..status.setHaveRead =
                                                               !book.status
-                                                                  .haveRead));
+                                                                  .setHaveRead));
                                               },
                                             ),
                                             PopupMenuButton<DotsMenu>(

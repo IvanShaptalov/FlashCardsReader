@@ -267,12 +267,12 @@ class BookDatabaseProvider {
       if (reading == true) {
         return BookModel.sortedByDate(currentSession!.values
             .toList()
-            .where((element) => element.status.reading == true)
+            .where((element) => element.status.setReading == true)
             .toList());
       } else if (read == true) {
         return BookModel.sortedByDate(currentSession!.values
             .toList()
-            .where((element) => element.status.haveRead == true)
+            .where((element) => element.status.setHaveRead == true)
             .toList());
       } else if (wantToRead == true) {
         return BookModel.sortedByDate(currentSession!.values

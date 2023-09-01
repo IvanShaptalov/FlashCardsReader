@@ -202,19 +202,19 @@ class BookStatus {
   int get hashCode => toString().hashCode;
 
   /// one from two: already read or reading
-  set reading(bool reading) {
+  set setReading(bool reading) {
     readingPrivate = reading;
     readPrivate = !reading;
   }
 
   /// one from two: already read or reading
-  set haveRead(bool read) {
+  set setHaveRead(bool read) {
     readPrivate = read;
     readingPrivate = !read;
   }
 
-  bool get haveRead => readPrivate;
-  bool get reading => readingPrivate;
+  bool get setHaveRead => readPrivate;
+  bool get setReading => readingPrivate;
 
   BookStatus({
     required this.readPrivate,
