@@ -84,7 +84,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
     /// =====================[SETUP PAGES]
     if (BookPaginationProvider.needToUpdatePagesFromUI) {
       BookPaginationProvider.initPages(
-          SizeConfig.size(context, edgeInsets: const EdgeInsets.all(12)),
+          SizeConfig.size(context, edgeInsets: const EdgeInsets.all(0)),
           context);
       setState(() {});
     }
@@ -215,7 +215,7 @@ class _ViewTextBookState extends State<ViewTextBook> {
           /// =====================[SETUP PAGES]
           if (BookPaginationProvider.needToUpdatePagesFromUI) {
             BookPaginationProvider.initPages(
-                SizeConfig.size(context, edgeInsets: const EdgeInsets.all(12)),
+                SizeConfig.size(context, edgeInsets: const EdgeInsets.all(0)),
                 context);
           }
 

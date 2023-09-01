@@ -46,7 +46,7 @@ class BookPaginationProvider {
     return book.getAllTextAsync().then((value) {
       _loadedBookText = regexFixParagraph(value);
 
-      return value;
+      return _loadedBookText;
     });
   }
 
