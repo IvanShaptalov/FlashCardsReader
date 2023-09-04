@@ -75,6 +75,11 @@ class OpenBookState extends ParentState<OpenBook> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // reorder cards
     if (!FastCardListProvider.putSelectedCardToFirstPositionBookMenu(
@@ -244,8 +249,10 @@ class OpenBookState extends ParentState<OpenBook> {
                     onPressed: () {
                       widget.book.status.setReading = true;
 
-                      BlocProvider.of<BookBloc>(widget.upperContext).add(UpdateBookEvent(
-                          bookModel: widget.book..lastAccess = DateTime.now()));
+                      BlocProvider.of<BookBloc>(widget.upperContext).add(
+                          UpdateBookEvent(
+                              bookModel: widget.book
+                                ..lastAccess = DateTime.now()));
                       debugPrintIt(' it not work in tutorial');
                       // check that flashcard selected
                       if (collection != null &&
@@ -266,6 +273,8 @@ class OpenBookState extends ParentState<OpenBook> {
 
                             break;
                           case '.pdf':
+                            BookPaginationProvider.setUpBook(widget.book);
+
                             MyRouter.pushPageReplacement(
                                 context,
                                 ViewPDF(widget.book.title,

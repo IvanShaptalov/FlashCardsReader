@@ -7,6 +7,7 @@ import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/flashcards/flashcards/flashcards_screen.dart';
+import 'package:flashcards_reader/views/fullscreen.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/menu/adaptive_context_selection_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
@@ -15,7 +16,6 @@ import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_notes.dar
 import 'package:flashcards_reader/views/reader/open_books/bottom_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -66,7 +66,8 @@ class _ViewTextBookState extends State<ViewTextBook> {
   @override
   void initState() {
     super.initState();
-    FutureStringProvider.loadingText = BookPaginationProvider.loadBook();
+    FutureStringProvider.loadingText =
+        BookPaginationProvider.loadBook(context: context);
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       if (GuideProvider.isTutorial) {
@@ -209,15 +210,19 @@ class _ViewTextBookState extends State<ViewTextBook> {
 
   Widget _buildTextContent(BuildContext context) {
     return FutureBuilder(
-      future: FutureStringProvider.loadingText,
+      future: /* FutureStringProvider.loadingText */
+          BookPaginationProvider.loadBook(context: context)!.then((value) {
+        debugPrintIt('book loaded aboba');
+        return value;
+      }),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData && snapshot.data.toString().isNotEmpty) {
           /// =====================[SETUP PAGES]
-          if (BookPaginationProvider.needToUpdatePagesFromUI) {
-            BookPaginationProvider.initPages(
-                SizeConfig.size(context, edgeInsets: EdgeInsets.all(8)),
-                context);
-          }
+          // if (BookPaginationProvider.needToUpdatePagesFromUI) {
+          //   BookPaginationProvider.initPages(
+          //       SizeConfig.size(context, edgeInsets: const EdgeInsets.all(8)),
+          //       context);
+          // }
 
           BlocProvider.of<BookBloc>(context)
               .add(UpdateBookEvent(bookModel: BookPaginationProvider.book));
@@ -271,8 +276,7 @@ class _PaginatorState extends State<Paginator> {
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-    print('rebuild paginator');
+    debugPrintIt('rebuild paginator');
     _pageController.addListener(() {
       BookPaginationProvider.jumpToPage(
           context: context,
@@ -291,16 +295,16 @@ class _PaginatorState extends State<Paginator> {
       },
     );
     super.initState();
+    FullScreen.enable();
   }
 
   @override
   void dispose() {
     debugPrintIt('dispose page Controller');
     _pageController.dispose();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
 
     super.dispose();
+    FullScreen.disable();
   }
 
   @override

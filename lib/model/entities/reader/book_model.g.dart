@@ -18,35 +18,26 @@ class BookSettingsAdapter extends TypeAdapter<BookSettings> {
     };
     return BookSettings(
       fontSize: fields[0] as double,
-      fontColor: fields[1] as String,
-      lineHeight: fields[2] as double,
-      wordSpacing: fields[3] as double,
-      letterSpacing: fields[4] as double,
-      fontFamily: fields[5] as String,
-      backgroundColor: fields[6] as String,
-      currentPage: fields[7] as int,
+      foreground: fields[1] as String,
+      fontFamily: fields[2] as String,
+      backgroundColor: fields[3] as String,
+      currentPage: fields[4] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookSettings obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.fontSize)
       ..writeByte(1)
-      ..write(obj.fontColor)
+      ..write(obj.foreground)
       ..writeByte(2)
-      ..write(obj.lineHeight)
-      ..writeByte(3)
-      ..write(obj.wordSpacing)
-      ..writeByte(4)
-      ..write(obj.letterSpacing)
-      ..writeByte(5)
       ..write(obj.fontFamily)
-      ..writeByte(6)
+      ..writeByte(3)
       ..write(obj.backgroundColor)
-      ..writeByte(7)
+      ..writeByte(4)
       ..write(obj.currentPage);
   }
 

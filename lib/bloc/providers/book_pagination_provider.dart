@@ -5,6 +5,7 @@ import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/regex_util.dart';
+import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,14 +42,17 @@ class BookPaginationProvider {
     book = paramBook;
   }
 
-  static Future<String>? loadBook() {
+  static Future<String>? loadBook({BuildContext? context}) {
     debugPrintIt(
-        'only one load!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        'only one load!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     BookPaginationProvider.needToUpdatePagesFromUI = true;
     return book.getAllTextAsync().then((value) {
       _loadedBookText = regexFixParagraph(value);
 
       return _loadedBookText;
+    }).then((value) async {
+      initPages(SizeConfig.size(context!), context);
+      return value;
     });
   }
 
@@ -56,7 +60,7 @@ class BookPaginationProvider {
   static double lowerBoundPage = 0;
   static double get upperBoundPage => _pages.length.toDouble();
 
-  static int get _currentPage => book.settings.currentPage;
+  static int get _currentPage => validatePageNumber(book.settings.currentPage);
   static int get currentPage => _currentPage;
 
   // loaded pages
@@ -240,7 +244,5 @@ class AppBarProvider {
 
   static void dispose() {
     _hideBar = false;
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
   }
 }

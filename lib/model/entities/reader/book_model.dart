@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:isolate';
-
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flutter/services.dart';
@@ -13,18 +12,12 @@ class BookSettings {
   @HiveField(0)
   double fontSize;
   @HiveField(1)
-  String fontColor;
+  String foreground;
   @HiveField(2)
-  double lineHeight;
-  @HiveField(3)
-  double wordSpacing;
-  @HiveField(4)
-  double letterSpacing;
-  @HiveField(5)
   String fontFamily;
-  @HiveField(6)
+  @HiveField(3)
   String backgroundColor;
-  @HiveField(7)
+  @HiveField(4)
   int currentPage;
 
   @override
@@ -43,10 +36,7 @@ class BookSettings {
 
   BookSettings({
     required this.fontSize,
-    required this.fontColor,
-    required this.lineHeight,
-    required this.wordSpacing,
-    required this.letterSpacing,
+    required this.foreground,
     required this.fontFamily,
     required this.backgroundColor,
     required this.currentPage,
@@ -55,10 +45,7 @@ class BookSettings {
   factory BookSettings.asset() {
     return BookSettings(
         fontSize: 14,
-        fontColor: '#000000',
-        lineHeight: 1.0,
-        wordSpacing: 1.0,
-        letterSpacing: 0.2,
+        foreground: '#000000',
         fontFamily: 'Roboto',
         backgroundColor: '#ffffff',
         currentPage: 0);
@@ -67,10 +54,7 @@ class BookSettings {
   factory BookSettings.fromJson(Map<String, dynamic> json) {
     return BookSettings(
       fontSize: json['fontSize'],
-      fontColor: json['fontColor'],
-      lineHeight: json['lineHeight'],
-      wordSpacing: json['wordSpacing'],
-      letterSpacing: json['letterSpacing'],
+      foreground: json['fontColor'],
       fontFamily: json['fontFamily'],
       backgroundColor: json['backgroundColor'],
       currentPage: json['currentPage'],
@@ -79,10 +63,7 @@ class BookSettings {
 
   Map<String, dynamic> toJson() => {
         'fontSize': fontSize,
-        'fontColor': fontColor,
-        'lineHeight': lineHeight,
-        'wordSpacing': wordSpacing,
-        'letterSpacing': letterSpacing,
+        'fontColor': foreground,
         'fontFamily': fontFamily,
         'backgroundColor': backgroundColor,
         'currentPage': currentPage,

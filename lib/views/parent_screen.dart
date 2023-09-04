@@ -2,6 +2,7 @@ import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/new_word_screen.dart';
 import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
+import 'package:flashcards_reader/views/fullscreen.dart';
 import 'package:flashcards_reader/views/reader/screens/reading_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_actions/quick_actions.dart';
@@ -69,6 +70,8 @@ class ParentState<T extends ParentStatefulWidget> extends State<T> {
     });
 
     super.initState();
+    FullScreen.disable();
+
   }
 
   void bindPage(Widget page) {
