@@ -20,7 +20,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   watcher: ^1.0.2
   path_provider: ^2.0.14
-  translator: ^0.1.7
+  # translator: ^0.1.7
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   uuid: ^3.0.7
@@ -37,7 +37,7 @@ dependencies:
 
   # READER dependencies
   pdfx: ^2.4.0
-  printing: ^5.9.3
+  syncfusion_flutter_pdfviewer: ^22.2.11
   fb2_parse: ^1.0.1
   epubx: ^4.0.0
   html: ^0.15.4
@@ -51,10 +51,10 @@ dependencies:
   connectivity: ^3.0.6
   curved_navigation_bar: ^1.0.3
   dio: ^4.0.6
-  flutter_cached_pdfview: ^0.4.0-nullsafety
+  # flutter_cached_pdfview: ^0.4.0-nullsafety
   flutter_svg: ^2.0.0+1
   flutter_spinkit: ^5.0.0
-  http: ^0.13.6
+  http: ^1.1.0
   lottie: ^1.4.3
   material_design_icons_flutter: ^5.0.6996
   permission_handler: ^10.4.1

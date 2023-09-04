@@ -1,6 +1,6 @@
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
-import 'package:translator/translator.dart';
+// import 'package:translator/translator.dart';
 
 class TranslateResponse {
   final String fromLanguage;
@@ -14,12 +14,14 @@ class TranslateResponse {
       required this.from,
       required this.to});
 
-  static TranslateResponse fromTranslate(Translation tr) {
+  static TranslateResponse fromTranslate(/* Translation tr */) {
+    // return TranslateResponse(
+    //     fromLanguage: tr.sourceLanguage.toString(),
+    //     toLanguage: tr.targetLanguage.toString(),
+    //     from: tr.source,
+    //     to: tr.text);
     return TranslateResponse(
-        fromLanguage: tr.sourceLanguage.toString(),
-        toLanguage: tr.targetLanguage.toString(),
-        from: tr.source,
-        to: tr.text);
+        fromLanguage: 'en', toLanguage: 'en', from: 'no', to: 'result');
   }
 
   static TranslateResponse trException(
@@ -40,7 +42,7 @@ class TranslateResponse {
 }
 
 class GoogleTranslatorApiWrapper {
-  final GoogleTranslator _translator = GoogleTranslator();
+  // final GoogleTranslator _translator = GoogleTranslator();
 
   Future<TranslateResponse> translate(String text,
       {String from = "auto", String to = "uk"}) async {
@@ -69,8 +71,14 @@ class GoogleTranslatorApiWrapper {
 
     // translate
     try {
-      var result = await _translator.translate(text, from: from, to: to);
-      return TranslateResponse.fromTranslate(result);
+      // var result = await _translator.translate(text, from: from, to: to);
+      // return TranslateResponse.fromTranslate(/* result */);
+      return TranslateResponse.trException(
+          sourceLanguage: from,
+          targetLanguage: to,
+          text: "",
+          source: text,
+          exception: checkInternetConnection);
     } catch (e) {
       debugPrintIt(e.toString());
       return TranslateResponse.trException(

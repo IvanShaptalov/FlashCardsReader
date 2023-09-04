@@ -1,8 +1,8 @@
-import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
-// import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
-import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flutter/services.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ViewPDF extends StatefulWidget {
   final String name;
@@ -10,130 +10,56 @@ class ViewPDF extends StatefulWidget {
   const ViewPDF(this.name, this.path, {super.key});
 
   @override
-  // ignore: no_logic_in_create_state
-  ViewPDFState createState() => ViewPDFState(name, path);
+  ViewPDFState createState() => ViewPDFState();
 }
 
 class ViewPDFState extends State<ViewPDF> {
-  final String name;
-  final String path;
-  ViewPDFState(this.name, this.path);
+  PdfViewerController? _pdfViewerController;
 
-  final Completer<PDFViewController> _pdfViewController =
-      Completer<PDFViewController>();
-  final StreamController<String> _pageCountController =
-      StreamController<String>();
+  @override
+  void initState() {
+    _pdfViewerController = PdfViewerController();
+    super.initState();
+  }
+
+  OverlayEntry? _overlayEntry;
+  void _showContextMenu(
+      BuildContext context, PdfTextSelectionChangedDetails details) {
+    final OverlayState _overlayState = Overlay.of(context);
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: details.globalSelectedRegion!.center.dy - 55,
+        left: details.globalSelectedRegion!.bottomLeft.dx,
+        child: TextButton(
+          child: Text('Copy', style: TextStyle(fontSize: 17)),
+          onPressed: () {
+            Clipboard.setData(
+                ClipboardData(text: details.selectedText ?? 'not selected'));
+            _pdfViewerController?.clearSelection();
+          },
+        ),
+      ),
+    );
+    _overlayState.insert(_overlayEntry!);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          name,
-          style: FontConfigs.pageNameTextStyle,
-        ),
-        backgroundColor: Palette.white,
-        elevation: 0,
-        iconTheme: IconThemeData(color: Palette.blueGrey),
-        actions: <Widget>[
-          StreamBuilder<String>(
-            stream: _pageCountController.stream,
-            builder: (_, AsyncSnapshot<String> snapshot) {
-              if (snapshot.hasData) {
-                return Center(
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(10, 10, 16, 10),
-                    padding: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                        // color: Palette.red
-                        ),
-                    child: Text(
-                      snapshot.data!,
-                      style: TextStyle(
-                          color: Palette.blueGrey,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                );
-              }
-              return const SizedBox();
-            },
-          )
-        ],
+        title: const Text('Syncfusion Flutter PdfViewer'),
       ),
-      body: PDF(
-        enableSwipe: true,
-        fitPolicy: FitPolicy.BOTH,
-        swipeHorizontal: true,
-        fitEachPage: true,
-        onPageChanged: (int? current, int? total) =>
-            _pageCountController.add('${current! + 1} - $total'),
-        onViewCreated: (PDFViewController pdfViewController) async {
-          _pdfViewController.complete(pdfViewController);
-          final int? currentPage = await pdfViewController.getCurrentPage();
-          final int? pageCount = await pdfViewController.getPageCount();
-          _pageCountController.add('${currentPage! + 1} - $pageCount');
-        },
-        preventLinkNavigation: true,
-      ).fromPath(
-        path,
-      ),
-      floatingActionButton: FutureBuilder<PDFViewController>(
-        future: _pdfViewController.future,
-        builder: (_, AsyncSnapshot<PDFViewController> snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            return Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                FloatingActionButton(
-                  heroTag: '-',
-                  backgroundColor: Palette.white,
-                  hoverColor: Palette.blueGrey,
-                  onPressed: () async {
-                    final PDFViewController pdfController = snapshot.data!;
-                    final int currentPage =
-                        (await pdfController.getCurrentPage())! - 1;
-                    if (currentPage >= 0) {
-                      await pdfController.setPage(currentPage);
-                    }
-                  },
-                  child: Text(
-                    '<',
-                    style: TextStyle(
-                        color: Palette.blueGrey,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                FloatingActionButton(
-                  heroTag: '+',
-                  backgroundColor: Palette.white,
-                  onPressed: () async {
-                    final PDFViewController pdfController = snapshot.data!;
-                    final int currentPage =
-                        (await pdfController.getCurrentPage())! + 1;
-                    final int? numberOfPages =
-                        await pdfController.getPageCount();
-                    if (numberOfPages! > currentPage) {
-                      await pdfController.setPage(currentPage);
-                    }
-                  },
-                  child: Text(
-                    '>',
-                    style: TextStyle(
-                        color: Palette.blueGrey,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            );
+      body: SfPdfViewer.file(
+        File(widget.path),
+        onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
+          if (details.selectedText == null && _overlayEntry != null) {
+            _overlayEntry?.remove();
+            _overlayEntry = null;
+          } else if (details.selectedText != null && _overlayEntry == null) {
+            _showContextMenu(context, details);
           }
-          return const SizedBox();
         },
+        controller: _pdfViewerController,
       ),
     );
   }
