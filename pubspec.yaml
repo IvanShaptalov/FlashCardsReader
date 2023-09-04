@@ -64,6 +64,9 @@ dependencies:
   integration_test:
     sdk: flutter
 
+  translator:
+    path: local_packages/translator
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
