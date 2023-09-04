@@ -216,8 +216,6 @@ RegExp textBookRegex = RegExp(
   caseSensitive: false,
 );
 
-
-
 const List<String> allowedExtensions = [textExt, jsonExt];
 
 List<String> allowedBookExtensions = [
@@ -256,3 +254,15 @@ List<String> allowedBookExtensions = [
 ];
 
 const String androidBasePath = '/storage/emulated/0/';
+
+const String fontRoboto = 'Roboto';
+const String fontGideonRoman= 'Gideon_Roman';
+const String fontNotoSerif= 'Noto_Serif';
+const String fontRedressed= 'Redressed';
+
+const List<String> fonts = [
+  'Roboto',
+  'Gideon_Roman',
+  'Noto_Serif',
+  'Redressed'
+];

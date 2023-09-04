@@ -6,8 +6,8 @@ import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/regex_util.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
+import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookPaginationProvider {

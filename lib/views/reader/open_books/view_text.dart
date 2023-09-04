@@ -322,6 +322,8 @@ class _PaginatorState extends State<Paginator> {
             physics: const PageScrollPhysics(),
             itemCount: BookPaginationProvider.upperBoundPage.toInt(),
             itemBuilder: (BuildContext context, int index) {
+              debugPrintIt(
+                  'text style: ${BookPaginationProvider.book.settings.fontFamily}');
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
