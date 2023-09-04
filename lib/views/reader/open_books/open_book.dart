@@ -275,10 +275,20 @@ class OpenBookState extends ParentState<OpenBook> {
                           case '.pdf':
                             BookPaginationProvider.setUpBook(widget.book);
 
-                            MyRouter.pushPageReplacement(
+                            MyRouter.pushPage(
                                 context,
-                                ViewPDF(widget.book.title,
-                                    widget.book.fileMeta.path));
+                                ViewPDF(
+                                  widget.book.title,
+                                  widget.book.fileMeta.path,
+                                  saveBook: (page) {
+                                    widget.book.settings.currentPage = page;
+                                    BlocProvider.of<BookBloc>(
+                                            widget.upperContext)
+                                        .add(UpdateBookEvent(
+                                            bookModel: widget.book));
+                                  },
+                                  page: widget.book.settings.currentPage,
+                                ));
 
                             break;
                           case '.epub':
