@@ -77,7 +77,9 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                 ))));
   }
 
-  void showUpdateFlashCardMenu(BuildContext context) async {
+  
+
+  static void showUpdateFlashCardMenu(BuildContext context) async {
     return showModalBottomSheet(
         useSafeArea: true,
         isScrollControlled: true,
