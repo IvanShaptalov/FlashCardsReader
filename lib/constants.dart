@@ -222,43 +222,14 @@ List<String> allowedBookExtensions = [
   '.txt',
   '.epub',
   '.pdf',
-  '.fb2',
-
-  // '.docx',
-  // '.doc',
-  // '.odt',
-  // '.html',
-  // '.htm',
-  // '.xhtml',
-  // '.prc',
-  // '.pdb',
-  // '.azw',
-  // '.azw3',
-  // '.azw4',
-  // '.kf8',
-  // '.kf7',
-  // '.kf6',
-  // '.kf5',
-  // '.mobi',
-  // '.rtf',
-  // '.snb',
-  // '.tcr',
-  // '.txtz',
-  // '.cbr',
-  // '.cbz',
-  // '.cb7',
-  // '.cbt',
-  // '.cba',
-  // '.chm',
-  // '.djvu',
 ];
 
 const String androidBasePath = '/storage/emulated/0/';
 
 const String fontRoboto = 'Roboto';
-const String fontGideonRoman= 'Gideon_Roman';
-const String fontNotoSerif= 'Noto_Serif';
-const String fontRedressed= 'Redressed';
+const String fontGideonRoman = 'Gideon_Roman';
+const String fontNotoSerif = 'Noto_Serif';
+const String fontRedressed = 'Redressed';
 
 const List<String> fonts = [
   'Roboto',

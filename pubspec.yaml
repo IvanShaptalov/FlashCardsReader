@@ -37,7 +37,6 @@ dependencies:
   # READER dependencies
   pdfx: ^2.4.0
   syncfusion_flutter_pdfviewer: ^22.2.11
-  fb2_parse: ^1.0.1
   epubx: ^4.0.0
   html: ^0.15.4
   archive: ^3.3.7
@@ -90,9 +89,6 @@ flutter:
     - assets/test/test.epub
     - assets/test/test.mobi
     - assets/test/test.pdf
-    - assets/test/test.fb2
-    # fb 2 on zip
-    - assets/test/test.zip
 
   fonts:
     - family: Roboto

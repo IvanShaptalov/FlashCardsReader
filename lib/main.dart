@@ -1,4 +1,3 @@
-import 'package:flashcards_reader/model/IO/local_manager.dart';
 import 'package:flashcards_reader/model/entities/reader/book_scanner.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/checker.dart';
@@ -24,7 +23,6 @@ void initTts() async {
 }
 
 Future<bool> initAsync() async {
-  bool ioInit = await LocalManager.initAsync();
   bool dbInit = await DataBase.initAsync();
 
   BookScanner.init();
@@ -35,7 +33,7 @@ Future<bool> initAsync() async {
   // start checking internet connection
   debugPrintIt('start checking internet connection');
   Checker.startChecking();
-  return dbInit && ioInit;
+  return dbInit;
 }
 
 Future<void> main() async {
