@@ -13,6 +13,7 @@ import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
+import 'package:flashcards_reader/views/reader/open_books/view_epub.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_pdf.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
@@ -265,6 +266,7 @@ class OpenBookState extends ParentState<OpenBook> {
                       if (widget.book.isBinded) {
                         switch (widget.book.fileMeta.ext) {
                           case '.txt':
+                            debugPrintIt('txt');
                             // check that collection has selected flashCard
                             BookPaginationProvider.setUpBook(widget.book);
 
@@ -273,6 +275,8 @@ class OpenBookState extends ParentState<OpenBook> {
 
                             break;
                           case '.pdf':
+                            debugPrintIt('pdf');
+
                             BookPaginationProvider.setUpBook(widget.book);
 
                             MyRouter.pushPage(
@@ -292,8 +296,16 @@ class OpenBookState extends ParentState<OpenBook> {
 
                             break;
                           case '.epub':
+                            debugPrintIt('epub');
+
+                            MyRouter.pushPageReplacement(
+                                context,
+                                EpubTextView(
+                                    file: File(widget.book.fileMeta.path)));
                             break;
                           case '.fb2':
+                            debugPrintIt('fb2');
+
                             break;
                           default:
                         }

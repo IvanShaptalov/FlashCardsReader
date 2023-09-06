@@ -19,10 +19,13 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
 
   final void Function() addNoteCallback;
 
+  final bool hideNotes;
+
   const FlashReaderAdaptiveContextSelectionMenu(
       {Key? key,
       required this.selectableRegionState,
-      required this.addNoteCallback})
+      required this.addNoteCallback,
+      this.hideNotes = false})
       : super(key: key);
 
   @override
@@ -46,11 +49,12 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                                     element.type == ContextMenuButtonType.copy)
                                 .onPressed,
                             icon: const Icon(Icons.copy)),
-                        IconButton(
-                            onPressed: () {
-                              addNoteCallback();
-                            },
-                            icon: const Icon(Icons.format_quote_rounded)),
+                        if (!hideNotes)
+                          IconButton(
+                              onPressed: () {
+                                addNoteCallback();
+                              },
+                              icon: const Icon(Icons.format_quote_rounded)),
                         IconButton(
                             onPressed: () {
                               if (GuideProvider.isTutorial) {
@@ -76,8 +80,6 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
                   ],
                 ))));
   }
-
-  
 
   static void showUpdateFlashCardMenu(BuildContext context) async {
     return showModalBottomSheet(
