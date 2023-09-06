@@ -6,7 +6,6 @@ import 'package:device_information/device_information.dart';
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/epub.dart';
-import 'package:flashcards_reader/model/entities/reader/book_parser/fb2.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/pdf.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/txt.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
@@ -171,22 +170,6 @@ class BookScanner {
             model = await BinderPdf.bind(file);
           } catch (e) {
             debugPrintIt('$e error in pdf');
-          }
-          break;
-
-        case '.fb2':
-          try {
-            model = await BinderFB2().bind(file);
-          } catch (e) {
-            debugPrintIt('$e error in fb2');
-          }
-          break;
-
-        case '.zip':
-          try {
-            model = await BinderFB2().bind(file);
-          } catch (e) {
-            debugPrintIt('$e error in fb2 zip');
           }
           break;
 

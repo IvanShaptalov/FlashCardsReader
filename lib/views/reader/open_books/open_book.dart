@@ -321,11 +321,10 @@ class OpenBookState extends ParentState<OpenBook> {
                                   },
                                 ));
                             break;
-                          case '.fb2':
-                            debugPrintIt('fb2');
 
-                            break;
                           default:
+                            OverlayNotificationProvider.showOverlayNotification(
+                                'This format not allowed');
                         }
                       } else {
                         OverlayNotificationProvider.showOverlayNotification(

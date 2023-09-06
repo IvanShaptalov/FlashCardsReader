@@ -5,7 +5,6 @@ import 'package:flashcards_reader/bloc/providers/book_pagination_provider.dart';
 import 'package:flashcards_reader/database/core/table_methods.dart';
 import 'package:flashcards_reader/model/entities/reader/book_model.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/epub.dart';
-import 'package:flashcards_reader/model/entities/reader/book_parser/fb2.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/pdf.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/txt.dart';
 
@@ -28,22 +27,6 @@ void main() async {
       expect(model.fileMeta.path,
           '/data/user/0/com.example.flashcards_reader/cache/assets/book/quotes.txt');
       expect(model.fileMeta.ext, '.txt');
-      expect(File(model.fileMeta.path).existsSync(), true);
-
-      File(model.fileMeta.path).deleteSync();
-      expect(File(model.fileMeta.path).existsSync(), false);
-    });
-
-    testWidgets('fb2 format', (tester) async {
-      var model = await BinderFB2().bind(
-          await BookModel.asset().getFileFromAssets('assets/test/test.fb2'));
-      debugPrintIt(model);
-      expect(model.title, 'test.fb2');
-      expect(model.coverPath.endsWith('.jpg'), true);
-      expect(model.author, 'Андрей Первухин;');
-      expect(model.fileMeta.path,
-          '/data/user/0/com.example.flashcards_reader/cache/assets/test/test.fb2');
-      expect(model.fileMeta.ext, '.fb2');
       expect(File(model.fileMeta.path).existsSync(), true);
 
       File(model.fileMeta.path).deleteSync();
@@ -162,7 +145,7 @@ void main() async {
           isTest: true);
 
       expect(BookPaginationProvider.currentPage,
-          BookPaginationProvider.upperBoundPage-1);
+          BookPaginationProvider.upperBoundPage - 1);
     });
   });
 }
