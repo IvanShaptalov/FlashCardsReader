@@ -301,7 +301,25 @@ class OpenBookState extends ParentState<OpenBook> {
                             MyRouter.pushPageReplacement(
                                 context,
                                 EpubTextView(
-                                    file: File(widget.book.fileMeta.path)));
+                                  file: File(widget.book.fileMeta.path),
+                                  epubCFI: widget.book.settings.epubCFI,
+                                  pageIndex: widget.book.settings.currentPage,
+                                  saveBook: (pageIndex, epubCfi) {
+                                    debugPrintIt('new epubCFI: $pageIndex');
+                                    if (pageIndex != null) {
+                                      widget.book.settings.currentPage =
+                                          pageIndex;
+                                    }
+                                    if (epubCfi != null) {
+                                      widget.book.settings.epubCFI = epubCfi;
+                                    }
+
+                                    BlocProvider.of<BookBloc>(
+                                            widget.upperContext)
+                                        .add(UpdateBookEvent(
+                                            bookModel: widget.book));
+                                  },
+                                ));
                             break;
                           case '.fb2':
                             debugPrintIt('fb2');

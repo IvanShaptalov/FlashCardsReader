@@ -19,6 +19,8 @@ class BookSettings {
   String backgroundColor;
   @HiveField(4)
   int currentPage;
+  @HiveField(5)
+  String epubCFI;
 
   @override
   String toString() {
@@ -34,13 +36,13 @@ class BookSettings {
   @override
   int get hashCode => toString().hashCode;
 
-  BookSettings({
-    required this.fontSize,
-    required this.foreground,
-    required this.fontFamily,
-    required this.backgroundColor,
-    required this.currentPage,
-  });
+  BookSettings(
+      {required this.fontSize,
+      required this.foreground,
+      required this.fontFamily,
+      required this.backgroundColor,
+      required this.currentPage,
+      required this.epubCFI});
 
   factory BookSettings.asset() {
     return BookSettings(
@@ -48,7 +50,8 @@ class BookSettings {
         foreground: '#000000',
         fontFamily: 'Roboto',
         backgroundColor: '#ffffff',
-        currentPage: 0);
+        currentPage: 0,
+        epubCFI: '');
   }
 
   factory BookSettings.fromJson(Map<String, dynamic> json) {
@@ -58,6 +61,7 @@ class BookSettings {
       fontFamily: json['fontFamily'],
       backgroundColor: json['backgroundColor'],
       currentPage: json['currentPage'],
+      epubCFI: json['epubCFI']
     );
   }
 
@@ -67,6 +71,7 @@ class BookSettings {
         'fontFamily': fontFamily,
         'backgroundColor': backgroundColor,
         'currentPage': currentPage,
+        'epubCFI': epubCFI,
       };
 }
 

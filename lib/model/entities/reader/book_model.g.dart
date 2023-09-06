@@ -22,13 +22,14 @@ class BookSettingsAdapter extends TypeAdapter<BookSettings> {
       fontFamily: fields[2] as String,
       backgroundColor: fields[3] as String,
       currentPage: fields[4] as int,
+      epubCFI: fields[5] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookSettings obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.fontSize)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class BookSettingsAdapter extends TypeAdapter<BookSettings> {
       ..writeByte(3)
       ..write(obj.backgroundColor)
       ..writeByte(4)
-      ..write(obj.currentPage);
+      ..write(obj.currentPage)
+      ..writeByte(5)
+      ..write(obj.epubCFI);
   }
 
   @override
