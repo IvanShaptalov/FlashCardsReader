@@ -70,7 +70,8 @@ class _ViewTextBookState extends State<ViewTextBook> {
         BookPaginationProvider.loadBook(context: context);
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      if (GuideProvider.isTutorial) {
+      if (GuideProvider.isTutorial
+) {
         OverlayNotificationProvider.showOverlayNotification(
             'select text and tap translate',
             duration: null);
@@ -119,7 +120,8 @@ class _ViewTextBookState extends State<ViewTextBook> {
                     ),
                   ),
                 ),
-                if (!GuideProvider.isTutorial)
+                if (!GuideProvider.isTutorial
+)
                   IconButton(
                     onPressed: () {
                       MyRouter.pushPage(context, const FlashCardScreen());
@@ -161,7 +163,8 @@ class _ViewTextBookState extends State<ViewTextBook> {
 
     return WillPopScope(
       onWillPop: () {
-        return Future.value(!GuideProvider.isTutorial);
+        return Future.value(!GuideProvider.isTutorial
+);
       },
       child: Scaffold(
         appBar: appBar,

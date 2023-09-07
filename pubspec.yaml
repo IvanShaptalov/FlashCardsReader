@@ -89,6 +89,7 @@ flutter:
     - assets/test/test.epub
     - assets/test/test.mobi
     - assets/test/test.pdf
+    - assets/book/raw_book.png
 
   fonts:
     - family: Roboto

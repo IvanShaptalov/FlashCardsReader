@@ -98,7 +98,8 @@ class ReadingHomePageState extends ParentState<ReadingHomePageView> {
         length: _kTabs.length,
         child: WillPopScope(
           onWillPop: () { 
-            return Future.value(!GuideProvider.isTutorial);
+            return Future.value(!GuideProvider.isTutorial
+);
            },
           child: Scaffold(
             drawer: Drawer(

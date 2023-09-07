@@ -19,13 +19,13 @@ void main() async {
   group('scanners', () {
     testWidgets('txt format', (tester) async {
       var model = await BinderTxt.bind(
-          await BookModel.asset().getFileFromAssets('assets/book/quotes.txt'));
+          await BookModel.asset().getFileFromAssets('assets/book/raw_book.png'));
       debugPrintIt(model);
       expect(model.title, 'quotes.txt');
-      expect(model.coverPath, 'assets/images/empty.png');
+      expect(model.coverPath, 'assets/book/raw_book.png');
       expect(model.author, '');
       expect(model.fileMeta.path,
-          '/data/user/0/com.example.flashcards_reader/cache/assets/book/quotes.txt');
+          '/data/user/0/com.example.flashcards_reader/cache/assets/book/raw_book.png');
       expect(model.fileMeta.ext, '.txt');
       expect(File(model.fileMeta.path).existsSync(), true);
 

@@ -36,7 +36,7 @@ class BinderTxt {
         ),
         bookNotes: BookNotes.asset(),
         author: '',
-        coverPath: 'assets/images/empty.png',
+        coverPath: 'assets/book/raw_book.png',
         description: snippet,
         language: '',
         settings: BookSettings.asset());

@@ -86,7 +86,8 @@ class BookCatalogState extends State<BookCatalog> {
             .where((element) => !element.status.inTrash)
             .toList();
     }
-    if (GuideProvider.isTutorial && data is List<BookModel>) {
+    if (GuideProvider.isTutorial
+ && data is List<BookModel>) {
       debugPrintIt('is tutorial, added book');
       data!.remove(BookModel.asset());
       data!.insert(0, BookModel.asset());
@@ -102,9 +103,11 @@ class BookCatalogState extends State<BookCatalog> {
     super.initState();
     fetchData();
     // start tutorial if it is
-    if (GuideProvider.isTutorial) {
+    if (GuideProvider.isTutorial
+) {
       GuideProvider.startStep(context, 1);
-      GuideProvider.isTutorial = true;
+      GuideProvider.isTutorial
+ = true;
     }
   }
 
@@ -140,7 +143,8 @@ class BookCatalogState extends State<BookCatalog> {
                   guideText: 'Click on book',
                   step: 1,
                   // if element is first - wrap
-                  toWrap: index == 0 && GuideProvider.isTutorial,
+                  toWrap: index == 0 && GuideProvider.isTutorial
+,
                   child: Container(
                       height: ScreenIdentifier.isNormal(context)
                           ? SizeConfig.getMediaHeight(context, p: 0.21)
@@ -171,7 +175,7 @@ class BookCatalogState extends State<BookCatalog> {
                                           image: AssetImage(book ==
                                                   BookModel.asset()
                                               ? 'assets/book/quotes_skin.png'
-                                              : 'assets/images/empty.png'),
+                                              : 'assets/book/raw_book.png'),
                                           fit: BoxFit.fill),
                                   borderRadius: BorderRadius.circular(5)),
                             ),

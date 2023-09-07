@@ -18,6 +18,7 @@ import 'package:flashcards_reader/views/reader/open_books/view_pdf.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/screens/base_new_word_screen.dart';
+import 'package:flashcards_reader/views/reader/screens/reading_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,6 +100,7 @@ class OpenBookState extends ParentState<OpenBook> {
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             widget.book.title,
             style: FontConfigs.pageNameTextStyle,
@@ -106,6 +108,15 @@ class OpenBookState extends ParentState<OpenBook> {
           actions: const [Offstage()],
           backgroundColor: Palette.green300Primary,
           elevation: 0,
+          leading: IconButton(
+            onPressed: () {
+              MyRouter.pushPageReplacement(context, const ReadingHomePage());
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Palette.white,
+            ),
+          ),
           iconTheme: IconThemeData(color: Palette.blueGrey),
         ),
         body: Stack(children: [
@@ -123,7 +134,7 @@ class OpenBookState extends ParentState<OpenBook> {
                       : DecorationImage(
                           image: AssetImage(widget.book == BookModel.asset()
                               ? 'assets/book/quotes_skin.png'
-                              : 'assets/images/empty.png'),
+                              : 'assets/book/raw_book.png'),
                           fit: BoxFit.cover,
                           colorFilter: ColorFilter.mode(
                               Palette.darkBlue.withOpacity(0.9),

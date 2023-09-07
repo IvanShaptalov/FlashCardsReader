@@ -2,6 +2,7 @@ import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intro/intro.dart';
 
 class GuideProvider {
@@ -18,7 +19,28 @@ class GuideProvider {
       return true;
     },
   );
-  static bool isTutorial = false;
+  static bool _isTutorial = false;
+
+  static bool get isTutorial => _isTutorial;
+
+  static set isTutorial(bool isTutorial) {
+    _isTutorial = isTutorial;
+    if (_isTutorial) {
+      debugPrintIt('enable portrait in tutorial');
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    } else {
+      debugPrintIt('disable portrait in tutorial');
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight
+      ]);
+    }
+  }
 
   static int initIndex = 0;
 
@@ -27,12 +49,12 @@ class GuideProvider {
   }
 
   static void init() {
-    GuideProvider.isTutorial = true;
+    GuideProvider._isTutorial = true;
     GuideProvider.initIndex = 0;
   }
 
   static void endTutorial() {
-    GuideProvider.isTutorial = false;
+    GuideProvider._isTutorial = false;
     GuideProvider.initIndex = 0;
   }
 
@@ -49,7 +71,7 @@ class GuideProvider {
       required int step,
       required String guideText,
       bool toWrap = true}) {
-    if (isTutorial && toWrap) {
+    if (_isTutorial && toWrap) {
       return IntroStepTarget(
         key: Key(uuid.v4()),
         cardDecoration: IntroCardDecoration(
@@ -78,7 +100,7 @@ class GuideProvider {
       required int step,
       required String guideText,
       bool toWrap = true}) {
-    if (isTutorial && toWrap) {
+    if (_isTutorial && toWrap) {
       return IntroStepTarget(
         key: Key(uuid.v4()),
         cardDecoration: IntroCardDecoration(
