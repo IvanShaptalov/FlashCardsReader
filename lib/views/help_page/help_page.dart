@@ -84,14 +84,6 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
                 },
                 child: Icon(Icons.web_stories_outlined, color: Palette.white),
               ),
-            if (details.stepIndex == 3)
-              TextButton(
-                  onPressed: () {
-                    GuideProvider.init();
-                    MyRouter.pushPageReplacement(
-                        context, const ReadingHomePage());
-                  },
-                  child: Icon(Icons.play_arrow_rounded, color: Palette.white)),
             if (details.stepIndex > 0)
               TextButton(
                 onPressed: details.onStepCancel,
@@ -170,77 +162,108 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
                           return GestureDetector(
                             onTap: isGranted
                                 ? () {
+                                    debugPrintIt('tapped permissions');
                                     OverlayNotificationProvider
                                         .showOverlayNotification(
                                             'permission already granted');
                                   }
                                 : () async {
+                                    debugPrintIt('tapped permissions');
+
                                     await BookScanner.getFilePermission();
                                     setState(() {});
                                   },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                                border:
+                                    Border.all(width: 2, color: Palette.white),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                  height: lineHeight,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '''${!isGranted ? "tap to grant \n'Read Storage' " : "granted: 'Read Storage'"} ''',
+                                        style: FontConfigs.h2TextStyle
+                                            .copyWith(color: Palette.white),
+                                      ),
+                                      isGranted
+                                          ? Icon(Icons.check,
+                                              color: Palette.white)
+                                          : Icon(Icons.touch_app,
+                                              color: Palette.white)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        })),
+                const SizedBox(height: 10),
+                ValueListenableBuilder(
+                    valueListenable: BookScanner.manageStorage,
+                    builder:
+                        (BuildContext context, bool isGranted, Widget? child) {
+                      return GestureDetector(
+                        onTap: isGranted
+                            ? () {
+                                debugPrintIt('tapped permissions');
+
+                                BookScanner.scan();
+                              }
+                            : () {
+                                debugPrintIt('tapped permissions');
+
+                                OverlayNotificationProvider
+                                    .showOverlayNotification(
+                                        'grant permission to scan');
+                              },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(15)),
+                              border:
+                                  Border.all(width: 2, color: Palette.white)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: SizedBox(
                               height: lineHeight,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    '''${!isGranted ? "tap to grant \n'Read Storage' " : "granted: 'Read Storage'"} ''',
-                                    style: FontConfigs.h2TextStyle
-                                        .copyWith(color: Palette.white),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                        isGranted
+                                            ? 'tap to find books'
+                                            : 'grant permission',
+                                        style: FontConfigs.h2TextStyle
+                                            .copyWith(color: Palette.white)),
                                   ),
                                   isGranted
-                                      ? Icon(Icons.check, color: Palette.white)
-                                      : Icon(Icons.ads_click,
-                                          color: Palette.white)
+                                      ? Icon(
+                                          Icons.search_rounded,
+                                          color: Palette.white,
+                                        )
+                                      : Icon(
+                                          Icons.add_moderator,
+                                          color: Palette.white,
+                                        ),
                                 ],
                               ),
                             ),
-                          );
-                        })),
-                const Divider(),
-                ValueListenableBuilder(
-                    valueListenable: BookScanner.manageStorage,
-                    builder:
-                        (BuildContext context, bool isGranted, Widget? child) {
-                      return SizedBox(
-                        height: lineHeight,
-                        child: GestureDetector(
-                          onTap: isGranted
-                              ? () {
-                                  BookScanner.scan();
-                                }
-                              : () {
-                                  OverlayNotificationProvider
-                                      .showOverlayNotification(
-                                          'grant permission to scan');
-                                },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                    isGranted
-                                        ? 'tap to find books'
-                                        : 'grant permission',
-                                    style: FontConfigs.h2TextStyle
-                                        .copyWith(color: Palette.white)),
-                              ),
-                              isGranted
-                                  ? Icon(
-                                      Icons.find_replace_outlined,
-                                      color: Palette.white,
-                                    )
-                                  : Icon(
-                                      Icons.warning,
-                                      color: Palette.white,
-                                    ),
-                            ],
                           ),
                         ),
                       );
                     }),
+                const SizedBox(height: 10),
                 SizedBox(
                   height: ScreenIdentifier.isPortrait(context)
                       ? lineHeight / 2
@@ -249,31 +272,36 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
                       valueListenable: BookScanner.manageStorage,
                       builder: (BuildContext context, bool isGranted,
                           Widget? child) {
-                        return ValueListenableBuilder(
-                            valueListenable: BookScanner.scanPercent,
-                            builder: (BuildContext context, double percent,
-                                Widget? child) {
-                              if (percent == 1 || percent == 0) {
-                                debugPrintIt('update book count');
-                              }
-                              return LiquidLinearProgressIndicator(
-                                value: percent, // Defaults to 0.5.
-                                valueColor: AlwaysStoppedAnimation(isGranted
-                                    ? Palette.blueAccent
-                                    : Palette
-                                        .blueGrey), // Defaults to the current Theme's accentColor.
-                                backgroundColor: Colors
-                                    .white, // Defaults to the current Theme's backgroundColor.
-                                borderRadius: 6.0,
-                                direction: Axis
-                                    .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-                                center: Text(
-                                  isGranted && percent > 0 ? "Scanning" : "",
-                                  style: FontConfigs.h3TextStyle
-                                      .copyWith(color: Palette.white),
-                                ),
-                              );
-                            });
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: ValueListenableBuilder(
+                              valueListenable: BookScanner.scanPercent,
+                              builder: (BuildContext context, double percent,
+                                  Widget? child) {
+                                if (percent == 1 || percent == 0) {
+                                  debugPrintIt('update book count');
+                                }
+                                return LiquidLinearProgressIndicator(
+                                  value: percent, // Defaults to 0.5.
+                                  valueColor: AlwaysStoppedAnimation(isGranted
+                                      ? Palette.blueAccent
+                                      : Palette
+                                          .blueGrey), // Defaults to the current Theme's accentColor.
+                                  backgroundColor: Palette
+                                      .white, // Defaults to the current Theme's backgroundColor.
+                                  borderRadius: 15,
+                                  borderWidth: 1,
+                                  borderColor: Palette.white,
+                                  direction: Axis
+                                      .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+                                  center: Text(
+                                    isGranted && percent > 0 ? "Scanning" : "",
+                                    style: FontConfigs.h3TextStyle
+                                        .copyWith(color: Palette.white),
+                                  ),
+                                );
+                              }),
+                        );
                       }),
                 ),
                 const Divider(),
@@ -284,8 +312,34 @@ class _AppIntroduceStepperState extends State<AppIntroduceStepper> {
         Step(
           title: Text('How to use',
               style: FontConfigs.h2TextStyle.copyWith(color: Palette.white)),
-          content: Text('Instruction how to use app,\nTap to play',
-              style: FontConfigs.h2TextStyle.copyWith(color: Palette.white)),
+          content: GestureDetector(
+            onTap: () {
+              debugPrintIt('tapped permissions');
+
+              GuideProvider.init();
+              MyRouter.pushPageReplacement(context, const ReadingHomePage());
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  border: Border.all(width: 2, color: Palette.white)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Instruction how to use app,\nTap to play ',
+                        style: FontConfigs.h2TextStyle
+                            .copyWith(color: Palette.white)),
+                    Icon(
+                      Icons.touch_app,
+                      color: Palette.white,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
 
         Step(
