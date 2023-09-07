@@ -7,8 +7,17 @@ import 'package:intro/intro.dart';
 class GuideProvider {
   static int interactiveStepCount = 7;
   static int helpPageStepCount = 4; // five steps from 0
-  static IntroController introController =
-      IntroController(stepCount: interactiveStepCount);
+  static IntroController introController = IntroController(
+    stepCount: interactiveStepCount,
+    onWillClose: (currentStep) {
+      if ([1, 2, 5, 6].contains(currentStep)) {
+        debugPrintIt('guide is ended');
+        GuideProvider.isTutorial = false;
+        return true;
+      }
+      return true;
+    },
+  );
   static bool isTutorial = false;
 
   static int initIndex = 0;
@@ -43,11 +52,15 @@ class GuideProvider {
     if (isTutorial && toWrap) {
       return IntroStepTarget(
         key: Key(uuid.v4()),
-        cardDecoration: const IntroCardDecoration(
-            showCloseButton: false,
+        cardDecoration: IntroCardDecoration(
+            closeButtonStyle: ButtonStyle(
+                iconColor: MaterialStatePropertyAll(Palette.grey),
+                backgroundColor: MaterialStatePropertyAll(Palette.grey)),
+            showCloseButton: true,
+            closeButtonLabel: 'skip tutorial',
             showNextButton: false,
             showPreviousButton: false,
-            padding: EdgeInsets.all(8)),
+            padding: const EdgeInsets.all(8)),
         onHighlightTap: onHighlightTap,
         step: step,
         controller: introController,
