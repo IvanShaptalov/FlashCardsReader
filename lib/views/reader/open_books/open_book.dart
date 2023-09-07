@@ -194,21 +194,29 @@ class OpenBookState extends ParentState<OpenBook> {
             panel: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  child: Text(
-                    'Collection to save words',
-                    style: FontConfigs.h1TextStyle.copyWith(
-                        fontWeight: FontWeight.bold, color: Palette.white),
-                    textAlign: TextAlign.center,
+                if (ScreenIdentifier.isPortraitRelative(context))
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    child: Text(
+                      'Collection to save words',
+                      style: FontConfigs.h1TextStyle.copyWith(
+                          fontWeight: FontWeight.bold, color: Palette.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                else
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
                 Container(
                   color: Palette.grey300,
                   child: AnimationLimiter(
                     child: SizedBox(
-                      height: SizeConfig.getMediaHeight(context, p: 0.3),
+                      height: SizeConfig.getMediaHeight(context,
+                          p: ScreenIdentifier.isPortraitRelative(context)
+                              ? 0.3
+                              : 0.5),
                       width: SizeConfig.getMediaWidth(context, p: 1),
                       child: ListView.builder(
                           controller: FastCardListProvider.scrollController,
@@ -252,8 +260,10 @@ class OpenBookState extends ParentState<OpenBook> {
                   guideText: 'Open book',
                   child: ElevatedButton(
                     style: ButtonStyle(
-                        padding:
-                            MaterialStateProperty.all(const EdgeInsets.all(25)),
+                        padding: MaterialStateProperty.all(EdgeInsets.all(
+                            ScreenIdentifier.isPortraitRelative(context)
+                                ? 25
+                                : 10)),
                         backgroundColor:
                             MaterialStateProperty.all(Palette.amber50),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(

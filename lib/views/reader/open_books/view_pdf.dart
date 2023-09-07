@@ -101,6 +101,7 @@ class ViewPDFState extends State<ViewPDF> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(widget.name),

@@ -84,6 +84,7 @@ class FlashReaderAdaptiveContextSelectionMenu extends StatelessWidget {
   static void showUpdateFlashCardMenu(BuildContext context) async {
     return showModalBottomSheet(
         useSafeArea: true,
+        
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25))),

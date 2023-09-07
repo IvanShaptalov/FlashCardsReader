@@ -51,8 +51,8 @@ class BookCatalogState extends State<BookCatalog> {
         data = BlocProvider.of<BookBloc>(context)
             .state
             .books
-            .where(
-                (element) => element.status.setHaveRead && !element.status.inTrash)
+            .where((element) =>
+                element.status.setHaveRead && !element.status.inTrash)
             .toList();
         break;
       case BookStatus.toRead:
@@ -68,8 +68,8 @@ class BookCatalogState extends State<BookCatalog> {
         data = BlocProvider.of<BookBloc>(context)
             .state
             .books
-            .where(
-                (element) => element.status.setReading && !element.status.inTrash)
+            .where((element) =>
+                element.status.setReading && !element.status.inTrash)
             .toList();
         break;
       case BookStatus.inTrash:
@@ -86,8 +86,7 @@ class BookCatalogState extends State<BookCatalog> {
             .where((element) => !element.status.inTrash)
             .toList();
     }
-    if (GuideProvider.isTutorial
- && data is List<BookModel>) {
+    if (GuideProvider.isTutorial && data is List<BookModel>) {
       debugPrintIt('is tutorial, added book');
       data!.remove(BookModel.asset());
       data!.insert(0, BookModel.asset());
@@ -103,11 +102,9 @@ class BookCatalogState extends State<BookCatalog> {
     super.initState();
     fetchData();
     // start tutorial if it is
-    if (GuideProvider.isTutorial
-) {
+    if (GuideProvider.isTutorial) {
       GuideProvider.startStep(context, 1);
-      GuideProvider.isTutorial
- = true;
+      GuideProvider.isTutorial = true;
     }
   }
 
@@ -143,8 +140,7 @@ class BookCatalogState extends State<BookCatalog> {
                   guideText: 'Click on book',
                   step: 1,
                   // if element is first - wrap
-                  toWrap: index == 0 && GuideProvider.isTutorial
-,
+                  toWrap: index == 0 && GuideProvider.isTutorial,
                   child: Container(
                       height: ScreenIdentifier.isNormal(context)
                           ? SizeConfig.getMediaHeight(context, p: 0.21)
@@ -292,18 +288,18 @@ class BookCatalogState extends State<BookCatalog> {
                                               itemBuilder: (BuildContext
                                                       context) =>
                                                   <PopupMenuEntry<DotsMenu>>[
-                                                const PopupMenuItem<DotsMenu>(
-                                                  value: DotsMenu.share,
-                                                  child: Text('Share file'),
-                                                ),
+                                                // const PopupMenuItem<DotsMenu>(
+                                                //   value: DotsMenu.share,
+                                                //   child: Text('Share file'),
+                                                // ),
                                                 const PopupMenuItem<DotsMenu>(
                                                   value: DotsMenu.trash,
                                                   child: Text('Move to trash'),
                                                 ),
-                                                const PopupMenuItem<DotsMenu>(
-                                                  value: DotsMenu.edit,
-                                                  child: Text('Edit'),
-                                                ),
+                                                // const PopupMenuItem<DotsMenu>(
+                                                //   value: DotsMenu.edit,
+                                                //   child: Text('Edit'),
+                                                // ),
                                               ],
                                             ),
                                           ],

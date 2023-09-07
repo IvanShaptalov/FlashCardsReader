@@ -24,6 +24,41 @@ class BottomSheetNotesState extends State<BottomSheetNotes> {
     super.initState();
   }
 
+  Widget _buildEvelatedButton(
+          IconData icon, String text, Color color, Function action) =>
+      SizedBox(
+        height: 40,
+        width: 150,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: color,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10))),
+          onPressed: () => action(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: Colors.white,
+                size: 20,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                text,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,28 +67,22 @@ class BottomSheetNotesState extends State<BottomSheetNotes> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          GestureDetector(
-            onTap: () {
-              widget.onClickedClose();
-            },
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.notes,
-                  size: 22,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  "Notes",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                Icon(Icons.arrow_downward),
-              ],
-            ),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.notes,
+                size: 22,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                "Notes",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
           SizedBox(
               height: SizeConfig.getMediaHeight(context, p: 0.4),
@@ -120,6 +149,8 @@ class BottomSheetNotesState extends State<BottomSheetNotes> {
                   );
                 },
               )),
+          _buildEvelatedButton(Icons.cancel, "Close", Palette.grey800,
+              () => widget.onClickedClose()),
           const SizedBox(
             height: 15,
           ),

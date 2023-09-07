@@ -36,7 +36,7 @@ class SideMenu extends StatelessWidget {
                         AssetImage('assets/images/flutter_logo.png'),
                   ),
                 ),
-                // IconButton(onPressed: () {}, icon: const Icon(Icons.sunny))
+                IconButton(onPressed: () {}, icon: const Icon(Icons.sunny))
               ],
             ),
           ),
