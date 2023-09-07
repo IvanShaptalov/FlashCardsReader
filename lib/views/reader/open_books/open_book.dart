@@ -13,6 +13,7 @@ import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/guide_wrapper.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
 import 'package:flashcards_reader/views/parent_screen.dart';
+import 'package:flashcards_reader/views/reader/open_books/view_epub.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_pdf.dart';
 import 'package:flashcards_reader/views/reader/open_books/view_text.dart';
 import 'package:flashcards_reader/views/flashcards/new_word/add_word_collection_widget.dart';
@@ -297,28 +298,28 @@ class OpenBookState extends ParentState<OpenBook> {
                           case '.epub':
                             debugPrintIt('epub');
 
-                            // MyRouter.pushPageReplacement(
-                            //     context,
-                            // EpubTextView(
-                            //   file: File(widget.book.fileMeta.path),
-                            //   epubCFI: widget.book.settings.epubCFI,
-                            //   pageIndex: widget.book.settings.currentPage,
-                            //   saveBook: (pageIndex, epubCfi) {
-                            //     debugPrintIt('new epubCFI: $pageIndex');
-                            //     if (pageIndex != null) {
-                            //       widget.book.settings.currentPage =
-                            //           pageIndex;
-                            //     }
-                            //     if (epubCfi != null) {
-                            //       widget.book.settings.epubCFI = epubCfi;
-                            //     }
+                            MyRouter.pushPageReplacement(
+                                context,
+                                EpubTextView(
+                                  file: File(widget.book.fileMeta.path),
+                                  epubCFI: widget.book.settings.epubCFI,
+                                  pageIndex: widget.book.settings.currentPage,
+                                  saveBook: (pageIndex, epubCfi) {
+                                    debugPrintIt('new epubCFI: $pageIndex');
+                                    if (pageIndex != null) {
+                                      widget.book.settings.currentPage =
+                                          pageIndex;
+                                    }
+                                    if (epubCfi != null) {
+                                      widget.book.settings.epubCFI = epubCfi;
+                                    }
 
-                            //     BlocProvider.of<BookBloc>(
-                            //             widget.upperContext)
-                            //         .add(UpdateBookEvent(
-                            //             bookModel: widget.book));
-                            //   },
-                            // ));
+                                    BlocProvider.of<BookBloc>(
+                                            widget.upperContext)
+                                        .add(UpdateBookEvent(
+                                            bookModel: widget.book));
+                                  },
+                                ));
                             break;
 
                           default:
