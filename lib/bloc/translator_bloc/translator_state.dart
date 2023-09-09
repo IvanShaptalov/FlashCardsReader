@@ -34,6 +34,8 @@ class TranslatorState {
 
   Future<String> _translate(
       String text, String questionLang, String answerLang) async {
+    FireBaseService.translateWord(
+        questionLang, answerLang, Checker.isConnected.value);
     TranslateResponse response = await _translator.translate(text,
         from: getLangCode(questionLang), to: getLangCode(answerLang));
     result = response.to;

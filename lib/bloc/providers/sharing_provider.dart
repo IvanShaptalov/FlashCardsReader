@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flashcards_reader/firebase/firebase.dart';
 import 'package:flashcards_reader/model/IO/local_manager.dart';
 import 'package:flashcards_reader/model/IO/sharing_flashcards.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
@@ -18,6 +19,7 @@ class SharingProvider {
 
   static Future<bool> selectPathThenSave(BuildContext context,
       List<FlashCardCollection> collections, String ext) async {
+    FireBaseService.flashesExported(ext);
     String fileName = '';
     String filePath = '';
     String data = '';
@@ -100,6 +102,8 @@ class SharingProvider {
       }
 
       String fileResult = file.readAsStringSync();
+
+      FireBaseService.flashesImported(ext);
 
       /// [import section]
       switch (ext) {

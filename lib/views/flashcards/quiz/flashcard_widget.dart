@@ -1,5 +1,6 @@
 import 'package:flashcards_reader/bloc/flashcards_bloc/flashcards_bloc.dart';
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
+import 'package:flashcards_reader/firebase/firebase.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/router.dart';
@@ -59,6 +60,7 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
   Widget build(BuildContext context) {
     return BlocBuilder<QuizBloc, QuizState>(builder: (context, state) {
       // set the target item for merge
+      FireBaseService.quizProcess(QuizStatus.started);
 
       return GestureDetector(
         onTap: () {

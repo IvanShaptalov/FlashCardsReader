@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flashcards_reader/bloc/providers/book_pagination_provider.dart';
 import 'package:flashcards_reader/bloc/providers/word_collection_provider.dart';
 import 'package:flashcards_reader/constants.dart';
+import 'package:flashcards_reader/firebase/firebase.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
@@ -84,6 +85,7 @@ class ViewPDFState extends State<ViewPDF> {
                 IconButton(
                     onPressed: () {
                       _pdfViewerController?.clearSelection();
+                      FireBaseService.shared();
 
                       Share.share('''${TextSelectorProvider.selectedText}
                                 Read, translate and learn with flashReader! $googlePlayLink''');
@@ -101,7 +103,7 @@ class ViewPDFState extends State<ViewPDF> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(widget.name),

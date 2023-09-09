@@ -1,4 +1,5 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
+import 'package:flashcards_reader/firebase/firebase.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/enums.dart';
 import 'package:flashcards_reader/util/error_handler.dart';
@@ -82,7 +83,6 @@ class _QuizTrainerViewState extends State<QuizTrainerView> {
         flashCardCollection: widget.fCollection,
         mode: widget.mode,
         numberOfQuestions: widget.numberOfFlashCards));
-
     super.initState();
   }
 

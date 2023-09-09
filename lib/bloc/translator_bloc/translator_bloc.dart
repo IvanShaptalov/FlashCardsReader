@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flashcards_reader/firebase/firebase.dart';
 import 'package:flashcards_reader/model/entities/translator/api.dart';
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/util/checker.dart';

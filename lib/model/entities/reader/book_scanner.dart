@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:device_information/device_information.dart';
 import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/database/core/table_methods.dart';
+import 'package:flashcards_reader/firebase/firebase.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/epub.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/pdf.dart';
 import 'package:flashcards_reader/model/entities/reader/book_parser/txt.dart';
@@ -53,6 +54,7 @@ class BookScanner {
     // Starting from Android SDK 29 (Android 10) the READ_EXTERNAL_STORAGE and
     // WRITE_EXTERNAL_STORAGE permissions have been marked deprecated and have
     // been fully removed/ disabled since Android SDK 33 (Android 13).
+
     if (apiLevel >= 29) {
       debugPrintIt('>= 29 api scenario');
       status = await Permission.manageExternalStorage.status;
@@ -60,7 +62,6 @@ class BookScanner {
         await Permission.manageExternalStorage.request();
       }
       manageStorage.value = status.isGranted;
-      return status.isGranted;
     } else {
       debugPrintIt('< 29 api scenario');
 
@@ -69,8 +70,10 @@ class BookScanner {
         await Permission.storage.request();
       }
       manageStorage.value = status.isGranted;
-      return status.isGranted;
     }
+
+    FireBaseService.grantStorage(status.isGranted);
+    return status.isGranted;
   }
 
   static Future<void> scan() async {
@@ -89,7 +92,10 @@ class BookScanner {
             OverlayNotificationProvider.showOverlayNotification(
                 'new files: $value',
                 status: NotificationStatus.info));
-      } else {}
+        FireBaseService.logScanningBooks(true);
+      } else {
+        FireBaseService.logScanningBooks(false);
+      }
     } catch (e) {
       debugPrintIt('Error while scanning: $e');
     }

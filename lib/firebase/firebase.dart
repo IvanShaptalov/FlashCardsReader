@@ -21,6 +21,7 @@ class FireBaseService {
 
   static const String toFirebase = 'firebase ==================>';
 
+  // done
   static void logRoute(String routeName) {
     debugPrintIt(toFirebase);
     firebaseAnalytics
@@ -33,18 +34,21 @@ class FireBaseService {
         name: 'guide', parameters: {'status': guide.name, 'step': step});
   }
 
+  // done
   static void logScanningBooks(bool storageGranted) {
     firebaseAnalytics.logEvent(
         name: 'scanning_books',
         parameters: {'storage_granted': storageGranted});
   }
 
+  // done
   static void grantStorage(bool storageGranted) {
     firebaseAnalytics.logEvent(
         name: 'permission_storage',
         parameters: {'storage_granted': storageGranted});
   }
 
+  // done
   static void translateWord(String fromLan, String toLan, bool connection) {
     firebaseAnalytics.logEvent(name: 'translate', parameters: {
       'internet_connection': connection,
@@ -53,34 +57,50 @@ class FireBaseService {
     });
   }
 
+  // done
   static void quizProcess(QuizStatus quizStatus) {
     firebaseAnalytics.logEvent(
-        name: 'quiz started', parameters: {'quizStatus': quizStatus.name});
+        name: 'quiz_started', parameters: {'quizStatus': quizStatus.name});
   }
 
-  static void flashCardCount(int count) {
-    firebaseAnalytics
-        .logEvent(name: 'flash_card_count', parameters: {'count': count});
-  }
-
+  // done
   static void bookScanned(int bookCount) {
     firebaseAnalytics.logEvent(
         name: 'book_scanned', parameters: {'book_scanned': bookCount});
   }
 
-  static void shared() {}
+  // done
+  static void shared() {
+    firebaseAnalytics.logEvent(name: 'shared');
+  }
 
-  static void flashesImported(String ext) {}
+  // done
+  static void flashesImported(String ext) {
+    firebaseAnalytics
+        .logEvent(name: 'flashcard_imported', parameters: {'extension': ext});
+  }
 
-  static void flashesExported(String ext) {}
+  // done
+  static void flashesExported(String ext) {
+    firebaseAnalytics
+        .logEvent(name: 'flashcard_exported', parameters: {'extension': ext});
+  }
 
-  static void flashCreated() {}
+  // done
+  static void flashCreated() {
+    firebaseAnalytics.logEvent(
+        name: 'flashcard_created',
+        parameters: {'extension': DateTime.now().toIso8601String()});
+  }
 
-  static void flashDeleted() {}
-
-  
+  // done
+  static void flashDeleted() {
+    firebaseAnalytics.logEvent(
+        name: 'flashcard_deleted',
+        parameters: {'extension': DateTime.now().toIso8601String()});
+  }
 }
 
-enum GuideStatus { started, ended, skipped }
+enum GuideStatus { started, ended, skipped, continued }
 
 enum QuizStatus { started, finished, breaks }

@@ -1,4 +1,5 @@
 import 'package:flashcards_reader/bloc/quiz_bloc/quiz_bloc.dart';
+import 'package:flashcards_reader/firebase/firebase.dart';
 import 'package:flashcards_reader/model/entities/flashcards/flashcards_model.dart';
 import 'package:flashcards_reader/util/router.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
@@ -184,6 +185,8 @@ Widget loadEndQuiz(BuildContext context, String fromPage) {
             ),
           ),
           onTap: () {
+            FireBaseService.quizProcess(QuizStatus.finished);
+
             if (GuideProvider.isTutorial) {
               GuideProvider.endTutorial();
               GuideProvider.pushToLastStep();
