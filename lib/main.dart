@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/firebase/firebase.dart';
 import 'package:flashcards_reader/model/entities/reader/book_scanner.dart';
 import 'package:flashcards_reader/model/entities/tts/core.dart';
 import 'package:flashcards_reader/util/checker.dart';
@@ -8,7 +9,6 @@ import 'package:flashcards_reader/views/help_page/help_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intro/intro.dart';
 import 'package:overlay_support/overlay_support.dart';
-
 import 'database/core/core.dart';
 
 void initTts() async {
@@ -41,6 +41,8 @@ Future<void> main() async {
   bool inited = await initAsync();
   debugPrint('inited: $inited');
   assert(inited, true);
+
+  await FireBaseService.init();
 
   runApp(const MyApp());
 }

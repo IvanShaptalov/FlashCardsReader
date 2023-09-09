@@ -61,6 +61,13 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   url_launcher: ^6.1.5
   
+  
+  #stats
+  firebase_analytics: ^10.4.5
+  firebase_core: ^2.15.1
+
+  
+
   integration_test:
     sdk: flutter
 
