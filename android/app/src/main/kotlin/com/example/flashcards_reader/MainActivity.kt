@@ -1,4 +1,4 @@
-package com.example.flashcards_reader
+package com.vansimplest.android.flashcards_reader
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION " />
+    <!-- <uses-permission android:name="android.permission.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION " /> -->
     <!-- On Android the Permission.storage permission is linked to the Android READ_EXTERNAL_STORAGE 
         and WRITE_EXTERNAL_STORAGE permissions. Starting from Android SDK 29 (Android 10) the 
         READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE permissions have been marked deprecated 
@@ -45,7 +45,7 @@
         </intent>
     </queries>
     <application
-        android:label="flashcards_reader"
+        android:label="Flash Reader"
         android:name="${applicationName}"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/launcher_icon">

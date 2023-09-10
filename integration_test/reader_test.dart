@@ -25,7 +25,7 @@ void main() async {
       expect(model.coverPath, 'assets/book/raw_book.png');
       expect(model.author, '');
       expect(model.fileMeta.path,
-          '/data/user/0/com.example.flashcards_reader/cache/assets/book/raw_book.png');
+          '/data/user/0/com.vansimplest.android.flashcards_reader/cache/assets/book/raw_book.png');
       expect(model.fileMeta.ext, '.txt');
       expect(File(model.fileMeta.path).existsSync(), true);
 
@@ -41,7 +41,7 @@ void main() async {
       expect(model.coverPath.endsWith('.png'), true);
       expect(model.author, '');
       expect(model.fileMeta.path,
-          '/data/user/0/com.example.flashcards_reader/cache/assets/test/test.pdf');
+          '/data/user/0/com.vansimplest.android.flashcards_reader/cache/assets/test/test.pdf');
       expect(model.fileMeta.ext, '.pdf');
       expect(File(model.fileMeta.path).existsSync(), true);
 
@@ -57,7 +57,7 @@ void main() async {
       expect(model.coverPath.endsWith('jpg'), true);
       expect(model.author, 'Friedrich Wilhelm Nietzsche');
       expect(model.fileMeta.path,
-          '/data/user/0/com.example.flashcards_reader/cache/assets/test/test.epub');
+          '/data/user/0/com.vansimplest.android.flashcards_reader/cache/assets/test/test.epub');
       expect(model.fileMeta.ext, '.epub');
       expect(File(model.fileMeta.path).existsSync(), true);
 
