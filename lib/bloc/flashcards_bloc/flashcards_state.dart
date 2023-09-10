@@ -29,7 +29,7 @@ class FlashcardsState {
 
   Future<FlashcardsState> deletePermanently(
       FlashCardCollection flashCardCollection) async {
-    FireBaseService.flashDeleted();
+    FireBaseAnalyticsService.flashDeleted();
     if (flashCardCollection == FlashCardProvider.fc) {
       FlashCardProvider.clear();
     }
@@ -49,7 +49,7 @@ class FlashcardsState {
 
   Future<FlashcardsState> addFlashCardCollectionAsync(
       FlashCardCollection flashCardCollection) async {
-    FireBaseService.flashCreated();
+    FireBaseAnalyticsService.flashCreated();
 
     await FlashcardDatabaseProvider.writeEditAsync(flashCardCollection);
     return FlashcardsState.initial().copyWith(fromTrash: false);

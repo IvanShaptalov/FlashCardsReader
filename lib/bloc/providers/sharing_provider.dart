@@ -19,7 +19,7 @@ class SharingProvider {
 
   static Future<bool> selectPathThenSave(BuildContext context,
       List<FlashCardCollection> collections, String ext) async {
-    FireBaseService.flashesExported(ext);
+    FireBaseAnalyticsService.flashesExported(ext);
     String fileName = '';
     String filePath = '';
     String data = '';
@@ -103,7 +103,7 @@ class SharingProvider {
 
       String fileResult = file.readAsStringSync();
 
-      FireBaseService.flashesImported(ext);
+      FireBaseAnalyticsService.flashesImported(ext);
 
       /// [import section]
       switch (ext) {

@@ -72,7 +72,7 @@ class BookScanner {
       manageStorage.value = status.isGranted;
     }
 
-    FireBaseService.grantStorage(status.isGranted);
+    FireBaseAnalyticsService.grantStorage(status.isGranted.toString());
     return status.isGranted;
   }
 
@@ -92,9 +92,9 @@ class BookScanner {
             OverlayNotificationProvider.showOverlayNotification(
                 'new files: $value',
                 status: NotificationStatus.info));
-        FireBaseService.logScanningBooks(true);
+        FireBaseAnalyticsService.logScanningBooks('true');
       } else {
-        FireBaseService.logScanningBooks(false);
+        FireBaseAnalyticsService.logScanningBooks('false');
       }
     } catch (e) {
       debugPrintIt('Error while scanning: $e');

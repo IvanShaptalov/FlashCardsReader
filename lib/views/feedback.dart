@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/firebase/firebase.dart';
 import 'package:flashcards_reader/views/config/view_config.dart';
 import 'package:flashcards_reader/views/menu/side_menu.dart';
 import 'package:flashcards_reader/views/overlay_notification.dart';
@@ -35,12 +36,13 @@ class _MyHomePageState extends ParentState<FeedBackPage> {
                   children: [
                     GestureDetector(
                       onTap: () async {
+                        FireBaseAnalyticsService.feedBackTap();
                         String email =
                             Uri.encodeComponent("withoutwater792@gmail.com");
                         String subject =
                             Uri.encodeComponent("FlashReader Issue");
                         String body = Uri.encodeComponent("Hi!\n");
-                        print(subject); //output: Hello%20Flutter
+                        debugPrint(subject); //output: Hello%20Flutter
                         Uri mail = Uri.parse(
                             "mailto:$email?subject=$subject&body=$body");
                         if (await launchUrl(mail)) {

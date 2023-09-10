@@ -185,7 +185,7 @@ Widget loadEndQuiz(BuildContext context, String fromPage) {
             ),
           ),
           onTap: () {
-            FireBaseService.quizProcess(QuizStatus.finished);
+            FireBaseAnalyticsService.quizProcess(QuizStatus.finished);
 
             if (GuideProvider.isTutorial) {
               GuideProvider.endTutorial();

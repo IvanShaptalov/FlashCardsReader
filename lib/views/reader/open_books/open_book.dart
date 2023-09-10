@@ -206,7 +206,7 @@ class OpenBookState extends ParentState<OpenBook> {
                     ),
                   )
                 else
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                 Container(

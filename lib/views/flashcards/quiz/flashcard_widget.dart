@@ -60,7 +60,7 @@ class _QuizCollectionViewState extends State<QuizCollectionView> {
   Widget build(BuildContext context) {
     return BlocBuilder<QuizBloc, QuizState>(builder: (context, state) {
       // set the target item for merge
-      FireBaseService.quizProcess(QuizStatus.started);
+      FireBaseAnalyticsService.quizProcess(QuizStatus.started);
 
       return GestureDetector(
         onTap: () {

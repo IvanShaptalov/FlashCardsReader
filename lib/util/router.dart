@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class MyRouter {
   static Future pushPageDialog(BuildContext context, Widget page) {
-    FireBaseService.logRoute(page.toString());
+    FireBaseAnalyticsService.logRoute(page.toString());
 
     var val = Navigator.push(
       context,
@@ -19,7 +19,7 @@ class MyRouter {
   }
 
   static pushPage(BuildContext context, Widget page) {
-    FireBaseService.logRoute(page.toString());
+    FireBaseAnalyticsService.logRoute(page.toString());
     Navigator.push(
       context,
       MaterialPageRoute(

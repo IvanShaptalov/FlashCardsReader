@@ -85,7 +85,7 @@ class ViewPDFState extends State<ViewPDF> {
                 IconButton(
                     onPressed: () {
                       _pdfViewerController?.clearSelection();
-                      FireBaseService.shared();
+                      FireBaseAnalyticsService.sharedTranslation();
 
                       Share.share('''${TextSelectorProvider.selectedText}
                                 Read, translate and learn with flashReader! $googlePlayLink''');

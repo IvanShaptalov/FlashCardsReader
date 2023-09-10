@@ -13,7 +13,7 @@ class GuideProvider {
     stepCount: interactiveStepCount,
     onWillClose: (currentStep) {
       if ([1, 2, 5, 6].contains(currentStep)) {
-        FireBaseService.logGuide(GuideStatus.ended, currentStep);
+        FireBaseAnalyticsService.logGuide(GuideStatus.ended, currentStep);
         debugPrintIt('guide is ended');
         GuideProvider.isTutorial = false;
         return true;
@@ -53,11 +53,11 @@ class GuideProvider {
   static void init() {
     GuideProvider._isTutorial = true;
     GuideProvider.initIndex = 0;
-    FireBaseService.logGuide(GuideStatus.started, 0);
+    FireBaseAnalyticsService.logGuide(GuideStatus.started, 0);
   }
 
   static void endTutorial() {
-    FireBaseService.logGuide(GuideStatus.ended, -1);
+    FireBaseAnalyticsService.logGuide(GuideStatus.ended, -1);
 
     GuideProvider._isTutorial = false;
     GuideProvider.initIndex = 0;
@@ -77,7 +77,7 @@ class GuideProvider {
       required String guideText,
       bool toWrap = true}) {
     if (_isTutorial && toWrap) {
-      FireBaseService.logGuide(GuideStatus.continued, step);
+      FireBaseAnalyticsService.logGuide(GuideStatus.continued, step);
 
       return IntroStepTarget(
         key: Key(uuid.v4()),

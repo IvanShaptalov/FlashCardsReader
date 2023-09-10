@@ -42,7 +42,7 @@ Future<void> main() async {
   debugPrint('inited: $inited');
   assert(inited, true);
 
-  await FireBaseService.init();
+  await FireBaseAnalyticsService.init();
 
   runApp(const MyApp());
 }
