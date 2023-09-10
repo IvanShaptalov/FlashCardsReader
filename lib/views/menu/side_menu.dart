@@ -1,3 +1,4 @@
+import 'package:flashcards_reader/constants.dart';
 import 'package:flashcards_reader/views/feedback.dart';
 import 'package:flashcards_reader/views/help_page/help_page.dart';
 import 'package:flashcards_reader/views/reader/tabs/book_catalog.dart';
@@ -10,6 +11,7 @@ import 'package:flashcards_reader/views/flashcards/quiz/quiz_menu.dart';
 import 'package:flashcards_reader/views/flashcards/sharing/import_page.dart';
 import 'package:flashcards_reader/views/reader/screens/reading_homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SideMenu extends StatelessWidget {
   final double appBarHeight;
@@ -29,11 +31,14 @@ class SideMenu extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FloatingActionButton(
-                  onPressed: () {},
-                  child: const CircleAvatar(
+                  onPressed: () {
+                    launchUrl(Uri.parse(devLink));
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Palette.amber200,
+                    foregroundColor: Palette.amber200,
                     // Display the Flutter Logo image asset.
-                    foregroundImage:
-                        AssetImage('assets/images/flutter_logo.png'),
+                    foregroundImage: AssetImage('assets/appIcon.png'),
                   ),
                 ),
                 // IconButton(onPressed: () {}, icon: const Icon(Icons.sunny))

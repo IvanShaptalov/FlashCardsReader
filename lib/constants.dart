@@ -230,6 +230,8 @@ const String fontRoboto = 'Roboto';
 const String fontGideonRoman = 'Gideon_Roman';
 const String fontNotoSerif = 'Noto_Serif';
 const String fontRedressed = 'Redressed';
+const String devLink =
+    'https://play.google.com/store/apps/dev?id=8126792309483961458';
 
 const List<String> fonts = [
   'Roboto',
