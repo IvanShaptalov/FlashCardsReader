@@ -31,6 +31,7 @@ class SideMenu extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FloatingActionButton(
+                  backgroundColor: Palette.amber200,
                   onPressed: () {
                     launchUrl(Uri.parse(devLink));
                   },
@@ -38,7 +39,7 @@ class SideMenu extends StatelessWidget {
                     backgroundColor: Palette.amber200,
                     foregroundColor: Palette.amber200,
                     // Display the Flutter Logo image asset.
-                    foregroundImage: AssetImage('assets/appIcon.png'),
+                    foregroundImage: const AssetImage('assets/appIcon.png'),
                   ),
                 ),
                 // IconButton(onPressed: () {}, icon: const Icon(Icons.sunny))
